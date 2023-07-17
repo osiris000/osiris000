@@ -1,5 +1,26 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><style type='text/css'>     @keyframes div_2{
-
-100.000% {height:auto;width:auto;}
-
-} #div_2 { height:auto;width:auto;  animation-iteration-count:1; animation-duration: 10s;  animation-fill-mode: forwards; animation-delay:0s; animation-name: div_2; } </style><script type="text/javascript">onload=function(){document.getElementById("div_2").contentEditable= unescape(`false`);document.getElementById("div_2").innerHTML= unescape(`%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20640%20256%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20@keyframes%20wind%20%7B%0A%20%20%20%20%20%200%25%20%7B%20transform%3A%20translateX%280%29%3B%20%7D%0A%20%20%20%20%20%20100%25%20%7B%20transform%3A%20translateX%2820px%29%3B%20%7D%0A%20%20%20%20%7D%0A%20%20%3C/style%3E%0A%20%20%3Ctext%20x%3D%2210%22%20y%3D%22128%22%20font-size%3D%2264%22%20fill%3D%22red%22%20style%3D%22animation%3A%20wind%201s%20infinite%20alternate%22%3E%0A%20%20%20%20O%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%2280%22%20y%3D%22128%22%20font-size%3D%2264%22%20fill%3D%22orange%22%20style%3D%22animation%3A%20wind%201s%20infinite%20alternate%22%3E%0A%20%20%20%20S%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%22150%22%20y%3D%22128%22%20font-size%3D%2264%22%20fill%3D%22yellow%22%20style%3D%22animation%3A%20wind%201s%20infinite%20alternate%22%3E%0A%20%20%20%20I%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%22210%22%20y%3D%22128%22%20font-size%3D%2264%22%20fill%3D%22green%22%20style%3D%22animation%3A%20wind%201s%20infinite%20alternate%22%3E%0A%20%20%20%20R%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%22280%22%20y%3D%22128%22%20font-size%3D%2264%22%20fill%3D%22blue%22%20style%3D%22animation%3A%20wind%201s%20infinite%20alternate%22%3E%0A%20%20%20%20I%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%22350%22%20y%3D%22128%22%20font-size%3D%2264%22%20fill%3D%22indigo%22%20style%3D%22animation%3A%20wind%201s%20infinite%20alternate%22%3E%0A%20%20%20%20S%0A%20%20%3C/text%3E%0A%3C/svg%3E`);document.getElementById("div_2").title= unescape(`Div%20Editable`);document.getElementById("div_2").type= unescape(`div`);}</script></head><body><div id="div_2" class="div"></div></body></html>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256">
+  <style>
+    @keyframes wind {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(20px); }
+    }
+  </style>
+  <text x="10" y="128" font-size="64" fill="red" style="animation: wind 1s infinite alternate">
+    O
+  </text>
+  <text x="80" y="128" font-size="64" fill="orange" style="animation: wind 1s infinite alternate">
+    S
+  </text>
+  <text x="150" y="128" font-size="64" fill="yellow" style="animation: wind 1s infinite alternate">
+    I
+  </text>
+  <text x="210" y="128" font-size="64" fill="green" style="animation: wind 1s infinite alternate">
+    R
+  </text>
+  <text x="280" y="128" font-size="64" fill="blue" style="animation: wind 1s infinite alternate">
+    I
+  </text>
+  <text x="350" y="128" font-size="64" fill="indigo" style="animation: wind 1s infinite alternate">
+    S
+  </text>
+</svg>
