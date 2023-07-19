@@ -1,3 +1,9 @@
+/*  
+
+funciones para tratar con el objeto xhr-ajax
+
+*/
+
 
 function sEval(obj) {
 return eval(obj)
@@ -63,92 +69,15 @@ if(method.toUpperCase()=="POST"){
 
 
 
+/* otras funciones a depurar*/
 
 
-
-
-var cargandoGif = document.createElement("img");
-cargandoGif.src = "/img/cargando.gif";
-cargandoGif.width=25;
-cargandoGif.height=25;
-cargandoGif.alt="cargando...";
-function ConstructorXMLHttpRequest(){
-if(window.XMLHttpRequest){
-return new XMLHttpRequest();
-} else if(window.ActiveXObject) {
-var vO = new Array('Msxml2.XMLHTTP.5.0','Msxml2.XMLHTTP.4.0','Msxml2.XMLHTTP.3.0','Msxml2.XMLHTTP','Microsoft.XMLHTTP');
-for(var i = 0; i < vO.length; i++){
-try {return new ActiveXObject(vO[i]);} 
-catch (errorControlado) {}}}
-throw new Error("No se pudo crear el objeto XMLHttpRequest");
-}
-function ajaxi(){
-return ConstructorXMLHttpRequest();
-}
-function carga(ajax,resultado){
-var cargando = "estado";
-document.getElementById(resultado).innerHTML= "<div id='"+cargando+"'></div>";
-ajax.onreadystatechange = function(){
-    
-if(ajax.readyState<4){
-document.getElementById(cargando).appendChild(cargandoGif); //"<img src='"+cargandoGif.src+"'>";
-		} else{
-document.getElementById(cargando).innerHTML="Completado";
-document.getElementById(resultado).innerHTML=ajax.responseText;                    
-  
-                    
-                }
-	};
-}
 function getId(thid){return encodeURIComponent(document.getElementById(thid).value);}
 function EUwysiwyg(thid){return encodeURIComponent(document.getElementById(thid).contentDocument.body.innerHTML);}
 function gId(thid){return document.getElementById(thid);}
 function GId(thid){return document.getElementById(thid).value;}
 
 
-function ajaxPost(datas,muestra,archivo,metodo="POST"){
-
-return ajax(datas,muestra,archivo,metodo="POST",reval="")
-
-ajax = new ConstructorXMLHttpRequest();
-carga(ajax,muestra);
-ajax.open(metodo,archivo,true);
-ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-ajax.send(datas);
-}
-
-thread = 0;
-TREAD = new Array()
-DEBUG = 'idx'
-function ajaxReturn(datas,muestra,archivo,metodo="POST",reval=""){
-
-return ajax(datas,muestra,archivo,metodo="POST",reval="")
-
-EXIT_AJAX = 0;
-if(!muestra && DEBUG) muestra = DEBUG
-thread++
-if(metodo==="GET"){
-archivo = archivo+"?"+datas;    
-}
-TREAD[thread] = new ConstructorXMLHttpRequest();
-TREAD[thread].open(metodo,archivo,true);
-TREAD[thread].onreadystatechange = function(){
-if(TREAD[thread].readyState>2){
-valor = TREAD[thread].responseText;
-if(EXIT_AJAX===true) {/*return*/}
-if(reval == 'function') eval(valor);
-else if(reval==='flush'){ 
-document.getElementById(muestra).style.display="block";
-} else if(reval) eval(""+reval+"(escape(valor.trim()))");
-if(reval!="function") document.getElementById(muestra).innerHTML=valor;
-}}
-TREAD[thread].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-if(metodo==="POST"){
-    TREAD[thread].send(datas);
-} else if(metodo==="GET"){
-    TREAD[thread].send();
-}
-}
 
 function dmenu(divid,classname){
     var dcls=document.getElementsByClassName(classname);
