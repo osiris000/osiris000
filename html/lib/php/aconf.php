@@ -1,4 +1,4 @@
-<?php
+<?php 
 $__x_DEBUG = "";
 $__x_LISTA_VARIABLES = "";
 function pecho($data,$reten="0"){
