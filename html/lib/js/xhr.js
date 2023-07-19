@@ -5,12 +5,6 @@ funciones para tratar con el objeto xhr-ajax
 */
 
 
-function sEval(obj) {
-return eval(obj)
-//    return Function('"use strict";return (' + obj + ')')();
-}
-
-
 $ajax = new Array()
 
 
@@ -38,13 +32,13 @@ if($ajax[masajax].readyState===4){
 
 if(ih){
 
-sEval(`document.getElementById('`+ih+`').innerHTML` + eval(`mode`) + `$ajax[`+masajax+`].responseText`)
+xEval(`document.getElementById('`+ih+`').innerHTML` + xEval(`mode`) + `$ajax[`+masajax+`].responseText`,1)
 
 
-} if(js) sEval(js) ; $ajax[masajax] = "END 4:"+masajax } else {
+} if(js) xEval(js,1) ; $ajax[masajax] = "END 4:"+masajax } else {
 
 	if($ajax[masajax].readyState==3){
-	if(!ih) sEval($ajax[masajax].responseText)
+	if(!ih) xEval($ajax[masajax].responseText,1)
 		}
         //readyState < 4
 	}
@@ -77,6 +71,10 @@ function EUwysiwyg(thid){return encodeURIComponent(document.getElementById(thid)
 function gId(thid){return document.getElementById(thid);}
 function GId(thid){return document.getElementById(thid).value;}
 
+function xEval(obj,mode) {
+if (!mode) return eval(obj)
+else return Function('"use strict";return (' + obj + ')')();
+}
 
 
 function dmenu(divid,classname){
