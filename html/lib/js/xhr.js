@@ -5,8 +5,13 @@ funciones para tratar con el objeto xhr-ajax
 */
 
 
+// variable $ajax , almacena (puntero al) cada objeto
+// xhr abierto por la función ajax()
+
 $ajax = new Array()
 
+
+// funcion ajax()
 
 // parámetro 1
 // 'datas' son las variables a enviar por url
