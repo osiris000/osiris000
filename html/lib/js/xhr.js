@@ -8,12 +8,35 @@ funciones para tratar con el objeto xhr-ajax
 $ajax = new Array()
 
 
+// parámetro 1
+// 'datas' son las variables a enviar por url
+// al servidor en espera de respuesta
+// formato var=valor&var=valor
+
+// parámetro2 
+// 'ih' el nombre de un div si quiere imprimir html
+// sino en blanco o false
+
+// 3
+// 'loc' es la url destino by example location.php
+
+// 4
+// 'method', puede ser GET o POST , si false por defecto será GET
+
+// 5 
+// 'js' indica cuando el retorno es javascript para ejecutar
+// normalmente para este caso se usa con 'ih' a false
+
+
+
 function ajax(datas,ih,loc,method="GET",js,mode="=",masajax=$ajax.length){
 
 mode = mode
 
 $ajax[masajax] =  new XMLHttpRequest()
 
+
+if(!method) method =="GET"
 
 if(method.toUpperCase()=="GET"){
 loc = loc+"?"+datas;    
