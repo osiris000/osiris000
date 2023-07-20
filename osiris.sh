@@ -54,13 +54,15 @@ check_command_installed /usr/bin/php
 check_command_installed /usr/bin/mariadb 
 check_command_installed /usr/bin/ffmpeg 
 check_command_installed /usr/bin/transmission-cli 
-check_command_installed /usr/bin/youtube-dl 
+check_command_installed /usr/local/bin/youtube-dl 
 check_command_installed /usr/bin/rustc 
 
 
 
 
 #continue
+
+
 
 
 
