@@ -15,6 +15,8 @@ ffmpeg
 
 youtube-dl
 
+transmission-cli
+
 
 ....
 
