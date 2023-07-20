@@ -51,11 +51,12 @@ check_command_installed() {
 check_command_installed /usr/bin/python3 
 check_command_installed /usr/sbin/apache2 -v
 check_command_installed /usr/bin/php 
+check_command_installed /usr/bin/mariadb 
 check_command_installed /usr/bin/ffmpeg 
 check_command_installed /usr/bin/transmission-cli 
 check_command_installed /usr/bin/youtube-dl 
 check_command_installed /usr/bin/rustc 
-check_command_installed /usr/bin/mysql 
+
 
 
 

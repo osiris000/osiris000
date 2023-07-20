@@ -13,6 +13,8 @@ Apache2 http server fcgid
 
 php7.4 fpm
 
+mariadb
+
 ffmpeg
 
 youtube-dl
