@@ -7,6 +7,8 @@ Linux/debian
 
 python3
 
+rustc
+
 Apache2 http server fcgid
 
 php7.4 fpm
