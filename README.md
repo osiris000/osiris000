@@ -1,7 +1,7 @@
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
 
 
-<h3>Requisitos mínimos</h3>
+<h3>Requisitos mínimos (sistema completo)</h3>
 
 Linux/debian
 
@@ -16,5 +16,5 @@ ffmpeg
 youtube-dl
 
 
-
+....
 
