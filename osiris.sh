@@ -2,6 +2,7 @@
 
 # Comprobación de requisitos del sistema.
 
+
 check_command_installed() {
   command_path=$1
   version_option=$2
@@ -48,19 +49,27 @@ check_command_installed() {
 
 
 # Comprobación de aplicaciones instaladas.
-check_command_installed /usr/bin/python3 
+
+check_command_installed /usr/bin/python3 --version
 check_command_installed /usr/sbin/apache2 -v
-check_command_installed /usr/bin/php 
+check_command_installed /usr/bin/php --version 
 check_command_installed /usr/bin/mariadb 
-check_command_installed /usr/bin/ffmpeg 
+check_command_installed /usr/bin/ffmpeg -version
 check_command_installed /usr/bin/transmission-cli 
-check_command_installed /usr/local/bin/youtube-dl 
+check_command_installed /usr/bin/youtube-dl 
 check_command_installed /usr/bin/rustc 
-
-
+check_command_installed /usr/bin/docker 
 
 
 #continue
+
+
+python_osiris_path="osiris.py"
+
+cd bin && /usr/bin/python3 "$python_osiris_path"
+
+
+
 
 
 

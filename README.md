@@ -21,6 +21,7 @@ youtube-dl
 
 transmission-cli
 
+docker
 
 ....
 
