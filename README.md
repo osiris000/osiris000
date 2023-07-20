@@ -11,7 +11,9 @@ Apache2 http server fcgid
 
 php7.4 fpm
 
+ffmpeg
 
+youtube-dl
 
 
 
