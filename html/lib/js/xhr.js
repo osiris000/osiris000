@@ -1,3 +1,9 @@
+/********************
+
+	Para depurar y ampliar
+
+*********************/
+
 /*  
 
 funciones para tratar con el objeto xhr-ajax
