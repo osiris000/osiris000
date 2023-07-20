@@ -1,11 +1,15 @@
 #!/bin/sh
 
-# Comprobación de requisitos mínimos para primera instalación.
-
+# Comprobación de requisitos del sistema.
 
 check_command_installed() {
   command_path=$1
   version_option=$2
+
+  # Si no se proporciona una opción de versión, utilizar --version
+  if [ -z "$version_option" ]; then
+    version_option="--version"
+  fi
 
   # Verificar con la ruta del ejecutable
   if [ -x "$command_path" ]; then
@@ -42,11 +46,20 @@ check_command_installed() {
 }
 
 
-# Comprobación de comandos instalados.
-check_command_installed /usr/bin/python3 -V
+
+# Comprobación de aplicaciones instaladas.
+check_command_installed /usr/bin/python3 
 check_command_installed /usr/sbin/apache2 -v
-check_command_installed /usr/bin/php -v
-check_command_installed /usr/bin/ffmpeg -v
+check_command_installed /usr/bin/php 
+check_command_installed /usr/bin/ffmpeg 
+check_command_installed /usr/bin/transmission-cli 
+check_command_installed /usr/bin/youtube-dl 
+check_command_installed /usr/bin/rustc 
+check_command_installed /usr/bin/mysql 
+
+
+
+#continue
 
 
 
