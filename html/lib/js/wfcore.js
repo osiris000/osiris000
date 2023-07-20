@@ -1,3 +1,5 @@
+
+
 const write = function (txt){
 document.write(txt)
 }
@@ -253,9 +255,9 @@ debug("INPUT: "+resource.id,'verbose,events,input')
 
 init = 0;
 DEBUG = 1
-Version = "wf.wl.ic.jsa.gen.0.ab.dev"
-console.log("Init idcreator Versión:"+Version)
-debug("Init Debug Versión:"+Version)
+Version = "osiris"
+console.log("wfcore :"+Version)
+debug("Init Debug wfcore Versión:"+Version)
 gt = 0
 rsc = 0
 nb = 1;
