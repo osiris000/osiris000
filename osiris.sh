@@ -5,16 +5,19 @@
 
 #python3
 
-if command -v python3 >/dev/null 2>&1; then
-  python_version=$(python3 -V 2>&1)
-  echo "Python está instalado en el sistema. Versión: $python_version"
-else
-  cat<<EOF
-
- Python no está instalado en el sistema
- Pruebe "apt install python3"
-
+check_command_installed() {
+  if command -v "$1" >/dev/null 2>&1; then
+    version_output="$($1 -V 2>&1)"
+    echo "$1 está instalado en el sistema. Versión: $version_output"
+  else
+    cat <<EOF
+$1 no está instalado en el sistema
+Pruebe "apt install $1" (o el comando adecuado para su sistema)
 EOF
-fi
+  fi
+}
 
 
+check_command_installed python3
+
+check_command_installed ffmpeg
