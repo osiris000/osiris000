@@ -62,7 +62,7 @@ con los paquetes necesarios para distintas aplicaciones
 Una vez se dan los requisitos, el instalador redirige a la aplicación  
 residente en bin/osiris.py  
 
-La primera vez que se entra pide crear una contraseña nueva  
+La primera vez que se entra en bin/osiris.py pide crear una contraseña nueva  
 para la aplicación administración y gestión de la consola osiris.  
 desde esta consola se podrán instalar y administrar, apps, módulos,  
 extensiones, web, blockchain, contenedores y microsevicios.  
