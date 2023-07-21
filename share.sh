@@ -1,19 +1,19 @@
 #!/bin/sh
 
-#!/bin/bash
 
-# Array con los nombres de las aplicaciones y sus comandos de instalación
-declare -A INSTALL_COMMANDS=(
-  ["python3"]="apt install python3"
-  ["apache2"]="apt install apache2"
-  ["php"]="apt install php"
-  ["mariadb"]="apt install mariadb"
-  ["ffmpeg"]="apt install ffmpeg"
-  ["pip3"]="apt install pip3"
-  # Agrega aquí otras aplicaciones que desees verificar e instalar
-)
+# Leer el archivo de texto y crear el array
+declare -A INSTALL_COMMANDS
 
-# Función para instalar una aplicación usando apt
+while IFS= read -r line; do
+  # Ignorar líneas vacías o que contengan solo espacios
+  if [[ -n "${line// }" && "$line" != "#"* ]]; then
+    app_name=$(echo "$line" | awk '{print $1}')
+    command_to_install=$(echo "$line" | awk '{$1=""; print substr($0,2)}')
+    INSTALL_COMMANDS["$app_name"]=$command_to_install
+  fi
+done < osiris.ini
+
+# Función apt_install_command con opción para saltar la instalación
 apt_install_command() {
   app_name=$1
   command_to_install=${INSTALL_COMMANDS[$app_name]}
@@ -21,11 +21,11 @@ apt_install_command() {
   if [ -n "$command_to_install" ]; then
     echo "Pruebe \"$command_to_install\" para instalar $app_name."
     read -p "¿Desea continuar? (y/s/n): " choice
-    case "$choice" in 
-      y|Y ) 
+    case "$choice" in
+      y|Y )
         $command_to_install
         ;;
-      s|S ) 
+      s|S )
         echo "Instalación saltada."
         ;;
       * )
@@ -36,7 +36,6 @@ apt_install_command() {
     echo "No se encontró el comando de instalación para $app_name."
   fi
 }
-
 
 
 # Función para comprobar si un comando está instalado
