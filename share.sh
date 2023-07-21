@@ -20,10 +20,13 @@ apt_install_command() {
 
   if [ -n "$command_to_install" ]; then
     echo "Pruebe \"$command_to_install\" para instalar $app_name."
-    read -p "¿Desea continuar? (y/n): " choice
+    read -p "¿Desea continuar? (y/s/n): " choice
     case "$choice" in 
       y|Y ) 
         $command_to_install
+        ;;
+      s|S ) 
+        echo "Instalación saltada."
         ;;
       * )
         echo "Instalación cancelada."
@@ -33,6 +36,7 @@ apt_install_command() {
     echo "No se encontró el comando de instalación para $app_name."
   fi
 }
+
 
 
 # Función para comprobar si un comando está instalado
