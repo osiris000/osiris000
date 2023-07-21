@@ -50,12 +50,12 @@ comandos de instalación en install.com
 
 python3		apt install python3   
 apache2		apt install apache2 libapache2-mod-fcgid  
-php			apt install apt install php php-fpm libapache2-mod-php
+php			apt install apt install php php-fpm libapache2-mod-php  
 transmission-cli	apt install transmission-cli  
 
 
 Esto permite instalar los paquetes de las versiones adecuadas  
-con los paquetes necesarios para distintas aplicaciones  
+con los paquetes necesarios para las distintas aplicaciones  
 
 
   
@@ -63,7 +63,7 @@ Una vez se dan los requisitos, el instalador redirige a la aplicación
 residente en bin/osiris.py  
 
 La primera vez que se entra en bin/osiris.py pide crear una contraseña nueva  
-para la aplicación administración y gestión de la consola osiris.  
+para la aplicación de administración y gestión de la consola osiris.  
 desde esta consola se podrán instalar y administrar, apps, módulos,  
 extensiones, web, blockchain, contenedores y microsevicios.  
 
