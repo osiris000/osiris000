@@ -65,6 +65,9 @@ bin/osiris.py
 
 La primera vez que se entra pide crear una contraseña nueva  
 para la aplicación administración y gestión de la consola osiris.  
+desde esta consola se podrán instalar y administrar, modóludos,  
+extensiones, aplicaciones web, blockchain, etc...
+
 
 
 
