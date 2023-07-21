@@ -77,7 +77,13 @@ check_command_installed() {
       printf "%-69s%s\n" " $command_name no está instalado en el sistema (según dpkg) tampoco."
       apt_install_command "$command_name"
       echo "------------------------------------------------------------------"
-      exit 1
+      read -p "¿Continuar o Salir? (c/s): " choice
+    case "$choice" in
+      s|S )
+        echo "Instalación cancelada."
+        exit 0
+        ;;
+    esac
     fi
   fi
 }
