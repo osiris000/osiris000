@@ -59,9 +59,8 @@ con los paquetes necesarios para distintas aplicaciones
 
 
   
-Una vez se dan los requisitos, se entra en la aplicación  
-
-bin/osiris.py  
+Una vez se dan los requisitos, el instalador redirige a la aplicación  
+residente en bin/osiris.py  
 
 La primera vez que se entra pide crear una contraseña nueva  
 para la aplicación administración y gestión de la consola osiris.  
