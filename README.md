@@ -25,6 +25,8 @@ docker
 
 pip3
 
+git 
+
 ....
 
 Ejecutar ./osiris.sh
@@ -41,10 +43,20 @@ chekeo de aplicaciones se hace desde install.sh añadiendo líneas
 check_command_installed /usr/bin/python3 --version   
 check_command_installed /usr/sbin/apache2 -v   
 check_command_installed /usr/bin/php --version   
+check_command_installed /usr/bin/transmission-cli --version   
 
 
 comandos de instalación en install.com  
 
-python3 apt install python3   
-apache2 apt install apache2 libapache2-mod-fcgid  
-php apt install php7.f-fpm  
+python3		apt install python3   
+apache2		apt install apache2 libapache2-mod-fcgid  
+php			apt install php7-fpm  
+transmission-cli	apt install transmission-cli  
+
+
+Esto permite instalar los paquetes de las versiones adecuadas  
+con los paquetes necesarios para distintas aplicaciones  
+
+
+
+
