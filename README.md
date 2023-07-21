@@ -46,5 +46,5 @@ check_command_installed /usr/bin/php --version
 comandos de instalación en install.com  
 
 python3 apt install python3   
-apache2 apt install apache2 libapache2-mod-fcgid
+apache2 apt install apache2 libapache2-mod-fcgid  
 php apt install php7.f-fpm  
