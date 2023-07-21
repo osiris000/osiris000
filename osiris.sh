@@ -40,6 +40,7 @@ check_command_installed /usr/bin/transmission-cli
 check_command_installed /usr/bin/youtube-dl 
 check_command_installed /usr/bin/rustc 
 check_command_installed /usr/bin/docker 
+check_command_installed /usr/bin/pip3
 
 
 #continue

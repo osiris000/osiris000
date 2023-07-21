@@ -1,5 +1,41 @@
 #!/bin/sh
 
+#!/bin/bash
+
+# Array con los nombres de las aplicaciones y sus comandos de instalación
+declare -A INSTALL_COMMANDS=(
+  ["python3"]="apt install python3"
+  ["apache2"]="apt install apache2"
+  ["php"]="apt install php"
+  ["mariadb"]="apt install mariadb"
+  ["ffmpeg"]="apt install ffmpeg"
+  ["pip3"]="apt install pip3"
+  # Agrega aquí otras aplicaciones que desees verificar e instalar
+)
+
+# Función para instalar una aplicación usando apt
+apt_install_command() {
+  app_name=$1
+  command_to_install=${INSTALL_COMMANDS[$app_name]}
+
+  if [ -n "$command_to_install" ]; then
+    echo "Pruebe \"$command_to_install\" para instalar $app_name."
+    read -p "¿Desea continuar? (y/n): " choice
+    case "$choice" in 
+      y|Y ) 
+        $command_to_install
+        ;;
+      * )
+        echo "Instalación cancelada."
+        ;;
+    esac
+  else
+    echo "No se encontró el comando de instalación para $app_name."
+  fi
+}
+
+
+# Función para comprobar si un comando está instalado
 check_command_installed() {
   command_path=$1
   version_option=$2
@@ -36,11 +72,17 @@ check_command_installed() {
     else
       echo "------------------------------------------------------------------"
       printf "%-69s%s\n" " $command_name no está instalado en el sistema (según dpkg) tampoco."
-      echo " Pruebe \"apt install $command_name\" (o el comando adecuado para su sistema)"
+      apt_install_command "$command_name"
       echo "------------------------------------------------------------------"
       exit 1
     fi
   fi
 }
+
+
+
+
+
+
 
 
