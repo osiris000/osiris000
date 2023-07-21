@@ -1,5 +1,6 @@
 #!/bin/sh
 
+type check_command_installed >/dev/null 2>&1 || . osiris.sh
 
 # Comprobación de aplicaciones instaladas.
 
