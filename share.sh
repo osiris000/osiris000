@@ -11,7 +11,7 @@ while IFS= read -r line; do
     command_to_install=$(echo "$line" | awk '{$1=""; print substr($0,2)}')
     INSTALL_COMMANDS["$app_name"]=$command_to_install
   fi
-done < osiris.ini
+done < install.com
 
 # Función apt_install_command con opción para saltar la instalación
 apt_install_command() {

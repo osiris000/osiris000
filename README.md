@@ -36,4 +36,15 @@ Ejecutar ./osiris.sh
   si no lo están da la opción de instalarlas
 
 
+chekeo de aplicaciones se hace desde install.sh añadiendo líneas
 
+check_command_installed /usr/bin/python3 --version
+check_command_installed /usr/sbin/apache2 -v
+check_command_installed /usr/bin/php --version
+
+
+comandos de instalación en install.com
+
+python3 apt install python3
+apache2 apt install apache2 
+php apt install php 
