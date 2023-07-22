@@ -14,6 +14,13 @@ def command_line():
 			import agenda
 		else:
 			print("AGENDA MAS ",args)
+	elif args[0] == "install":
+		if len(args) == 1:
+			print(fhelp.fhelp(args[0]))
+			fs = "XP"
+			import install
+		else:
+			print("Install Command ",args)
 	elif com == "exit":
 		exit()
 	elif com == "Reset Password":
