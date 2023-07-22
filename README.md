@@ -86,7 +86,7 @@ pero podemos crear el ejecutable al comando (python) escribiendo
 
 \>\>\>nuevo_com create  
 
-Al hacerlo se crea el archivo nuevo_com.py , con una función main que recibe  
+Al hacerlo se crea el archivo nuevo_com.py en el directorio bin/com, con una función main que recibe  
 los argumentos.  
 
 def main(args):  

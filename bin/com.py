@@ -30,7 +30,7 @@ def command_line():
         print("Comando no reconocido:", args)
         command_line()
         return
-    elif len(args) > 1 and args[1] == "clear":
+    elif len(args) > 1 and args[1] == "reset":
         clear_command_data(args[0])
         loaded_modules.pop(args[0], None)  # Eliminamos el módulo del diccionario de módulos cargados
         command_line()  # No se ejecuta el comando después de limpiar los datos
