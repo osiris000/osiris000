@@ -73,7 +73,7 @@ Una vez dentro aparece el prompt >>>
 Hay distintos comandos, los primeros son:  
 
 será comandos válidos los presentes en valid_commands = ["agenda", "install"]  
-próximamente se extraerán de un archivo de consiguración.  
+próximamente se extraerán de un archivo de configuración.  
 
 
 Al añadir un comando nuevo, éste se puede crear para implementarlo,  
@@ -86,15 +86,15 @@ pero podemos crear el ejecutable al comando (python) escribiendo
 
 \>\>\>nuevo_com create  
 Al hacerlo se crea el archivo nuevo_com.py , con una función main que recibe  
-los argumentos.
+los argumentos.  
 
-def main(args):
-    print('Args dentro de nuevo_com', args)
+def main(args):  
+    print('Args dentro de nuevo_com', args)  
 
 
 si la función main no existe o está mal formada, el programa lo avisa  
 ya que es esa función la que recoje los argumentos pasados por la consola  
-para saltar esa formalidad y ejecutar el script igualmente, sería
+para saltar esa formalidad y ejecutar el script igualmente, sería  
 \>\>\> nuevo_com force
 
 para ver la ayuda del comando se typea  
@@ -104,10 +104,8 @@ Si no existe archivo de ayuda, se crea automáticamente uno
 en el directorio bin/help con el nombre nuevo_com.hlp  
 
 
-
-
 Es decir, se pueden usar los comandos que llevará el sistema por defecto  
-así como implementarlos desde la consola o archivos, de esta manera se podrán  
+así como implementar nuevos desde la consola o archivos, de esta manera se podrán  
 instalar/desinstalar/deshabilitar, crear, personalizar y compartir comandos  
 a modo de utilidades para osiris  
 
