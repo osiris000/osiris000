@@ -89,7 +89,7 @@ Al hacerlo se crea el archivo nuevo_com.py , con una función main que recibe
 los argumentos.  
 
 def main(args):  
-\tprint('Args dentro de nuevo_com', args)  
+    print('Args dentro de nuevo_com', args)  
 
 
 si la función main no existe o está mal formada, el programa lo avisa  
