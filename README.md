@@ -68,10 +68,48 @@ desde esta consola se podrán instalar y administrar, apps, módulos,
 extensiones, web, blockchain, contenedores y microsevicios.  
 
 
+Una vez dentro aparece el prompt >>>  
+
+Hay distintos comandos, los primeros son:  
+
+será comandos válidos los presentes en valid_commands = ["agenda", "install"]  
+próximamente se extraerán de un archivo de consiguración.  
+
+
+Al añadir un comando nuevo, éste se puede crear para implementarlo,  
+si por ejemplo, añadimos "nuevo_com",  
+
+valid_commands = ["agenda", "install","nuevo_com"]  
+
+cuando lo tecleamos nos dirá que no existe ruta al comando nuevo  
+pero podemos crear el ejecutable al comando (python) escribiendo  
+
+>>>nuevo_com create  
+Al hacerlo se crea el archivo nuevo_com.py , con una función main que recibe  
+los argumentos.
+
+def main(args):
+    print('Args dentro de nuevo_com', args)
+
+
+si la función main no existe o está mal formada, el programa lo avisa  
+ya que es esa función la que recoje los argumentos pasados por la consola  
+para saltar esa formalidad y ejecutar el script igualmente, sería
+>>> nuevo_com force
+
+para ver la ayuda del comando se typea  
+>>> nuevo_com help  
+
+Si no existe archivo de ayuda, se crea automáticamente uno  
+en el directorio bin/help con el nombre nuevo_com.hlp  
 
 
 
 
+Es decir, se pueden usar los comandos que llevará el sistema por defecto  
+así como implementarlos desde la consola o archivos, de esta manera se podrán  
+instalar/desinstalar/deshabilitar, crear, personalizar y compartir comandos  
+a modo de utilidades para osiris  
 
 
 
