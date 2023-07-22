@@ -116,12 +116,12 @@ a modo de utilidades para osiris
 Una vez se usa un comando se importa el archivo (módulo) para su  
 uso, sin embargo se ese archivo cambia por una modificación de la  
 implementación, para ver los cambios habría que volver a cargarlo  
-dinámicamente, para ello se haría  
+dinámicamente, para ello se haría:  
 
 \>\>\> nuevo_com reset  
 
 de ese modo al volver a ejecutarlo recargaría nuevamente el módulo  
-con los cambios realizados, evitando así tener que reinciar el programa  
+con los cambios realizados, evitando así tener que reiniciar el programa  
 para utilizar el comando con los cambios nuevos.
 
 
