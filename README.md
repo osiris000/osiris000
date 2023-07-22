@@ -122,7 +122,27 @@ dinámicamente, para ello se haría:
 
 de ese modo al volver a ejecutarlo recargaría nuevamente el módulo  
 con los cambios realizados, evitando así tener que reiniciar el programa  
-para utilizar el comando con los cambios nuevos.
+para utilizar el comando con los cambios nuevos.  
+
+
+al ejecutar \>\>\>nuevo_com argumento1 argumento2 ...  
+
+se ejecuta el codigo de la función main presente en com/nuevo_com.py  
+
+def main(args):  
+&nbsp;&nbsp;&nbsp;&nbsp;print(args)  
+
+lo que arrojaría ["argumento1","argumento2","..."]  
+a partir de ahí se pueden implementar nuevos comandos  
+el código de fuera de las funciones (print,..) lo ejecuta sólo la primera vez  
+que se llama al comando ya que las sucesivas ya tiene el módulo cargado  
+si se hacen cambios en el código del comando y se quiere recargar sin salir  
+de la aplicación, puede hacerse usando el argumento reset, >>>nuevo_com reset  
+
+
+
+
+
 
 
 
