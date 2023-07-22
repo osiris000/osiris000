@@ -85,6 +85,7 @@ cuando lo tecleamos nos dirá que no existe ruta al comando nuevo
 pero podemos crear el ejecutable al comando (python) escribiendo  
 
 \>\>\>nuevo_com create  
+
 Al hacerlo se crea el archivo nuevo_com.py , con una función main que recibe  
 los argumentos.  
 
@@ -95,9 +96,11 @@ def main(args):
 si la función main no existe o está mal formada, el programa lo avisa  
 ya que es esa función la que recoje los argumentos pasados por la consola  
 para saltar esa formalidad y ejecutar el script igualmente, sería  
+
 \>\>\> nuevo_com force
 
 para ver la ayuda del comando se typea  
+
 \>\>\> nuevo_com help  
 
 Si no existe archivo de ayuda, se crea automáticamente uno  
@@ -108,6 +111,27 @@ Es decir, se pueden usar los comandos que llevará el sistema por defecto
 así como implementar nuevos desde la consola o archivos, de esta manera se podrán  
 instalar/desinstalar/deshabilitar, crear, personalizar y compartir comandos  
 a modo de utilidades para osiris  
+
+
+Una vez se usa un comando se importa el archivo (módulo) para su  
+uso, sin embargo se ese archivo cambia por una modificación de la  
+implementación, para ver los cambios habría que volver a cargarlo  
+dinámicamente, para ello se haría  
+
+\>\>\> nuevo_com reset  
+
+de ese modo al volver a ejecutarlo recargaría nuevamente el módulo  
+con los cambios realizados, evitando así tener que reinciar el programa  
+para utilizar el comando con los cambios nuevos.
+
+
+
+
+
+
+
+
+
 
 
 
