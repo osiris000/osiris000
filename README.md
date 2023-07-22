@@ -84,7 +84,7 @@ valid_commands = ["agenda", "install","nuevo_com"]
 cuando lo tecleamos nos dirá que no existe ruta al comando nuevo  
 pero podemos crear el ejecutable al comando (python) escribiendo  
 
->>>nuevo_com create  
+\>\>\>nuevo_com create  
 Al hacerlo se crea el archivo nuevo_com.py , con una función main que recibe  
 los argumentos.
 
@@ -95,10 +95,10 @@ def main(args):
 si la función main no existe o está mal formada, el programa lo avisa  
 ya que es esa función la que recoje los argumentos pasados por la consola  
 para saltar esa formalidad y ejecutar el script igualmente, sería
->>> nuevo_com force
+\>\>\> nuevo_com force
 
 para ver la ayuda del comando se typea  
->>> nuevo_com help  
+\>\>\> nuevo_com help  
 
 Si no existe archivo de ayuda, se crea automáticamente uno  
 en el directorio bin/help con el nombre nuevo_com.hlp  
