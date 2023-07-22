@@ -5,53 +5,60 @@ import os , shlex , cnf , auth, fhelp, datetime, inspect, ast, types
 # Definir el array de comandos válidos
 valid_commands = ["agenda", "install","error"]
 
+
+
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
 
+
 def command_line():
-    while True:
-        com = input(">>> ")
+    com = input(">>> ")
 
-        if not com:
-            continue
+    if not com:
+        command_line()  # Llamada recursiva si no se proporcionó ningún comando
 
-        args = shlex.split(com)
+    args = shlex.split(com)
 
-        if args[0] == "exit":
-            exit()
-        elif args[0] == "Reset Password":
-            auth.makeauth()
-        elif args[0] == "clear":
-            clear_command_data(args[1])
+    if args[0] == "exit":
+        exit()
+    elif args[0] == "Reset_Password":
+        auth.makeauth()
+    elif len(args) > 1 and args[1] == "clear":
+        clear_command_data(args[0])
+    else:
+        if len(args) > 1 and args[1] == "help" and args[0] in valid_commands:
+            print(fhelp.fhelp(args[0]))
         else:
-            if len(args) > 1 and args[1] == "help" and args[0] in valid_commands:
-                print(fhelp.fhelp(args[0]))
-            else:
-                if args[0] in valid_commands:
-                    if os.path.isfile(args[0] + ".py"):
-                        main_function = check_function_declaration(args[0], "main")
-                        if main_function is not None:
-                            if main_function:
-                                try:
-                                    exec(f"import {args[0]}")
-                                    module = eval(args[0])
-                                    if hasattr(module.main, "__call__") and callable(module.main):
-                                        module.main(args[1:])
-                                    else:
-                                        print(f"La función 'main' no está definida correctamente en {args[0]}.py")
-                                except ImportError:
-                                    print(f"Error al importar {args[0]}.py")
-                            else:
-                                print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
+            if args[0] in valid_commands:
+                if os.path.isfile(args[0] + ".py"):
+                    main_function = check_function_declaration(args[0], "main")
+                    if main_function is not None:
+                        if main_function:
+                            try:
+                                exec(f"import {args[0]}")
+                                module = eval(args[0])
+                                if hasattr(module.main, "__call__") and callable(module.main):
+                                    module.main(args[1:])
+                                else:
+                                    print(f"La función 'main' no está definida correctamente en {args[0]}.py")
+                            except ImportError:
+                                print(f"Error al importar {args[0]}.py")
                         else:
-                            print(f"La función 'main' no está declarada en {args[0]}.py")
+                            print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
                     else:
-                        if len(args) > 1 and args[1] == "create":
-                            create_module_file(args[0])
-                        else:
-                            print(f"El archivo {args[0]}.py no existe.")
+                        print(f"La función 'main' no está declarada en {args[0]}.py")
                 else:
-                    print("Comando no reconocido:", args)
+                    if len(args) > 1 and args[1] == "create":
+                        create_module_file(args[0])
+                    else:
+                        print(f"El archivo {args[0]}.py no existe.")
+            else:
+                print("Comando no reconocido:", args)
+
+    command_line()  # Llamada recursiva para continuar con el siguiente comando
+
+
+
 
 def check_function_declaration(module_name, function_name):
     if module_name in module_info:
