@@ -1,15 +1,19 @@
-
-import os , shlex , cnf , auth, fhelp, datetime, inspect, ast, types
-
+import auth
+import importlib.util
+import fhelp
+import os
+import shlex
+import types
+import ast
+import datetime
+import inspect
 
 # Definir el array de comandos válidos
-valid_commands = ["agenda", "install","error"]
-
-
+valid_commands = ["agenda", "install", "error"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
-
+loaded_modules = {}
 
 def command_line():
     com = input(">>> ")
@@ -18,44 +22,68 @@ def command_line():
         command_line()  # Llamada recursiva si no se proporcionó ningún comando
 
     args = shlex.split(com)
-
     if args[0] == "exit":
-        exit()
+        exit_program()
     elif args[0] == "Reset_Password":
         auth.makeauth()
+    elif args[0] not in valid_commands:
+        print("Comando no reconocido:", args)
+        command_line()
+        return
     elif len(args) > 1 and args[1] == "clear":
         clear_command_data(args[0])
+        loaded_modules.pop(args[0], None)  # Eliminamos el módulo del diccionario de módulos cargados
+        command_line()  # No se ejecuta el comando después de limpiar los datos
+        return;
     else:
         if len(args) > 1 and args[1] == "help" and args[0] in valid_commands:
             print(fhelp.fhelp(args[0]))
         else:
             if args[0] in valid_commands:
-                if os.path.isfile(args[0] + ".py"):
-                    main_function = check_function_declaration(args[0], "main")
-                    if main_function is not None:
-                        if main_function:
-                            try:
-                                exec(f"import {args[0]}")
-                                module = eval(args[0])
-                                if hasattr(module.main, "__call__") and callable(module.main):
-                                    module.main(args[1:])
-                                else:
-                                    print(f"La función 'main' no está definida correctamente en {args[0]}.py")
-                            except ImportError:
-                                print(f"Error al importar {args[0]}.py")
+                if args[0] not in loaded_modules:
+                    module_path = os.path.join("com", args[0] + ".py")
+                    if os.path.isfile(module_path):
+                        main_function = check_function_declaration(args[0], "main")
+                        if main_function is not None:
+                            if main_function:
+                                try:
+                                    module_spec = importlib.util.spec_from_file_location(args[0], module_path)
+                                    module = importlib.util.module_from_spec(module_spec)
+                                    module_spec.loader.exec_module(module)
+                                    loaded_modules[args[0]] = module  # Almacenamos el módulo en el diccionario de módulos cargados
+
+                                    if hasattr(module, "main") and is_valid_function(module.main):
+                                        if has_single_argument(module.main):
+                                            module.main(args[1:])
+                                        else:
+                                            print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
+                                    else:
+                                        print(f"La función 'main' no está definida correctamente en {args[0]}.py")
+                                except ImportError:
+                                    print(f"Error al importar {args[0]}.py")
+                            else:
+                                print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
+                        else:
+                            print(f"La función 'main' no está declarada en {args[0]}.py")
+                    else:
+                        if len(args) > 1 and args[1] == "create":
+                            create_module_file(args[0])
+                        else:
+                            print(f"El archivo {args[0]}.py no existe en el directorio 'com'.")
+                else:
+                    module = loaded_modules[args[0]]
+                    if hasattr(module, "main") and is_valid_function(module.main):
+                        if has_single_argument(module.main):
+                            module.main(args[1:])
                         else:
                             print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
                     else:
-                        print(f"La función 'main' no está declarada en {args[0]}.py")
-                else:
-                    if len(args) > 1 and args[1] == "create":
-                        create_module_file(args[0])
-                    else:
-                        print(f"El archivo {args[0]}.py no existe.")
-            else:
-                print("Comando no reconocido:", args)
+                        print(f"La función 'main' no está definida correctamente en {args[0]}.py")
 
     command_line()  # Llamada recursiva para continuar con el siguiente comando
+
+
+# resto codigo
 
 
 def check_function_declaration(module_name, function_name):
@@ -63,7 +91,7 @@ def check_function_declaration(module_name, function_name):
         return module_info[module_name].get(function_name, None)
 
     try:
-        with open(f"{module_name}.py", "r") as file:
+        with open(f"com/{module_name}.py", "r") as file:
             source_code = file.read()
         module_ast = ast.parse(source_code)
 
@@ -87,14 +115,15 @@ def check_function_declaration(module_name, function_name):
     except ImportError:
         return None
 
-
-
 def is_valid_function(function):
     return (isinstance(function, types.FunctionType) or
             isinstance(function, types.MethodType))
 
+def has_single_argument(function):
+    return len(inspect.signature(function).parameters) == 1
+
 def create_module_file(module_name):
-    with open(f"{module_name}.py", "w") as file:
+    with open(f"com/{module_name}.py", "w") as file:
         file.write(f"def main(args):\n    print('Args dentro de {module_name}', args)\n")
         file.write(f"print('Creado módulo-comando {module_name} y fecha y hora: {datetime.datetime.now()}')\n")
 
@@ -108,12 +137,12 @@ def clear_command_data(command_name):
 
 
 
-def exit():
-	exitf = input("¿ Desea salir del programa ? type 'yes' or 'no' ")
-	if exitf == "no" :
-		command_line()
-	elif exitf == "yes" :
-		print("\nEXIT PROGRAM\n")
-		auth.access()
-	else:
-		exit()
+def exit_program():
+    exit_decision = input("¿ Desea salir del programa ? type 'yes' or 'no' ")
+    if exit_decision.lower() == "no" :
+        command_line()
+    elif exit_decision.lower() == "yes" :
+        print("\nEXIT PROGRAM\n")
+        auth.access()
+    else:
+        exit_program()
