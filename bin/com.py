@@ -58,8 +58,6 @@ def command_line():
     command_line()  # Llamada recursiva para continuar con el siguiente comando
 
 
-
-
 def check_function_declaration(module_name, function_name):
     if module_name in module_info:
         return module_info[module_name].get(function_name, None)
@@ -69,8 +67,7 @@ def check_function_declaration(module_name, function_name):
             source_code = file.read()
         module_ast = ast.parse(source_code)
 
-        main_function_found = False
-        main_function_one_argument = False
+        main_function_found = None  # Inicializar en None
 
         for node in ast.walk(module_ast):
             if isinstance(node, ast.FunctionDef) and node.name == function_name:
@@ -89,6 +86,8 @@ def check_function_declaration(module_name, function_name):
 
     except ImportError:
         return None
+
+
 
 def is_valid_function(function):
     return (isinstance(function, types.FunctionType) or
