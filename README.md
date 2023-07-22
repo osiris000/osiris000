@@ -133,7 +133,7 @@ def main(args):
 &nbsp;&nbsp;&nbsp;&nbsp;print(args)  
 
 lo que arrojaría ["argumento1","argumento2","..."]  
-a partir de ahí se pueden implementar nuevos comandos  
+a partir de ahí se pueden implementar cada comando en particular  
 el código de fuera de las funciones (print,..) lo ejecuta sólo la primera vez  
 que se llama al comando ya que las sucesivas ya tiene el módulo cargado  
 si se hacen cambios en el código del comando y se quiere recargar sin salir  
