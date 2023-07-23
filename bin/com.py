@@ -7,6 +7,9 @@ import types
 import ast
 import datetime
 import inspect
+import readline
+import pickle
+import cnf
 
 # Definir el array de comandos válidos
 valid_commands = ["agenda", "install", "error","chatgpt"]
@@ -14,12 +17,47 @@ valid_commands = ["agenda", "install", "error","chatgpt"]
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
 loaded_modules = {}
+# Archivo para almacenar el historial de comandos
+history_file = cnf.PATH_DAT + "/command_history.pkl"
+
+try:
+    # Intentar cargar el historial de comandos desde el archivo
+    with open(history_file, "rb") as file:
+        command_history = pickle.load(file)
+
+except (FileNotFoundError, EOFError):
+    # Si el archivo no existe o está vacío, crear una nueva lista
+    command_history = []
+
+
+# Función para guardar el historial en el archivo
+def save_command_history():
+    with open(history_file, "wb") as file:
+        pickle.dump(command_history, file)
+
 
 def command_line():
+
+    # Configurar el historial para permitir la navegación con las flechas del cursor
+    readline.set_history_length(cnf.history_com_size)  # Límite de longitud del historial
+    readline.clear_history()  # Limpiar el historial actual
+    for command in command_history:
+        readline.add_history(command)  # Agregar los comandos al historial
+
+
     com = input(">>> ")
+
+        # Agregar el comando ingresado al historial
+    command_history.append(com)
+
 
     if not com:
         command_line()  # Llamada recursiva si no se proporcionó ningún comando
+
+
+    # Guardar el historial en el archivo
+    save_command_history()
+
 
     args = shlex.split(com)
     if args[0] == "exit":
