@@ -141,11 +141,12 @@ de la aplicación, puede hacerse usando el argumento reset, >>>nuevo_com reset
 
 
 
+Comando install por defecto  
 
 
-auto-install: Este comando inicia la auto-instalación, que probablemente se encargue de instalar o configurar varias aplicaciones de forma automática. El usuario puede ejecutarlo sin argumentos o con argumentos adicionales según sea necesario.  
+install auto-install: Este comando inicia la auto-instalación, que probablemente se encargue de instalar o configurar varias aplicaciones de forma automática. El usuario puede ejecutarlo sin argumentos o con argumentos adicionales según sea necesario.  
 
-webapp: Este comando permite instalar una aplicación web específica. El usuario puede proporcionar el nombre de la aplicación (app_name) como un argumento adicional para indicar cuál aplicación web desea instalar.  
+install webapp: Este comando permite instalar una aplicación web específica. El usuario puede proporcionar el nombre de la aplicación (app_name) como un argumento adicional para indicar cuál aplicación web desea instalar.  
 
 Por ejemplo, el usuario podría ejecutar el siguiente comando para instalar la aplicación web "mitv":  
 
