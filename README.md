@@ -3,7 +3,7 @@
 
 <h3>Requisitos mínimos (sistema completo)</h3>
 
-Linux/debian
+Gnu-Linux/debian 
 
 python3
 
