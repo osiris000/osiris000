@@ -18,7 +18,7 @@ valid_commands = ["agenda", "install", "error","chatgpt"]
 module_info = {}
 loaded_modules = {}
 # Archivo para almacenar el historial de comandos
-history_file = cnf.PATH_DAT + "/command_history.pkl"
+history_file = cnf.history_file
 
 try:
     # Intentar cargar el historial de comandos desde el archivo
