@@ -32,6 +32,7 @@ def main(args):
 
     if not API_KEY:
         print("No se proporcionó la clave de API.")
+        print("la clave de API se establece en API_KEY en osiris -> bin/com/chatgpt.py")
         return
 
     print("¡Bienvenido a ChatGPT!")
@@ -56,3 +57,7 @@ if __name__ == "__main__":
 
 
 print('Creado módulo-comando chatgpt y fecha y hora: 2023-07-23 10:18:36.718879')
+if not API_KEY:
+	print("No se encuentra la API_KEY")
+	print("la clave de API se establece en API_KEY en osiris -> bin/com/chatgpt.py")
+	print("--------------------------------------------------------------------------")

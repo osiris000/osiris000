@@ -1,9 +1,9 @@
-import hashlib, base64 , os, cnf, com
+import hashlib, base64 , os, cnf, com, getpass
 
 
 
 def run():
-	print("Verificación de Acceso\n")
+	print("Verificación de Acceso Osiris App\n")
 	if os.path.isfile(cnf.FileAuth) :
 		access()
 	else :
@@ -33,7 +33,7 @@ def get_psw():
 
 def access():
 	psw = get_psw()
-	pswin = input("Insert Password:")
+	pswin = getpass.getpass("Insert Osiris Password:")
 	hashpass = hashlib.sha512(bytes(pswin,"utf-8"))
 	hashpass = hashpass.hexdigest()
 	if psw == str(hashpass):
