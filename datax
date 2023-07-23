@@ -1,5 +1,2 @@
->>> install webapp mitv
-Args dentro de install.py: ['webapp', 'mitv']
-usage: osiris.py [-h] [{auto-install,webapp}]
-osiris.py: error: unrecognized arguments: mitv
-root@osiris:/var/www/osiris000/bin# 
+ffmpeg -f x11grab -i :0.0 -c:v libx264 -preset ultrafast output.mp4
+

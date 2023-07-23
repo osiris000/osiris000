@@ -9,7 +9,7 @@ import datetime
 import inspect
 
 # Definir el array de comandos válidos
-valid_commands = ["agenda", "install", "error"]
+valid_commands = ["agenda", "install", "error","chatgpt"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}

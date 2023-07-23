@@ -11,7 +11,7 @@ check_command_installed /usr/bin/mariadb
 check_command_installed /usr/bin/ffmpeg -version
 check_command_installed /usr/bin/transmission-cli 
 check_command_installed /usr/bin/youtube-dl 
-check_command_installed /usr/bin/rustc 
+check_command_installed /usr/bin/rustc "--version -v"
 check_command_installed /usr/bin/pip3
 check_command_installed /usr/bin/docker 
 
