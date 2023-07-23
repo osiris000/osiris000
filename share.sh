@@ -34,10 +34,12 @@ apt_install_command() {
     esac
   else
     echo "No se encontró el comando de instalación para $app_name."
+    echo "Revise en el archivo install.com se encuentre su ruta correcta"
   fi
 }
 
 
+# Función para comprobar si un comando está instalado
 # Función para comprobar si un comando está instalado
 check_command_installed() {
   command_path=$1
@@ -72,18 +74,46 @@ check_command_installed() {
       echo "------------------------------------------------------------------"
       echo "$dpkg_output" | tail -n +6
       echo "******************************************************************"
+
+
+
+# Supongamos que las variables dpkg_output y command_name están definidas previamente
+
+# Obtener la ruta de instalación del paquete
+installation_path=$(echo "$dpkg_output" | awk -v pkg="$command_name" '$1 == "ii" && $2 == pkg {print $3}')
+
+# Obtener el nombre completo del paquete (incluyendo versión y arquitectura)
+full_package_name=$(echo "$dpkg_output" | awk -v pkg="$command_name" '$1 == "ii" && $2 == pkg {print $2}')
+
+echo "Ruta de instalación: $installation_path"
+echo "Nombre del paquete: $full_package_name"
+
+
+
+
+      # Ofrecer opción para instalar el paquete
+      read -p "¿Desea instalar $command_name? (y/n): " choice
+      case "$choice" in
+        y|Y )
+          apt_install_command "$command_name"
+          ;;
+        * )
+          echo "Instalación cancelada."
+          ;;
+      esac
     else
       echo "------------------------------------------------------------------"
       printf "%-69s%s\n" " $command_name no está instalado en el sistema (según dpkg) tampoco."
+      echo  apt_install_command "$command_name"
       apt_install_command "$command_name"
       echo "------------------------------------------------------------------"
       read -p "¿Continuar o Salir? (c/s): " choice
-    case "$choice" in
-      s|S )
-        echo "Instalación cancelada."
-        exit 0
-        ;;
-    esac
+      case "$choice" in
+        s|S )
+          echo "Instalación cancelada."
+#          exit 0
+          ;;
+      esac
     fi
   fi
 }

@@ -10,6 +10,7 @@ mariadb 		apt install mariadb
 ffmpeg			apt install ffmpeg 
 pip3			apt install python3-pip 
 transmission-cli	apt install transmission-cli 
+docker			apt install docker docker.io
 
 
 #etc.. si no se chekea desde install.sh, se ignora
