@@ -47,14 +47,12 @@ def command_line():
 
     com = input(">>> ")
 
-        # Agregar el comando ingresado al historial
-    command_history.append(com)
-
-
     if not com:
         command_line()  # Llamada recursiva si no se proporcionó ningún comando
 
 
+    # Agregar el comando ingresado al historial
+    command_history.append(com)
     # Guardar el historial en el archivo
     save_command_history()
 
