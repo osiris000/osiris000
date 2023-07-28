@@ -1,6 +1,0 @@
-
-
-crea = BODY()
-
-
-alert(crea)
