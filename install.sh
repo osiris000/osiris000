@@ -14,5 +14,5 @@ check_command_installed /usr/bin/youtube-dl
 check_command_installed /usr/bin/rustc "--version -v"
 check_command_installed /usr/bin/pip3
 check_command_installed /usr/bin/docker 
-
+check_command_installed /usr/bin/sublime-text
 

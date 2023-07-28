@@ -11,7 +11,7 @@ ffmpeg			apt install ffmpeg
 pip3			apt install python3-pip 
 transmission-cli	apt install transmission-cli 
 docker			apt install docker docker.io
-
+sublime-text		apt install sublime-text
 
 #etc.. si no se chekea desde install.sh, se ignora
 

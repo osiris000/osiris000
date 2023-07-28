@@ -150,8 +150,45 @@ install webapp: Este comando permite instalar una aplicación web específica. E
 
 Por ejemplo, el usuario podría ejecutar el siguiente comando para instalar la aplicación web "mitv":  
 
+¿Cómo funciona?
+
+Las aplicaciones en desarrollo se encuentran bajo el directorio install/webapp  
+dentro hay un directorio "especial" llamado default, que es a partir del cual se  
+crean las aplicaciones base.  
+
+al tipear, por ejemplo, en consola:  
 
 install webapp mitv  
+
+indicará que es necesario pasarle un argumento dash (--argumento)  
+de momento son dos:  
+
+--create-default  
+--update  
+
+al hacer por ejemplo:  
+
+install webapp mitv --create-default  
+
+se crea en la carpeta de instalación de aplicaciones web la app "mitv"  
+usando como base "default"  
+
+Una vez esté hecho se puede copiar/actualizar al directorio web público html/app  
+usando --update:  
+
+install webapp mitv --update  
+
+la cual estaría accesible desde http://127.0.0.1/app/mitv, pudiendo seguir su  
+desarrollo en http://127.0.0.2/webapp/mitv  , actualizando los cambios usando el comando anterior.  
+
+
+
+
+
+
+
+
+
 
 
 

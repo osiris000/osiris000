@@ -1,0 +1,6 @@
+
+
+crea = BODY()
+
+
+alert(crea)
