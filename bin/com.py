@@ -11,6 +11,7 @@ import readline
 import pickle
 import cnf
 
+
 # Definir el array de comandos válidos
 valid_commands = ["agenda", "install", "error","chatgpt"]
 
@@ -63,7 +64,7 @@ def command_line():
     elif args[0] == "Reset_Password":
         auth.makeauth()
     elif args[0] not in valid_commands:
-        print("Comando no reconocido:", args)
+        print(f"Comando: {args[0]} , inválido")
         command_line()
         return
     elif len(args) > 1 and args[1] == "reset":
@@ -182,3 +183,7 @@ def exit_program():
         auth.access()
     else:
         exit_program()
+
+
+
+#start_print_loop()

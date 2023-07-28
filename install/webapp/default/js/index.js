@@ -1,6 +1,20 @@
+/* index js */
 
 
-crea = BODY()
 
 
-alert(crea)
+
+
+
+
+onload = function(){
+
+
+/*
+
+final de carga
+
+*/
+
+
+}

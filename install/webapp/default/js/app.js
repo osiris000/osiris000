@@ -26,3 +26,48 @@
 
 
     });
+
+
+const loadIfApp = function(object) {
+  const userAgent = navigator.userAgent.toLowerCase();
+  const defaultConfig = object['default'];
+  let loadedFiles = [];
+
+  const loadFiles = function(files) {
+    for (const [key, value] of Object.entries(files)) {
+      switch (key) {
+        case 'css':
+        case 'style':
+        case 'styles':
+        case 'stylesheet':
+          const cssLink = document.createElement('link');
+          cssLink.rel = 'stylesheet';
+          cssLink.href = value;
+          document.head.append(cssLink);
+          loadedFiles.push({ type: 'css', file: value });
+          break;
+        case 'script':
+        case 'javascript':
+        case 'js':
+          const jsScript = document.createElement('script');
+          jsScript.src = value;
+          jsScript.type = 'text/javascript';
+          document.head.append(jsScript);
+          loadedFiles.push({ type: 'js', file: value });
+          break;
+      }
+    }
+  };
+
+  for (const [browserCode, files] of Object.entries(object)) {
+    const reg = new RegExp(browserCode, 'i');
+    if (reg.test(userAgent)) {
+      loadFiles(files);
+      return loadedFiles;
+    }
+  }
+
+  // Si no se encontró un navegador específico, cargar los archivos por defecto
+  loadFiles(defaultConfig);
+  return loadedFiles;
+};
