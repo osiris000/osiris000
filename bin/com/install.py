@@ -95,7 +95,8 @@ def parse(args):
                         print("""
                     Sin embargo, sí existe en la carpeta de instalación
                     use --update para copiarla o actualizarla al directorio
-                    web. Se va a crear el proyecto nuevo. 
+                    web. 
+                    Se va a crear el proyecto nuevo. 
                             """)
 
                         try:
@@ -110,9 +111,10 @@ def parse(args):
 
                     else:
                         #existe origen y destino se hace el update
-                        print("Realizamos UPDATE AQUI de",webapp_install)
-                        print("A ",webapp_dir)
-                
+                        print("Realizando UPDATE AQUI de app: ",arg_without_dash[0])
+                        shutil.rmtree(webapp_dir)
+                        shutil.copytree(webapp_install, webapp_dir)
+                        print(f"Se ha copiado y actualizado la carpeta {webapp_install} a {webapp_dir} correctamente.")
                     
                 else:
                     
