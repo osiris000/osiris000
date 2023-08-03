@@ -5,7 +5,15 @@
 moveTag(MainPanel,Body)
 
 
+
 moveTag(IntroApp,MainPanel)
+
+
+
+
+moveTag(Splash, MainPanel)
+
+
 
 moveTag(SplashContainer,MainPanel)
 
