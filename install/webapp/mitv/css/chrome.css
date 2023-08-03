@@ -9,7 +9,7 @@ background:#1e0d16;
 
 
 
-#panel_principal {
+#intro-app {
   /* Centrar el elemento en la pantalla horizontalmente y verticalmente */
   position: absolute;
   top: 50%;
@@ -17,7 +17,7 @@ background:#1e0d16;
   transform: translate(-50%, -50%);
 
   /* Estilos del texto */
-  font-size: 42px;
+  font-size: 34px;
   font-family: "Arial", sans-serif;
   color: red; /* Color inicial del texto */
 
@@ -45,3 +45,48 @@ background:#1e0d16;
     /* Añadir otros estilos que desees */
   }
 }
+
+
+
+  #splash {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #splash:hover {
+    background-color: #2980b9;
+  }
+  #splash-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+  }
+  #splash-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+
+
+
+
+
+
+
+
+
+
+
+

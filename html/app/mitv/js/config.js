@@ -20,7 +20,6 @@ indexFile = "js/index.js"
 
 paneles = "js/paneles.js"
 
-
 /* source */
 
 source = "js/source.js"
