@@ -191,7 +191,20 @@ MiTv - una app para crear y gestionar canales de televisión en streaming en for
 
 
 
-![mitv jpg](https://pbs.twimg.com/media/F2pmVzQW8AAPm1K?format=jpg&name=medium)  
+![mitv jpg](https://pbs.twimg.com/media/F2pmVzQW8AAPm1K?format=jpg&name=small)  
+
+Esta aplicación usa un api javascript en desarrollo llamada wfcore  
+
+Su lógica se basa en que en HTML los tags se pueden tratar de maneras diferentes, tanto
+como tags como paneles, haciendo esa división para mejorar la lógica de la aplicación
+de forma que consideraremos paneles a los tags html que estructuran la aplicación.  
+
+wfcore es una api en desarrollo para manejar la lógica estructural de los documentos html para construir aplicaciones web, si bien no dejan de ser tags html también se les consideran paneles cuando se trata de elementos posicionales y objetos necesarios para la aplicación.  
+
+![wfcore jpg](https://pbs.twimg.com/media/F2sUK4qXwAA4eBX?format=png&name=small)  
+
+
+
 
 
 

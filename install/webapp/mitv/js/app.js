@@ -35,6 +35,12 @@ const loadIfApp = function(object) {
 
   const loadFiles = function(files) {
     for (const [key, value] of Object.entries(files)) {
+      if(!value){
+
+        console.log(`Error de carga no existe ruta para ${key} `)
+        continue;
+
+      }
       switch (key) {
         case 'css':
         case 'style':

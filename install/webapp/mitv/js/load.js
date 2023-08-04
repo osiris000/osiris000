@@ -3,7 +3,7 @@
 
   document.title = title
 
-  const scriptsToLoad2 = [wfcore,source,paneles,indexFile];
+  const scriptsToLoad2 = [wfcore,xhr,source,paneles,indexFile];
 
   loadScriptsSequentially(scriptsToLoad2);
 

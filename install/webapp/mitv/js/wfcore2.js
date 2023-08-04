@@ -121,6 +121,12 @@ else return false
 
 
 
+function clearHTML(id){
+if(!id) return "Undefined";
+id = document.getElementById(id)
+id.innerHTML = "";
+}
+
 
 const emulaClick =  function(emulado){
 var y = document.querySelector(emulado);
@@ -130,7 +136,7 @@ return;
 
 
 const clickId = function (emulado){
-var y = document.querySelector(emulado);
+var y = document.querySelector("#"+emulado);
 y.click();
 return;
 }

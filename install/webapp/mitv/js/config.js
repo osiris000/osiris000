@@ -12,6 +12,13 @@ title = "MiTv App"
 
 wfcore = "js/wfcore2.js"
 
+
+/* xhr version */
+
+
+xhr = "js/xhr2.js"
+
+
 /* js indexfile */
 
 indexFile = "js/index.js"

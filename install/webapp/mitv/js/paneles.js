@@ -1,5 +1,5 @@
 Body = BODY()
-
+Body.id = "MiTv"
 
 MainPanel = addPanel(MAINPANEL)
 MainPanel.id = "panel_principal"
