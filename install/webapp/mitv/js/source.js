@@ -40,7 +40,12 @@ TAG:"div",
 SPLASH_CONTENT = {
 
 TAG:"div",
-innerHTML:"<h1>SPLASH CONTENT</h1>"
+
+innerHTML:`<p><iframe src="https://vtwitt.com/tv" width="840px" height="520px">
+
+
+
+</iframe></p>`
 
 
 }
