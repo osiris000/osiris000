@@ -1,6 +1,7 @@
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
 
 
+
 <h3>Requisitos mínimos (sistema completo)</h3>
 
 Gnu-Linux/debian 
