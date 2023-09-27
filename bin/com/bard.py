@@ -4,23 +4,38 @@ import requests
 import json
 
 
-os.environ['_BARD_API_KEY'] = 'awg4GdXpqY-k6c_yeU-vJI8SBSPiaOteSOj2TOWUYjPAqoPdLBCMInl3u7wm8SVf8D28CA.'
+os.environ['_BARD_API_KEY'] = ''
+
 token = os.environ['_BARD_API_KEY']
 
-cookie_key = "__Secure-1PSID" ;
 
-session = requests.Session()
-session.headers = {
-            "Host": "bard.google.com",
-            "X-Same-Domain": "1",
-            "User-Agent": "Bard-Osiris-Linux-Debian 0.1",
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-            "Origin": "https://bard.google.com",
-            "Referer": "https://bard.google.com/chat",
-        }
-session.cookies.set(cookie_key, os.getenv("_BARD_API_KEY")) 
+bard_start = False
+
+if  not token :
+    print("Añade la key google-bard en bin/com/bard.py")
+else:
+    bard_start = True
+
+
+def bard_start_ini(token):
+
+    print("Starting with token: ",token)
+
+    cookie_key = "__Secure-1PSID" ;
+
+    session = requests.Session()
+    session.headers = {
+                "Host": "bard.google.com",
+                "X-Same-Domain": "1",
+                "User-Agent": "Bard-Osiris-Linux-Debian 0.1",
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+                "Origin": "https://bard.google.com",
+                "Referer": "https://bard.google.com/chat",
+            }
+    session.cookies.set(cookie_key, os.getenv("_BARD_API_KEY")) 
 # session.cookies.set("__Secure-1PSID", token) 
-bard = Bard(token=token, session=session, timeout=60)
+    bard = Bard(token=token, session=session, timeout=60)
+
 
 
 archivo = "bard_2.log"
@@ -89,8 +104,9 @@ INTERPRETA LO QUE SIGUE EN FUNCION DE LAS REGLAS ANTERIORES.
 
 [INGESTA_LOG]
 
-"""
 
+
+"""
 
 
 if not os.path.exists(archivo):
@@ -99,6 +115,16 @@ if not os.path.exists(archivo):
 
 
 def main(args):
+
+
+    if bard_start == False:
+        print("Not Bard Key Exists")
+        return
+    else:
+
+        print("Inicia Bard: ",bard_start,token)
+        return
+        bard_start_ini(token)
 
     if(args[0] == "--find-cookie"):
     	cookie_value = find_cookie_value(cookie_key,"google.com")
