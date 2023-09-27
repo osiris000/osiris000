@@ -11,14 +11,21 @@ token = os.environ['_BARD_API_KEY']
 
 bard_start = False
 
+bard_start_1 = False
+
 if  not token :
     print("Añade la key google-bard en bin/com/bard.py")
+    print("Vuelve a montar bard usando bard --reset")
 else:
     bard_start = True
 
 
 def bard_start_ini(token):
 
+    global bard_start_1
+    global bard
+
+    bard_start_1 = True
     print("Starting with token: ",token)
 
     cookie_key = "__Secure-1PSID" ;
@@ -35,6 +42,7 @@ def bard_start_ini(token):
     session.cookies.set(cookie_key, os.getenv("_BARD_API_KEY")) 
 # session.cookies.set("__Secure-1PSID", token) 
     bard = Bard(token=token, session=session, timeout=60)
+
 
 
 
@@ -122,9 +130,12 @@ def main(args):
         return
     else:
 
-        print("Inicia Bard: ",bard_start,token)
-        return
-        bard_start_ini(token)
+        print("Inicia Bard: ",bard_start)
+
+        if bard_start_1 == False:
+            bard_start_ini(token)
+            print("Bard fue iniciado:",token)
+            return
 
     if(args[0] == "--find-cookie"):
     	cookie_value = find_cookie_value(cookie_key,"google.com")
