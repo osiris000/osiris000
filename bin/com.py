@@ -13,7 +13,7 @@ import cnf
 
 
 # Definir el array de comandos válidos
-valid_commands = ["agenda", "install", "error","chatgpt"]
+valid_commands = ["create","agenda", "install", "error","chatgpt","bard"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
@@ -67,7 +67,7 @@ def command_line():
         print(f"Comando: {args[0]} , inválido")
         command_line()
         return
-    elif len(args) > 1 and args[1] == "reset":
+    elif len(args) > 1 and args[1] == "--reset":
         clear_command_data(args[0])
         loaded_modules.pop(args[0], None)  # Eliminamos el módulo del diccionario de módulos cargados
         command_line()  # No se ejecuta el comando después de limpiar los datos

@@ -3,9 +3,12 @@
 
   document.title = title
 
-  const scriptsToLoad2 = [wfcore,xhr,source,paneles,indexFile];
+  
+  loadIfApp(loadIfNavigator)
+
 
   loadScriptsSequentially(scriptsToLoad2);
 
-  const loadedFiles = loadIfApp(loadIfNavigator);
+
+  
 

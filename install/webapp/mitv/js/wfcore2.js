@@ -1,5 +1,30 @@
 
 
+/*
+
+const _wfc = {
+ 
+
+
+  get date() {
+    return new Date();
+  },
+  get timestamp() {
+    return Date.now();
+  },
+
+  getId : function(param){
+
+    return document.getElementById(param)
+
+  }
+
+
+};
+
+*/
+
+
 const write = function (txt){
 document.write(txt)
 }

@@ -19,12 +19,9 @@ innerHTML:`<p>MiTv WebApp</p>`
 
 SPLASH = {
 
-
 TAG:"button",
 innerHTML:"Menú",
 click:`document.getElementById('splash-container').style.display = 'flex';`
-
-
 
 }
 
@@ -32,7 +29,6 @@ click:`document.getElementById('splash-container').style.display = 'flex';`
 SPLASH_CONTAINER = {
 
 TAG:"div",
-
 
 }
 
