@@ -103,8 +103,9 @@ def command_line():
                         else:
                             print(f"La función 'main' no está declarada en {args[0]}.py")
                     else:
-                        if len(args) > 1 and args[1] == "create":
-                            create_module_file(args[0])
+                        if len(args) > 1 and args[1] == "--create":
+                            print("Use comando create")
+                            #create_module_file(args[0])
                         else:
                             print(f"El archivo {args[0]}.py no existe en el directorio 'com'.")
                 else:
@@ -159,10 +160,6 @@ def is_valid_function(function):
 def has_single_argument(function):
     return len(inspect.signature(function).parameters) == 1
 
-def create_module_file(module_name):
-    with open(f"com/{module_name}.py", "w") as file:
-        file.write(f"def main(args):\n    print('Args dentro de {module_name}', args)\n")
-        file.write(f"print('Creado módulo-comando {module_name} y fecha y hora: {datetime.datetime.now()}')\n")
 
 def clear_command_data(command_name):
     if command_name in module_info:
