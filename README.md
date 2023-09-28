@@ -38,6 +38,21 @@ Integra bard desde la consola osiris
 
 ![osiris-bard](https://vtwitt.com/jsa/media/image/osiris/ksnip_20230928-070413-[ksnip_20230928-070413].png)
 
+
+Comandos para bard
+
+bard [ Entra en bard.py y monta la api si no fue montada  y abre sesión nueva ]   
+bard --reset  [ Desmonta la api al volver a usar bard se monta automáticamente ]    
+bard --clear-log [ Borra el log de la conversación actual ]   
+bard texto [ Envía mensaje a Google-Bard e imprime la respuesta a consola ]  
+
+
+
+
+
+
+
+
 ....
 
 Ejecutar ./osiris.sh
@@ -49,20 +64,18 @@ Ejecutar ./osiris.sh
 2-Comprueba que estén instaladas las aplicaciones necesarias en el sistema  
   si no lo están da la opción de instalarlas    
 
-chekeo de aplicaciones se hace desde install.sh añadiendo líneas  
+chekeo de aplicaciones se hace desde install.sh añadiendo líneas  check_command_installed   
+	
+	Ejemplo:
 
-check_command_installed /usr/bin/python3 --version   
-check_command_installed /usr/sbin/apache2 -v   
-check_command_installed /usr/bin/php --version   
-check_command_installed /usr/bin/transmission-cli --version   
+		check_command_installed /usr/bin/python3 --version
 
 
 comandos de instalación en install.com  
 
-python3		apt install python3   
-apache2		apt install apache2 libapache2-mod-fcgid  
-php			apt install apt install php php-fpm libapache2-mod-php  
-transmission-cli	apt install transmission-cli  
+	Ejemplo:
+		
+		python3		apt install python3   
 
 
 Esto permite instalar los paquetes de las versiones adecuadas  
@@ -80,6 +93,7 @@ extensiones, web, blockchain, contenedores y microsevicios.
 
 
 Una vez dentro aparece el prompt >>>  
+
 
 Hay distintos comandos, los primeros son:  
 
