@@ -14,23 +14,23 @@ y de fácil administración.
 
 
 
-python3 python3-venv 
-pip 
-rustc 
-Apache2 http server fcgid 
-php-fpm 
-mariadb 
-ffmpeg 
-yt-dlp 
-transmission-cli 
-docker docker.io 
-git  
+python3 python3-venv  
+pip  
+rustc   
+Apache2 http server fcgid   
+php-fpm   
+mariadb   
+ffmpeg   
+yt-dlp   
+transmission-cli   
+docker docker.io   
+git    
 
-Entorno virtual para python3-venv osiris_env
+Entorno virtual para python3-venv osiris_env   
 
-Apis:
+Apis:   
 
-bardapi  IA de google
+bardapi  IA de google   
 
 
 Integra bard desde la consola osiris 
