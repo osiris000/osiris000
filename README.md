@@ -41,10 +41,10 @@ Integra bard desde la consola osiris
 
 Comandos para bard
 
-bard [ Entra en bard.py y monta la api si no fue montada  y abre sesión nueva ]   
+bard [ Entra en bard.py y monta la api si no fue montada y abre sesión nueva ]   
 bard --reset  [ Desmonta la api al volver a usar bard se monta automáticamente ]    
 bard --clear-log [ Borra el log de la conversación actual ]   
-bard texto [ Envía mensaje a Google-Bard e imprime la respuesta a consola ]  
+bard texto [ Envía mensaje a Google-Bard e imprime la respuesta en la consola ]  
 
 
 
@@ -97,22 +97,13 @@ Una vez dentro aparece el prompt >>>
 
 Hay distintos comandos, los primeros son:  
 
-será comandos válidos los presentes en valid_commands = ["agenda", "install"]  
-próximamente se extraerán de un archivo de configuración.  
+
+\>\>\>create [nombre del comando] --create  
 
 
-Al añadir un comando nuevo, éste se puede crear para implementarlo,  
-si por ejemplo, añadimos "nuevo_com",  
+Al hacerlo se crea el archivo [nombre del comando.py] en el directorio bin/com, con una función main que recibe los argumentos de ese comando nuevo.  
 
-valid_commands = ["agenda", "install","nuevo_com"]  
 
-cuando lo tecleamos nos dirá que no existe ruta al comando nuevo  
-pero podemos crear el ejecutable al comando (python) escribiendo  
-
-\>\>\>nuevo_com create  
-
-Al hacerlo se crea el archivo nuevo_com.py en el directorio bin/com, con una función main que recibe  
-los argumentos.  
 
 def main(args):  
 &nbsp;&nbsp;&nbsp;&nbsp;print('Args dentro de nuevo_com', args)  
