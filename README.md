@@ -2,31 +2,36 @@
 
 
 
-<h3>Requisitos mínimos (sistema completo)</h3>
+<h3>Aplicaciones que instala el instalador osiris</h3> 
 
-Gnu-Linux/debian 
 
-python3
+El programa está preparado para instalar en un servidor debian  
+instala las aplicaciones necesarias para convertir el entorno
+en un sistema cliente-servidor integrado con el sistema 
+y de fácil administración.
 
-rustc
 
-Apache2 http server fcgid
 
-php7.4 fpm
 
-mariadb
 
-ffmpeg
+python3 python3-venv 
+pip 
+rustc 
+Apache2 http server fcgid 
+php-fpm 
+mariadb 
+ffmpeg 
+yt-dlp 
+transmission-cli 
+docker docker.io 
+git  
 
-youtube-dl
+Entorno virtual para python3-venv osiris_env
 
-transmission-cli
+Apis:
 
-docker
+bardapi  IA de google
 
-pip3
-
-git 
 
 ....
 
