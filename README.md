@@ -33,6 +33,10 @@ Apis:
 bardapi  IA de google
 
 
+Integra bard desde la consola osiris 
+
+![osiris-bard](https://vtwitt.com/jsa/media/image/osiris/ksnip_20230928-070413-[ksnip_20230928-070413].png)
+
 ....
 
 Ejecutar ./osiris.sh
