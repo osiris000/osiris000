@@ -26,7 +26,8 @@ transmission-cli
 docker docker.io   
 git    
 
-Entorno virtual para python3-venv osiris_env   
+Entorno virtual para python3-venv osiris_env  
+La ruta al venv es bin/com/osiris_env    
 
 Apis:   
 
