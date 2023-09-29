@@ -4,9 +4,10 @@
 
 <h3>Aplicaciones que instala el instalador osiris</h3> 
 
+<h5>El instalador puede no estar ajustado a los requerimientos de todos los sistemas
+debido a la fase de implementación en que se encuentra.</h5>
 
-El programa está preparado para instalar en un sistema GNU/debian-Linux
-instala las aplicaciones necesarias para convertir el entorno
+El programa está preparado para instalar en un sistema GNU/debian-Linux instala las aplicaciones necesarias para convertir el entorno
 en un sistema cliente-servidor integrado con el sistema 
 y de fácil administración.
 
