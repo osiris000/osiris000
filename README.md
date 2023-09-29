@@ -6,6 +6,29 @@
 
 El instalador puede no estar ajustado a los requerimientos de todos los sistemas
 debido a la fase de implementación en que se encuentra. véase install.com e install.sh  
+De momento no se le ha dado la opción de saltar instalador al inciar la aplicación.
+Si tiene python3 instalado puede entrar en la consola pulsando enter el resto de preguntas en caso contrario instálelo desde el instalador o la consola.
+
+Es importante para cada inicio de sesión si no está habilitado el entorno virtual habilitarlo desde el instalador.
+
+
+	Cuando pida instalar:	
+
+		Osiris-python3-venv 	
+		Osiris-venv-activate 	
+		Osiris-venv-export	
+
+pulsar Y de Yes y luego C de Continuar
+
+Cuando estén instalados sólo será necesario hacerlo	Osiris-venv-activate y Osiris-venv-export en el primer inicio de sesión para activar el directorio virtual. Sin embargo está en el futuro será de forma automática. 
+
+
+Para instalar Bard hay que instalar la bardapi se deduce que ya tenemos pip en el sistema además está incluida en este repositorio.  
+
+El instalador pregunta tres veces por bard api para instalar , forzar la reinstalación y actualizarla. Para esto es nacesario tener activado el directorio virtual. El directorio virtual hay que montarlo siempre ya se acceda a la aplicación en local o en remoto en cada inicio de sesión. Esto garantiza estar usando siempre una misma versión del software.
+
+
+
 
 El programa está preparado para instalar en un sistema GNU/debian-Linux instala las aplicaciones necesarias para convertir el entorno
 en un sistema cliente-servidor integrado con el sistema 
