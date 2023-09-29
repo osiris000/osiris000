@@ -67,15 +67,13 @@ Integra bard desde la consola osiris
 Comandos para bard
 
 bard [ Entra en bard.py y monta la api si no fue montada y abre sesión nueva ]   
-bard --reset  [ Desmonta la api al volver a usar bard se monta automáticamente ]    
 bard --clear-log [ Borra el log de la conversación actual ]   
 bard texto [ Envía mensaje a Google-Bard e imprime la respuesta en la consola ]  
+bard --reset  [ Desmonta la api al volver a usar bard se monta automáticamente ]    
+bard --help  [ Muestra la ayuda del comando bard presente en bin/help/bard.hlp ] 
 
 
-
-
-
-
+--help y --reset es un modificador común a todos los comandos.
 
 
 ....
