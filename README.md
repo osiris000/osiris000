@@ -20,7 +20,7 @@ Es importante para cada inicio de sesión si no está habilitado el entorno virt
 
 pulsar Y de Yes y luego C de Continuar
 
-Cuando estén instalados sólo será necesario hacerlo	Osiris-venv-activate y Osiris-venv-export en el primer inicio de sesión para activar el directorio virtual. Sin embargo está en el futuro será de forma automática. 
+Cuando estén instalados sólo será necesario hacerlo	Osiris-venv-activate y Osiris-venv-export en el primer inicio de sesión para activar el directorio virtual. Sin embargo está en el futuro se hará de forma automática. 
 
 
 Para instalar Bard hay que instalar la bardapi se deduce que ya tenemos pip en el sistema además está incluida en este repositorio.  
@@ -28,6 +28,7 @@ Para instalar Bard hay que instalar la bardapi se deduce que ya tenemos pip en e
 El instalador pregunta tres veces por bard api para instalar , forzar la reinstalación y actualizarla. Para esto es nacesario tener activado el directorio virtual. El directorio virtual hay que montarlo siempre ya se acceda a la aplicación en local o en remoto en cada inicio de sesión. Esto garantiza estar usando siempre una misma versión del software.
 
 
+Una vez activado y montado el directorio virtual este permanece activo mientras no se cierre la consola o modifique el PYTHONPATH  
 
 
 El programa está preparado para instalar en un sistema GNU/debian-Linux instala las aplicaciones necesarias para convertir el entorno
