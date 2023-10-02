@@ -4,9 +4,9 @@
 #instalamos aplicaciones necesarias
 
 
-python3 		apt install python3 python3-venv
+python3.9 		apt install python3.9 python3-venv
 apache2 		apt install apache2 libapache2-mod-fcgid 
-php			apt install php php-fpm libapache2-mod-php
+php				apt install php php-fpm libapache2-mod-php
 mariadb 		apt install mariadb 
 ffmpeg			apt install ffmpeg 
 pip3			apt install python3-pip
