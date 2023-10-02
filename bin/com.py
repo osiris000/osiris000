@@ -13,7 +13,7 @@ import cnf
 
 
 # Definir el array de comandos válidos
-valid_commands = ["create","agenda", "install", "error","chatgpt","bard"]
+valid_commands = ["config","create","agenda", "install", "error","chatgpt","bard"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
@@ -73,7 +73,7 @@ def command_line():
         command_line()  # No se ejecuta el comando después de limpiar los datos
         return;
     else:
-        if len(args) > 1 and args[1] == "help" and args[0] in valid_commands:
+        if len(args) > 1 and args[1] == "--help" and args[0] in valid_commands:
             print(fhelp.fhelp(args[0]))
         else:
             if args[0] in valid_commands:
