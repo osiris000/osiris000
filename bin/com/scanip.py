@@ -3,6 +3,8 @@ import dns.resolver
 import nmap
 import time
 import sys
+import requests
+import json
 
 
 print('Creado módulo-comando scanip y fecha y hora: 2023-10-02 15:48:20.085867')
@@ -98,15 +100,39 @@ def extraer_y_vaciar(array):
 
 def main(args):
 
-    param = extraer_y_vaciar(args)
+
+    if len(args) == 1:
+        print("Scanip: Es necesario más de un parametro")
+        return
+
+
+    try:
+        param = extraer_y_vaciar(args)
+    except Exception as e:
+        print("Error:",e)
+        return
+
+
 
     if len(args) == 2 and len(param) == 0:
-        scan_1(args[0],args[1])
-        print("scanip: 1 puerto")
-        return
+        try:
+            print("scanip:",args[1])
+            scan_1(args[0],args[1])
+            print("scanip:",args[1])
+        except Exception as e:
+            print("Error:",e)
+            return
     elif len(args) == 1 and param[0] == "--all":
         print("scaneo")
         scan_all(args[0])
+        return
+    elif len(args) == 1 and param[0] == "--info":
+        print("info")
+        try:
+            info_ip(args[0])
+        except Exception as e:
+            print("Error:",e)            
+            return
         return
     else:
         print("comando inválido")
@@ -118,13 +144,22 @@ def scan_1(xip,xpuerto):
 
     input_str = xip  # Cambia el dominio o la IP aquí
 
+
+    if xpuerto == "":
+        print("Es necesario un puerto")
+        return
+
     try:
         puerto =  int(xpuerto) 
     except ValueError:
         print("El puerto debe de ser un número válido")
         return
 
-    ip = resolve_ip_or_domain(input_str)
+    try:
+        ip = resolve_ip_or_domain(input_str)
+    except Exception as e:
+        print("Error:",e)
+        return
 
     if ip is None:
         print(f"No se puede resolver el dominio o la IP {input_str}.")
@@ -156,5 +191,28 @@ def scan_all(xip):
         print("\n Pause 3seg\n")
         time.sleep(3)
     #time.sleep(1)
+
+
+def info_ip(location):
+
+    
+
+    url = "https://dns.google.com/resolve?name="+location+"&type=A"
+
+    print("SearchIn:",url)
+
+    response = requests.get(url)
+
+# Verifica el código de estado de la respuesta
+    if response.status_code == 200:
+    # Convierte la respuesta en un objeto JSON
+        json_data = json.loads(response.content)
+
+    # Recorre el objeto JSON con un bucle for in
+        for key, value in json_data.items():
+        # Imprime la clave y el valor
+            print(f"{key}: {value}")
+    else:
+        print(f"Error al obtener la respuesta: {response.status_code}")
 
 
