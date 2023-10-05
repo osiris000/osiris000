@@ -5,7 +5,14 @@ print('Creado módulo-comando sniff y fecha y hora: 2023-10-02 12:00:26.017185')
 
 def main(args):
     print('Args dentro de sniff', args)
-    iface = "wlx0015af36cf55"  # Cambia 'eth0' al nombre de tu interfaz de red
+
+
+    if len(args)<1:
+        print("Requiere como argumento una interface de red")
+        return
+
+
+    iface = args[0]  #  nombre de interfaz de red
     print(f"Monitoreando la red en la interfaz {iface}...\n")
     sniff(iface=iface, prn=packet_handler);
 
