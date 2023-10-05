@@ -1,0 +1,160 @@
+import socket
+import dns.resolver
+import nmap
+import time
+import sys
+
+
+print('Creado módulo-comando scanip y fecha y hora: 2023-10-02 15:48:20.085867')
+
+
+
+def detectar_servicio_desconocido(ip, puerto):
+    protocolos = {
+        'http': {
+            'solicitud': b'GET / HTTP/1.1\r\nHost: example.com\r\n\r\n',
+            'respuesta': b'HTTP/1.1',
+        },
+        'ssh': {
+            'solicitud': b'SSH-2.0-OpenSSH_7.9p1 Debian-10+deb10u2\r\n',
+            'respuesta': b'SSH',
+        },
+        # Agrega más protocolos aquí si es necesario
+    }
+
+    for protocolo, datos in protocolos.items():
+        solicitud = datos['solicitud']
+        respuesta_esperada = datos['respuesta']
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(1)
+                sock.connect((ip, puerto))
+                sock.sendall(solicitud)
+                respuesta = sock.recv(1024)
+                if respuesta and respuesta_esperada in respuesta:
+                    return protocolo
+        except (socket.timeout, socket.error):
+            continue
+
+    return 'Desconocido'
+
+
+def resolve_ip_or_domain(input_str):
+    try:
+        # Intenta resolver el input como dominio
+        answers = dns.resolver.resolve(input_str, 'A')
+        ip = answers[0].address
+        return ip
+    except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+        # Si no se puede resolver como dominio, asume que es una IP
+        return input_str
+
+def check_port(ip, puerto):
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.settimeout(1)
+            resultado = sock.connect_ex((ip, puerto))
+            
+            if resultado == 0:
+                return True
+            else:
+                return False
+    except (socket.timeout, socket.error):
+        return False
+
+def get_service_info(ip, puerto):
+    try:
+        servicio = socket.getservbyport(puerto)
+        return servicio
+    except (OSError, socket.error):
+        try:
+            scanner = nmap.PortScanner()
+            scanner.scan(ip, f"{puerto}")
+            service = scanner[ip]['tcp'][puerto]['name']
+            return service
+        except nmap.PortScannerError:
+            servicio_desconocido = detectar_servicio_desconocido(ip, puerto)
+            return servicio_desconocido
+
+
+
+def extraer_y_vaciar(array):
+    # Creamos un nuevo array vacío para almacenar los valores extraídos
+    array_extraido = []
+
+    # Iteramos sobre el array original
+    for valor in array:
+        # Comprobamos si el valor empieza por --
+        if valor.startswith("--"):
+            # Añadimos el valor al nuevo array
+            array_extraido.append(valor)
+            # Eliminamos el valor del array original
+            array.pop(array.index(valor))
+
+    # Devolvemos el array extraido
+    return array_extraido
+
+
+
+def main(args):
+
+    param = extraer_y_vaciar(args)
+
+    if len(args) == 2 and len(param) == 0:
+        scan_1(args[0],args[1])
+        print("scanip: 1 puerto")
+        return
+    elif len(args) == 1 and param[0] == "--all":
+        print("scaneo")
+        scan_all(args[0])
+        return
+    else:
+        print("comando inválido")
+        return
+
+
+
+def scan_1(xip,xpuerto):
+
+    input_str = xip  # Cambia el dominio o la IP aquí
+
+    try:
+        puerto =  int(xpuerto) 
+    except ValueError:
+        print("El puerto debe de ser un número válido")
+        return
+
+    ip = resolve_ip_or_domain(input_str)
+
+    if ip is None:
+        print(f"No se puede resolver el dominio o la IP {input_str}.")
+        return
+
+    if not check_port(ip, puerto):
+        print(f"El puerto {puerto} en {ip} está cerrado o no responde.")
+        return
+
+    servicio = get_service_info(ip, puerto)
+    print(f"El puerto {puerto} en {ip} usa el servicio {servicio}.")
+
+
+def scan_all(xip):
+
+    input_str = xip  # Cambia el dominio o la IP aquí
+
+    ip = resolve_ip_or_domain(input_str)
+
+    for d in range(0,35635):
+        i = d
+        if not check_port(ip, i):
+            print(f"El puerto {i} en {ip} está cerrado o no responde.")
+            #sys.stdout.write("clear")
+            continue
+        servicio = get_service_info(ip, i)
+        print("SERVICIO DESCUBIERTO")
+        print(f"El puerto {i} en {ip} usa el servicio {servicio}")
+        print("\n Pause 3seg\n")
+        time.sleep(3)
+    #time.sleep(1)
+
+

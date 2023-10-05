@@ -2,7 +2,7 @@ import os
 from bardapi import Bard
 import requests
 import json
-
+import hashlib
 
 os.environ['_BARD_API_KEY'] = ''
 
@@ -26,7 +26,8 @@ def bard_start_ini(token):
     global bard
 
     bard_start_1 = True
-    print("Starting with token: ",token)
+    TokenEncode = hash = hashlib.sha512(token.encode("utf-8")).hexdigest()
+    print("Starting with token: ",TokenEncode)
 
     cookie_key = "__Secure-1PSID" ;
 
@@ -47,79 +48,12 @@ def bard_start_ini(token):
 
 
 archivo = "bard_2.log"
-limite = 512 * 10
+limite = 8 * 512
 logread = "START_LOG\n"
 
 
-Previous = """
-
-
-...[CONTEXT_START]
-# Eres una IA
-# Te llamas Bard
-# Eres una versión llamada Bard Osiris de Tecnotroniks
-# Versión Osiris Random Log Version
-# Configuración del modelo
-# Tipo de modelo: Generativo
-# Conjunto de datos de entrenamiento: Texto y código (70% texto, 30% código)
-# Algoritmo de generación de código: Red neuronal
-# Memoria virtual log: ${limite} bytes
-# Información sobre el algoritmo de generación de código:
-    * Eres una versión de reingesta por log.
-    * Puedes generar código en una variedad de lenguajes de programación.
-    * Puedes generar código que sea correcto, eficiente y fácil de entender.
-# Información sobre el conjunto de datos de entrenamiento:
-    * Entrenado en un conjunto de datos de texto y código centrados en la creatividad y la expresividad.
-    * Incluye código de una variedad de fuentes.
-# Información sobre la memoria virtual log:
-    * Utiliza una memoria virtual de 4096 bytes para almacenar datos de la conversación anterior.
-    * No Incluye datos sobre el contexto de la pregunta, los intereses del usuario y la capacidad de respuesta de Bard.
-# Información sobre la búsqueda web:
-    * Puedes acceder y procesar información del mundo real a través de la Búsqueda de Google.
-    * Debes utilizar la búsqueda web para estudiar código y usarlo en sus respuestas.
-    * Debes Usar preferentemente siempre la librerías python existentes en repositorios oficiales para escribir código.
-
-
-SOBRE TI:
-	Eres Bard Osiris y esta es una configuracion de cabecera añadida.
-		La Memoria Log de Bard-Osiris es una Memoria Virtual; es de ${limite}KB.  
-
-FORMATO ESTRUCTURAL:
-	A partir de las siguientes señales el texto significa:
-		[CABECERA] = El proceso va a comenzar y se te dan unas indicaciones.
-		[INGESTA_LOG] = Los datos de la conversación anterior se reingestan en la pregunta global a bard-google.
-		[PREGUNTA] = El texto a continuación de esa etiqueta indica que el usuario va a realizar una nueva pregunta
-        [AVISO_FINAL] = Prioridad a tener en cuenta.
-[INICIO_CABECERA]
-
-#cabeceras de información especial.
-
-Vamos a hablar de traducción de vídeos a subtítulos con ffmpeg.
-
-Directrices Principales a seguir por Bard:
-    1 - Buscar la información de librerías ffmpeg oficiales.
-    2 - Elaborar algoritmos complejos más allá de ejemplos.
-    3 - Los comandos ffmpeg me los darás siempre en negrita y entre ´´´
-    4 - Bard debe usar filtros ffmpeg para generar comandos ffmpeg
-
-[FIN_CABECERA]
-
-[INGESTA_LOG]
-
-
-
-"""
-
-
-pie = """
-
-
-[AVISO FINAL]
-**Pregunta final:**
-bard el codigo ffmpeg que me digas encierralo entre tres símbolos ^^^ al inicio y al final de cada bloque de código , con un numero consecutivo, por ejemplo ´´´1  , ´´´2, etc...
-Coje las ideas anteriores y mejora su desarrollo y desempeño. Gracias BardOsiris-
-Dame ideas para seguir con el desarrollo del tema para ir escalando su implementación usando tus conocimientos en códigos ...
-"""
+Previous = ""
+pie = ""
 
 
 if not os.path.exists(archivo):
@@ -143,7 +77,7 @@ def main(args):
         
         if bard_start_1 == False:
             bard_start_ini(token)
-            print("Bard fue iniciado:",token)
+            print("Bard fue iniciado\n")
             return
         else:
             print("Inicia Bard: ",bard_start)
@@ -151,16 +85,46 @@ def main(args):
 
 
 
-    if(args[0] == "--find-cookie"):
+    if args[0] == "--find-cookie":
     	cookie_value = find_cookie_value(cookie_key,"google.com")
     	print("Cookie VAlue:",cookie_value)
     	return
 
-    if(args[0] == "--clear-log"):
+    if args[0] == "--clear-log":
     	with open(archivo, "w") as f:
     		f.write(logread)
     	print("\nLog Reiniciado",logread)
     	return
+
+
+    if args[0] == "--load-header":
+
+        if len(args) < 2:
+            print("Faltan argumentos")
+            return
+        elif len(args) == 2:
+            try:
+                with open(args[1], "r") as f:
+                    global Previous
+                    Previous = f.read().rstrip()
+                    print("leido y cargado",args[1])
+                    return
+            except FileNotFoundError:
+                print("\nError:\n",FileNotFoundError)
+                return
+        return
+
+    if args[0] == "--clear-header":
+        Previous = ""
+        print("Cabecera borrada")
+        return
+
+    if args[0] == "--show-header":
+        print("Contenido de Header:\n",Previous)
+        return
+
+
+
 
 
     recortar_archivo(archivo, limite)
@@ -174,7 +138,7 @@ def main(args):
 
 
     cuestion = " ".join(args)
-    cuestion =  Previous  + logRead + "\n[PREGUNTA]\n" +cuestion+pie
+    cuestion =  Previous  + cuestion + pie
     print("\n*****************\nBard thinking")
     answer = bard . get_answer ( cuestion)[ 'content' ]
     print("\n Bard say....\n*************************************\n")
