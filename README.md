@@ -243,22 +243,40 @@ wfcore es una api en desarrollo para manejar la lógica estructural de los docum
 ![wfcore jpg](https://pbs.twimg.com/media/F2sUK4qXwAA4eBX?format=png&name=small)  
 
 
+Comandos:  
+
+create  
+
+install  
+
+bard	[texto se comunica con bard] (hace consulta - texto) 
+	--edit (edita un archivo)    
+	--load-header (carga un archivo como cabecera de consulta)
+	--load-footer (carga un archivo como pie de consulta)
+	--show-header (muestra la cabecera cargada en memoria)
+	--show-footer (muestra el pie cargado en memoria)
+	--clear-header (borra la cabecera de la memoria)
+	--clear-footer (borra el pi de la memoria)
+
+		Esto permite dividir el mensaje hasta en tres partes.
+		De esta forma modelamos la respuesta de bard usando hasta dos filtros
+		uno de entrada y otro de salida (header y footer)
+
+		la prioridad de envío es
+		sólo pregunta, combinado o  ambos.
+
+		[HEADER]
+		....texto mensaje
+		[FOOTER]
+
+		... Respuesta del modelo (bard)
 
 
+sniff	[ interface name ]  
+	--interfaces (muestra interfaces)
 
+	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+scanip  
 
 
