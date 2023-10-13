@@ -259,7 +259,7 @@ Comandos:
 	bard	[texto se comunica con bard] (hace consulta - texto)   
 
 
-		--edit (edita un archivo)    
+		--edit (edita un archivo en modo lectura/escritura) en bin/com/data/bard predeterminadamente    
 		--load-header (carga un archivo como cabecera de consulta)
 		--load-footer (carga un archivo como pie de consulta)
 		--show-header (muestra la cabecera cargada en memoria)
