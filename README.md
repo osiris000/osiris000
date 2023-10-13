@@ -246,21 +246,17 @@ wfcore es una api en desarrollo para manejar la lógica estructural de los docum
 Comandos:  
 
 
-create  
-
-		[nombre de comando nuevo] --create
+	create	[nombre de comando nuevo] --create
 
 		
 
-install  
+	install  webapp [ nombre ]
+					--create-default
+					--update  
 
-		webapp  
 
 
-
-bard 	  
-
-		[texto se comunica con bard] (hace consulta - texto)   
+	bard	[texto se comunica con bard] (hace consulta - texto)   
 
 
 		--edit (edita un archivo)    
@@ -285,13 +281,11 @@ bard
 		... Respuesta del modelo (bard)
 
 
-sniff	  
-
-		[ interface name ]  
-		--interfaces (muestra interfaces)
+	sniff	[ interface name ]  
+					--interfaces (muestra interfaces)
 
 	
 
-scanip  
+	scanip  
 
 
