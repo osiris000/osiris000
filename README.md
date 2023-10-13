@@ -245,9 +245,17 @@ wfcore es una api en desarrollo para manejar la lógica estructural de los docum
 
 Comandos:  
 
+
 create  
 
+		[nombre de comando nuevo] --create
+
+		
+
 install  
+
+		webapp  
+
 
 
 bard 	  
@@ -261,7 +269,7 @@ bard
 		--show-header (muestra la cabecera cargada en memoria)
 		--show-footer (muestra el pie cargado en memoria)
 		--clear-header (borra la cabecera de la memoria)
-		--clear-footer (borra el pi de la memoria)
+		--clear-footer (borra el pie de la memoria)
 
 		Esto permite dividir el mensaje hasta en tres partes.
 		De esta forma modelamos la respuesta de bard usando hasta dos filtros
