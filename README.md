@@ -249,7 +249,12 @@ create
 
 install  
 
-bard		[texto se comunica con bard] (hace consulta - texto)   
+
+bard 	  
+
+		[texto se comunica con bard] (hace consulta - texto)   
+
+
 		--edit (edita un archivo)    
 		--load-header (carga un archivo como cabecera de consulta)
 		--load-footer (carga un archivo como pie de consulta)
@@ -272,7 +277,9 @@ bard		[texto se comunica con bard] (hace consulta - texto)
 		... Respuesta del modelo (bard)
 
 
-sniff		[ interface name ]  
+sniff	  
+
+		[ interface name ]  
 		--interfaces (muestra interfaces)
 
 	
