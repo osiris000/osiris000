@@ -259,19 +259,19 @@ El prompt osiris es >>>
 Para usar un comando se puede poner su nombre y argumentos o si se va a usar activamente, montarlo para no tener que escribirlo cada vez.para ello 
 se usa el comando de 0siris “use” de la siguiente manera, por ejemplo para montar el comando "bard"  
 
->>> use bard  
+\>>> use bard  
 
 A continuación el prompt pasa a:  
 
->>> bard>  
+\>>> bard>  
 
 para desmontarlo solo hay que typear "use", así:  
 
->>> bard> use  
+\>>> bard> use  
 
 Lo que resulta en el prompt principal :  
 
->>>  
+\>>>  
 
 
 Comandos:  
