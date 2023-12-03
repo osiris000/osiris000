@@ -13,7 +13,7 @@ import cnf
 
 
 # Definir el array de comandos válidos
-valid_commands = ["config","create","agenda", "install", "error","chatgpt","bard"]
+valid_commands = ["hls","shell","blockchain","scanip","sniff","config","create","agenda", "install", "error","chatgpt","bard"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
@@ -37,20 +37,29 @@ def save_command_history():
         pickle.dump(command_history, file)
 
 
-def command_line():
+use_command = ""
+set_com = ""
 
+def command_line():
+    global use_command
+    global set_com
     # Configurar el historial para permitir la navegación con las flechas del cursor
     readline.set_history_length(cnf.history_com_size)  # Límite de longitud del historial
     readline.clear_history()  # Limpiar el historial actual
     for command in command_history:
         readline.add_history(command)  # Agregar los comandos al historial
 
+    try:
+        com = input(">>> "+use_command)
+    except Exception as e:
+        print("ERROR:",e)
 
-    com = input(">>> ")
 
     if not com:
-        command_line()  # Llamada recursiva si no se proporcionó ningún comando
-
+        try:
+            command_line()  # Llamada recursiva si no se proporcionó ningún comando
+        except Exception as e:
+            print("ERROR:",e)
 
     # Agregar el comando ingresado al historial
     command_history.append(com)
@@ -58,11 +67,31 @@ def command_line():
     save_command_history()
 
 
+
     args = shlex.split(com)
+
+
+
+    if set_com:
+        if args[0] != set_com:
+            args.insert(0,set_com)
+
+
+
     if args[0] == "exit":
         exit_program()
     elif args[0] == "Reset_Password":
         auth.makeauth()
+    elif args[0] == "use" and len(args) == 2:
+        use_command = args[1]+"> "
+        set_com = args[1]
+        command_line()
+        return
+    elif len(args) == 2 and args[1] == "use":
+        use_command = ""
+        set_com = ""
+        command_line()
+        return
     elif args[0] not in valid_commands:
         print(f"Comando: {args[0]} , inválido")
         command_line()
@@ -117,9 +146,10 @@ def command_line():
                             print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
                     else:
                         print(f"La función 'main' no está definida correctamente en {args[0]}.py")
-
-    command_line()  # Llamada recursiva para continuar con el siguiente comando
-
+    try:
+        command_line()  # Llamada recursiva para continuar con el siguiente comando
+    except Exception as e:
+        print("ERROR:",e)
 
 # resto codigo
 

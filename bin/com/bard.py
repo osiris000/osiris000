@@ -5,13 +5,9 @@ import json
 import hashlib
 import subprocess
 
-os.environ['_BARD_API_KEY'] = ''
-
-
+os.environ['_BARD_API_KEY'] = 'g4GdblwfckOqajYNm6Y0BGeONQpnXDNph7jFo8XI6RjiJci3K5SJL66ZdXXCaviUcQxA.'
 
 token = os.environ['_BARD_API_KEY']
-
-
 
 bard_start = False
 
@@ -22,6 +18,9 @@ if  not token :
     print("Vuelve a montar bard usando bard --reset")
 else:
     bard_start = True
+
+
+
 
 
 def bard_start_ini(token):
@@ -37,17 +36,22 @@ def bard_start_ini(token):
 
     session = requests.Session()
     session.headers = {
-                "Host": "bard.google.com",
-                "X-Same-Domain": "1",
-                "User-Agent": "Bard-Osiris-Linux-Debian 0.1",
-                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-                "Origin": "https://bard.google.com",
-                "Referer": "https://bard.google.com/chat",
-            }
+    "Host": "bard.google.com",
+    "X-Same-Domain": "1",
+    "User-Agent": "Mozilla / Bard-OsirisB-Linux-Debian 0.1.1",
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    "Origin": "https://bard.google.com",
+    "Referer": "https://bard.google.com/chat",
+    "X-Google-Length": "256000",  # longitud esperada de la respuesta
+    "X-Google-Explanation": "false",  # solicitar una explicación adicional
+    }
     session.cookies.set(cookie_key, os.getenv("_BARD_API_KEY")) 
-# session.cookies.set("__Secure-1PSID", token) 
-    bard = Bard(token=token, session=session, timeout=60)
 
+    try:
+        bard = Bard(token=token, session=session, timeout=60)
+    except Exception as e:
+        print(f"ERROR:{e}")
+        return
 
 
 
@@ -73,39 +77,35 @@ def create_dir(path):
             raise
 
 
-
-
-dir_edit = "com/datas/bard"
-
-
 try:
     create_dir(dir_edit)
 except Exception as e:
     print("Error",e)
 
 
-
+dir_edit = "com/datas/bard"
 archivo = "bard_2.log"
-limite = 8 * 512
+limite = 6 * 8 * 512
 logread = "START_LOG\n"
+answer = ""
+Previous = ""
+Footer = ""
 
-
-Previous = """
-"""
-
-
-Footer = """
-"""
-
+contenido = ""
 
 if not os.path.exists(archivo):
   with open(archivo, "w") as f:
     f.write(logread)
-
+    f.close()
+else:
+  with open(archivo,"r") as f:
+    contenido = f.read()
+    f.close()
 
 def main(args):
 
-
+    global answer
+    global contenido
     if len(args) < 1:
         print("Bard:",bard_start,bard_start_1)
         return
@@ -119,7 +119,7 @@ def main(args):
         
         if bard_start_1 == False:
             bard_start_ini(token)
-            print("Bard fue iniciado\n")
+            #print("Bard fue iniciado\n")
             return
         else:
             print("Inicia Bard: ",bard_start)
@@ -172,7 +172,25 @@ def main(args):
         print("Contenido de Header:\n",Previous)
         return
 
-
+    if args[0] == "--answer" :
+    	if len(args) == 1 :
+    	    print("Last answer:\n",answer)
+    	    return
+    	elif args[1] == "edit":
+    	    print("EDIT ANSWER")
+    	    try:
+    	        with open(dir_edit + "/_answer","w") as f:
+    	            f.write(answer)
+    	            f.close()
+    	        subprocess.call(["nano", "-w", "-i", dir_edit + "/_answer" ])
+    	    except Exception as e:
+    	        print("ERROR:",e)
+    	        return
+    	    return
+    	else:
+    	    print("unknow answer")
+    	    return
+    	    
 
 
     if args[0] == "--load-footer":
@@ -201,10 +219,9 @@ def main(args):
         print("Contenido de Footer:\n",Footer)
         return
 
-
-
-
-
+    if args[0] == "--log":
+        print("READLOG:\n",contenido)
+        return
 
 
 
@@ -237,7 +254,6 @@ def main(args):
     print("\n Bard say....\n*************************************\n")
 
   # Recojo el texto a escribir en el archivo.
-    texto = answer
 
     print(answer)
     print("\n*********************************************\n")
@@ -248,7 +264,7 @@ def main(args):
 # Agrego el texto al archivo.
     with open(archivo, "a") as f:
       f.write("\n"+cuestion+"\n")
-      f.write(texto)
+      f.write(answer)
       
 
 
@@ -256,6 +272,7 @@ def main(args):
 
 
 def recortar_archivo(archivo, limite):
+  global contenido
   with open(archivo, "r") as f:
     contenido = f.read()
   if len(contenido) > limite:
