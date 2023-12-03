@@ -11,16 +11,17 @@ Si tiene python3 instalado puede entrar en la consola pulsando enter el resto de
 
 Es importante para cada inicio de sesión si no está habilitado el entorno virtual habilitarlo desde el instalador.
 
-
 	Cuando pida instalar:	
 
-		Osiris-python3-venv 	
 		Osiris-venv-activate 	
 		Osiris-venv-export	
 
 pulsar Y de Yes y luego C de Continuar
 
-Cuando estén instalados sólo será necesario hacerlo	Osiris-venv-activate y Osiris-venv-export en el primer inicio de sesión para activar el directorio virtual. Sin embargo está en el futuro se hará de forma automática. 
+Cuando estén instalados sólo será necesario hacerlo	
+
+Osiris-venv-activate y Osiris-venv-export en el primer inicio de sesión para activar el directorio virtual. 
+Sin embargo está en el futuro se hará de forma automática. 
 
 
 Para instalar Bard hay que instalar la bardapi se deduce que ya tenemos pip en el sistema además está incluida en este repositorio.  
@@ -243,7 +244,39 @@ wfcore es una api en desarrollo para manejar la lógica estructural de los docum
 ![wfcore jpg](https://pbs.twimg.com/media/F2sUK4qXwAA4eBX?format=png&name=small)  
 
 
+
+Comandos y modificadores.  
+
+se dividen en dos. Los comandos del sistema que son:
+
+  use  [command]
+  --reset  
+
+:
+
+El prompt osiris es >>>  
+
+Para usar un comando se puede poner su nombre y argumentos o si se va a usar activamente, montarlo para no tener que escribirlo cada vez.para ello 
+se usa el comando de 0siris “use” de la siguiente manera, por ejemplo para montar el comando "bard"  
+
+>>> use bard  
+
+A continuación el prompt pasa a:  
+
+>>> bard>  
+
+para desmontarlo solo hay que typear "use", así:  
+
+>>> bard> use  
+
+Lo que resulta en el prompt principal :  
+
+>>>  
+
+
 Comandos:  
+
+	shell [command line]
 
 
 	create	[nombre de comando nuevo] --create
