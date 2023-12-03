@@ -247,12 +247,11 @@ wfcore es una api en desarrollo para manejar la lógica estructural de los docum
 
 Comandos y modificadores.  
 
-se dividen en dos. Los comandos del sistema que son:
+se dividen en dos. Los comandos del sistema que son:  
 
-  use  [command]
+  use  [command]  
   --reset  
 
-:
 
 El prompt osiris es >>>  
 
