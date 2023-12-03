@@ -11,7 +11,7 @@ Si tiene python3 instalado puede entrar en la consola pulsando enter el resto de
 
 Es importante para cada inicio de sesión si no está habilitado el entorno virtual habilitarlo desde el instalador.
 
-	Cuando pida instalar:	
+	Cuando pida instalar estas dos opciones:	
 
 		Osiris-venv-activate 	
 		Osiris-venv-export	
@@ -158,7 +158,7 @@ uso, sin embargo se ese archivo cambia por una modificación de la
 implementación, para ver los cambios habría que volver a cargarlo  
 dinámicamente, para ello se haría:  
 
-\>\>\> nuevo_com reset  
+\>\>\> nuevo_com --reset  
 
 de ese modo al volver a ejecutarlo recargaría nuevamente el módulo  
 con los cambios realizados, evitando así tener que reiniciar el programa  
@@ -249,8 +249,9 @@ Comandos y modificadores.
 
 se dividen en dos. Los comandos del sistema que son:  
 
-  use  [command]  
-  --reset  
+  use [command]  
+  [command] --reset  
+  [command] --help  
 
 
 El prompt osiris es >>>  
