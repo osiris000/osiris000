@@ -4,6 +4,10 @@ import requests
 import json
 import hashlib
 import subprocess
+import PIL.Image, PIL.ImageDraw, PIL.ImageFont
+import lib.osiris.common as common
+
+common.f()
 
 os.environ['_BARD_API_KEY'] = 'g4GdblwfckOqajYNm6Y0BGeONQpnXDNph7jFo8XI6RjiJci3K5SJL66ZdXXCaviUcQxA.'
 
@@ -70,18 +74,13 @@ def create_dir(path):
     try:
         os.makedirs(path)
         return True
-    except OSError as e:
-        if e.errno == errno.EEXIST and os.path.isdir(path):
-            return True
-        else:
-            raise
-
-
-try:
-    create_dir(dir_edit)
-except Exception as e:
-    print("Error",e)
-
+    except:
+        return
+#    except OSError as e:
+#        if e.errno == errno.EEXIST and os.path.isdir(path):
+#            return True
+#        else:
+#            raise
 
 dir_edit = "com/datas/bard"
 archivo = "bard_2.log"
@@ -90,8 +89,14 @@ logread = "START_LOG\n"
 answer = ""
 Previous = ""
 Footer = ""
-
 contenido = ""
+
+
+try:
+    create_dir(dir_edit)
+except Exception as e:
+    print("Error",e)
+
 
 if not os.path.exists(archivo):
   with open(archivo, "w") as f:
@@ -223,6 +228,12 @@ def main(args):
         print("READLOG:\n",contenido)
         return
 
+    if args[0] == "--shot" and len(args) == 2:
+        try:
+            captura_texto_a_imagen(args[1])
+        except Exception as e:
+            print("ERROR:",e)
+        return
 
 
     recortar_archivo(archivo, limite)
@@ -279,6 +290,48 @@ def recortar_archivo(archivo, limite):
     contenido = contenido[len(contenido) - limite:]
   with open(archivo, "w") as f:
     f.write(contenido)
+
+
+
+
+
+def captura_texto_a_imagen(archivo_texto):
+
+        try:
+            with open(archivo_texto, "r") as f:
+                texto = f.read()
+        except Exception as e:
+                print("ERROR1:",e,archivo_texto)
+                return
+
+        imagen = PIL.Image.new("RGB", (200, 200))
+        fuente = PIL.ImageFont.truetype("arialbd.ttf", 20)
+        pintura = PIL.ImageDraw.Draw(imagen)
+        pintura.text((0, 0), texto, font=fuente, fill="black")
+
+        try:
+            imagen.save(archivo_texto + ".png")
+            imagen = PIL.Image.open(archivo_texto + ".png")
+#            imagen = imagen.convert("ascii")
+            print(imagen)
+        except Exception as e:
+            print("ERROR2:",e)
+            return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

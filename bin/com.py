@@ -10,7 +10,10 @@ import inspect
 import readline
 import pickle
 import cnf
+import signal
+import lib.osiris.common as common
 
+common.f()
 
 # Definir el array de comandos válidos
 valid_commands = ["hls","shell","blockchain","scanip","sniff","config","create","agenda", "install", "error","chatgpt","bard"]
@@ -43,6 +46,7 @@ set_com = ""
 def command_line():
     global use_command
     global set_com
+    signal.signal(signal.SIGINT,CTRL_C)
     # Configurar el historial para permitir la navegación con las flechas del cursor
     readline.set_history_length(cnf.history_com_size)  # Límite de longitud del historial
     readline.clear_history()  # Limpiar el historial actual
@@ -78,11 +82,7 @@ def command_line():
 
 
 
-    if args[0] == "exit":
-        exit_program()
-    elif args[0] == "Reset_Password":
-        auth.makeauth()
-    elif args[0] == "use" and len(args) == 2:
+    if args[0] == "use" and len(args) == 2:
         use_command = args[1]+"> "
         set_com = args[1]
         command_line()
@@ -92,6 +92,15 @@ def command_line():
         set_com = ""
         command_line()
         return
+    elif len(args) == 3 and args[1] == "use":
+        use_command = args[2]+"> "
+        set_com = args[2]
+        command_line()
+        return
+    elif args[0] == "exit":
+        exit_program()
+    elif args[0] == "Reset_Password":
+        auth.makeauth()
     elif args[0] not in valid_commands:
         print(f"Comando: {args[0]} , inválido")
         command_line()
@@ -100,7 +109,7 @@ def command_line():
         clear_command_data(args[0])
         loaded_modules.pop(args[0], None)  # Eliminamos el módulo del diccionario de módulos cargados
         command_line()  # No se ejecuta el comando después de limpiar los datos
-        return;
+        return
     else:
         if len(args) > 1 and args[1] == "--help" and args[0] in valid_commands:
             print(fhelp.fhelp(args[0]))
@@ -207,9 +216,18 @@ def exit_program():
         command_line()
     elif exit_decision.lower() == "yes" :
         print("\nEXIT PROGRAM\n")
+        signal.signal(signal.SIGINT,signal.SIG_DFL)
         auth.access()
     else:
         exit_program()
+
+
+
+def CTRL_C(signal,frame):
+    print("Excriba “exit” para salir")
+#    command_line()
+    return
+
 
 
 

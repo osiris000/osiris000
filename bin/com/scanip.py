@@ -5,7 +5,7 @@ import time
 import sys
 import requests
 import json
-
+import signal
 
 print('Creado módulo-comando scanip y fecha y hora: 2023-10-02 15:48:20.085867')
 
@@ -173,13 +173,33 @@ def scan_1(xip,xpuerto):
     print(f"El puerto {puerto} en {ip} usa el servicio {servicio}.")
 
 
+ctrl_c = False
+
+
+
+def return_scall(signum,frame):
+    global ctrl_c
+    print("EXIT Scan All:",signum)
+    ctrl_c = True
+    return
+
 def scan_all(xip):
 
+    global ctrl_c
     input_str = xip  # Cambia el dominio o la IP aquí
 
     ip = resolve_ip_or_domain(input_str)
+    try:
+        signal.signal(signal.SIGINT,return_scall)
+    except Exception as e:
+        print("ERROR SIGNAL:",e)
+        return
 
     for d in range(0,35635):
+        if ctrl_c == True:
+            ctrl_c = False
+            signal.signal(signal.SIGINT, signal.SIG_DFL)
+            break
         i = d
         if not check_port(ip, i):
             print(f"El puerto {i} en {ip} está cerrado o no responde.")
