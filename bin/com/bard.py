@@ -9,7 +9,7 @@ import lib.osiris.common as common
 
 common.f()
 
-os.environ['_BARD_API_KEY'] = 'g4GdblwfckOqajYNm6Y0BGeONQpnXDNph7jFo8XI6RjiJci3K5SJL66ZdXXCaviUcQxA.'
+os.environ['_BARD_API_KEY'] = 'g.a000gAg4Gb3isFKnvLqA4x1M95yG5R8VF9MsvwfRUu-C17Q6SP7ONIrrZlwsHvf1FQkaNRqHowACgYKAUISAQASFQHGX2MibzQy03Os3TPgZOgey3S58RoVAUF8yKqaRxihrOAlgFsadSBdWH7b0076'
 
 token = os.environ['_BARD_API_KEY']
 
@@ -36,8 +36,6 @@ def bard_start_ini(token):
     TokenEncode = hash = hashlib.sha512(token.encode("utf-8")).hexdigest()
     print("Starting with token: ",TokenEncode)
 
-    cookie_key = "__Secure-1PSID" ;
-
     session = requests.Session()
     session.headers = {
     "Host": "bard.google.com",
@@ -49,7 +47,13 @@ def bard_start_ini(token):
     "X-Google-Length": "256000",  # longitud esperada de la respuesta
     "X-Google-Explanation": "false",  # solicitar una explicación adicional
     }
-    session.cookies.set(cookie_key, os.getenv("_BARD_API_KEY")) 
+    session.cookies.set("__Secure-1PSIDCC","ABTWhQGVZppJWJwSkSRmuIN8BiYK9qwYF8CfpduY_WrMjS6rLRNoC2Bs2xQuviLQUGIV1qBL5Y4K")
+    session.cookies.set("__Secure-1PSIDTS","sidts-CjIBPVxjSkxukaZF-HzZ4iyBno-TIVDS8cIrZF8hYnIrimqV9IhxFbCOc3I75nzi4c6QlBAA")
+    token_r = token[::-1]
+    print(token_r)
+    session.cookies.set("__Secure-1PSID", token_r)
+
+
 
     try:
         bard = Bard(token=token, session=session, timeout=60)
@@ -111,6 +115,7 @@ def main(args):
 
     global answer
     global contenido
+    global dir_edit
     if len(args) < 1:
         print("Bard:",bard_start,bard_start_1)
         return
@@ -126,8 +131,8 @@ def main(args):
             bard_start_ini(token)
             #print("Bard fue iniciado\n")
             return
-        else:
-            print("Inicia Bard: ",bard_start)
+#        else:
+#            print("Inicia Bard: ",bard_start)
 
 
 
@@ -135,6 +140,15 @@ def main(args):
         try:
             filename = args[1]
             subprocess.call(["nano", "-w","-i",dir_edit +"/"+ filename])
+            return
+        except Exception as e:
+            print("Error:", e)
+            return
+
+    if args[0] == "--list":
+        try:
+            filename = args[1]
+            subprocess.call(["ls", dir_edit])
             return
         except Exception as e:
             print("Error:", e)
@@ -259,7 +273,8 @@ def main(args):
         answer = bard . get_answer(cuestion)["content"]
     except Exception as e:
         print("Error:",e)
-        print("Compruebe que su key no ha cambiado")
+        print("Compruebe que su key no ha cambiado o se ha producido un error de red")
+        print("Desmonte el modulo con --reset para reintentar de nuevo")
         return
     
     print("\n Bard say....\n*************************************\n")

@@ -12,6 +12,7 @@ import pickle
 import cnf
 import signal
 import lib.osiris.common as common
+import sys
 
 common.f()
 
@@ -55,15 +56,19 @@ def command_line():
 
     try:
         com = input(">>> "+use_command)
+        com = com.lstrip()
+        if com == "":
+            command_line()
+            return
     except Exception as e:
-        print("ERROR:",e)
+        print("ERROR 1:",e)
 
 
     if not com:
         try:
             command_line()  # Llamada recursiva si no se proporcionó ningún comando
         except Exception as e:
-            print("ERROR:",e)
+            print("ERROR 2:",e)
 
     # Agregar el comando ingresado al historial
     command_history.append(com)
@@ -80,6 +85,15 @@ def command_line():
         if args[0] != set_com:
             args.insert(0,set_com)
 
+    if args[0] == "mount" and len(args) > 1:
+        if args[1] not in valid_commands:
+            valid_commands.append(args[1])
+            print("Montado:"+args[1])
+            args[0] = "use"
+        else:
+            print("El comando:"+args[1]+":está montado")
+            args[0] = "use"
+        print("exit mount")
 
 
     if args[0] == "use" and len(args) == 2:
@@ -108,6 +122,7 @@ def command_line():
     elif len(args) > 1 and args[1] == "--reset":
         clear_command_data(args[0])
         loaded_modules.pop(args[0], None)  # Eliminamos el módulo del diccionario de módulos cargados
+        print("Módulo-comando "+args[0]+" desmontado")
         command_line()  # No se ejecuta el comando después de limpiar los datos
         return
     else:
@@ -158,7 +173,7 @@ def command_line():
     try:
         command_line()  # Llamada recursiva para continuar con el siguiente comando
     except Exception as e:
-        print("ERROR:",e)
+        print("ERROR 3:",e)
 
 # resto codigo
 
@@ -199,19 +214,12 @@ def is_valid_function(function):
 def has_single_argument(function):
     return len(inspect.signature(function).parameters) == 1
 
-
 def clear_command_data(command_name):
     if command_name in module_info:
         module_info.pop(command_name)
-        print(f"Datos del comando '{command_name}' eliminados.")
-    else:
-        print(f"No hay datos para el comando '{command_name}'.")
-
-
-
 
 def exit_program():
-    exit_decision = input("¿ Desea salir del programa ? type 'yes' or 'no' ")
+    exit_decision = input("\n¿ Desea salir del programa ? type 'yes' or 'no' ")
     if exit_decision.lower() == "no" :
         command_line()
     elif exit_decision.lower() == "yes" :
