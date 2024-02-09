@@ -6,7 +6,7 @@ import threading
 import signal
 import sys
 import multiprocessing
-
+import lib.ffmpeg
 
 estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
@@ -84,6 +84,18 @@ def main(args):
                 yt_args = yt_start + yt_input_intro + yt_codecs + yt_output
             elif args[1] == "concat":
                 yt_args = yt_start + yt_input_concat + yt_codecs + yt_output
+            elif args[1] == "start":
+                yt_args = yt_start + yt_input_start + yt_codecs + yt_output
+            elif args[1] == "carta":
+                yt_args = yt_start + yt_input_carta + yt_codecs + yt_output
+            elif args[1] == "v4l2" and len(args)>2:
+                yt_args = yt_start + yt_v4l2_input +["-i",args[2]] + yt_codecs + yt_output
+            elif args[1] == "input":
+                if len(args) > 2:
+                    yt_args = yt_start + ["-i",args[2]] + yt_codecs + yt_output
+                else:
+                    print("Introduzca una url")
+                    return
             elif args[1] == "kill":
                 if estado_proceso == True:
                     detener_proceso()
@@ -97,7 +109,7 @@ def main(args):
 
             if  estado_proceso == False:
                 funcion_proceso(yt_args)
-            elif len(args) > 2 and args[2] == "-c":
+            elif len(args) > 2 and "-c" in args:
                 detener_proceso()
 #                time.sleep(1)
                 funcion_proceso(yt_args)
@@ -113,22 +125,67 @@ def main(args):
             args.insert(0,"yt-dlp")
             print(args)
             subprocess.call(args,cwd="com/datas/ffmpeg")
+        elif args[0] == "mklist":
+            print("Mklist")
+# Uso de la clase ConcatenadorFFmpeg
+            extension = '.mp4'
+            archivo_concat = 'concat_list.txt'
+            directorio_origen = '/home/osiris/Vídeos/tv'
+            directorio_destino = 'com/datas/ffmpeg'
+            concatenador = ConcatenadorFFmpeg(extension, archivo_concat, directorio_origen, directorio_destino)
+            concatenador.concatenar_archivos()
+        else:
+            print("Comando no reconocido",args)
+
 
     except Exception as e:
         print("Se ha producido un error:",e)
 
 
+
+yt_default_screen = "1280x720"
+
+
 yt_start = [
     "ffmpeg",
+    "-y",
     "-re",
     "-stream_loop",
     "-1"
 ]
 
 yt_input_concat = [
+    "-f",
+    "concat",
+    "-safe",
+    "0",
     "-i",
-    "concat:com/datas/ffmpeg/nacionalistas.ts|com/datas/ffmpeg/zorrax.ts|com/datas/ffmpeg/rhc.ts",
+    "com/datas/ffmpeg/concat_list.txt",
 ]
+
+
+yt_v4l2_input = [
+
+"-f",
+"v4l2",
+"-video_size",
+" 640x480"
+
+]
+
+yt_input_start = [
+
+    "-i",
+    "com/datas/ffmpeg/carta_ajuste.mp4.mkv"
+
+    ]
+
+yt_input_carta = [
+
+    "-i",
+    "com/datas/ffmpeg/carta_ajuste2.mp4.mkv"
+
+    ]
 
 yt_input_intro = [
 
@@ -139,13 +196,14 @@ yt_input_intro = [
 
 
 
+
 yt_codecs = [
     "-preset",
     "ultrafast",
     "-c:a",
     "aac",
     "-s",
-    "640x480",
+    yt_default_screen,
     "-c:v",
     "h264",
     "-pix_fmt",
@@ -178,5 +236,42 @@ print('Creado módulo-comando ffmpeg y fecha y hora: 2024-02-06 07:26:29.243208'
 
 
 
+
 if __name__ == "__main__":
     main()
+
+
+
+
+#FUNCIONES Y CLASES
+
+
+class ConcatenadorFFmpeg:
+    def __init__(self, extension, archivo_concat, directorio_origen, directorio_destino):
+        self.extension = extension
+        self.archivo_concat = archivo_concat
+        self.directorio_origen = directorio_origen
+        self.directorio_destino = directorio_destino
+
+    def encontrar_archivos(self):
+        archivos_mp4 = []
+        for archivo in os.listdir(self.directorio_origen):
+            if archivo.endswith(self.extension):
+                archivos_mp4.append(archivo)
+        return archivos_mp4
+
+    def escribir_archivo_concat(self, archivos):
+        with open(os.path.join(self.directorio_destino, self.archivo_concat), 'w') as f:
+            for archivo_mp4 in archivos:
+                f.write(f"file '{self.directorio_origen}/{archivo_mp4}'\n")
+
+    def concatenar_archivos(self):
+        archivos = self.encontrar_archivos()
+        if archivos:
+            self.escribir_archivo_concat(archivos)
+            print("Se ha creado el archivo de concatenación:", self.archivo_concat)
+        else:
+            print("No se encontraron archivos con la extensión especificada.")
+
+
+
