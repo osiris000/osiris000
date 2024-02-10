@@ -11,6 +11,7 @@ import lib.ffmpeg
 estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
 pid_proceso = None
+yt_last_args = False
 
 def funcion_proceso(args):
     global estado_proceso
@@ -58,9 +59,10 @@ def detener_proceso():
 def main(args):
     yt_args = False
     global estado_proceso
-    global hilo_proceso
+    global hilo_proceso, pid_proceso
+    global yt_last_args
     global yt_start, yt_input_concat, yt_codecs, yt_output
-    global yt_input_start
+    global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
 
 
     try:
@@ -76,7 +78,7 @@ def main(args):
                 print("use 'edit com' para editar el archivo del comando")
                 return
             subprocess.call(["nano", "-w","-i",open])
-        elif args[0] == "youtube":
+        elif args[0] == "youtube" or args[0] == "yt" :
             if len(args) == 1:
                 args.append("intro")
 
@@ -88,14 +90,14 @@ def main(args):
                 yt_args = yt_start + yt_input_start + yt_codecs + yt_output
             elif args[1] == "carta":
                 yt_args = yt_start + yt_input_carta + yt_codecs + yt_output
-            elif args[1] == "v4l2" and len(args)>2:
-                yt_args = yt_start + yt_v4l2_input +["-i",args[2]] + yt_codecs + yt_output
-            elif args[1] == "input":
-                if len(args) > 2:
-                    yt_args = yt_start + ["-i",args[2]] + yt_codecs + yt_output
+            elif args[1] == "input" or args[1] == "-i" :
+                if args[2] == "v4l2" and len(args)>3:
+                    yt_args = yt_start + yt_v4l2_input +["-i",args[3]] + yt_codecs + yt_output
+                elif args[2] == "screen" and len(args)>3:
+                    yt_args = yt_start + yt_screen_input +["-i",args[3]] + yt_screen_input2 + yt_codecs + yt_output
                 else:
-                    print("Introduzca una url")
-                    return
+                    if len(args) > 2:
+                        yt_args = yt_start + ["-i",args[2]] + yt_codecs + yt_output
             elif args[1] == "kill":
                 if estado_proceso == True:
                     detener_proceso()
@@ -107,11 +109,18 @@ def main(args):
                 print("Opción no disponible")
                 return
 
+            yt_last_args = yt_args
+
+
+#            print(yt_args)
+#            print(" ".join(yt_args))
+
             if  estado_proceso == False:
+                print("starting process")
                 funcion_proceso(yt_args)
             elif len(args) > 2 and "-c" in args:
                 detener_proceso()
-#                time.sleep(1)
+#                time.sleep(0.5)
                 funcion_proceso(yt_args)
                 estado_proceso == True
                 print("Intercambio stream")
@@ -120,6 +129,17 @@ def main(args):
 
         elif args[0] == "status":
             print("status",estado_proceso)
+            if yt_last_args:
+                print("---Last Arguments--------------------------")
+                print(yt_last_args)
+                print("-------------------------------------------")
+                print("---Join Arguments--------------------------")
+                print(" ".join(yt_last_args))
+                print("-------------------------------------------")
+            if estado_proceso == True:
+                print("---Estado Proceso: True--------------------")
+                print("PID:",pid_proceso)
+                print("-------------------------------------------")
         elif args[0] == "import":
             del args[:1]
             args.insert(0,"yt-dlp")
@@ -143,8 +163,8 @@ def main(args):
 
 
 
-yt_default_screen = "1280x720"
-
+yt_default_screen = "854x480"
+yt_default_audio_bitrate = "128k"
 
 yt_start = [
     "ffmpeg",
@@ -164,13 +184,35 @@ yt_input_concat = [
 ]
 
 
+yt_screen_input = [
+
+
+"-f",
+"x11grab",
+"-video_size",
+"420x360",
+"-framerate",
+"25"
+
+]
+
+yt_screen_input2 = [
+"-f",
+"pulse",
+"-ac",
+"2",
+"-i",
+"default"
+
+]
+
+
 yt_v4l2_input = [
 
 "-f",
 "v4l2",
 "-video_size",
-" 640x480"
-
+"640x480"
 ]
 
 yt_input_start = [
@@ -200,24 +242,33 @@ yt_input_intro = [
 yt_codecs = [
     "-preset",
     "ultrafast",
-    "-c:a",
-    "aac",
     "-s",
     yt_default_screen,
+
     "-c:v",
-    "h264",
+    "libx264",
+    "-c:a",
+    "aac",
+    "-strict",
+    "-2",
     "-pix_fmt",
     "yuv420p",
-    "-r",
-    "25",
     "-g",
     "4",
+    "-r",
+    "25",
     "-b:a",
-    "128k",
+    yt_default_audio_bitrate,
+    "-ar",
+    "44100",
     "-b:v",
-    "2500k",
-    "-threads",
-    "5"
+    "1000k",
+    "-bufsize",
+    "2000k",
+    "-maxrate",
+    "1000k",
+    "-minrate",
+    "256k"
 ]
 
 yt_output = [
