@@ -7,6 +7,7 @@ import signal
 import sys
 import multiprocessing
 import lib.ffmpeg
+import random
 
 estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
@@ -31,8 +32,8 @@ def _funcion_interna(args):
     try:
         proceso = subprocess.Popen(args,bufsize=0,close_fds=True,restore_signals=True,shell=False,stdin=None,stdout=None,stderr=subprocess.DEVNULL)
         pid_proceso = proceso.pid
-        print("Iniciado Hilo", pid_proceso)
         pid_queue.put(pid_proceso)  # Pasamos el PID del proceso hijo a la cola
+        print("Iniciado Hilo", pid_proceso)
     except Exception as e:
         print("Error Popen:", e)
         return
@@ -63,6 +64,8 @@ def main(args):
     global yt_last_args
     global yt_start, yt_input_concat, yt_codecs, yt_output
     global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
+    global yt_default_progress_file, MAX_LPF
+    global yt_default_list_dir
 
 
     try:
@@ -124,9 +127,6 @@ def main(args):
                 funcion_proceso(yt_args)
                 estado_proceso == True
                 print("Intercambio stream")
-                return
-            return
-
         elif args[0] == "status":
             print("status",estado_proceso)
             if yt_last_args:
@@ -148,30 +148,47 @@ def main(args):
         elif args[0] == "mklist":
             print("Mklist")
 # Uso de la clase ConcatenadorFFmpeg
-            extension = '.mp4'
+            extension = '.ts'
             archivo_concat = 'concat_list.txt'
-            directorio_origen = '/home/osiris/Vídeos/tv'
             directorio_destino = 'com/datas/ffmpeg'
+            directorio_origen = yt_default_list_dir
             concatenador = ConcatenadorFFmpeg(extension, archivo_concat, directorio_origen, directorio_destino)
             concatenador.concatenar_archivos()
         else:
             print("Comando no reconocido",args)
 
-
     except Exception as e:
         print("Se ha producido un error:",e)
 
+yt_default_preset = "veryfast"
+yt_default_screen = "856x480"
+yt_default_buffer_size = "1500k"
+yt_default_vbr = "1000k"
+yt_default_audio_bitrate = "106k"
+yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+yt_default_progress_file = "com/datas/ffmpeg/progress_process.txt"
+MAX_LPF = 4096 # maximum length progess file
 
+yt_default_list_dir = "com/datas/ffmpeg/tv"
 
-yt_default_screen = "854x480"
-yt_default_audio_bitrate = "128k"
+yt_default_av_codecs = [
+
+"-c",
+"copy",
+"-movflags",
+"+faststart"
+
+]
+
+yt_default_av_codecs = ["-c:v","libx264","-c:a","aac","-strict","-2"]
+
 
 yt_start = [
     "ffmpeg",
     "-y",
-    "-re",
     "-stream_loop",
-    "-1"
+    "-1",
+    "-re"
 ]
 
 yt_input_concat = [
@@ -180,7 +197,7 @@ yt_input_concat = [
     "-safe",
     "0",
     "-i",
-    "com/datas/ffmpeg/concat_list.txt",
+    "com/datas/ffmpeg/concat_list.txt"
 ]
 
 
@@ -212,7 +229,7 @@ yt_v4l2_input = [
 "-f",
 "v4l2",
 "-video_size",
-"640x480"
+"856x480"
 ]
 
 yt_input_start = [
@@ -232,65 +249,66 @@ yt_input_carta = [
 yt_input_intro = [
 
   "-i",
-  "/home/osiris/Vídeos/vokoscreenNG-2024-02-06_22-06-43.mp4"
+  "com/datas/ffmpeg/intro.mp4"
 
 ]
 
 
+#    "-vf",
+#    "scale=iw*min(1920/iw\,1080/ih):ih*min(1920/iw\,1080/ih),pad=1920:1080:(1920-iw*min(1920/iw\,1080/ih))/2:(1080-ih*min(1920/iw\,1080/ih))/2",
+
+logo =[
+
+"-loop","1",
+"-i","com/datas/ffmpeg/logo.png",
+"-filter_complex", "[0:v]scale=-2:ih*1.8[v];[v]overlay=W-w-15:20:enable='between(t,0,inf)'",
+]
 
 
-yt_codecs = [
+yt_codecs_start = [
     "-preset",
-    "ultrafast",
+    yt_default_preset,
     "-s",
-    yt_default_screen,
+    yt_default_screen
+]
 
-    "-c:v",
-    "libx264",
-    "-c:a",
-    "aac",
-    "-strict",
-    "-2",
+yt_codecs_rates = [
     "-pix_fmt",
     "yuv420p",
     "-g",
-    "4",
+    "2",
     "-r",
-    "25",
+    "20",
     "-b:a",
     yt_default_audio_bitrate,
     "-ar",
     "44100",
     "-b:v",
-    "1000k",
+    yt_default_vbr,
     "-bufsize",
-    "2000k",
+    yt_default_buffer_size,
     "-maxrate",
-    "1000k",
+    "750k",
     "-minrate",
-    "256k"
+    "128k"
 ]
 
+
+yt_codecs_start = logo + yt_codecs_start
+yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates
+
+#print (yt_codecs)
 yt_output = [
     "-f",
     "flv",
-    "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+    yt_default_output_url,
+    "-progress",
+    yt_default_progress_file,
+    "-y"
 ]
 
 
 print('Creado módulo-comando ffmpeg y fecha y hora: 2024-02-06 07:26:29.243208')
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    main()
-
 
 
 
@@ -312,9 +330,11 @@ class ConcatenadorFFmpeg:
         return archivos_mp4
 
     def escribir_archivo_concat(self, archivos):
+        random.shuffle(archivos)
         with open(os.path.join(self.directorio_destino, self.archivo_concat), 'w') as f:
             for archivo_mp4 in archivos:
-                f.write(f"file '{self.directorio_origen}/{archivo_mp4}'\n")
+                path_completo = os.path.dirname(os.path.abspath(archivo_mp4))
+                f.write(f"file '{path_completo}/{self.directorio_origen}/{archivo_mp4}'\n")
 
     def concatenar_archivos(self):
         archivos = self.encontrar_archivos()
@@ -323,6 +343,22 @@ class ConcatenadorFFmpeg:
             print("Se ha creado el archivo de concatenación:", self.archivo_concat)
         else:
             print("No se encontraron archivos con la extensión especificada.")
+
+
+
+
+def progress_trunk():
+    tamano_actual = os.path.getsize(yt_default_progress_file)
+    if tamano_actual > MAX_LPF:
+        with open(yt_default_progress_file, 'r+') as archivo:
+            archivo.truncate(MAX_LPF)
+        print(tamano_actual)
+
+
+
+
+
+
 
 
 
