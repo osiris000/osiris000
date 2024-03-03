@@ -14,6 +14,7 @@ transmission-cli	apt install transmission-cli
 docker			apt install docker docker.io
 tcptrack		apt install tcptrack
 
+port-audio              apt install portaudio19-dev
 
 
 Osiris-python3.9-venv 			eval python3.9 -m venv bin/com/osiris_env 

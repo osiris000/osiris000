@@ -13,6 +13,35 @@ import cnf
 import signal
 import lib.osiris.common as common
 import sys
+import subprocess
+
+def habilitar_y_exportar_venv(nombre_venv):
+
+
+    # Comando para habilitar el entorno virtual
+    comando_habilitar = f" source com/{nombre_venv}/bin/activate"
+
+    # Ejecutar el comando para habilitar el entorno virtual
+    #subprocess.run(comando_habilitar, shell=True)
+
+    # Exportar el entorno virtual
+    comando_exportar = f"export VIRTUAL_ENV={nombre_venv}"
+
+    # Ejecutar el comando para exportar el entorno virtual
+    subprocess.run(comando_exportar, shell=True)
+    if os.environ.get(nombre_venv):
+        print("##########")
+        #return
+    else:
+    	print("..........")    
+
+# Nombre de tu entorno virtual
+nombre_venv = "osiris_env"
+
+# Llamada a la función para habilitar y exportar el entorno virtual
+habilitar_y_exportar_venv(nombre_venv)
+
+
 
 common.f()
 
@@ -124,7 +153,21 @@ def command_line():
         loaded_modules.pop(args[0], None)  # Eliminamos el módulo del diccionario de módulos cargados
         print("Módulo-comando "+args[0]+" desmontado")
         command_line()  # No se ejecuta el comando después de limpiar los datos
-        return
+    elif len(args) > 1 and args[1] == "--edit":
+
+        ed = "com/"+ args[0] + ".py"
+
+        if os.path.isfile(ed):
+        # Comprobar si Sublime Text ya está abierto
+            if "subl" in subprocess.check_output(["ps", "-aux"]).decode():
+            # Si ya está abierto, enviar el comando "open" a la instancia existente
+                subprocess.call(["subl", ed])
+            else:
+            # Si no está abierto, iniciar Sublime Text y abrir el archivo
+                subprocess.call(["subl", ed])
+        else:
+            print("No se encuentra el módulo a editar, use create [comando] --create para crear uno nuevo")
+        command_line()
     else:
         if len(args) > 1 and args[1] == "--help" and args[0] in valid_commands:
             print(fhelp.fhelp(args[0]))
