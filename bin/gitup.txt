@@ -1,0 +1,30 @@
+README.md
+
+#Archivos instalación
+osiris
+osiris.sh
+install.com
+install.sh
+share.sh
+
+
+#Archivos Osiris
+bin/osiris
+bin/osiris.py
+bin/auth.py
+bin/com.py
+bin/fhelp.py
+bin/get_config.py
+bin/gitup
+bin/gitup.txt
+#Directorio HELP
+bin/help
+
+#Archivos Comandos
+bin/com/shell.py
+bin/com/create.py
+bin/com/ffmpeg2.py
+bin/com/fdev.py
+bin/com/hls.py
+bin/com/sniff.py
+bin/com/scanip.py
