@@ -69,10 +69,10 @@ def main(args):
 
 
     profiles = {
-    "perfil1": {
+    "480": {
         "preset": "ultrafast",
-        "vbr":"500k",
-        "buffsize":"1000k"
+        "vbr":"480k",
+        "bufsize":"2500k"
     },
     "perfil2": {
         "preset": "slow"
@@ -80,7 +80,7 @@ def main(args):
 }
 
 # Seleccionar un perfil
-    perfil_actual = "perfil1"
+    perfil_actual = "480"
     profile_name = perfil_actual
 
 # Obtener el valor de "preset" para el perfil seleccionado
@@ -226,7 +226,7 @@ def main(args):
     "-r",
     "15",
     "-maxrate",
-    "750k",
+    "512k",
     "-minrate",
     "128k"
     ]
