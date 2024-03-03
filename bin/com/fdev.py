@@ -70,7 +70,9 @@ def main(args):
 
     profiles = {
     "perfil1": {
-        "preset": "ultrafast"
+        "preset": "ultrafast",
+        "vbr":"500k",
+        "buffsize":"1000k"
     },
     "perfil2": {
         "preset": "slow"
@@ -78,7 +80,7 @@ def main(args):
 }
 
 # Seleccionar un perfil
-    perfil_actual = "perfil2"
+    perfil_actual = "perfil1"
     profile_name = perfil_actual
 
 # Obtener el valor de "preset" para el perfil seleccionado
@@ -142,8 +144,7 @@ def main(args):
 
     yt_default_av_codecs = [
     "-c:v","libx264",
-    "-c:a","aac",
-    "-strict","-2"
+    "-c:a","aac"
     ]
 
     yt_start = [
@@ -221,11 +222,9 @@ def main(args):
     "-pix_fmt",
     "yuv420p",
     "-g",
-    "2",
+    "3",
     "-r",
-    "20",
-    "-ar",
-    "44100",
+    "15",
     "-maxrate",
     "750k",
     "-minrate",
