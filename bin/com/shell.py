@@ -10,4 +10,5 @@ def main(args):
     return
 
 
+
 print('Creado módulo-comando shell y fecha y hora: 2023-11-28 12:12:24.596228')
