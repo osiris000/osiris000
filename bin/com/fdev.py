@@ -73,7 +73,7 @@ def main(args):
         "profileType":"Youtube Live Streaming 480p",
         "preset": "ultrafast",
         "vbr":"520k",
-        "abr":"128k"
+        "abr":"128k",
         "bufsize":"2500k"
     },
     "perfil2": {

@@ -15,6 +15,8 @@ Se conoce como dinámica porque se pueden montar y desmontar los comandos-progra
 
 
 
+<h4>La documentación a continuación está desactualizada </h4>
+
 <h3>Aplicaciones que instala el instalador osiris</h3> 
 
 El instalador puede no estar ajustado a los requerimientos de todos los sistemas
