@@ -2,7 +2,7 @@
 
 ODS es una shell dinámica sobre la shell del sistema escrita en Bash en Python principalmente.   
 
-Se conoce como dinámica porque se pueden montar y desmontar los comandos-programa en memoria y alternar entre ellos sin afectarse mutuamente.   
+Se conoce como dinámica porque se pueden montar y desmontar los comandos-programa en memoria y alternar entre ellos, pasándoles argumentos, sin afectarse mutuamente.   
 
 
 
