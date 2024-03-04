@@ -69,9 +69,11 @@ def main(args):
 
 
     profiles = {
-    "480": {
+    "YLS": {
+        "profileType":"Youtube Live Streaming 480p",
         "preset": "ultrafast",
-        "vbr":"480k",
+        "vbr":"520k",
+        "abr":"128k"
         "bufsize":"2500k"
     },
     "perfil2": {
@@ -80,7 +82,7 @@ def main(args):
 }
 
 # Seleccionar un perfil
-    perfil_actual = "480"
+    perfil_actual = "YLS"
     profile_name = perfil_actual
 
 # Obtener el valor de "preset" para el perfil seleccionado
@@ -243,8 +245,6 @@ def main(args):
     yt_default_progress_file,
     "-y"
     ]
-
-
 
     try:
         if args[0] == "youtube" or args[0] == "yt" :
