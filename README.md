@@ -399,10 +399,10 @@ Comandos:
 
 
 
-Contacto para más información, otros asuntos: osiris.osscom@gmail.com  
+Contacto para más información y otros asuntos: osiris.osscom@gmail.com    
 
 
 
 
-<b>AMM 2024</b> LICENSE: LICENSE.md
+<b>AMM 2024</b> LICENCIA: LICENSE.md#licencia  
 
