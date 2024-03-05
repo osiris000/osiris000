@@ -3,7 +3,7 @@
 <h4>
 Fecha: 2024-5-5   
 
-Titular de los derechos: Alberto MM   
+Titular de los derechos: AMMM   
 </h4>  
 
 	1. Concesión de la licencia:   

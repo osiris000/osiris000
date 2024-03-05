@@ -133,8 +133,6 @@ def main(args):
     yt_default_progress_file = "com/datas/ffmpeg/progress_process.txt"
     MAX_LPF = 4096 # maximum length progess file
 
-
-
     yt_default_list_dir = "com/datas/ffmpeg/tv"
 
     yt_default_av_codecs = [
