@@ -4,6 +4,7 @@
 
 #README git
 README.md
+LICENSE.md
 
 #Archivos instalación
 osiris
