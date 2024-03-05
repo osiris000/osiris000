@@ -401,5 +401,8 @@ Comandos:
 
 Contacto para más información, otros asuntos: osiris.osscom@gmail.com  
 
-<b>AMM 2024</b>
+
+
+
+<b>AMM 2024</b> LICENSE: LICENSE.md
 
