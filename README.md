@@ -41,9 +41,14 @@ Está deshabilitada por el símbolo de comentario en bash "#" lo cual al descome
 
 
 
-
+Osiris se implementa y modifica desde su propia consola, en el ejemplo siguiente es subiendo estos archivos a github, listados en bin/gitup.txt que se ejecuta desde la consola desde el comando >>> shell>  
+Haciendo >>>shell> ./gitup  
+     
 
 ![osiris png](https://vtwitt.com/jsa/media/./osiris/gitup.png)   
+
+
+Se puede observar como al final se cambia el comando a ffmpeg2 con la order "use"  
 
 
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
