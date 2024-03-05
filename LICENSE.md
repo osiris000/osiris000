@@ -1,5 +1,5 @@
 Licencia de Uso Libre para ODS Osiris Dynamic Shell (Osiris000)   
-Versión: 1.0b   
+Versión: 0.9x-beta   
 
 Fecha: 2024-5-5   
 
