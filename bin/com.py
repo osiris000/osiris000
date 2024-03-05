@@ -39,7 +39,7 @@ def habilitar_y_exportar_venv(nombre_venv):
 nombre_venv = "osiris_env"
 
 # Llamada a la función para habilitar y exportar el entorno virtual
-habilitar_y_exportar_venv(nombre_venv)
+#habilitar_y_exportar_venv(nombre_venv)
 
 
 

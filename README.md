@@ -57,10 +57,21 @@ En la siguente captura se hace uso de ffmpeg2 en desarrollo con el comando fdev 
 ![osiris png](https://vtwitt.com/jsa/media/./osiris/ffmpeg2.png)   
 
 
-
 La direfencia entre "orden" y "comando", es que las órdenes son propias del core de osiris, mientras que los
 comandos son implementaciones de programas escritos en python a los cuales se les pasa argumentos desde la consola
 a su función interna "main"  
+
+
+Para usar los comandos sin intercambiarlos haga >>> xom> use, esto volverá el promp a >>> entonoces a partir de ahí puede hacer:
+  
+>>>shell ls    
+>>>fdev yt intro     
+>>>shell ./gitup      
+>>>mount xcom   
+>>>xcom> args...   
+...etc   
+
+
 
 Para editar/modificar el código fuente un comando se usa el modificador --edit   
 
