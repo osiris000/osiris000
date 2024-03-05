@@ -19,6 +19,24 @@ Para acceder directamente a osiris saltando el instalador se ejecuta <b>osiris -
 
 
 
+El propósito de osiris es facilitar un entorno orientado a web2, web3 y multimedia, entre otras aplicaciones.     
+
+
+La instalación de aplicaciones se habilitan descomentando sus líneas en <b>install.sh</b>   
+
+
+Por defecto python3 está descomentada "#" por lo cual al iniciar el programa comprueba si está instalado porque e necesario de inicio   
+
+		check_command_installed /usr/bin/python3 --version
+
+
+Pero, por ejemplo,
+
+		#check_command_installed /usr/bin/apache2 --version
+
+Está deshabilitada por el símbolo de comentario en bash "#" lo cual al descomentarla, guardar los cambios y volver a ejecutar el programa, pedirá permiso para instalarlo después de comprobar si está instalado ya.         
+
+
 
 
 
@@ -29,7 +47,7 @@ Para acceder directamente a osiris saltando el instalador se ejecuta <b>osiris -
 
 
 
-<h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa.   </h4>
+<h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa. Este programa está en desarrollo y podría existir alguna configuración incorrecta para algún comando específico </h4>
 
 <h3>Aplicaciones que instala el instalador osiris</h3> 
 
