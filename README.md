@@ -404,5 +404,5 @@ Contacto para más información y otros asuntos: osiris.osscom@gmail.com
 
 
 
-<b>AMM 2024</b> LICENCIA: LICENSE.md#licencia  
+<b>AMM 2024</b> [LICENCIA](LICENSE.md)  
 
