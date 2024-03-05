@@ -8,7 +8,10 @@ osiris.sh
 install.com
 install.sh
 share.sh
+auth.py
 
+#default password
+data/auth_pwd
 
 #Archivos Osiris
 bin/osiris

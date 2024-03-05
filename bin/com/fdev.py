@@ -213,9 +213,8 @@ def main(args):
     ]
 
     fscroll = [
-    "-filter_complex",
-    "[0] split [txt][orig];[txt] drawtext=textfile=com/datas/ffmpeg/fscroll.txt:reload=1: fontfile=lib/font/arialbd.ttf: fontcolor=#dddd11: fontsize=14: y=8: x=w-mod(max(t-1\,0)*(w+tw)/33\,(w+tw)): [txt];[txt] drawbox=x=5:y=5:w=iw:h=20:c=black@0.4:t=15 [txt];[txt] drawtext=fontfile=lib/font/arialbd.ttf: text='xBold': fontsize=8: fontcolor=#1e1eac: bordercolor=#d2bd19@0.5:borderw=1: boxborderw=2: x=w-text_w -2: y=5: [txt];[orig][txt] overlay=main_w-overlay_w-10:5"
-    ]
+  '-vf',"drawtext=fontfile=lib/font/arialbd.ttf:textfile=com/datas/ffmpeg/fscroll.txt:y=5:x=10:fontsize=42:fontcolor=white:reload=1:enable='lt(mod(t\,15)\,4)'",
+     ]
 
     
     yt_codecs_start =  yt_default_preset + yt_default_screen + yt_default_abr + yt_default_vbr +  yt_default_buffer_size
@@ -233,7 +232,7 @@ def main(args):
     "128k"
     ]
 
-    yt_codecs_start = logo + yt_codecs_start
+    yt_codecs_start = logo +  yt_codecs_start
 
     yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates
 
@@ -282,7 +281,7 @@ def main(args):
 
 
 #            print(yt_args)
-#DEL            yt_args = " ".join(yt_args)
+            print(" ".join(yt_args))
 
             if  estado_proceso == False:
                 print(yt_args)
