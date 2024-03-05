@@ -36,7 +36,7 @@ Si alguna disposición de esta licencia se considera inválida o inaplicable, di
 
 	6. Terminación:    
 
-Esta licencia no puede ser terminada por el titular de los derechos ni modificarse con efectos retroactivos. El software seguirá teniendo esta misma licencia aunque el titular de los derechos transfiriese la propiedad del software a otra persona.   
+Esta licencia no puede ser terminada por el titular de los derechos ni modificarse con efectos retroactivos. El software seguirá teniendo esta misma licencia aunque el titular de los derechos transfiriese la propiedad del software a otra persona que sólo podría modificar la licencia para versiones futuras a su adquisición.     
 
 	7. Contacto:   
 
