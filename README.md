@@ -48,7 +48,14 @@ Haciendo >>>shell> ./gitup
 ![osiris png](https://vtwitt.com/jsa/media/./osiris/gitup.png)   
 
 
-Se puede observar como al final se cambia el comando a ffmpeg2 con la order "use"  
+Se puede ver como al final se cambia el comando a ffmpeg2 con la orden "use"  
+
+
+La direfencia entre "orden" y "comando", es que las órdenes son propias del core de osiris, mientras que los
+comandos son implementaciones de programas escritos en python a los cuales se les pasa argumentos desde la consola
+a su función interna "main"  
+
+Para editar/modificar el código fuente un comando se usa el modificador --edit   
 
 
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
