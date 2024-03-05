@@ -13,6 +13,15 @@ Si ya están instalados se saltan o el sistema avisará que ya están instalados
 
 El entorno virtual hay que activarlo cada vez que se inicie el programa tecleando la opción “y”  
 
+Al entrar en la ODS el programa pide una contraseña, por defecto es <b>osiris</b>, para cambiarla una vez dentro, se usa la orden <b>Reset_Password</b>   
+
+
+Para acceder directamente a osiris saltando el instalador se ejecuta <b>osiris -p</b>  
+
+
+
+
+
 
 
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
