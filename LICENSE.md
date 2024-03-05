@@ -13,6 +13,7 @@ Por la presente, se concede a cualquier persona que obtenga una copia de este so
 
 Se debe dar crédito a los autores originales del Software en cualquier forma de redistribución del mismo.   
 Se debe mantener la siguiente mención de copyright en todas las copias del Software:   
+
 Copyright (c) 2024 AMM   
 
 Se debe incluir una copia de esta licencia en todas las distribuciones del Software.   
@@ -27,8 +28,10 @@ EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, NI EXPLÍC
 
 	5. Disposiciones generales:   
 
-Esta licencia se rige e interpreta por las leyes de [país del titular].   
-Cualquier disputa que surja de esta licencia se resolverá mediante arbitraje vinculante de acuerdo con las reglas de la [institución de arbitraje].   
+Esta licencia se rige e interpreta por las leyes internacionales.   
+
+Cualquier disputa que surja de esta licencia se resolverá mediante arbitraje vinculante de acuerdo con las reglas de la OMPI.   
+
 Si alguna disposición de esta licencia se considera inválida o inaplicable, dicha disposición se eliminará de esta licencia y las disposiciones restantes permanecerán en pleno vigor y efecto.   
 
 	6. Terminación:    
@@ -41,4 +44,3 @@ Si tiene alguna pregunta sobre esta licencia, póngase en contacto con el titula
 
 			diariocompostela21@gmail.com   
 
-			
