@@ -8,6 +8,7 @@ osiris.sh
 install.com
 install.sh
 share.sh
+datax
 
 
 #Archivos Osiris
@@ -21,10 +22,11 @@ bin/gitup
 bin/gitup.txt
 #Directorio HELP
 bin/help
-bin/auth.py
 
+bin/auth.py
 #default password
 bin/data/auth_pwd
+
 
 
 #Archivos Comandos
