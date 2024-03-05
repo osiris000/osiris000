@@ -129,7 +129,7 @@ def main(args):
 
 
     yt_default_audio_bitrate = "128k"
-    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
+    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
     yt_default_progress_file = "com/datas/ffmpeg/progress_process.txt"
     MAX_LPF = 4096 # maximum length progess file
 

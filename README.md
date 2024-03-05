@@ -58,7 +58,15 @@ a su función interna "main"
 Para editar/modificar el código fuente un comando se usa el modificador --edit   
 
 
+
+Se instala desde este git, para mayor seguridad hacerlo en el directorio /var/www/osiris000   
+
+
+Para iniciarlo /var/www/osiris000~#. osiris   
+
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
+
+
 
 
 
