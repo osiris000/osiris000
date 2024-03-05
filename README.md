@@ -30,7 +30,7 @@ Para acceder directamente a osiris saltando el instalador se ejecuta <b>osiris -
 
 
 
-<h4>La documentación a continuación está desactualizada </h4>
+<h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa   </h4>
 
 <h3>Aplicaciones que instala el instalador osiris</h3> 
 
