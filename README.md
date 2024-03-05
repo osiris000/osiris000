@@ -24,7 +24,7 @@ Al acceder, el programa pedirá siempre la contraseña root y después la propia
 
 El propósito de osiris es facilitar un entorno orientado a web2, web3, multimedia y blockchain, entre otras aplicaciones, para GNU/Linux/debian. Una red alternativa P2P.      
 
-
+	
 La instalación de aplicaciones se habilitan descomentando sus líneas en <b>install.sh</b>   
 
 
@@ -64,12 +64,12 @@ a su función interna "main"
 
 Para usar los comandos sin intercambiarlos haga >>> xom> use, esto volverá el promp a >>> entonoces a partir de ahí puede hacer:
   
->>>shell ls    
->>>fdev yt intro     
->>>shell ./gitup      
->>>mount xcom   
->>>xcom> args...   
-...etc   
+	>>>shell ls    
+	>>>fdev yt intro     
+	>>>shell ./gitup      
+	>>>mount xcom   
+	>>>xcom> args...   
+	...etc   
 
 
 
