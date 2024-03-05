@@ -8,8 +8,7 @@ Se conoce como dinámica porque se pueden montar y desmontar los comandos-progra
 Para ejecutarlo basta con situarse sobre el directorio raiz y ejecutar <b>. osiris</b>  
 
 
-Lo primero que pide es instalar, si no están instalados, python3.9 , venv (entorno de dependencias para osiris) y su activación  
-Si ya están instalados se saltan o el sistema avisará que ya están instalados  
+Lo primero que pide es instalar, si no están instalados, python3.9 , venv (entorno de dependencias para osiris) y su activación, si ya están instalados se saltan o el sistema avisará que ya están instalados  .
 
 El entorno virtual hay que activarlo cada vez que se inicie el programa tecleando la opción “y”  
 
@@ -30,7 +29,7 @@ Para acceder directamente a osiris saltando el instalador se ejecuta <b>osiris -
 
 
 
-<h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa   </h4>
+<h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa.   </h4>
 
 <h3>Aplicaciones que instala el instalador osiris</h3> 
 
