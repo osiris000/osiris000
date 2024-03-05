@@ -43,5 +43,5 @@ Esta licencia no puede ser terminada por el titular de los derechos ni modificar
 
 Si tiene alguna pregunta sobre esta licencia, póngase en contacto con el titular de los derechos en la siguiente dirección:   
 
-			diariocompostela21@gmail.com   
+			osiris.osscom@gmail.com   
 
