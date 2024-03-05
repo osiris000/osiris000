@@ -22,7 +22,7 @@ Al acceder, el programa pedirá siempre la contraseña root y después la propia
 
 
 
-El propósito de osiris es facilitar un entorno orientado a web2, web3 y multimedia, entre otras aplicaciones.     
+El propósito de osiris es facilitar un entorno orientado a web2, web3, multimedia y blockchain, entre otras aplicaciones, para GNU/Linux/debian. Una red alternativa P2P.      
 
 
 La instalación de aplicaciones se habilitan descomentando sus líneas en <b>install.sh</b>   
