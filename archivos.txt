@@ -1,2 +1,0 @@
-install.com
-install.sh
