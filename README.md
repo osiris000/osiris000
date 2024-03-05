@@ -43,7 +43,7 @@ Está deshabilitada por el símbolo de comentario en bash "#" lo cual al descome
 
 
 
-![osiris png](https://vtwitt.com/jsa/media/image/osiris/ksnip_20230928-070413-[ksnip_20230928-070413].png)   
+![osiris png](javascript:setSrc('https://vtwitt.com/jsa/media/./osiris/gitup.png','src'))   
 
 
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
