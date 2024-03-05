@@ -64,6 +64,10 @@ Se instala desde este git, para mayor seguridad hacerlo en el directorio /var/ww
 
 Para iniciarlo /var/www/osiris000~#. osiris   
 
+
+<b>Actualmente podría dar algún problema al clonarlo para evitarlo elimine el directorio bin/com/osiris_env para instalar las nuevas dependencias habilitándo la instalación en install.sh descomentando las lineas check_command_installed</b>   
+
+
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
 
 
