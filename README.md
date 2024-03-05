@@ -51,6 +51,13 @@ Haciendo >>>shell> ./gitup
 Se puede ver como al final se cambia el comando a ffmpeg2 con la orden "use"  
 
 
+En la siguente captura se hace uso de ffmpeg2 en desarrollo con el comando fdev (clon desarrollo) en pruebas  
+
+
+![osiris png](https://vtwitt.com/jsa/media/./osiris/ffmpeg2.png)   
+
+
+
 La direfencia entre "orden" y "comando", es que las órdenes son propias del core de osiris, mientras que los
 comandos son implementaciones de programas escritos en python a los cuales se les pasa argumentos desde la consola
 a su función interna "main"  
