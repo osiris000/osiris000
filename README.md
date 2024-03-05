@@ -64,11 +64,11 @@ a su función interna "main"
 
 Para usar los comandos sin intercambiarlos haga >>> xom> use, esto volverá el promp a >>> entonoces a partir de ahí puede hacer:
   
-	>>>shell ls    
-	>>>fdev yt intro     
-	>>>shell ./gitup      
-	>>>mount xcom   
-	>>>xcom> args...   
+	>>> shell ls    
+	>>> fdev yt intro     
+	>>> shell ./gitup      
+	>>> mount xcom   
+	>>> xcom> args...   
 	...etc   
 
 
