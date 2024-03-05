@@ -42,3 +42,7 @@ bin/com/hls.py
 bin/com/sniff.py
 bin/com/scanip.py
 bin/com/blockchain.py
+
+
+#dpkg .deb package
+DEBIAN
