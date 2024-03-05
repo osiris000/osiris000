@@ -1,4 +1,7 @@
 
+#Ignores
+.gitignore
+
 #README git
 README.md
 
