@@ -1,5 +1,15 @@
 #!/usr/bin/bash
 
+
+
+echo "Opción no implementada, ejecute '. osiris'  en la consola para acceder si tiene problemas "
+
+
+echo "Para usarlo correctamente cambie en el archivo osiris la línea posterior a este comando a su directorio de instación de osiris si ya lo tiene instalado, en caso contrario ejecute la orden anterior  "
+
+echo "Al hacer los cambios, si le funciona, puede deshabilitar esta información comentándolos"  
+
+
 cd /var/www/osiris000
 
 # Verificar si se proporcionó un argumento
