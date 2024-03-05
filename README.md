@@ -18,6 +18,9 @@ Al entrar en la ODS el programa pide una contraseña, por defecto es <b>osiris</
 Para acceder directamente a osiris saltando el instalador se ejecuta <b>. osiris -p</b>    
 
 
+Al acceder, el programa pedirá siempre la contraseña root y después la propia de osiris.    
+
+
 
 El propósito de osiris es facilitar un entorno orientado a web2, web3 y multimedia, entre otras aplicaciones.     
 
