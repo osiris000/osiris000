@@ -1,10 +1,10 @@
-Licencia de Uso Libre para ODS Osiris Dynamic Shell (Osiris000)   
+<h3>Licencia de Uso Libre para ODS Osiris Dynamic Shell (Osiris000)   </h3>
 Versión: 0.9x-beta   
-
+<h4>
 Fecha: 2024-5-5   
 
 Titular de los derechos: Alberto MM   
-
+</h4>
 	1. Concesión de la licencia:   
 
 Por la presente, se concede a cualquier persona que obtenga una copia de este software y de la documentación asociada (el "Software"), una licencia libre de derechos, sin restricciones y sin royalties, para usar, copiar, modificar, distribuir, publicar, sublicenciar y/o vender copias del Software, y para permitir que las personas a las que se les distribuya lo hagan, sujeto a las siguientes condiciones:    
