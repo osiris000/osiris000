@@ -36,7 +36,7 @@ Si alguna disposición de esta licencia se considera inválida o inaplicable, di
 
 	6. Terminación:    
 
-Esta licencia puede ser terminada por el titular de los derechos en cualquier momento mediante notificación por escrito a usted. Al finalizar, usted deberá destruir todas las copias del Software en su poder.   
+Esta licencia no puede ser terminada por el titular de los derechos ni modificarse con efectos retroactivos. El software seguirá teniendo esta misma licencia aunque el titular de los derechos transfiriese la propiedad del software a otra persona.   
 
 	7. Contacto:   
 
