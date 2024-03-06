@@ -103,7 +103,7 @@ Para iniciarlo /var/www/osiris000~#. osiris
 
 <b>Proyección</b>
 
-![osiris gif](https://vtwitt.com/jsa/odsia.gif)
+![osiris gif](https://vtwitt.com/jsa/odsia.png)
 
 
 
