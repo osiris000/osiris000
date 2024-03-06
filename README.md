@@ -83,7 +83,11 @@ Se instala desde este git, para mayor seguridad hacerlo en el directorio /var/ww
 Para iniciarlo /var/www/osiris000~#. osiris   
 
 
-<b>Actualmente podría dar algún problema al clonarlo para evitarlo elimine el directorio bin/com/osiris_env para instalar las nuevas dependencias habilitándo la instalación en install.sh descomentando las lineas check_command_installed</b>   
+<b>Actualmente podría dar algún problema al clonarlo para evitarlo elimine el directorio bin/com/osiris_env para instalar las nuevas dependencias habilitándo la instalación en install.sh descomentando las lineas check_command_installed.  
+	Cómo hacer todo esto se irá documentando en adelante, así como la documentación de los programas-comando   
+</b>   
+
+
 
 
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
@@ -154,7 +158,14 @@ Apis:
 bardapi  IA de google   
 
 
-Integra bard desde la consola osiris 
+Integra bard desde la consola osiris
+
+
+<b> 
+	El desarrollo de bard (que hacía uso de bardapi) ha sido abandonado en favor del uso de la API pública de Gemini.  
+La siguente captura es una muestra de como se usó bard en el pasado en la consola osiris al comienzo de su desarrollo,  a medida que avanze la documentación del proyecto irá desapareciendo la documentación obsoleta-.  
+</b>
+
 
 ![osiris-bard](https://vtwitt.com/jsa/media/image/osiris/ksnip_20230928-070413-[ksnip_20230928-070413].png)
 

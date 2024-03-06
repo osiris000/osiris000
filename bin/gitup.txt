@@ -39,7 +39,7 @@ bin/com/shell.py
 bin/com/create.py
 
 bin/com/ffmpeg2.py
-##para ffmpeg2
+#para ffmpeg2
 bin/com/datas/ffmpeg/start.mkv
 bin/com/datas/ffmpeg/carta.mkv
 bin/com/datas/ffmpeg/intro.mp4
