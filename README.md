@@ -348,7 +348,7 @@ MiTv - una app para crear y gestionar canales de televisión en streaming en for
 
 
 
-![mitv jpg](https://pbs.twimg.com/media/F2pmVzQW8AAPm1K?format=jpg&name=small)  
+
 
 Esta aplicación usa un api javascript en desarrollo llamada wfcore  
 
@@ -358,7 +358,7 @@ de forma que consideraremos paneles a los tags html que estructuran la aplicaci�
 
 wfcore es una api en desarrollo para manejar la lógica estructural de los documentos html para construir aplicaciones web, si bien no dejan de ser tags html también se les consideran paneles cuando se trata de elementos posicionales y objetos necesarios para la aplicación.  
 
-![wfcore jpg](https://pbs.twimg.com/media/F2sUK4qXwAA4eBX?format=png&name=small)  
+
 
 
 
@@ -444,7 +444,8 @@ Comandos:
 
 
 
-Contacto para más información y otros asuntos: osiris.osscom@gmail.com    
+Contacto para más información y otros asuntos: osiris.osscom@gmail.com  
+Envíe su petición para incluir un comando-app en esta distribución oficial del sistema Osiris Base.   
 
 
 
