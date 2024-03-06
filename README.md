@@ -62,7 +62,7 @@ comandos son implementaciones de programas escritos en python a los cuales se le
 a su función interna "main"  
 
 
-Para usar los comandos sin intercambiarlos haga >>> xom> use, esto volverá el promp a >>> entonoces a partir de ahí puede hacer:
+Para usar los comandos sin intercambiarlos haga >>> xom> use, esto volverá el promp a >>> entonces a partir de ahí puede hacer:
   
 	>>> shell ls    
 	>>> fdev yt intro     

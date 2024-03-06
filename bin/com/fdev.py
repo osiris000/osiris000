@@ -191,12 +191,12 @@ def main(args):
 
     yt_input_start = [
     "-i",
-    "com/datas/ffmpeg/carta_ajuste.mp4.mkv"
+    "com/datas/ffmpeg/start.mkv"
     ]
 
     yt_input_carta = [
     "-i",
-    "com/datas/ffmpeg/carta_ajuste2.mp4.mkv"
+    "com/datas/ffmpeg/carta.mkv"
     ]
 
     yt_input_intro = [
