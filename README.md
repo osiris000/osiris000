@@ -45,6 +45,9 @@ Osiris se implementa y modifica desde su propia consola, en el ejemplo siguiente
 Haciendo >>>shell> ./gitup  
      
 
+El prompt >>> si bien s similar al prompt de python, no está ejecutando python directamente en la consola para hacerlo debe usar el comando >>>shel >  o  >>> shell python3 --version  
+
+
 ![osiris png](https://vtwitt.com/jsa/media/./osiris/gitup.png)   
 
 
