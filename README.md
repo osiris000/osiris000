@@ -101,6 +101,15 @@ Para iniciarlo /var/www/osiris000~#. osiris
 
 
 
+<b>Proyección</b>
+
+![osiris gif](https://vtwitt.com/jsa/odsk.gif)
+
+
+
+
+
+
 <h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa. Este programa está en desarrollo y podría existir alguna configuración incorrecta para algún comando específico </h4>
 
 <h3>Aplicaciones que instala el instalador osiris</h3> 
