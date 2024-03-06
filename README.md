@@ -98,7 +98,10 @@ Para iniciarlo /var/www/osiris000~#. osiris
 
 ¿Quieres que Osiris000 siga creciendo? Con tu apoyo, podemos hacer realidad este sueño, un sistema operativo libre con control de privacidad orientado a internet/web2++ y multimedia, fácil de usar y fiable : https://www.buymeacoffee.com/osiris000   
 
-
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18 8C18 6.66667 17.3333 5.33333 16 5.33333C14.6667 5.33333 13.3333 6.66667 12 8C10.6667 6.66667 9.33333 5.33333 8 5.33333C6.66667 5.33333 5.33333 6.66667 4 8C4 9.33333 4.66667 10.6667 6 12C7.33333 13.3333 9.33333 14.6667 12 16C14.6667 14.6667 16 13.3333 17.3333 12C18.6667 10.6667 19 9.33333 19 8C19 6.66667 18.6667 5.33333 18 4V8Z" fill="#000000"/>
+<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#000000" stroke-width="2"/>
+</svg>
 
 
 <h4>La documentación a continuación está incompleta y desactualizada si bien ayuda a entender el funcionamiento interno del programa. Este programa está en desarrollo y podría existir alguna configuración incorrecta para algún comando específico </h4>
