@@ -451,7 +451,7 @@ Contacto para más información y otros asuntos: osiris.osscom@gmail.com
 Envíe su petición para incluir un comando-app en esta distribución oficial del sistema Osiris Base.   
 
 
-
+Puedes ayudar a que este proyecto avance más rápido compartiendo este link: https://www.buymeacoffee.com/osiris000  (gmni007)
 
 <b>AMM 2024</b> [LICENCIA](LICENSE.md)  
 
