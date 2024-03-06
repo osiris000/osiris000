@@ -96,7 +96,7 @@ Para iniciarlo /var/www/osiris000~#. osiris
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
 
 
-¿Quieres que Osiris000 siga creciendo? Con tu apoyo, podemos hacer realidad este sueño, un sistema operativo libre con control de privacidad orientado a internet y multimedia : https://www.buymeacoffee.com/osiris000   
+¿Quieres que Osiris000 siga creciendo? Con tu apoyo, podemos hacer realidad este sueño, un sistema operativo libre con control de privacidad orientado a internet/web2++ y multimedia, fácil de usar y fiable : https://www.buymeacoffee.com/osiris000   
 
 
 
