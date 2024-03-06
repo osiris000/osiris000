@@ -184,6 +184,9 @@ bard --help  [ Muestra la ayuda del comando bard presente en bin/help/bard.hlp ]
 
 ....
 
+
+<h3>Instrucciones de instalación y opciones del instalador</h3>
+
 Ejecutar ./osiris.sh
 
 
@@ -219,6 +222,11 @@ La primera vez que se entra en bin/osiris.py pide crear una contraseña nueva
 para la aplicación de administración y gestión de la consola osiris.  
 desde esta consola se podrán instalar y administrar, apps, módulos,  
 extensiones, web, blockchain, contenedores y microsevicios.  
+
+
+
+
+<h3>Uso y comandos</h3>
 
 
 Una vez dentro aparece el prompt >>>  
@@ -283,6 +291,10 @@ el código de fuera de las funciones (print,..) lo ejecuta sólo la primera vez
 que se llama al comando ya que las sucesivas ya tiene el módulo cargado,  
 si se hacen cambios en el código del archivo comando y se quiere recargar sin salir  
 de la aplicación, puede hacerse usando el argumento reset, >>>nuevo_com reset  
+
+
+
+<h3>Comandos esenciales</h3>
 
 
 
@@ -357,6 +369,10 @@ se dividen en dos. Los comandos del sistema que son:
   use [command]  
   [command] --reset  
   [command] --help  
+
+
+
+<h3>Otros comandos (programas)</h3>
 
 
 El prompt osiris es >>>  
