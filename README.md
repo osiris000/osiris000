@@ -97,7 +97,7 @@ Las órdenes principales son:
 
 
 
-
+ 
 
 
 Si instala desde este git, temporalmente, para mayor seguridad hacerlo en el directorio /var/www/osiris000   
