@@ -68,13 +68,17 @@ def main(args):
     #global yt_default_progress_file, MAX_LPF
 
 
+    lineInput = None
+
     profiles = {
     "YLS": {
         "profileType":"Youtube Live Streaming 480p",
         "preset": "ultrafast",
         "vbr":"520k",
         "abr":"128k",
-        "bufsize":"2500k"
+        "bufsize":"2500k",
+        "stream_loop":"-1",
+        "input":lineInput
     },
     "perfil2": {
         "preset": "slow"

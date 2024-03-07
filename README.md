@@ -101,11 +101,14 @@ Para iniciarlo /var/www/osiris000~#. osiris
 
 
 
-<b>Proyección</b>
+<b>Propuesta de arquitectura</b>
 
-![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia.png)
+![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia2.png)
 
 
+
+
+<b>Este programa está en fase de desarrollo </b>   
 
 
 
