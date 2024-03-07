@@ -80,7 +80,8 @@ Para editar/modificar el código fuente un comando se usa el modificador --edit
 
 
 
-Las órdenes principales son:
+Las órdenes principales son:   
+
 		use
 		mount
 
