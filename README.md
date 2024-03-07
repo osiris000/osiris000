@@ -80,6 +80,25 @@ Para editar/modificar el código fuente un comando se usa el modificador --edit
 
 
 
+Las órdenes principales son:
+		use
+		mount
+
+	modificadores:
+	 	--reset
+	 	--edit  
+
+
+"use" monta el comando sólamente, uno cualquiera aunque no exista.  
+"mount" monta uno que no esté en el array de comandos por defecto  (busca com/Xcomando.py)  
+
+
+
+
+
+
+
+
 Se instala desde este git, para mayor seguridad hacerlo en el directorio /var/www/osiris000   
 
 
