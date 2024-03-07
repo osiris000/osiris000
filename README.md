@@ -123,13 +123,14 @@ Para iniciarlo /var/www/osiris000~#. osiris
 
 <b>Propuesta de arquitectura</b>
 
-.1  
+		v 1.1  
+		
 ![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia2.png)
 
 
-.2  
+		v 1.2  
 
-![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia2.png)
+![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia3.png)
 
 
 
