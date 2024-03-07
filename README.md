@@ -100,7 +100,7 @@ Las órdenes principales son:
 
 
 
-Se instala desde este git, para mayor seguridad hacerlo en el directorio /var/www/osiris000   
+Si instala desde este git, temporalmente, para mayor seguridad hacerlo en el directorio /var/www/osiris000   
 
 
 Para iniciarlo /var/www/osiris000~#. osiris   
