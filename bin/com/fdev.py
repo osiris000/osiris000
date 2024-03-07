@@ -296,11 +296,13 @@ def main(args):
                 	print(yt_args)
                 	return
             elif len(args) > 2 and "-c" in args:
-                detener_proceso()
-#                time.sleep(0.5)
-                funcion_proceso(yt_args)
                 estado_proceso == True
+                kill_l = pid_proceso
                 print("Intercambio stream")
+                interchange(yt_args,kill_l)
+                return
+#                detener_proceso()
+
         elif args[0] == "status":
             print("status",estado_proceso)
             if yt_last_args:
@@ -338,6 +340,34 @@ def main(args):
 def defaults():
     prueba = "in function"
     return prueba
+
+
+
+
+
+itc_time = 6
+
+
+def interchange(yt_args,kill_l):
+    global itc_time
+    d = 0
+    global pid_proceso
+    funcion_proceso(yt_args)
+    while d <= itc_time:
+        print(".",d+1)
+        d = d +1
+        if d == itc_time:
+            try:
+                os.kill(kill_l, signal.SIGKILL)
+#uso os kill en vez de subprocess                            subprocess.call(["kill",str(kill_l)],shell=True)
+                print("KILL:",kill_l)
+                break
+            except Exception as e:
+                print("CH PID WARN",e)
+                break
+        time.sleep(1)
+    print("New:",pid_proceso)
+    return
 
 
 
