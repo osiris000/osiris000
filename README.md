@@ -56,7 +56,7 @@ Se puede ver como al final se cambia el comando a ffmpeg2 con la orden "use"
 
 En la siguente captura se hace uso de ffmpeg2 en desarrollo con el comando fdev (clon desarrollo) en pruebas  
 
-
+ 
 ![osiris png](https://vtwitt.com/jsa/media/./osiris/ffmpeg2.png)   
 
 
@@ -123,8 +123,13 @@ Para iniciarlo /var/www/osiris000~#. osiris
 
 <b>Propuesta de arquitectura</b>
 
+.1  
 ![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia2.png)
 
+
+.2  
+
+![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia2.png)
 
 
 
