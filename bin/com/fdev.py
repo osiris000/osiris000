@@ -345,7 +345,7 @@ def defaults():
 
 
 
-itc_time = 6
+itc_time = 10
 
 
 def interchange(yt_args,kill_l):

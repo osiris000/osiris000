@@ -376,8 +376,8 @@ usando --update:
 
 install webapp mitv --update  
 
-la cual estaría accesible desde http://127.0.0.1/app/mitv, pudiendo seguir su  
-desarrollo en http://127.0.0.2/webapp/mitv  , actualizando los cambios usando el comando anterior.  
+la cual estaría accesible desde http://ip-domain/app/mitv, pudiendo seguir su  
+desarrollo en http://ip-domain/webapp/mitv  , actualizando los cambios usando el comando anterior.  
 
 
 
