@@ -15,6 +15,7 @@ estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
 pid_proceso = None
 yt_last_args = False
+def_profile = "YLS"
 
 def funcion_proceso(args):
     global estado_proceso
@@ -63,13 +64,15 @@ def main(args):
     global estado_proceso
     global hilo_proceso, pid_proceso
     global yt_last_args
+    global def_profile
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
 
 
     lineInput = None
-
+    def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
+    def_progress_file = "com/datas/ffmpeg/progress_process.txt"
     profiles = {
     "YLS": {
         "profileType":"Youtube Live Streaming 480p",
@@ -78,7 +81,10 @@ def main(args):
         "abr":"128k",
         "bufsize":"2500k",
         "stream_loop":"-1",
-        "input":lineInput
+        "input":lineInput,
+        "maxrate":"750k",
+        "output":def_output,
+        "progress":def_progress_file
     },
     "perfil2": {
         "preset": "slow"
@@ -86,10 +92,17 @@ def main(args):
 }
 
 # Seleccionar un perfil
-    perfil_actual = "YLS"
+    perfil_actual = def_profile
     profile_name = perfil_actual
 
-# Obtener el valor de "preset" para el perfil seleccionado
+
+
+#input
+    yt_default_input = profiles[profile_name].get("input") if "input" in profiles[profile_name] else "com/datas/ffmpeg/intro.mp4"
+    if yt_default_input != None:
+        yt_default_input = ["-i",yt_default_input]
+    else:
+        yt_default_input = ""
 
 
 #preset
@@ -98,6 +111,7 @@ def main(args):
         yt_default_preset = ["-preset",yt_default_preset]
     else:
         yt_default_preset = ""
+
 
 #screen
     yt_default_screen = profiles[profile_name].get("screen") if "screen" in profiles[profile_name] else "856x480"
@@ -131,10 +145,44 @@ def main(args):
         yt_default_abr = ""
 
 
+#minrate
+    yt_default_minrate = profiles[profile_name].get("minrate") if "minrate" in profiles[profile_name] else "256k"
+    if yt_default_minrate != None:
+        yt_default_minrate = ["-minrate",yt_default_minrate]
+    else:
+        yt_default_minrate = ""
 
-    yt_default_audio_bitrate = "128k"
-    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
-    yt_default_progress_file = "com/datas/ffmpeg/progress_process.txt"
+
+#maxrate
+    yt_default_maxrate = profiles[profile_name].get("maxrate") if "maxrate" in profiles[profile_name] else "750k"
+    if yt_default_maxrate != None:
+        yt_default_maxrate = ["-maxrate",yt_default_maxrate]
+    else:
+        yt_default_maxrate = ""
+
+
+#output
+    yt_default_output_url = profiles[profile_name].get("output") if "output" in profiles[profile_name] else def_output
+    if yt_default_output_url != None:
+        yt_default_output_url = [yt_default_output_url]
+    else:
+        yt_default_output_url = ""
+
+
+#progress
+    yt_default_progress_file = profiles[profile_name].get("progress") if "progress" in profiles[profile_name] else def_progress_file
+    if yt_default_progress_file != None:
+        yt_default_progress_file = ["-progress",yt_default_progress_file]
+    else:
+        yt_default_progress_file = ""
+
+
+
+
+
+
+
+#    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
     MAX_LPF = 4096 # maximum length progess file
 
     yt_default_list_dir = "com/datas/ffmpeg/tv"
@@ -228,11 +276,7 @@ def main(args):
     "3",
     "-r",
     "15",
-    "-maxrate",
-    "512k",
-    "-minrate",
-    "128k"
-    ]
+    ] + yt_default_maxrate + yt_default_minrate
 
     yt_codecs_start = logo +  yt_codecs_start
 
@@ -240,12 +284,7 @@ def main(args):
 
     yt_output = [
     "-f",
-    "flv",
-    yt_default_output_url,
-    "-progress",
-    yt_default_progress_file,
-    "-y"
-    ]
+    "flv"] + yt_default_output_url + yt_default_progress_file 
 
     try:
         if args[0] == "youtube" or args[0] == "yt" :
