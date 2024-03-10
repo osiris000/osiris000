@@ -51,6 +51,11 @@ bin/com/scanip.py
 bin/com/blockchain.py
 
 
+#install default
+
+install/webapp/default
+
+
 #dpkg .deb package
 DEBIAN
 
