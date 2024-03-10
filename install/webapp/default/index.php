@@ -1,8 +1,8 @@
 <?php
 session_start();
-$_SESSION["ADM"] = false;
-if($_REQUEST["x"]=="123454321") $_SESSION["ADM"] =1;
-if(!$_SESSION["ADM"]) {print("
+$_SESSION["PSW"] = false;
+if($_REQUEST["PSW"]=="yourpassword") $_SESSION["PSW"] =1;
+if(!$_SESSION["PSW"]) {print("
 <center>
 <h1><form action='index.php' method='post'>
 <input name='x' type='password' value='Insert Password' width='160'
@@ -12,6 +12,6 @@ onclick=\"x.value=''\">
 Login de Acceso
 </h1>
 </center>
-");phpinfo();exit();}
-
+";exit();}
+else phpinfo();
 ?>
