@@ -80,10 +80,10 @@ def main(args):
         "preset": "ultrafast",
         "vbr":"520k",
         "abr":"128k",
-        "bufsize":"2500k",
+        "bufsize":"2592k",
         "stream_loop":"-1",
         "input":lineInput,
-        "maxrate":"750k",
+        "maxrate":"648k",
         "output":def_output,
         "progress":def_progress_file,
         "ss":seek_start
@@ -393,7 +393,7 @@ def defaults():
 
 
 
-itc_time = -1
+itc_time = 5
 
 
 def interchange(yt_args,kill_l):
@@ -424,7 +424,7 @@ def interchange2(yt_args,kill_l):
     global pid_proceso
     funcion_proceso(yt_args)
     print("New Proceso iniciado:",pid_proceso)
-    input("Pulse Enter para matar el proceso:",kill_l)
+    input("Pulse Enter para matar el proceso anterior:"+str(kill_l))
     try:
         os.kill(kill_l, signal.SIGKILL)
 #uso os kill en vez de subprocess                            subprocess.call(["kill",str(kill_l)],shell=True)

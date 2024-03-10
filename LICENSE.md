@@ -21,7 +21,10 @@ Se debe incluir una copia de esta licencia en todas las distribuciones del Softw
 
 	3. Notificación de modificaciones:   
 
-Las modificaciones no se pueden distribuir con fines comerciales bajo una licencia más restrictiva que la presente licencia.   
+Las modificaciones no se pueden distribuir con fines comerciales bajo una licencia más restrictiva que la presente licencia. 
+
+Los desarrolladores de comandos y otras extensiones privados, fuera del proyecto principal, pueden hacer uso de sus propias licencias en sus componentes o acogerse a esta u otra licencia, teniendo este sistema como base que en ningún caso modifica la suya propia.   
+
 
 	4. Limitación de responsabilidad:   
 

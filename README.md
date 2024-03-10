@@ -190,6 +190,14 @@ yt-dlp
 transmission-cli   
 docker docker.io   
 git    
+sublimeText.deb
+
+
+... otras aplicaciones esenciales
+
+... librerias (pip)
+
+
 
 Entorno virtual para python3-venv osiris_env  
 La ruta al venv es bin/com/osiris_env    
