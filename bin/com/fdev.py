@@ -73,6 +73,7 @@ def main(args):
     lineInput = None
     def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
+    seek_start = None
     profiles = {
     "YLS": {
         "profileType":"Youtube Live Streaming 480p",
@@ -84,7 +85,8 @@ def main(args):
         "input":lineInput,
         "maxrate":"750k",
         "output":def_output,
-        "progress":def_progress_file
+        "progress":def_progress_file,
+        "ss":seek_start
     },
     "perfil2": {
         "preset": "slow"
@@ -176,6 +178,13 @@ def main(args):
     else:
         yt_default_progress_file = ""
 
+
+#seek start
+    yt_default_seek_start = profiles[profile_name].get("ss") if "ss" in profiles[profile_name] else "00:00:00.000"
+    if yt_default_seek_start != None:
+        yt_default_seek_start = ["-ss",yt_default_seek_start]
+    else:
+        yt_default_seek_start = ""
 
 
 
@@ -338,7 +347,7 @@ def main(args):
                 estado_proceso == True
                 kill_l = pid_proceso
                 print("Intercambio stream")
-                interchange(yt_args,kill_l)
+                interchange2(yt_args,kill_l)
                 return
 #                detener_proceso()
 
@@ -384,7 +393,7 @@ def defaults():
 
 
 
-itc_time = 10
+itc_time = -1
 
 
 def interchange(yt_args,kill_l):
@@ -406,6 +415,23 @@ def interchange(yt_args,kill_l):
                 break
         time.sleep(1)
     print("New:",pid_proceso)
+    return
+
+
+def interchange2(yt_args,kill_l):
+    global itc_time
+    d = 0
+    global pid_proceso
+    funcion_proceso(yt_args)
+    print("New Proceso iniciado:",pid_proceso)
+    input("Pulse Enter para matar el proceso:",kill_l)
+    try:
+        os.kill(kill_l, signal.SIGKILL)
+#uso os kill en vez de subprocess                            subprocess.call(["kill",str(kill_l)],shell=True)
+        print("KILL:",kill_l)
+    except Exception as e:
+        print("CH PID WARN",e)
+    print("KILL:",kill_l)
     return
 
 
