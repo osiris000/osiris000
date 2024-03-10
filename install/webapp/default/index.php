@@ -1,17 +1,22 @@
 <?php
 session_start();
-$_SESSION["PSW"] = false;
+$fconf = "gen.app.conf";
+include "parse_ini.php";
+if(isset($_REQUEST["PSW"])) {
 if($_REQUEST["PSW"]=="yourpassword") $_SESSION["PSW"] =1;
-if(!$_SESSION["PSW"]) {print("
+}
+if(!$_SESSION["PSW"]) {
+echo<<<XE
 <center>
 <h1><form action='index.php' method='post'>
-<input name='x' type='password' value='Insert Password' width='160'
-onclick=\"x.value=''\">
+<input name='PSW' type='password' value='Insert Password' width='160'
+onclick="x.value=''">
 <input type='submit' value='enviar'>
 </form>
 Login de Acceso
 </h1>
 </center>
-";exit();}
-else phpinfo();
+XE;
+exit();
+} else phpinfo();
 ?>
