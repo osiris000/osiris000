@@ -56,6 +56,17 @@ bin/com/blockchain.py
 install/webapp/default
 
 
+#html
+
+html/index.html
+html/publicar.html
+
+
+#js libs
+html/js/lib/wfcore3.js
+
+
+
 #dpkg .deb package
 DEBIAN
 

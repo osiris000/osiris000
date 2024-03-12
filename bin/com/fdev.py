@@ -15,7 +15,7 @@ estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
 pid_proceso = None
 yt_last_args = False
-def_profile = "YLS"
+def_profile = "youtube:1"
 
 def funcion_proceso(args):
     global estado_proceso
@@ -75,12 +75,12 @@ def main(args):
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
     seek_start = None
     profiles = {
-    "YLS": {
+    "youtube:1": {
         "profileType":"Youtube Live Streaming 480p",
         "preset": "ultrafast",
         "vbr":"520k",
         "abr":"128k",
-        "bufsize":"2592k",
+        "bufsize":"1296k",
         "stream_loop":"-1",
         "input":lineInput,
         "maxrate":"648k",
@@ -88,11 +88,28 @@ def main(args):
         "progress":def_progress_file,
         "ss":seek_start
     },
+        "youtube:2": {
+        "profileType":"Youtube Live Streaming 480p",
+        "preset": "ultrafast",
+        "vbr":"1500k",
+        "abr":"128k",
+        "bufsize":"5000k",
+        "stream_loop":"-1",
+        "input":lineInput,
+        "maxrate":"2500k",
+        "minrate":"512k",
+        "output":def_output,
+        "progress":def_progress_file,
+        "ss":seek_start,
+        "screen":"1280x720"
+    },
     "perfil2": {
         "preset": "slow"
     }
 }
 
+    #en pruebas
+    def_profile = "youtube:2"
 # Seleccionar un perfil
     perfil_actual = def_profile
     profile_name = perfil_actual
@@ -282,9 +299,9 @@ def main(args):
     "-pix_fmt",
     "yuv420p",
     "-g",
-    "3",
+    "2",
     "-r",
-    "15",
+    "25",
     ] + yt_default_maxrate + yt_default_minrate
 
     yt_codecs_start = logo +  yt_codecs_start
@@ -364,6 +381,16 @@ def main(args):
                 print("---Estado Proceso: True--------------------")
                 print("PID:",pid_proceso)
                 print("-------------------------------------------")
+
+        elif args[0] == "geturl" and len(args) > 1:
+            argse = ["yt-dlp","-f","[height<=720]/best[height<=720]","--get-url",args[1]]
+            print(argse)
+            try:
+                subprocess.call(argse,cwd="com/datas/ffmpeg")
+            except Exception as e:
+                print("ERROR:",e)
+            return
+
         elif args[0] == "import":
             del args[:1]
             args.insert(0,"yt-dlp")
