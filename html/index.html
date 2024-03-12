@@ -3,7 +3,7 @@
 <head>
 <title>economa</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-<script src="/lib/js/wfcore3.js?x=1.1l9.9.9.551461"></script>
+<script src="/lib/js/wfcore3.js"></script>
 <script>
 
 wfcore("xbody",{}).parseIni(`
@@ -28,7 +28,7 @@ margin:0 auto 0 auto;
 `
 
 
-server = "http://"+window.location.hostname
+server = window.location.protocol+"//"+window.location.hostname
 
 xbody.style = "background:black"
 logo.src = server+"/img/economa1.png";
@@ -36,17 +36,18 @@ logo.style = "cursor:pointer;width:40px;height:30px;float:left;margin:0;padding:
 div2.style = div1.style = "border: solid 3px red; background:#18004e;"
 div2.innerHTML = "<div style='width:100%;text-align:center;'><img src='"+server+"/img/cargando.gif' alt='EconoApp'></div>"
 
-logo.onclick = function(){
+onload = function(){
 ajax({
 datas:"divid=div2&x=introEcono",
 method:"POST",
-location:server+"/engines/jxp.php",
+location:server+"/engines/index.php",
 id:"div2",
 handler:"BLOCKED",
 block:false
 })
 }
 
+/*
 onload = function(){
 ajax({
 datas:"x=onload",
@@ -58,6 +59,7 @@ handler:"OnLoad",
 block:true
 })
 }
+*/
 
 </script>
 </head><body></body></html>

@@ -10,6 +10,8 @@ import lib.ffmpeg
 import random
 
 
+
+last_url = False
 prueba = False
 estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
@@ -65,6 +67,7 @@ def main(args):
     global hilo_proceso, pid_proceso
     global yt_last_args
     global def_profile
+    global last_url
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
@@ -314,10 +317,19 @@ def main(args):
 
     try:
         if args[0] == "youtube" or args[0] == "yt" :
+            
             if len(args) == 1:
                 args.append("intro")
 
-            if args[1] == "intro":
+            if args[1] == "lasturl":
+                if last_url:
+                    print("MAIN:",last_url)
+                    main(["yt","-i",last_url,"-c","-M","Lasturl mode change stream"])
+                    return
+                else:
+                    print("No Existe last_url")
+                return
+            elif args[1] == "intro":
                 yt_args = yt_start + yt_input_intro + yt_codecs + yt_output
             elif args[1] == "concat":
                 yt_args = yt_start + yt_input_concat + yt_codecs + yt_output
@@ -383,12 +395,26 @@ def main(args):
                 print("-------------------------------------------")
 
         elif args[0] == "geturl" and len(args) > 1:
-            argse = ["yt-dlp","-f","[height<=720]/best[height<=720]","--get-url",args[1]]
-            print(argse)
+            argse = ["yt-dlp", "-f", "[height<=720]/best[height<=720]", "--get-url", args[1]]
             try:
-                subprocess.call(argse,cwd="com/datas/ffmpeg")
+                p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                output, _ = p.communicate()
+                output = output.decode('utf-8').strip()
+                if output.startswith("http://") or output.startswith("https://"):
+                    try:
+                        subprocess.call(["ffprobe","-i",output])
+                        pi = True
+                        last_url = output
+                    except Exception as e:
+                        print("ERROR:",e)
+                        pi = False
+                if pi == True:
+                    print("Escriba 'yt lasturl' y pulse enter para cambiar stream a:",last_url)
+                else:
+                    print("ERROR PI")    
+                print("URL:", output)
             except Exception as e:
-                print("ERROR:",e)
+                print("ERROR:", e)
             return
 
         elif args[0] == "import":
