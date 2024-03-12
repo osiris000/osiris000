@@ -316,10 +316,16 @@ def main(args):
     "flv"] + yt_default_output_url + yt_default_progress_file 
 
     try:
+        if args[0].startswith("http://") or args[0].startswith("https://"):
+            main(["geturl",args[0]])
+            return
+
+
         if args[0] == "youtube" or args[0] == "yt" :
             
             if len(args) == 1:
                 args.append("intro")
+
 
             if args[1] == "lasturl":
                 if last_url:
