@@ -26,6 +26,7 @@ bin/gitup
 bin/gitup.txt
 #Directorio HELP
 bin/help
+bin/lib
 
 bin/auth.py
 #default password
@@ -49,6 +50,8 @@ bin/com/hls.py
 bin/com/sniff.py
 bin/com/scanip.py
 bin/com/blockchain.py
+
+bin/com/lib
 
 
 #install default
