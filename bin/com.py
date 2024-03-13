@@ -192,8 +192,14 @@ def command_line():
                                             print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
                                     else:
                                         print(f"La función 'main' no está definida correctamente en {args[0]}.py")
-                                except ImportError:
+                                except ImportError as er3:
                                     print(f"Error al importar {args[0]}.py")
+                                    print("Error:",er3)
+                                    print("Faltan dependencias python (pip)")
+                                    print("Verifique los imports del comando en su archivo. Puede montarlo y usar el modificador --edit")
+                                    print("Compruebe que se ha activado y exportado el entorno virtual")
+                                    print("use el comando shell para instalar las dependencias con pip manualmente o desde la instalación de osiris")
+                                    print(f"pruebe >>>shell> pip install {er3.name}")
                             else:
                                 print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
                         else:
