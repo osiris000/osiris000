@@ -44,6 +44,7 @@ bin/com/ffmpeg2.py
 bin/com/datas/ffmpeg/start.mkv
 bin/com/datas/ffmpeg/carta.mkv
 bin/com/datas/ffmpeg/intro.mp4
+bin/com/datas/ffmpeg/logo.png
 
 bin/com/fdev.py
 bin/com/hls.py
@@ -66,7 +67,7 @@ html/publicar.html
 
 
 #js libs
-html/js/lib/wfcore3.js
+html/lib/js/wfcore3.js
 
 
 
