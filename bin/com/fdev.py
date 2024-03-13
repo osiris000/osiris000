@@ -553,7 +553,13 @@ def progress_trunk():
         print(tamano_actual)
 
 
+def funcion_en_segundo_plano():
+    # Tarea a ejecutar en segundo plano
+    return
 
-
+def thread():
+    hilo = threading.Thread(target=funcion_en_segundo_plano)
+    hilo.daemon = True
+    hilo.start()
 
 
