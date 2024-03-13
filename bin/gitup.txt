@@ -16,9 +16,13 @@ datax
 
 
 #Archivos Osiris
-bin/osiris
-bin/osiris.py
+#directorio bin
 bin/auth.py
+bin/Cargo.lock
+bin/Cargo.toml
+bin/cnf.py
+bin/com.conf
+bin/com.ini
 bin/com.py
 bin/fhelp.py
 bin/get_config.py
@@ -27,8 +31,15 @@ bin/gitup.txt
 #Directorio HELP
 bin/help
 bin/lib
+bin/osiris
+bin/osiris.py
 
-bin/auth.py
+bin/server
+bin/server.rs
+bin/src
+bin/target
+
+
 #default password
 bin/data/auth_pwd
 
