@@ -79,7 +79,10 @@ html/publicar.html
 
 #js libs
 html/lib/js/wfcore3.js
-
+html/lib/php/aconf.php
+html/lib/php/lib.php
+html/img
+html/engines
 
 
 #dpkg .deb package
