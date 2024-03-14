@@ -2,7 +2,7 @@
 session_start();
 
 $_SESSION["REGUSER"] = 1;
-$_SESSION["REGUSER_PERM"] = 99 ;
+$_SESSION["REGUSER_PERM"] = 1 ;
 
 $_S_N = "/engines" ;
 

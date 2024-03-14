@@ -11,7 +11,7 @@ if(!confirmz) {
 } else {
 
 	ajax({
-		location:"/aps/econo/jcore.php",
+		location:"/engines/jcore.php",
 		datas:"edit=article&action=revisar",
 		method:"POST",
 		eval:true,
