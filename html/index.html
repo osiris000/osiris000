@@ -9,6 +9,9 @@
 wfcore("xbody",{}).parseIni(`
 main {TAG:"main"}
 >div000 {}
+>divMenuTop
+>>PublicLink {TAG:"a",innerHTML: " Public "}
+>LINKREL1 {TAG:"link",rel:"stylesheet",type:"text/css"}
 >div1 {}
 >>div01 {style:"float:left;"}
 >>div00 {style:"display:inline-block;height:auto"}
@@ -26,6 +29,17 @@ max-width:100%;
 margin:0 auto 0 auto;
 
 `
+
+
+PublicLink.style = `
+
+font-size:2vw;
+
+`
+
+LINKREL1.href = "/lib/css/"
+
+
 
 
 server = window.location.protocol+"//"+window.location.hostname+":"+window.location.port

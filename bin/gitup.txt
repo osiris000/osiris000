@@ -74,7 +74,7 @@ install/webapp/default
 #html
 
 html/index.html
-html/publicar.html
+html/public.html
 
 
 #js libs

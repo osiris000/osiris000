@@ -3,6 +3,7 @@ session_start();
 
 $_SESSION["REGUSER"] = 1;
 $_SESSION["REGUSER_PERM"] = 1 ;
+$_SESSION["REGUSER_EMAIL"] = $_SERVER["REMOTE_ADDR"] ;
 
 $_S_N = "/engines" ;
 

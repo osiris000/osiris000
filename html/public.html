@@ -3,12 +3,14 @@
 <head>
 <title>economa</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-<script src="https://compostela21.com/lib/js/wfcore3.js?x=1.1l9.9.9.551461"></script>
+<script src="/lib/js/wfcore3.js?x=1.1l9.9.9.551461"></script>
 <script>
 
 wfcore("xbody",{}).parseIni(`
 main {TAG:"main"}
 >div000 {}
+>divMenuTop
+>>PublicLink {TAG:"a",innerHTML: " Public "}
 >div1 {}
 >>div01 {style:"float:left;"}
 >>div00 {style:"display:inline-block;height:auto"}
@@ -26,6 +28,19 @@ max-width:100%;
 margin:0 auto 0 auto;
 
 `
+
+
+
+
+PublicLink.style = `
+
+font-size:2.3vw;
+background:#ffffff;
+color:#125664;
+`
+
+PublicLink.target= "_blank"
+PublicLink.href = "https://compostela21.com/index.html"
 
 
 server = window.location.protocol+"//"+window.location.hostname+":"+window.location.port
