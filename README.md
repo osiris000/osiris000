@@ -119,7 +119,7 @@ Para iniciarlo /var/www/osiris000~#. osiris
 ¿Quieres que Osiris000 siga creciendo? Con tu apoyo, podemos hacer realidad este sueño, un sistema operativo libre con control de privacidad orientado a internet/web2++ y multimedia, fácil de usar y fiable :   
   ☕️ https://www.buymeacoffee.com/osiris000   
 
-![](https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif | width=40)  <b>BTbc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
+<img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=50 height=50>&nbsp;&nbsp;<b>BTbc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
 
 
 
