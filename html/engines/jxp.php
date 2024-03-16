@@ -27,9 +27,10 @@ Se necesita estar registrado para entrar.<br>
 <button onclick='
 
 ajax({
+datas:`nodatas`,
 method:`POST`,
-location:`https://compostela21.com/components/usuarios2.php`,
-id:`{$divid}`,
+location:`/engines/rusr.php`,
+id:`div2`,
 handler:`UNIKE1`,
 block:true	
 })

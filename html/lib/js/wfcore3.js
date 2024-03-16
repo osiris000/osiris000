@@ -89,7 +89,17 @@ new Function( $ajax[auto_index].xhr[0].responseText )();
 }
 
 if($ajax[auto_index].id){
+
+
+if ($ajax[auto_index].id.charAt(0) === '+') {
+
+document.getElementById($ajax[auto_index].id.substring(1)).innerHTML += $ajax[auto_index].xhr[0].responseText
+} else {
+
+
 document.getElementById($ajax[auto_index].id).innerHTML = $ajax[auto_index].xhr[0].responseText
+ }
+
 }
 
 $ajax[auto_index].end = true 
