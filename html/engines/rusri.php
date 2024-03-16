@@ -1,12 +1,4 @@
 <?php
-/*session_set_cookie_params([
-            'lifetime' => 60 ,
-            'path' => '/',
-            'domain' => $_SERVER["HTTP_HOST"],
-            'secure' => true,
-            'httponly' => true,
-            'samesite' => ''
-        ]);*/
 session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

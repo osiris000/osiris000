@@ -1,7 +1,17 @@
 <?php
 
+session_start();
 
 
+
+
+if($_SESSION["REGUSER"]):
+
+/*  está logueado se sale   */
+
+exit;
+
+endif;
 
 if($_POST["action"]){
 echo<<<REG
@@ -12,6 +22,11 @@ include 'rusri.php';
 
 exit;
 }
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>

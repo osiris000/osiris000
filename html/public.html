@@ -10,6 +10,7 @@ wfcore("xbody",{}).parseIni(`
 main {TAG:"main"}
 >div000 {}
 >divMenuTop
+>>IndexLink {TAG:"a",innerHTML: " Index "}
 >>PublicLink {TAG:"a",innerHTML: " Public "}
 >div1 {}
 >>div01 {style:"float:left;"}
@@ -30,17 +31,30 @@ margin:0 auto 0 auto;
 `
 
 
+IndexLink.style = `
+font-size:2vw;
+background:#ffffff;
+color:#125664;
+border:solid 1px;
+text-decoration:none;
+padding:3px;
+`
+IndexLink.target= "_self"
+IndexLink.href = "/index.html"
 
 
 PublicLink.style = `
-
-font-size:2.3vw;
+font-size:2vw;
 background:#ffffff;
 color:#125664;
+border:solid 1px;
+text-decoration:none;
+padding:3px;
 `
-
 PublicLink.target= "_blank"
 PublicLink.href = "https://compostela21.com/index.html"
+
+
 
 
 server = window.location.protocol+"//"+window.location.hostname+":"+window.location.port
