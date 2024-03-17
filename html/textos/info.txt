@@ -1,1 +1,1 @@
-This is a non-safe directory for save share open contents (txt, json, xml, etc...)
+This is a directory for save share open contents (txt, json, xml, etc...)
