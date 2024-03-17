@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>economa</title>
+<title>Osiris Index</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <script src="/lib/js/wfcore3.js?v=12"></script>
 <script>
@@ -10,7 +10,7 @@ wfcore("xbody",{}).parseIni(`
 main {TAG:"main"}
 >div000 {}
 >divMenuTop
->>PublicLink {TAG:"a",innerHTML: " Public "}
+>>PublicLink {TAG:"a",innerHTML: ""}
 >LINKREL1 {TAG:"link",rel:"stylesheet",type:"text/css"}
 >div1 {}
 >>div01 {style:"float:left;"}
@@ -31,10 +31,13 @@ margin:0 auto 0 auto;
 `
 
 
-PublicLink.style = `
-
+PublicLink.style___Z = `
 font-size:2vw;
-
+background:#ffffff;
+color:#125664;
+border:solid 1px;
+text-decoration:none;
+padding:3px;
 `
 
 LINKREL1.href = "/lib/css/"

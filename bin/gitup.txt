@@ -83,6 +83,7 @@ html/lib/php/aconf.php
 html/lib/php/lib.php
 html/img
 html/engines
+html/textos/info.txt
 
 
 #dpkg .deb package
