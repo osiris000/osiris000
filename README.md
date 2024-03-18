@@ -116,21 +116,9 @@ Para iniciarlo /var/www/osiris000~#. osiris
 ![osiris gif](https://vtwitt.com/jsa/osiris.gif)
 
 
-¿Quieres que Osiris000 siga creciendo? Con tu apoyo, podemos hacer realidad este sueño, un sistema operativo libre con control de privacidad orientado a internet/web2++ y multimedia, fácil de usar y fiable :   
-  ☕️ https://www.buymeacoffee.com/osiris000   
-
-<img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=50 height=50>&nbsp;&nbsp;<b>bc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
-
-
 
 <b>Propuesta de arquitectura</b>
 
-		v 1.1  
-		
-![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia2.png)
-
-
-		v 1.2  
 
 ![osiris gif](https://vtwitt.com/jsa/media/osiris/odsia3.png)
 
@@ -496,10 +484,23 @@ Comandos:
 
 
 Contacto para más información y otros asuntos: osiris.osscom@gmail.com  
-Envíe su petición para incluir un comando-app en esta distribución oficial del sistema Osiris Base.   
+<!--Envíe su petición para incluir un comando-app en esta distribución oficial del sistema Osiris Base.   -->
+
+
+
+¿Quieres que Osiris000 siga creciendo? Con tu apoyo, un sistema operativo libre con control de privacidad orientado a internet/web2++ y multimedia, fácil de usar y fiable :   
+  ☕️ https://www.buymeacoffee.com/osiris000   
+
+<img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=40 height=40>&nbsp;&nbsp;<b>bc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
+
+
+
 
 
 Puedes ayudar a que este proyecto avance más rápido compartiendo este link: https://www.buymeacoffee.com/osiris000  (gmni007)
 
 <b>AMM 2024</b> [LICENCIA](LICENSE.md)  
+
+
+
 
