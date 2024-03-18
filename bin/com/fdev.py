@@ -75,6 +75,7 @@ def main(args):
 
     lineInput = None
     def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
+    def_output = "rtmp://ls20.live.rmbl.ws/slot-92/xqzb-ofqe-eie4"
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
     seek_start = None
     profiles = {
@@ -304,7 +305,7 @@ def main(args):
     "-g",
     "2",
     "-r",
-    "25",
+    "30"
     ] + yt_default_maxrate + yt_default_minrate
 
     yt_codecs_start = logo +  yt_codecs_start
@@ -401,7 +402,7 @@ def main(args):
                 print("-------------------------------------------")
 
         elif args[0] == "geturl" and len(args) > 1:
-            argse = ["yt-dlp", "-f", "[height<=720]/best[height<=720]", "--get-url", args[1]]
+            argse = ["yt-dlp", "-f", "[height<=720]/best[height<=720]/best", "--get-url", args[1]]
             try:
                 p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 output, _ = p.communicate()
@@ -431,7 +432,7 @@ def main(args):
         elif args[0] == "mklist":
             print("Mklist")
 # Uso de la clase ConcatenadorFFmpeg
-            extension = '.ts'
+            extension = '.mp4'
             archivo_concat = 'concat_list.txt'
             directorio_destino = 'com/datas/ffmpeg'
             directorio_origen = yt_default_list_dir
@@ -481,9 +482,7 @@ def interchange2(yt_args,kill_l):
     global itc_time
     d = 0
     global pid_proceso
-    funcion_proceso(yt_args)
-    print("New Proceso iniciado:",pid_proceso)
-    input("Pulse Enter para matar el proceso anterior:"+str(kill_l))
+#    input("Pulse Enter para matar el proceso anterior:"+str(kill_l))
     try:
         os.kill(kill_l, signal.SIGKILL)
 #uso os kill en vez de subprocess                            subprocess.call(["kill",str(kill_l)],shell=True)
@@ -491,8 +490,8 @@ def interchange2(yt_args,kill_l):
     except Exception as e:
         print("CH PID WARN",e)
     print("KILL:",kill_l)
-    return
-
+    funcion_proceso(yt_args)
+    print("New Proceso iniciado:",pid_proceso)
 
 
 
