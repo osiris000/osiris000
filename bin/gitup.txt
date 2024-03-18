@@ -69,6 +69,8 @@ bin/com/lib
 #install default
 
 install/webapp/default
+install/sql
+
 
 
 #html
