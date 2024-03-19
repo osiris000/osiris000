@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Osiris Index</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <script src="/lib/js/wfcore3.js?v=12"></script>
 <script>
@@ -10,13 +11,13 @@ wfcore("xbody",{}).parseIni(`
 main {TAG:"main"}
 >div000 {}
 >divMenuTop
->>PublicLink {TAG:"a",innerHTML: ""}
 >LINKREL1 {TAG:"link",rel:"stylesheet",type:"text/css"}
 >div1 {}
 >>div01 {style:"float:left;"}
 >>div00 {style:"display:inline-block;height:auto"}
 >>>logo {TAG:"img"}
 >>>divMenu {style:"display:inline-block;height:auto;"}
+>>>Observatorios {TAG:"a"}
 >div2 {}
 >div3 {style:"background:#299200"}
 >footer {style:"background:#290260;color:white;"}
@@ -31,7 +32,7 @@ margin:0 auto 0 auto;
 `
 
 
-PublicLink.style___Z = `
+Observatorios.style = `
 font-size:2vw;
 background:#ffffff;
 color:#125664;
@@ -39,6 +40,9 @@ border:solid 1px;
 text-decoration:none;
 padding:3px;
 `
+Observatorios.href = window.location.protocol+"//"+"osiris000.duckdns.org:8081"
+Observatorios.target = "_blank"
+Observatorios.innerHTML ="Observatorio Público"
 
 LINKREL1.href = "/lib/css/"
 
@@ -58,7 +62,7 @@ onload = function(){
 
 
 ajax({
-datas:"divid=div2&x=introEcono",
+datas:"nodata",
 method:"POST",
 location:server+"/engines/index.php",
 id:"div2",

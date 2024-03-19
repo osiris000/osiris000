@@ -3,18 +3,21 @@
 
 #instalamos aplicaciones necesarias
 
-python3.9-venv         	apt install python3-pip python3.9-venv
-python3.9 		apt install python3.9 python3.9-venv
-pip3			apt install python3.9-pip
-apache2 		apt install apache2 libapache2-mod-fcgid 
-php			apt install php php-fpm libapache2-mod-php php-mysqli
-mariadb 		apt install mariadb 
-ffmpeg			apt install ffmpeg 
-transmission-cli	apt install transmission-cli 
-docker			apt install docker docker.io
-tcptrack		apt install tcptrack
+python3.9-venv  	apt install python3-pip python3.9-venv
+python3.9 			apt install python3.9 python3.9-venv
+pip3				apt install python3.9-pip
+php					apt install php php-fpm php-mysqli
+apache2 			apt install apache2 libapache2-mod-php libapache2-mod-fcgid 
 
-port-audio              apt install portaudio19-dev
+mariadb 			apt install mariadb 
+ffmpeg				apt install ffmpeg 
+transmission-cli	apt install transmission-cli 
+docker				apt install docker docker.io
+tcptrack			apt install tcptrack
+nodejs   			apt install nodejs
+certbot 			apt install certbot
+
+port-audio          apt install portaudio19-dev
 
 
 Osiris-python3.9-venv 			eval python3.9 -m venv bin/com/osiris_env 
@@ -34,6 +37,8 @@ Osiris-upgrade-bardapi		 	pip install bardapi --upgrade
 
 #NUEVA-app	apt install NUEVA-app
 
-pip   pip install python-bitcoinlib Flask
+depend pip install python-bitcoinlib Flask
+depend apt install 
+depend /usr/sbin/a2enmod ssl rewrite
 
 

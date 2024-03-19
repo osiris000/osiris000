@@ -75,14 +75,14 @@ def main(args):
 
     lineInput = None
     def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
-    def_output = "rtmp://ls20.live.rmbl.ws/slot-92/xqzb-ofqe-eie4"
+    def_output = "rtmp://ls23.live.rmbl.ws/slot-32/19b5-lq2b-n8y1"
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
     seek_start = None
     profiles = {
     "youtube:1": {
         "profileType":"Youtube Live Streaming 480p",
         "preset": "ultrafast",
-        "vbr":"520k",
+        "vbr":"1000k",
         "abr":"128k",
         "bufsize":"1296k",
         "stream_loop":"-1",
@@ -90,18 +90,19 @@ def main(args):
         "maxrate":"648k",
         "output":def_output,
         "progress":def_progress_file,
-        "ss":seek_start
+        "ss":seek_start,
+        "screen":"640x420"
     },
         "youtube:2": {
         "profileType":"Youtube Live Streaming 480p",
         "preset": "ultrafast",
-        "vbr":"1500k",
+        "vbr":"2000k",
         "abr":"128k",
         "bufsize":"5000k",
         "stream_loop":"-1",
         "input":lineInput,
         "maxrate":"2500k",
-        "minrate":"512k",
+        "minrate":"756k",
         "output":def_output,
         "progress":def_progress_file,
         "ss":seek_start,
