@@ -1,6 +1,8 @@
 <h1>Osiris Dynamic Shell</h1>
 
 ODS es una shell dinámica sobre la shell del sistema escrita en Bash y Python principalmente.   
+Nota: [Se está pensando migrar en el futuro la consola a rust]   
+
 
 Se conoce como dinámica porque se pueden montar y desmontar los comandos-programa en memoria y alternar entre ellos, pasándoles argumentos, sin afectarse mutuamente.   
 
