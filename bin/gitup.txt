@@ -88,6 +88,9 @@ html/engines
 html/textos/info.txt
 
 
+#clones
+html/clones/observatoriospublicos.es
+
 #dpkg .deb package
 DEBIAN
 

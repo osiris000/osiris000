@@ -16,6 +16,7 @@ docker				apt install docker docker.io
 tcptrack			apt install tcptrack
 nodejs   			apt install nodejs
 certbot 			apt install certbot
+tor 				apt install tor
 
 port-audio          apt install portaudio19-dev
 
@@ -25,10 +26,8 @@ Osiris-venv-activate 			eval source bin/com/osiris_env/bin/activate
 
 Osiris-venv-export 			eval export PYTHONPATH=".:$VIRTUAL_ENV/lib/python3.9/site-packages"
 
-yt-dlp 				pip3 install yt-dlp
-Osiris-install-bardapi 		pip install bardapi==0.1.23a
-Osiris-force-reinstall-bardapi 	pip install bardapi --force-reinstall 
-Osiris-upgrade-bardapi		 	pip install bardapi --upgrade 
+yt-dlp 				pip install yt-dlp
+
 
 #; source tutorial-env/bin/activate
 

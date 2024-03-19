@@ -15,16 +15,17 @@ check_command_installed /usr/bin/python3.9-venv --version
 #check_command_installed /usr/bin/nodejs
 
 
-check_command_installed /usr/bin/certbot
+#check_command_installed /usr/bin/certbot
 
 
-check_command_installed /usr/bin/Osiris-python3.9-venv
+#check_command_installed /usr/bin/Osiris-python3.9-venv
 
 check_command_installed /usr/bin/Osiris-venv-activate
 check_command_installed /usr/bin/Osiris-venv-export
 
 check_command_installed /usr/bin/depend
 
+check_command_installed /usr/bin/tor --version
 
 #check_command_installed /usr/sbin/apache2 -v
 #check_command_installed /usr/bin/php --version 
@@ -36,8 +37,6 @@ check_command_installed /usr/bin/depend
 #check_command_installed /usr/bin/yt-dlp --version
 #check_command_installed /usr/bin/rustc "--version -v"
 #check_command_installed /usr/bin/docker 
-#check_command_installed /usr/bin/Osiris-install-bardapi 		
-#check_command_installed /usr/bin/Osiris-force-reinstall-bardapi
-#check_command_installed /usr/bin/Osiris-upgrade-bardapi
+
 
 
