@@ -37,7 +37,6 @@ yt-dlp 				pip install yt-dlp
 #NUEVA-app	apt install NUEVA-app
 
 depend pip install python-bitcoinlib Flask
-depend apt install 
 depend /usr/sbin/a2enmod ssl rewrite
 
 

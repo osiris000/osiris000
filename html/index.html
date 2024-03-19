@@ -42,9 +42,9 @@ padding:3px;
 `
 Observatorios.href = window.location.protocol+"//"+"osiris000.duckdns.org:8081"
 Observatorios.target = "_blank"
-Observatorios.innerHTML ="Observatorio Público"
+Observatorios.innerHTML ="Observatorio de observatorios públicos"
 
-LINKREL1.href = "/lib/css/"
+LINKREL1.href = "/css/index.css"
 
 
 
@@ -65,21 +65,11 @@ ajax({
 datas:"nodata",
 method:"POST",
 location:server+"/engines/index.php",
-id:"div2",
-handler:"X1",
-block:true
+id:false,
+handler:false,
+block:false,
+eval:true
 })
-
-ajax({
-datas:"nodata",
-method:"POST",
-location:server+"/engines/rusr.php",
-id:"+div2",
-eval:false,
-handler:"x2",
-block:true
-})
-
 
 
 }
