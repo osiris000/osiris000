@@ -82,7 +82,7 @@ logo.onclick = function(){
 ajax({
 datas:"divid=div2&x=introEcono",
 method:"POST",
-location:server+"/engines/jxp.php",
+location:"/engines/jxp.php",
 id:"div2",
 handler:"BLOCKED",
 block:false
@@ -93,7 +93,7 @@ onload = function(){
 ajax({
 datas:"x=onload",
 method:"POST",
-location:server+"/engines/onload.php",
+location:"/engines/onload.php",
 id:false,
 eval:true,
 handler:"OnLoad",

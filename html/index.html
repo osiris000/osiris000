@@ -52,7 +52,7 @@ LINKREL1.href = "/css/index.css"
 server = window.location.protocol+"//"+window.location.hostname+":"+window.location.port
 
 xbody.style = "background:black"
-logo.src = server+"/img/economa1.png";
+logo.src = "/img/economa1.png";
 logo.onclick = function(){ location.href = "index.html"}
 logo.style = "cursor:pointer;width:3vw;height:3.5vh;float:left;margin:0;padding:0;"
 div2.style = div1.style = "border: solid 3px red; background:#18004e;"
@@ -64,7 +64,7 @@ onload = function(){
 ajax({
 datas:"nodata",
 method:"POST",
-location:server+"/engines/index.php",
+location:"/engines/index.php",
 id:false,
 handler:false,
 block:false,
