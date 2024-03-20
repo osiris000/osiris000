@@ -1,4 +1,4 @@
-document.write(`<h1>lib/js/app/osiris.js
+document.write(`<h1>
 
 <p>App Osiris</p>
 

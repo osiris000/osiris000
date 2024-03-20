@@ -80,13 +80,18 @@ html/public.html
 
 
 #js libs
-html/lib/js/wfcore3.js
-html/lib/php/aconf.php
-html/lib/php/lib.php
+#html/lib/js/wfcore3.js
+#html/lib/php/aconf.php
+#html/lib/php/lib.php
+html/lib
 html/img
 html/engines
 html/textos/info.txt
-html/app
+
+#html/app
+html/app/freedirectory/index.php
+html/app/freedirectory/import.php
+
 html/conf2
 
 #clones

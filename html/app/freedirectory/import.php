@@ -2,9 +2,7 @@
 set_time_limit(0);
 
 echo "IS";
-
-
-include $_SERVER["DOCUMENT_ROOT"]."/lib-util2.php";
+include $_SERVER["DOCUMENT_ROOT"]."/lib/php/lib.php";
 
 $_REQUEST["url"] ? $url = $_REQUEST["url"] : die("Not Url") ; 
 $_REQUEST["path"] ? $path = $_REQUEST["path"] : die("Path Error") ; 
@@ -14,6 +12,11 @@ $ext = pathinfo($url)["extension"] ;
 $fname = pathinfo($url)["filename"] ; 
 
  
+
+ $path = filter_var($path, FILTER_CALLBACK, array('options' => 'escapeshellarg'));
+
+
+
 switch($ext){
 
 /*extensions disabled*/
@@ -37,14 +40,21 @@ switch($option){
 
 case 'ydl':
 
-    $cd = "cd /var/www/vhosts/compostela21.com/vtwitt.com/jsa/media/$path && " ;
+
+    $cd = "cd $path && " ;
 //    $uid = md5($url);
-    $exec = " --exec 'php /var/www/vhosts/compostela21.com/vtwitt.com/jsa/util/postp.php' " ;
+    #$exec = " --exec 'php postp.php' " ;
    // echo $cd;
     $url = filter_var($url, FILTER_CALLBACK, array('options' => 'escapeshellarg'));
    
-   
-    $id = popen("$cd yt-dlp -f best  --write-description --write-info-json --restrict-filenames --write-thumbnail $exec $url","r") ;
+   $com = "$cd yt-dlp -f best  --write-description --write-info-json --restrict-filenames --write-thumbnail $exec $url";
+  
+
+  echo $com;  
+
+
+
+    $id = popen($com,"r") ;
     while($fr = fread($id,255)){
    echo $fr."<br>"; 
    echo str_pad('',4096)."\n";  
@@ -52,7 +62,9 @@ case 'ydl':
 
   
   pclose($id);
-  echo "EXIT youtube-dl";
+
+
+  echo "EXIT import";
  exit;
 
 break;

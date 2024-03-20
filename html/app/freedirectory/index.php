@@ -144,7 +144,7 @@ $lists = fdext($_SESSION["path"]);
 <div style="text-align:right;">
 <select id="select">
 <option value="url">url</option>
-<option value="ydl">youtube-dl</option>
+<option value="ydl">VideoUrl</option>
 </select>
 <input type="text" id="ajxurl" placeholder="Introducir URL" style="width:240px;">
 <input type="button" value="importar"
@@ -155,13 +155,13 @@ onclick='
   z[mxurl].id = "d_"+mxurl ;
   z[mxurl].innerHTML = `<b>Importing:<br>`+document.getElementById("ajxurl").value+`<br><img src="https://vtwitt.com/jsa/cargando.gif" height=20>`;
   document.getElementById("ajxres").prepend(z[mxurl]) ;
-  ajax(
+  ajax({
   	datas:"url="+encodeURIComponent(document.getElementById("ajxurl").value)+"&path=<?=$_SESSION["path"]?>&option="+document.getElementById("select").value,
   	id:z[mxurl].id,
   	location:"import.php",
   	method:"GET",
   	eval:false
-  	) ; 
+  	}) ; 
 
 mxurl++;
 
@@ -172,7 +172,7 @@ mxurl++;
 
 
 <a href="javascript:void(0);" onclick='
-if(d = prompt("CREAR DIRECTORIO NUEVO\nEs necesario una clave para esta operación\nclave:directorio","")){
+if(d = prompt("CREAR DIRECTORIO NUEVO\nEs necesario tener permisos para crear el directorio nuevo.","")){
 location.href="?mkdir=<?=$_SESSION["path"]?>"+d
 
 } else{alert("Operación Cancelada")}

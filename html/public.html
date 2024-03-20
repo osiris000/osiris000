@@ -12,6 +12,7 @@ main {TAG:"main"}
 >divMenuTop
 >>IndexLink {TAG:"a",innerHTML: " Index "}
 >>PublicLink {TAG:"a",innerHTML: " Public "}
+>>DirectoryLink {TAG:"a",innerHTML: " Directory "}
 >div1 {}
 >>div01 {style:"float:left;"}
 >>div00 {style:"display:inline-block;height:auto"}
@@ -53,6 +54,18 @@ padding:3px;
 `
 PublicLink.target= "_blank"
 PublicLink.href = "https://compostela21.com/index.html"
+
+
+DirectoryLink.style = `
+font-size:2vw;
+background:#ffffff;
+color:#125664;
+border:solid 1px;
+text-decoration:none;
+padding:3px;
+`
+DirectoryLink.target= "_blank"
+DirectoryLink.href = "/app/freedirectory/"
 
 
 
