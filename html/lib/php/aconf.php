@@ -1,4 +1,10 @@
 <?php 
+#MYSQL
+ $mysql_host = "localhost";
+ $mysql_usr = "root";
+ $mysql_psd = "osiris";
+ $mysql_bd = "osiris_web";
+ 
 $__x_DEBUG = "";
 $__x_LISTA_VARIABLES = "";
 function pecho($data,$reten="0"){

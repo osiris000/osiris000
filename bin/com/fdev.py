@@ -108,13 +108,31 @@ def main(args):
         "ss":seek_start,
         "screen":"1280x720"
     },
+
+        "rumble:1": {
+        "profileType":"Youtube Live Streaming 480p",
+        "preset": "ultrafast",
+        "vbr":"2500k",
+        "abr":"128k",
+        "bufsize":"7500k",
+        "stream_loop":"-1",
+        "input":lineInput,
+        "maxrate":"3000k",
+        "minrate":"1500k",
+        "output":def_output,
+        "progress":def_progress_file,
+        "ss":seek_start,
+        "screen":"1280x720"
+    },
+
+
     "perfil2": {
         "preset": "slow"
     }
 }
 
     #en pruebas
-    def_profile = "youtube:2"
+    def_profile = "rumble:1"
 # Seleccionar un perfil
     perfil_actual = def_profile
     profile_name = perfil_actual

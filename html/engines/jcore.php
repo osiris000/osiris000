@@ -1,13 +1,20 @@
 <?php
 session_start();
+$permiso_publico_1 = 10;
 #session_unset();
-include('../../lib/php/lib.php');
+
+$fconf = '../conf2/jcores.conf';
+include('../lib/php/aconf.php');
+include('../lib/php/lib.php');
 /*  jcore para econo */
 
 /* editar articulo */
 
 
 //requiere method post
+
+
+
 
 
 
@@ -238,9 +245,9 @@ ajax({
 	eval:true
 	});	
 ctrlg = true;
-}
+};
 
-}
+};
 
 
 BUTTON_A1.onclick = function(){
@@ -326,7 +333,11 @@ add_video.onclick = function(){
 xlink =  prompt("Introduzca la url del video","https://...");
 
 if(!xlink) return;
-else edit_article_01.contentWindow.document.execCommand("insertHTML", false,`<video src="`+xlink+`" controls style="width:auto;height:auto;max-width:100%;"></video>`);
+else edit_article_01.contentWindow.document.execCommand("insertHTML", false,`
+
+<video src="`+xlink+`" controls style="width:auto;height:auto;max-width:100%;"></video>
+
+`);
   };
 
 
@@ -430,9 +441,9 @@ $JSON=<<<Json
 }
 Json;
 
-file_put_contents($sfa,$JSON);
-file_put_contents($_SESSION["SECURE_JSON"],$JSON);
-echo "response_form.innerHTML = `<hr>Guardado en: {$time}`;";
+@file_put_contents($sfa,$JSON);
+@file_put_contents($_SESSION["SECURE_JSON"],$JSON);
+echo "response_form.innerHTML = '<hr>Guardado en: {$time}';";
 
 
 
@@ -441,11 +452,20 @@ elseif($_POST["edit"]=="showjson"):
 
 $user2 = "";
 
-if($_SESSION["REGUSER_PERM"] > 10)
+if($_SESSION["REGUSER_PERM"] > $permiso_publico_1)
 	{
 
-		$user2 = "<button><b>Publicar</b></button>";
+$user2=<<<HTML
+<button onclick='ajax({
+datas:"action=publicar",
+location:"/engines/jcore2.php",
+method:"POST",
+eval:true,
+	})'>
+<b>Publicar</b>
+</button>
 
+HTML;
 } elseif($_SESSION["REGUSER_PERM"] < 2)
 	{
 
