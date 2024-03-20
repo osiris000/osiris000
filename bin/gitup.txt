@@ -34,6 +34,7 @@ bin/lib
 bin/osiris
 bin/osiris.py
 
+
 bin/server
 bin/server.rs
 bin/src
@@ -41,8 +42,9 @@ bin/target
 
 
 #default password
-bin/data/auth_pwd
-
+#bin/data/auth_pwd
+#data bin
+bin/data
 
 
 #Archivos Comandos
