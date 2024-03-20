@@ -86,7 +86,7 @@ html/lib/php/lib.php
 html/img
 html/engines
 html/textos/info.txt
-
+html/app
 
 #clones
 html/clones/observatoriospublicos.es

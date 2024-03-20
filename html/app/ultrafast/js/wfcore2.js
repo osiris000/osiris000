@@ -1,158 +1,16 @@
-// Función para procesar la variable
 
 
-
-
-
-
-/* AJAX */
-
-
-$ajax = [{
-
-info:`
-
-Función ajax para facilitar el uso de ajax (XMLHttpRequest)
-
-Formato:
-
-array ajax( object  )
-
-o abreviando ajax({})
-
-métodos:
-
-handler,location,method,async,datas,id,block
-
-
-`,
-
-version:0.1
-
-}]
-
-
-
-
-const ajax = function (ajax,auto_index = $ajax.length) {
-
-ajax.handler ? auto_index = ajax.handler : auto_index = auto_index ;
-
-
-if($ajax[auto_index]){
-
-if($ajax[auto_index].block==true 
-&& $ajax[auto_index].end !== true){
-
-console.log("BLOCKED:",auto_index) 
-return "blocked hadler"
-
-} 
-} else {   $ajax[auto_index] = new Array()   }
-
-
-$ajax[auto_index] = {
-xhr : [new XMLHttpRequest()] || false ,
-location:  ajax.location || "",
-async:  ajax.async || true,
-datas: ajax.datas || false,
-method:  ajax.method || "GET",
-id:  ajax.id || false,
-eval:  ajax.eval || false,
-handler: auto_index,
-block: ajax.block || false,
-end: false
+const write = function (txt){
+document.write(txt)
 }
 
-
-if($ajax[auto_index].method.toUpperCase()=="GET"){
-
-$ajax[auto_index].location = $ajax[auto_index].location+"?"+$ajax[auto_index].datas;    
-
-}  
-
-
-$ajax[auto_index].xhr[0].open($ajax[auto_index].method,$ajax[auto_index].location,$ajax[auto_index].async)
-
-
-$ajax[auto_index].xhr[0].onreadystatechange = function (){
-
-console.log("ID"+$ajax[auto_index].id)
-console.log("Ready State:"+$ajax[auto_index].xhr[0].readyState)
-
-
-
-if($ajax[auto_index].xhr[0].readyState == 4){
-
-if($ajax[auto_index].eval == true){
-new Function( $ajax[auto_index].xhr[0].responseText )();
+const writeln = function (txt){
+document.write(txt+"<br>")
 }
 
-if($ajax[auto_index].id){
-
-
-if ($ajax[auto_index].id.charAt(0) === '+') {
-
-document.getElementById($ajax[auto_index].id.substring(1)).innerHTML += $ajax[auto_index].xhr[0].responseText
-} else {
-
-
-document.getElementById($ajax[auto_index].id).innerHTML = $ajax[auto_index].xhr[0].responseText
- }
-
+const lnwrite = function (txt){
+document.write("<br>"+txt)
 }
-
-$ajax[auto_index].end = true 
-
-} 
-
-
-
-
-}
-
-
-
-
-if($ajax[auto_index].method.toUpperCase()=="POST"){
-
-$ajax[auto_index].xhr[0].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-$ajax[auto_index].xhr[0].send($ajax[auto_index].datas)
-
-} else $ajax[auto_index].xhr[0].send()
-
-
-
-console.log($ajax[auto_index])
-
-return $ajax[auto_index]
-}
-
-
-
-
-/*compatibilidad vieja ajaxPost*/
-
-ajaxPost = function(datas="",id="",location="",method=""){
-return ajax({
-datas:datas,
-id:id,
-location:location,
-method:method,
-handler:"BLOCKED_POST",
-block:true
-})
-}
-
-
-/*end Ajax*/
-
-
-
-
-
-
-
 
 
 
@@ -176,10 +34,6 @@ return document.getElementById(id)
 }
 
 
-function getIdValue(id){
-return document.getElementById(id).value
-}
-
 function debug(msg,param=DEBUG){
 return false
 if(param) return console.log(msg)
@@ -202,10 +56,10 @@ document.body.innerHTML += value + "<br>"
 }
 
 const lnecho = function(value=defEcho){
-document.body.innerHTML = "<br>" + value + document.body.innerHTML 
+document.body.innerHTML += "<br>" + value
 }
 
-function b(val){
+const b = function(val){
 return document.write("<b>"+val+"</b>")
 }
 
@@ -267,12 +121,6 @@ else return false
 
 
 
-function clearHTML(id){
-if(!id) return "Undefined";
-id = document.getElementById(id)
-id.innerHTML = "";
-}
-
 
 const emulaClick =  function(emulado){
 var y = document.querySelector(emulado);
@@ -282,7 +130,7 @@ return;
 
 
 const clickId = function (emulado){
-var y = document.querySelector("#"+emulado);
+var y = document.querySelector(emulado);
 y.click();
 return;
 }
@@ -359,96 +207,19 @@ debug("INPUT: "+resource.id,'verbose,events,input')
 
 
 
-const wfcore = function (param) {
-
-
-    const info = {
-        version: 1
-    };
-
-
-    const obj = {
-        parseIni: function (input) {
-                    
-                    function processVariable(input) {
-                      const lines = input.trim().split('\n');
-                      const stack = [];
-                      const adp = []
-                      let output = '';
-
-                      for (let line of lines) {
-                        const [element, depth] = parseLine(line);
-                              
-                        while (stack.length > depth) {
-                          stack.pop();
-                        }
-                        
-
-                        var regex = /(.+?)(?:\s(.*))?$/;
-
-                        var coincidencia = element.trim().match(regex);
-
-                      
-                        if(!coincidencia) continue 
-
-                        coincidencia[2]  ?  coincidencia[2] = new Function('return ' + coincidencia[2])() : coincidencia[2] = {TAG:"div"} 
-
-      
-
-
-                        adp[stack.length] =  addPanel(coincidencia[2]);
-                        adp[stack.length].id = coincidencia[1]
-
-
-                        if (stack.length > 0) {
-                        moveTag(adp[stack.length],adp[stack.length-1])
-                        } else {
-                        moveTag(adp[stack.length],document.body);
-                        console.log("ID:"+element.id)
-                        }
-
-                        stack.push(element);
-                      }
-
-                      return output;
-                    }
-
-                    function parseLine(line) {
-                      const match = line.match(/^(>+)(.+)/);
-                      if (match) {
-                        const depth = match[1].length;
-                        const element = match[2].trim();
-                        return [element, depth];
-                      } else {
-                        return [line.trim(), 0];
-                      }
-                    }
-
-              const result = processVariable(input);
-              console.log(result)
-           }
-
-
-      };
 
 
 
 
-   const nuevoDocumento = document.implementation.createHTMLDocument();
 
-   const body = nuevoDocumento.querySelector("body");
 
-    // Asignar un ID al cuerpo del nuevo documento
-    param ? body.id = param : body.id = "WFC3";
 
-    // Crear un nuevo documento HTML en la página actual
-    document.open();
-    document.write(nuevoDocumento.documentElement.outerHTML);
-    document.close();
-    //return nuevoDocumento
 
-    return obj;
-};
+
+
+
+
+
 
 
 
@@ -476,23 +247,35 @@ Doc = "html"
 
 debug("$ as Object:")+debug($)
 
-var HTML = function(Doc){
-HTMLX = document.createElement(Doc)
-HTMLX.id="$".id=defId()
-HTMLX.document = HTMLX.ownerDocument
-HTMLX.ownerDocument.id = HTMLX.id
-this.node = HTMLX.id
-events(HTMLX.ownerDocument)
-return HTMLX
+var HTML = function(){
+HTML = document.createElement(Doc)
+HTML.id="$".id=defId()
+HTML.document = HTML.ownerDocument
+HTML.ownerDocument.id = HTML.id
+this.node = HTML.id
+events(HTML.ownerDocument)
+return HTML
 }
 
 
+//console.log(HTML)
 
-var BODY = function(HTMLX=CLONE){
+CLONE = HTML()
+
+debug("Init HTMLDocument:"+HTML)
+debug("HTML as CLONE:"+CLONE)
+//console.log(HTML)
+//console.log(CLONE)
+
+
+//HTML.new("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+
+
+var BODY = function(HTML=CLONE){
 
 cb = document.createElement("body")
 cb.id= $[nb] = "BODY_"+defIdBodys(nb)
-HTMLX.append(cb.id)
+HTML.append(cb.id)
 document.body = cb
 body[nb] = getId(cb.id)
 nb++
@@ -574,8 +357,6 @@ z=0
 panel = new Object();
 pnl = 100000;
 const addPanel = function(type="div",option="beforebegin",resourcein=document.body,rhtml=""){
-
-
 
 
 snl = pnl
@@ -783,25 +564,8 @@ return eval(evalExpresion)
 }
 
 
-openwins = Array()
-nw = 0  ;
-
-function htmlwin(inject="Inject Code",target,options=666){
-(target?target:this.target)
-this.open(`javascript:void(0);\``+inject+`\``,target,options);
-this.document.close()
-}
 
 
-
-function newwin(inject="Inject Code",target,options=666){
-(target?target:this.target)
-win = this.open(inject,target,options);
-this.document.close()
-openwins[nw++] = {name:target,options:options,location:inject}
-console.log(openwins[nw])
-return win
-}
 
 
 
@@ -813,32 +577,6 @@ this.document.close()
 
 
 
-function domStyle(id,classx,style){
-
-id.querySelectorAll(classx).forEach((elemento) => {
-  elemento.style = style
-});
-
-}
-
-
-
-function getRand(min, max) {
-//  alert()
-  return Math.random() * (max - min) + min;
-}
-
-
-
-function addStyle(css,id=""){
-if(document.getElementById(id)) {console.log("css exists:",id);return;}
-var css_fg1 = document.createElement("style");
-css_fg1.type = "text/css";
-if(id) css_fg1.id = id 
-css_fg1.appendChild(document.createTextNode(css));
-moveTag(css_fg1,xbody);
-
-}
 
 
 
@@ -850,28 +588,6 @@ moveTag(css_fg1,xbody);
 
 
 
-
-/* fdr*/
-
-
-function display2(divid,classname){
-
-rt = getId(divid).style.display
-    var dcls=document.getElementsByClassName(classname);
-    for(i=0;i<dcls.length;i++){
-    if(dcls[i].id!==divid){
-    disp = "none"
-    dcls[i].style.display=disp
-    cl = getId(dcls[i].id)
-    cl.innerHTML = ""
-    }else{
-    disp = "block"
-    dcls[i].style.display=disp
-     }
-   }
-
-return rt
- }
 
 
 

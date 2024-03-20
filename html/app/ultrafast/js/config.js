@@ -1,11 +1,11 @@
 /* config app */
 
-app = "mitv"
+app = ""
 
 
 /* title */
 
-title = "MiTv App"
+title = "My Title App"
 
 
 /* wfcore version  */
@@ -19,6 +19,7 @@ indexFile = "js/index.js"
 /* paneles */
 
 paneles = "js/paneles.js"
+
 
 /* source */
 

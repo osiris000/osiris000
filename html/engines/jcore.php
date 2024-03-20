@@ -1,7 +1,7 @@
 <?php
 session_start();
 #session_unset();
-include('../../lib/php/lib-util.php');
+include('../../lib/php/lib.php');
 /*  jcore para econo */
 
 /* editar articulo */
