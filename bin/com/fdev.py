@@ -75,7 +75,7 @@ def main(args):
 
     lineInput = None
     def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
-    def_output = "rtmp://ls24.live.rmbl.ws/slot-96/dnub-vnnr-sx8c"
+    def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
     seek_start = None
     profiles = {

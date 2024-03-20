@@ -326,7 +326,7 @@ add_video.onclick = function(){
 xlink =  prompt("Introduzca la url del video","https://...");
 
 if(!xlink) return;
-else edit_article_01.contentWindow.document.execCommand("insertHTML", false,`<video src="`+xlink+`" controls style="width:auto;height:auto"></video>`);
+else edit_article_01.contentWindow.document.execCommand("insertHTML", false,`<video src="`+xlink+`" controls style="width:auto;height:auto;max-width:100%;"></video>`);
   };
 
 
