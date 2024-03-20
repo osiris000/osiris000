@@ -352,6 +352,17 @@ def main(args):
                     yt_args = yt_start + yt_screen_input +["-i",args[3]] + yt_screen_input2 + yt_codecs + yt_output
                 else:
                     if len(args) > 2:
+                        try:
+                    	    pInput = parse_input(args[2])
+                        except Exception as e:
+                    	    print("Error Parse Input:",e)
+                    	    print("Args:",args[2])
+                    	    return
+                        if pInput:
+                            subprocess.call(["ffprobe","-i",args[2]])
+                        else:
+                            print("Error Input:",args[2])
+                            return
                         yt_args = yt_start + ["-i",args[2]] + yt_codecs + yt_output
             elif args[1] == "kill":
                 if estado_proceso == True:
@@ -403,7 +414,7 @@ def main(args):
                 print("-------------------------------------------")
 
         elif args[0] == "geturl" and len(args) > 1:
-            argse = ["yt-dlp", "-f", "[height<=720]/best[height<=720]/best", "--get-url", args[1]]
+            argse = ["yt-dlp", "-f", "best[height<=720]/best", "--get-url", args[1]]
             try:
                 p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 output, _ = p.communicate()
@@ -501,12 +512,14 @@ def interchange2(yt_args,kill_l):
 #    "-vf",
 #    "scale=iw*min(1920/iw\,1080/ih):ih*min(1920/iw\,1080/ih),pad=1920:1080:(1920-iw*min(1920/iw\,1080/ih))/2:(1080-ih*min(1920/iw\,1080/ih))/2",
 
+def parse_input(parametro):
+    if parametro.startswith("http://") or parametro.startswith("https://"):
+        return "http"
+    elif os.path.exists(parametro):
+        return "file"
+    else:
+        return False
 
-
-
-
-
-print('Creado módulo-comando ffmpeg y fecha y hora: 2024-02-06 07:26:29.243208')
 
 
 
@@ -562,4 +575,7 @@ def thread():
     hilo.daemon = True
     hilo.start()
 
+
+
+print('Creado módulo-comando ffmpeg y fecha y hora: 2024-02-06 07:26:29.243208')
 
