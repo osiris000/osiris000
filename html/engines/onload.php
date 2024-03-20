@@ -1,7 +1,7 @@
 <?php
 session_start();
 #session_unset();exit;
-$_SESSION["REGUSER"] = 1;
+#$_SESSION["REGUSER"] = 1;
 #$_SESSION["REGUSER_PERM"] = 1 ;
 #$_SESSION["REGUSER_EMAIL"] = $_SERVER["REMOTE_ADDR"] ;
 
