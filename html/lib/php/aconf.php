@@ -5,6 +5,9 @@
  $mysql_psd = "osiris";
  $mysql_bd = "osiris_web";
  
+
+$PATH_PUBLIC_TXT = $_SERVER["DOCUMENT_ROOT"]."/textos";
+
 $__x_DEBUG = "";
 $__x_LISTA_VARIABLES = "";
 function pecho($data,$reten="0"){

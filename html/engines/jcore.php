@@ -3,6 +3,14 @@ session_start();
 $permiso_publico_1 = 10;
 #session_unset();
 
+
+
+if (!$_SESSION["ARTICLE_ID"]):
+
+$_SESSION["ARTICLE_ID"] = md5(time().$_SESSION["REGUSER_EMAIL"]);
+
+endif;
+
 $fconf = '../conf2/jcores.conf';
 include('../lib/php/aconf.php');
 include('../lib/php/lib.php');
@@ -434,6 +442,7 @@ $time = time();
 
 $JSON=<<<Json
 {
+"id":"{$_SESSION["ARTICLE_ID"]}",
 "time":"{$time}",
 "title":"{$title}",
 "description":"{$description}",
@@ -443,7 +452,7 @@ Json;
 
 @file_put_contents($sfa,$JSON);
 @file_put_contents($_SESSION["SECURE_JSON"],$JSON);
-echo "response_form.innerHTML = '<hr>Guardado en: {$time}';";
+echo "response_form.innerHTML = 'Guardado en: {$time}';";
 
 
 
@@ -454,10 +463,10 @@ $user2 = "";
 
 if($_SESSION["REGUSER_PERM"] > $permiso_publico_1)
 	{
-
+$jsfile = basename($_SESSION["fileditbin"]);
 $user2=<<<HTML
 <button onclick='ajax({
-datas:"action=publicar",
+datas:"action=publicar&file={$jsfile}",
 location:"/engines/jcore2.php",
 method:"POST",
 eval:true,

@@ -39,11 +39,10 @@ onload = function(){
 
 IntroApp.innerHTML += `
 
-APP: `+app+` <br>
-
-API: `+wfcore+`<br>
-
-</h5>Mitv fin de carga<h5><b>Click para cerrar</b>`
+<br>
+<iframe class="rumble" style="width:60vw;height:60vh;" src="https://rumble.com/embed/v4i5co9/?pub=3errs2" frameborder="0" allowfullscreen></iframe>
+<br><br>
+`
 
 
 /*

@@ -330,6 +330,7 @@ public function acceso($user,$password){
                 * $_SESSION["REGUSER"] controla la session activa a true
                 * **/
                $_SESSION["REGUSER"] = true;  
+               $_SESSION["REGUSER_ID"] = $obj->id ;
                $_SESSION["REGUSER_PERM"] = $obj->perm ;     
                 $_SESSION["REGUSER_EMAIL"] = $obj->email ;         
 echo "<p>Acabas de validarte en el sistema <a href=\"javascript:location.reload()\">ACTUALIZAR</a>

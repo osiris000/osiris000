@@ -17,6 +17,7 @@ main {TAG:"main"}
 >>div00 {style:"display:inline-block;height:auto"}
 >>>logo {TAG:"img"}
 >>>divMenu {style:"display:inline-block;height:auto;"}
+>>>Public {TAG:"a"}
 >>>Observatorios {TAG:"a"}
 >div2 {}
 >div3 {style:"background:#299200"}
@@ -32,7 +33,7 @@ margin:0 auto 0 auto;
 `
 
 
-Observatorios.style = `
+Public.style = Observatorios.style = `
 font-size:3vh;
 background:#ffffff;
 color:#125664;
@@ -43,6 +44,11 @@ padding:3px;
 Observatorios.href = window.location.protocol+"//"+"osiris000.duckdns.org:8081"
 Observatorios.target = "_blank"
 Observatorios.innerHTML ="Observatorio de observatorios públicos"
+
+
+Public.href = "/public.html"
+Public.target = "_self"
+Public.innerHTML ="Public"
 
 LINKREL1.href = "/css/index.css"
 

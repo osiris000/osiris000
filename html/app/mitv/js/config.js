@@ -10,19 +10,19 @@ title = "MiTv App"
 
 /* wfcore version  */
 
-wfcore = "js/wfcore2.js"
+wfcore = "js/wfcore2.js?v=1"
 
 /* js indexfile */
 
-indexFile = "js/index.js"
+indexFile = "js/index.js?v=1"
 
 /* paneles */
 
-paneles = "js/paneles.js"
+paneles = "js/paneles.js?v=1"
 
 /* source */
 
-source = "js/source.js"
+source = "js/source.js?v=1"
 
 
 /* load if navigator */

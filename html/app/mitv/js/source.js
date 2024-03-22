@@ -12,7 +12,7 @@ INTRO_APP = {
 
 TAG:"div",
 click:` this.style.display='none' `,
-innerHTML:`<p>MiTv WebApp</p>`
+innerHTML:``
 
 }
 

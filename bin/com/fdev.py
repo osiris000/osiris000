@@ -244,8 +244,10 @@ def main(args):
     ]
 
     yt_default_av_codecs = [
-    "-c:v","libx264",
-    "-c:a","aac"
+    "-c:v","h264",
+    "-c:a","aac",
+	"-bsf:v","h264_mp4toannexb",
+	"-bsf:a","aac_adtstoasc"
     ]
 
     yt_start = [

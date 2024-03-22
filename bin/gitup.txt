@@ -93,6 +93,8 @@ html/textos/info.txt
 #html/app
 html/app/freedirectory/index.php
 html/app/freedirectory/import.php
+html/app/mitv
+
 
 html/conf2
 

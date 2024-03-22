@@ -18,7 +18,7 @@ check_command_installed /usr/bin/python3.9-venv --version
 #check_command_installed /usr/bin/certbot
 
 
-#check_command_installed /usr/bin/Osiris-python3.9-venv
+check_command_installed /usr/bin/Osiris-python3.9-venv
 
 check_command_installed /usr/bin/Osiris-venv-activate
 check_command_installed /usr/bin/Osiris-venv-export

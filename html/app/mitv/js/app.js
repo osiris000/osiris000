@@ -1,4 +1,4 @@
- const scriptsToLoad = ["js/config.js", "js/load.js"];
+ const scriptsToLoad = ["js/config.js?v=1", "js/load.js?v=1"];
 
     function loadScriptsSequentially(scripts, index = 0) {
       if (index >= scripts.length) {
