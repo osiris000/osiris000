@@ -461,7 +461,7 @@ elseif($_POST["edit"]=="showjson"):
 
 $user2 = "";
 
-if($_SESSION["REGUSER_PERM"] > $permiso_publico_1)
+if($_SESSION["REGUSER_PERM"] >= $permiso_publico_1)
 	{
 $jsfile = basename($_SESSION["fileditbin"]);
 $user2=<<<HTML
@@ -475,7 +475,7 @@ eval:true,
 </button>
 
 HTML;
-} elseif($_SESSION["REGUSER_PERM"] < 2)
+} elseif($_SESSION["REGUSER_PERM"] < $permiso_publico_1)
 	{
 
 		$user2 = '<a href="javascript:void(0);" onclick="solicitar_revision(`¡param`)">Enviar a Revisión</a>';
