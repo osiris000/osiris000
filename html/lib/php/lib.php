@@ -412,3 +412,25 @@ $cadena = str_replace(" ","_",strtolower($cadena));
 		return $cadena;
 	}
 
+
+
+
+function formatArticle($title, $description, $article) {
+  // Create the formatted article string
+  $formattedArticle = "";
+
+  // Headline (use $title or customize logic)
+  $formattedArticle .= "<h2>" . $title . "</h2>";
+
+  // Lead paragraph (summarize from $description)
+  $leadParagraph = substr($description, 0, strpos($description, '.', 150)); // Limit to 150 chars with first sentence
+  $formattedArticle .= "<p class='lead'>" . $leadParagraph . "</p>";
+
+  // Body paragraphs (extract from $article)
+  $paragraphs = explode("\n", $article); // Split into paragraphs
+  foreach ($paragraphs as $paragraph) {
+    $formattedArticle .= "<p>" . trim($paragraph) . "</p>"; // Trim whitespace and add paragraph tag
+  }
+
+  return $formattedArticle;
+}

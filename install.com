@@ -6,7 +6,7 @@
 python3.9-venv  	apt install python3-pip python3.9-venv
 python3.9 			apt install python3.9 python3.9-venv
 pip3				apt install python3.9-pip
-php					apt install php php-fpm php-mysqli
+php					apt install php php-fpm php-mysqli php-all-dev
 apache2 			apt install apache2 libapache2-mod-php libapache2-mod-fcgid 
 
 mariadb 			apt install mariadb 
@@ -38,5 +38,6 @@ yt-dlp 				pip install yt-dlp
 
 depend pip install python-bitcoinlib Flask
 depend /usr/sbin/a2enmod ssl rewrite
+depend apt install whois
 
 

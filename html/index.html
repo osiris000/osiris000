@@ -18,7 +18,9 @@ main {TAG:"main"}
 >>>logo {TAG:"img"}
 >>>divMenu {style:"display:inline-block;height:auto;"}
 >>>Public {TAG:"a"}
+>>>Articulos {TAG:"a"}
 >>>Observatorios {TAG:"a"}
+>>>Subvenciones {TAG:"a"}
 >div2 {}
 >div3 {style:"background:#299200"}
 >footer {style:"background:#290260;color:white;"}
@@ -33,22 +35,50 @@ margin:0 auto 0 auto;
 `
 
 
-Public.style = Observatorios.style = `
-font-size:3vh;
+Public.style = Observatorios.style = Subvenciones.style = Articulos.style = `
+font-size:2.6vh;
 background:#ffffff;
 color:#125664;
 border:solid 1px;
 text-decoration:none;
 padding:3px;
+cursor:pointer;
 `
 Observatorios.href = window.location.protocol+"//"+"osiris000.duckdns.org:8081"
 Observatorios.target = "_blank"
 Observatorios.innerHTML ="Observatorio de observatorios públicos"
 
 
+Subvenciones.href = window.location.protocol+"//"+"osiris000.duckdns.org:8081/datas/index.html"
+Subvenciones.target = "_blank"
+Subvenciones.innerHTML ="Subvenciones Públicas"
+
+
 Public.href = "/public.html"
 Public.target = "_self"
 Public.innerHTML ="Public"
+
+
+
+Articulos.innerHTML ="Artículos"
+Articulos.onclick = function(){
+
+ajax({
+datas:"action=resumen",
+method:"POST",
+location:"/engines/jcore2.php",
+id:"div2",
+handler:false,
+block:false,
+eval:false
+})
+
+
+}
+
+
+
+
 
 LINKREL1.href = "/css/index.css"
 

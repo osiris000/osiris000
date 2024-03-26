@@ -1,7 +1,7 @@
 /* styles.css */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #200f03;
   color: #333;
   margin: 0;
 }
@@ -10,7 +10,7 @@ body {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: #1f0f2a;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

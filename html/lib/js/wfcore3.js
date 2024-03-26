@@ -390,14 +390,27 @@ const wfcore = function (param) {
 
                       
                         if(!coincidencia) continue 
+                          def_tag = "div"
+                        autoclass=false
+                        ptr = /^(\*)([^\d]+)([0-9]+)/
+                        if(ptr.test(coincidencia[1])){ 
 
-                        coincidencia[2]  ?  coincidencia[2] = new Function('return ' + coincidencia[2])() : coincidencia[2] = {TAG:"div"} 
+                           def_tag = coincidencia[1].match(/[a-zA-Z]/g);
+                           n = coincidencia[1].match(/[0-9]/g);
 
-      
+                       //   alert(def_tag)
+                       coincidencia[1] = def_tag.join("")+""+n.join("")
+                       autoclass = def_tag.join("")+"_auto"
+                       def_tag = def_tag.join("").toLowerCase()
+                          }
 
+                        coincidencia[2]  ?  coincidencia[2] = new Function('return ' + coincidencia[2])() : coincidencia[2] = {TAG:def_tag} 
 
                         adp[stack.length] =  addPanel(coincidencia[2]);
                         adp[stack.length].id = coincidencia[1]
+                        if(autoclass){
+                          adp[stack.length].className = autoclass
+                            }
 
 
                         if (stack.length > 0) {
@@ -873,5 +886,51 @@ rt = getId(divid).style.display
 return rt
  }
 
+
+
+
+const loadIfApp = function(object) {
+  const userAgent = navigator.userAgent.toLowerCase();
+  const defaultConfig = object['default'];
+  let loadedFiles = [];
+
+  const loadFiles = function(files) {
+    for (const [key, value] of Object.entries(files)) {
+      switch (key) {
+        case 'css':
+        case 'style':
+        case 'styles':
+        case 'stylesheet':
+          const cssLink = document.createElement('link');
+          cssLink.rel = 'stylesheet';
+          cssLink.href = value;
+          document.head.append(cssLink);
+          loadedFiles.push({ type: 'css', file: value });
+          break;
+        case 'script':
+        case 'javascript':
+        case 'js':
+          const jsScript = document.createElement('script');
+          jsScript.src = value;
+          jsScript.type = 'text/javascript';
+          document.head.append(jsScript);
+          loadedFiles.push({ type: 'js', file: value });
+          break;
+      }
+    }
+  };
+
+  for (const [browserCode, files] of Object.entries(object)) {
+    const reg = new RegExp(browserCode, 'i');
+    if (reg.test(userAgent)) {
+      loadFiles(files);
+      return loadedFiles;
+    }
+  }
+
+  // Si no se encontró un navegador específico, cargar los archivos por defecto
+  loadFiles(defaultConfig);
+  return loadedFiles;
+};
 
 

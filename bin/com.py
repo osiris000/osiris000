@@ -46,7 +46,7 @@ nombre_venv = "osiris_env"
 common.f()
 
 # Definir el array de comandos válidos
-valid_commands = ["hls","shell","blockchain","scanip","sniff","config","create","agenda", "install", "error","chatgpt","bard"]
+valid_commands = ["hls","shell","blockchain","scanip","sniff","config","fdev","agenda", "install", "error","chatgpt","bard"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
@@ -72,8 +72,11 @@ def save_command_history():
 
 use_command = ""
 set_com = ""
+def_editor = "nano";
+
 
 def command_line():
+    global def_editor
     global use_command
     global set_com
     signal.signal(signal.SIGINT,CTRL_C)
@@ -161,10 +164,10 @@ def command_line():
         # Comprobar si Sublime Text ya está abierto
             if "subl" in subprocess.check_output(["ps", "-aux"]).decode():
             # Si ya está abierto, enviar el comando "open" a la instancia existente
-                subprocess.call(["subl", ed])
+                subprocess.call([def_editor, ed])
             else:
             # Si no está abierto, iniciar Sublime Text y abrir el archivo
-                subprocess.call(["subl", ed])
+                subprocess.call([def_editor, ed])
         else:
             print("No se encuentra el módulo a editar, use create [comando] --create para crear uno nuevo")
         command_line()
