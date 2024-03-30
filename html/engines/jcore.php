@@ -7,7 +7,7 @@ $permiso_publico_1 = 10;
 
 if (!$_SESSION["ARTICLE_ID"]):
 
-$_SESSION["ARTICLE_ID"] = md5(time().$_SESSION["REGUSER_EMAIL"]);
+$_SESSION["ARTICLE_ID"] = md5($_SESSION["REGUSER_EMAIL"]);
 
 endif;
 
@@ -328,7 +328,7 @@ add_img.onclick = function(){
 xlink =  prompt("Introduzca la url de la imagen","https://...");
 
 if(!xlink) return;
-else edit_article_01.contentWindow.document.execCommand("insertHTML", false,`<img src="`+xlink+`">`);
+else edit_article_01.contentWindow.document.execCommand("insertHTML", false,`<img src="`+xlink+`" style="max-width:100%;max-height:100%;">`);
   };
 
 

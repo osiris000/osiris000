@@ -40,7 +40,7 @@ onload = function(){
 IntroApp.innerHTML += `
 
 <br>
-<iframe class="rumble" layout="responsive" style="width:60vw;height:60vh;" src="https://rumble.com/embed/v4i5co9/?pub=3errs2&rel=5&autoplay=2" frameborder="0" allowfullscreen></iframe>
+<iframe class="rumble" layout="responsive" style="width:60vw;height:60vh;" src="https://rumble.com/embed/v4is1qe/?pub=3errs2" frameborder="0" allowfullscreen></iframe>
 <br><br>
 `
 

@@ -6,6 +6,7 @@ import sys
 import requests
 import json
 import signal
+import subprocess
 
 print('Creado módulo-comando scanip y fecha y hora: 2023-10-02 15:48:20.085867')
 
@@ -215,7 +216,7 @@ def scan_all(xip):
 
 def info_ip(location):
 
-    
+    subprocess.run("whois "+str(location),shell=True)
 
     url = "https://dns.google.com/resolve?name="+location+"&type=A"
 

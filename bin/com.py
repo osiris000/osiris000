@@ -72,7 +72,7 @@ def save_command_history():
 
 use_command = ""
 set_com = ""
-def_editor = "nano";
+def_editor = "subl";
 
 
 def command_line():
