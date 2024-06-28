@@ -1,2 +1,8 @@
 #!/usr/bin/bash
-echo "HELO FROM INSTALL"
+
+
+
+
+
+
+echo "Post Install File"
