@@ -15,33 +15,43 @@ import lib.osiris.common as common
 import sys
 import subprocess
 
+
 def habilitar_y_exportar_venv(nombre_venv):
 
 
     # Comando para habilitar el entorno virtual
-    comando_habilitar = f" source com/{nombre_venv}/bin/activate"
+    comando_habilitar = f"sh source com/{nombre_venv}/bin/activate"
 
     # Ejecutar el comando para habilitar el entorno virtual
-    #subprocess.run(comando_habilitar, shell=True)
+
+    try:
+        subprocess.run(comando_habilitar, shell=True)
+        print("Init com:",comando_habilitar)
+    except Exception as e:
+        print("Error habilitando:",e)
+
 
     # Exportar el entorno virtual
-    comando_exportar = f"export VIRTUAL_ENV={nombre_venv}"
+    comando_exportar = f"bash eval export PYTHONPATH=\".:com/{nombre_venv}lib/python3.9/site-packages\""
 
     # Ejecutar el comando para exportar el entorno virtual
-    subprocess.run(comando_exportar, shell=True)
-    if os.environ.get(nombre_venv):
+
+    try:
+        subprocess.run(comando_exportar, shell=True)
+        print("Init com:",comando_exportar)
+    except Exception as e:
+        print("Error Exportando:",e)
+
+    if os.environ.get("PYTHONPATH"):
         print("##########")
         #return
     else:
-    	print("..........")    
+    	print("..........")
 
 # Nombre de tu entorno virtual
 nombre_venv = "osiris_env"
 
 # Llamada a la función para habilitar y exportar el entorno virtual
-#habilitar_y_exportar_venv(nombre_venv)
-
-
 
 common.f()
 
@@ -79,6 +89,7 @@ def command_line():
     global def_editor
     global use_command
     global set_com
+    global nombre_venv
     signal.signal(signal.SIGINT,CTRL_C)
     # Configurar el historial para permitir la navegación con las flechas del cursor
     readline.set_history_length(cnf.history_com_size)  # Límite de longitud del historial
@@ -116,6 +127,11 @@ def command_line():
     if set_com:
         if args[0] != set_com:
             args.insert(0,set_com)
+
+    if args[0] == "--venv":
+        habilitar_y_exportar_venv(nombre_venv)
+        print("Activando venv:",nombre_venv)
+        command_line()
 
     if args[0] == "mount" and len(args) > 1:
         if args[1] not in valid_commands:

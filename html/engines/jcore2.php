@@ -6,10 +6,24 @@ include('../lib/php/aconf.php');
 include('../lib/php/lib.php');
 
 
+/*
+if (!$_SESSION["ARTICLE_ID"]):
 
+echo<<<EXIT
+alert(`
 
+Session Error. Se ha podido cerrar.
 
-if(!$_SESSION["REGUSER"]) die("/*<h1 style='background:white;'><!--*/ alert('Se ha cerrado la sesión'); /*--> Inicie Sesión Para Comenzar</h1>*/");
+`);
+EXIT;
+
+exit;
+
+endif;
+
+*/
+
+if(!$_SESSION["REGUSER"]) die("<h1 style='background:white;'>Inicie Sesión Para Comenzar</h1>");
 $mysqli = new mysqli($mysql_host, $mysql_usr, $mysql_psd, $mysql_bd);
 
 
@@ -47,11 +61,27 @@ $sql = "insert into edit_files(user_id,file_id,filecode,format,title,description
  values('".$_SESSION["REGUSER_ID"]."','".$_SESSION["ARTICLE_ID"]."','".$_POST["file"]."','json','".$data["title"]."','".$data["description"]."','".$data["article"]."',".$data["time"].");";
 
 
+echo "alert(`Registro nuevo: 
+
+{$_SESSION['ARTICLE_ID']}
+
+`);";
+
 elseif($article_exists==1):
 
 $sql = "update edit_files set title='".addcslashes($data["title"],"'")."',description='".addcslashes($data["description"],"'")."',article='".addcslashes($data["article"],"'")."'  where user_id='".$_SESSION["REGUSER_ID"]."' && file_id='".$_SESSION["ARTICLE_ID"]."'";
 
 #echo "alert(`{$sql}`);";
+
+
+echo "alert(`Registro update: 
+
+{$_SESSION['ARTICLE_ID']}
+
+`);";
+
+
+
 
 else:
 	/*error var*/

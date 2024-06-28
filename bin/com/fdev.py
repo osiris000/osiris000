@@ -17,7 +17,7 @@ estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
 pid_proceso = None
 yt_last_args = False
-def_profile = "youtube:1"
+def_profile = "rumble:860"
 
 def funcion_proceso(args):
     global estado_proceso
@@ -77,11 +77,15 @@ def main(args):
     def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
     def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
-    seek_start = None
+    def_seek_start = None #"00:38:17"
+    def_audio_filter = "volume=2.2"
+    def_preset = "ultrafast"
+    def_screen = "1280x720"
+
     profiles = {
     "youtube:1": {
         "profileType":"Youtube Live Streaming 480p",
-        "preset": "ultrafast",
+        "preset": def_preset,
         "vbr":"1000k",
         "abr":"128k",
         "bufsize":"1296k",
@@ -90,12 +94,12 @@ def main(args):
         "maxrate":"648k",
         "output":def_output,
         "progress":def_progress_file,
-        "ss":seek_start,
+        "ss":def_seek_start,
         "screen":"640x420"
     },
         "youtube:2": {
         "profileType":"Youtube Live Streaming 480p",
-        "preset": "ultrafast",
+        "preset": def_preset,
         "vbr":"2000k",
         "abr":"128k",
         "bufsize":"5000k",
@@ -105,26 +109,61 @@ def main(args):
         "minrate":"756k",
         "output":def_output,
         "progress":def_progress_file,
-        "ss":seek_start,
-        "screen":"1280x720"
+        "ss":def_seek_start,
+        "screen":def_screen
     },
 
-        "rumble:1": {
-        "profileType":"Youtube Live Streaming 480p",
-        "preset": "ultrafast",
-        "vbr":"2500k",
+        "rumble:860": {
+        "profileType":"Rumble 860",
+        "preset": def_preset,
+        "vbr":"5000k",
         "abr":"128k",
-        "bufsize":"5000k",
-        "stream_loop":"-1",
+        "bufsize":"15000k",
+        "stream_loop":None,
         "input":lineInput,
-        "maxrate":"3000k",
+        "maxrate":"6000k",
+        "minrate":"860k",
+        "output":def_output,
+        "progress":def_progress_file,
+        "ss":def_seek_start,
+        "screen":def_screen,
+        "audio_filter":def_audio_filter
+    },
+
+        "rumble:640": {
+        "profileType":"Rumble 480",
+        "preset": def_preset,
+        "vbr":"3500k",
+        "abr":"128k",
+        "bufsize":"12000k",
+        "stream_loop":None,
+        "input":lineInput,
+        "maxrate":"4500k",
         "minrate":"640k",
         "output":def_output,
         "progress":def_progress_file,
-        "ss":seek_start,
-        "screen":"1280x720"
+        "ss":def_seek_start,
+        "screen":def_screen,
+        "audio_filter":def_audio_filter
     },
 
+
+        "rumble:480": {
+        "profileType":"Rumble 480",
+        "preset": def_preset,
+        "vbr":"2500k",
+        "abr":"128k",
+        "bufsize":"10000k",
+        "stream_loop":None,
+        "input":lineInput,
+        "maxrate":"3500k",
+        "minrate":"480k",
+        "output":def_output,
+        "progress":def_progress_file,
+        "ss":def_seek_start,
+        "screen":def_screen,
+        "audio_filter":def_audio_filter
+    },
 
     "perfil2": {
         "preset": "slow"
@@ -132,7 +171,7 @@ def main(args):
 }
 
     #en pruebas
-    def_profile = "rumble:1"
+
 # Seleccionar un perfil
     perfil_actual = def_profile
     profile_name = perfil_actual
@@ -224,8 +263,26 @@ def main(args):
     if yt_default_seek_start != None:
         yt_default_seek_start = ["-ss",yt_default_seek_start]
     else:
-        yt_default_seek_start = ""
+        yt_default_seek_start = []
 
+
+#stram_loop
+    yt_default_stream_loop = profiles[profile_name].get("stream_loop") if "stream_loop" in profiles[profile_name] else "-1"
+    if yt_default_stream_loop != None:
+        yt_default_stream_loop = ["-stream_loop",yt_default_stream_loop]
+    else:
+        yt_default_stream_loop = []
+
+
+#audio_filter
+    yt_default_audio_filter = profiles[profile_name].get("audio_filter") if "audio_filter" in profiles[profile_name] else ""
+    if yt_default_audio_filter != None:
+        if yt_default_audio_filter == "":
+            yt_default_audio_filter = []
+        else:
+            yt_default_audio_filter = ["-af",yt_default_audio_filter]
+    else:
+        yt_default_audio_filter = []
 
 
 
@@ -238,25 +295,26 @@ def main(args):
 
     yt_default_av_codecs = [
     "-c",
-    "copy",
-    "-movflags",
-    "+faststart"
+    "copy"
     ]
 
     yt_default_av_codecs = [
     "-c:v","h264",
     "-c:a","aac",
 	"-bsf:v","h264_mp4toannexb",
-	"-bsf:a","aac_adtstoasc"
+	"-bsf:a","aac_adtstoasc",
+    "-movflags",
+    "+faststart"
     ]
 
     yt_start = [
     "ffmpeg",
-    "-y",
-    "-stream_loop",
-    "-1",
-    "-re"
-    ]
+    "-y"] + yt_default_stream_loop + ["-re"] + yt_default_seek_start 
+
+
+    yt_start_intro = [
+    "ffmpeg",
+    "-y"] + ["-stream_loop","-1"] + ["-re"]  
 
     yt_input_concat = [
     "-f",
@@ -307,9 +365,12 @@ def main(args):
   "com/datas/ffmpeg/intro.mp4"
     ]
 
-    logo =[
-    "-loop","1",
-    "-i","com/datas/ffmpeg/logo.png",
+
+    logo_loop = ["-loop","1"]
+    logo_loop = []
+    logo_input = ["-i","com/datas/ffmpeg/logo.png"]
+    
+    logo = logo_loop + logo_input + [
     "-filter_complex", "[0:v]scale=-2:ih*1.8[v];[v]overlay=W-w-15:20:enable='between(t,0,inf)'",
     ]
 
@@ -318,9 +379,9 @@ def main(args):
      ]
 
     
-    yt_codecs_start =  yt_default_preset + yt_default_screen + yt_default_abr + yt_default_vbr +  yt_default_buffer_size
+    yt_codecs_start =   yt_default_preset + yt_default_screen + yt_default_abr + yt_default_vbr +  yt_default_buffer_size
 
-    yt_codecs_rates = [
+    yt_codecs_rates = yt_default_audio_filter + [
     "-pix_fmt",
     "yuv420p",
     "-g",
@@ -329,7 +390,7 @@ def main(args):
     "30"
     ] + yt_default_maxrate + yt_default_minrate
 
-    yt_codecs_start = logo +  yt_codecs_start
+    yt_codecs_start =  logo +  yt_codecs_start
 
     yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates
 
@@ -358,7 +419,7 @@ def main(args):
                     print("No Existe last_url")
                 return
             elif args[1] == "intro":
-                yt_args = yt_start + yt_input_intro + yt_codecs + yt_output
+                yt_args = yt_start_intro + yt_input_intro + yt_codecs + yt_output
             elif args[1] == "concat":
                 yt_args = yt_start + yt_input_concat + yt_codecs + yt_output
             elif args[1] == "start":

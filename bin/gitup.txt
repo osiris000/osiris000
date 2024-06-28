@@ -59,26 +59,27 @@ bin/com/datas/ffmpeg/carta.mkv
 bin/com/datas/ffmpeg/intro.mp4
 bin/com/datas/ffmpeg/logo.png
 
+bin/com/cert.py
 bin/com/fdev.py
 bin/com/hls.py
 bin/com/sniff.py
 bin/com/scanip.py
 bin/com/blockchain.py
 
-bin/com/lib
+#bin/com/lib
 
 
 #install default
 
-install/webapp/default
-install/sql
+#install/webapp/default
+#install/sql
 
 
 
 #html
 
-html/index.html
-html/public.html
+#html/index.html
+#html/public.html
 
 
 #js libs
@@ -91,15 +92,15 @@ html/engines
 html/textos/info.txt
 
 #html/app
-html/app/freedirectory/index.php
-html/app/freedirectory/import.php
-html/app/mitv
+#html/app/freedirectory/index.php
+#html/app/freedirectory/import.php
+#html/app/mitv
 
 
-html/conf2
+#html/conf2
 
 #clones
-html/clones/observatoriospublicos.es
+#html/clones/observatoriospublicos.es
 
 #dpkg .deb package
 DEBIAN
