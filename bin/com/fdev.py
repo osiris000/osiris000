@@ -74,11 +74,11 @@ def main(args):
 
 
     lineInput = None
-    def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
-    def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
+    def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+    #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
     def_progress_file = "com/datas/ffmpeg/progress_process.txt"
     def_seek_start = None #"00:38:17"
-    def_audio_filter = "volume=2.2"
+    def_audio_filter = None #"volume=2.2"
     def_preset = "ultrafast"
     def_screen = "1280x720"
 
@@ -286,7 +286,7 @@ def main(args):
 
 
 
-
+    sudo_usr = ["sudo","-u","osiris"]
 
 #    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
     MAX_LPF = 4096 # maximum length progess file
@@ -336,11 +336,11 @@ def main(args):
 
     yt_screen_input2 = [
     "-f",
-    "pulse",
+    "alsa",
     "-ac",
     "2",
     "-i",
-    "hw:0.1"
+    "hw:0,0"
     ]
 
     yt_v4l2_input = [
@@ -430,7 +430,7 @@ def main(args):
                 if args[2] == "v4l2" and len(args)>3:
                     yt_args = yt_start + yt_v4l2_input +["-i",args[3]] + yt_codecs + yt_output
                 elif args[2] == "screen" and len(args)>3:
-                    yt_args = yt_start + yt_screen_input +["-i",args[3]] + yt_screen_input2 + yt_codecs + yt_output
+                    yt_args = sudo_usr + yt_start + yt_screen_input +["-i",args[3]] + yt_screen_input2 + yt_codecs + yt_output
                 else:
                     if len(args) > 2:
                         try:
