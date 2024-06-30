@@ -325,11 +325,13 @@ def main(args):
     "com/datas/ffmpeg/concat_list.txt"
     ]
 
+    yt_default_region_screen = ":0.0+100,100"
+
     yt_screen_input = [
     "-f",
     "x11grab",
     "-video_size",
-    "420x360",
+    "640x480",
     "-framerate",
     "10"
     ]
@@ -340,7 +342,7 @@ def main(args):
     "-ac",
     "2",
     "-i",
-    "hw:0,0"
+    "pulse"
     ]
 
     yt_v4l2_input = [
@@ -429,7 +431,10 @@ def main(args):
             elif args[1] == "input" or args[1] == "-i" :
                 if args[2] == "v4l2" and len(args)>3:
                     yt_args = yt_start + yt_v4l2_input +["-i",args[3]] + yt_codecs + yt_output
-                elif args[2] == "screen" and len(args)>3:
+                elif args[2] == "screen" and len(args)>=3:	
+                    if len(args) == 3:
+                        print(",,,,,,,,,,")
+                        args.append(yt_default_region_screen)
                     yt_args = sudo_usr + yt_start + yt_screen_input +["-i",args[3]] + yt_screen_input2 + yt_codecs + yt_output
                 else:
                     if len(args) > 2:
@@ -579,7 +584,7 @@ def interchange2(yt_args,kill_l):
     try:
         os.kill(kill_l, signal.SIGKILL)
 #uso os kill en vez de subprocess                            subprocess.call(["kill",str(kill_l)],shell=True)
-        print("KILL:",kill_l)
+        #print("KILL:",kill_l)
     except Exception as e:
         print("CH PID WARN",e)
     print("KILL:",kill_l)

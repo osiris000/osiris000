@@ -35,6 +35,8 @@ bin/osiris
 bin/osiris.py
 
 
+
+bin/osiristv
 bin/server
 bin/server.rs
 bin/src

@@ -1,0 +1,3 @@
+#!/bin/bash
+exec /var/www/osiris000/bin/osiristv
+exit 1
