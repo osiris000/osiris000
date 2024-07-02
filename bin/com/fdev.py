@@ -131,22 +131,29 @@ def main(args):
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
-
+    yt_default_list_dir = "com/datas/ffmpeg/tv"
 
     global lineInput, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
     global profiles
 
-
     if args[0] == "view":
-    	if len(args)>1:
-    	    if args[1] == "profiles":
-    		    print(profiles)
-    		    return
-    print("End View")
-    return
-
-
-
+        if len(args)>1:
+            if args[1] == "profiles":
+                print(profiles)
+                return
+        print("End View")
+        return
+    elif args[0] == "ls":
+        if len(args)>1:
+            if args[1] == "tv":
+                print("---------------")
+                file_list = list_files(yt_default_list_dir)
+                for file in file_list:
+                    print(file)
+                print("---------------")
+                return
+        print("End ls")
+        return
 
 
 #input
@@ -275,8 +282,6 @@ def main(args):
 
 #    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
     MAX_LPF = 4096 # maximum length progess file
-
-    yt_default_list_dir = "com/datas/ffmpeg/tv"
 
     yt_default_av_codecs = [
     "-c",
@@ -623,6 +628,18 @@ class ConcatenadorFFmpeg:
             print("Se ha creado el archivo de concatenación:", self.archivo_concat)
         else:
             print("No se encontraron archivos con la extensión especificada.")
+
+
+
+def list_files(directory):
+    files = os.listdir(directory)
+    numbered_files = []
+    for index, file in enumerate(files, start=1):
+        numbered_files.append(f"{index}. {file}")
+    return numbered_files
+
+
+
 
 
 

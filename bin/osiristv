@@ -13,6 +13,8 @@ if [ -n "$PIDS" ]; then
     read -p "¿Deseas matar el proceso ffmpeg con PID $PID? (s/n): " respuesta
     if [ "$respuesta" = "s" ]; then
       kill -9 $PID
+      sudo kill $PID
+      kill $PID
       echo "Proceso ffmpeg ($PID) ha sido cerrado."
     else
       echo "Proceso ffmpeg ($PID) no ha sido cerrado."
@@ -21,8 +23,6 @@ if [ -n "$PIDS" ]; then
 else
   echo "No se encontró ningún proceso ffmpeg con 'osiristv' corriendo."
 fi
-
-
 
 
 
