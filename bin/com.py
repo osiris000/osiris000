@@ -14,7 +14,7 @@ import signal
 import lib.osiris.common as common
 import sys
 import subprocess
-
+import time
 
 def habilitar_y_exportar_venv(nombre_venv):
 
@@ -96,7 +96,7 @@ def command_line():
     readline.clear_history()  # Limpiar el historial actual
     for command in command_history:
         readline.add_history(command)  # Agregar los comandos al historial
-
+    time.sleep(0.3)
     try:
         com = input(">>> "+use_command)
         com = com.lstrip()

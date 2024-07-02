@@ -19,72 +19,17 @@ pid_proceso = None
 yt_last_args = False
 profile_name = "youtube:2"
 
-def funcion_proceso(args):
-    global estado_proceso
-    try:
-        subprocess.call(["sudo","-u","osiris","bash","com/otvkill"])
-        proceso = multiprocessing.Process(target=_funcion_interna,args=(args,))
-        proceso.start()
-        global pid_proceso
-        pid_proceso = pid_queue.get()  # Obtenemos el PID del proceso hijo desde la cola
-        proceso.join()  # Esperamos a que el proceso hijo se inicie completamente
-        print("Iniciado proceso PID:", pid_proceso)  # Esto debería imprimir el valor actualizado
-    except Exception as e:
-        print("Error al iniciar el proceso:", e)
-    finally:
-        estado_proceso = True
+lineInput = None
+def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+#def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
+def_progress_file = "com/datas/ffmpeg/progress_process.txt"
+def_seek_start = None #"00:38:17"
+def_audio_filter = None #"volume=2.2"
+def_preset = "ultrafast"
+def_screen = "1280x720"
+def_fps = "24"
 
-def _funcion_interna(args):
-    try:
-        proceso = subprocess.Popen(args,bufsize=0,close_fds=True,restore_signals=True,shell=False,stdin=None,stdout=None,stderr=subprocess.DEVNULL)
-        pid_proceso = proceso.pid
-        pid_queue.put(pid_proceso)  # Pasamos el PID del proceso hijo a la cola
-        print("Iniciado Hilo", pid_proceso)
-    except Exception as e:
-        print("Error Popen:", e)
-        return
-
-def detener_proceso():
-    global estado_proceso
-    global pid_proceso
-    if estado_proceso:
-        try:
-            if pid_proceso is not None:
-                os.kill(pid_proceso, signal.SIGKILL)
-                estado_proceso = False
-                print("Detenido proceso PID:", pid_proceso)
-                pid_proceso = None
-        except Exception as e:
-            print("Error al detener el proceso:", e)
-    else:
-        print("No existe proceso abierto")
-
-
-
-def main(args):
-
-    yt_args = False
-    global estado_proceso
-    global hilo_proceso, pid_proceso
-    global yt_last_args
-    global def_profile
-    global last_url
-    #global yt_start, yt_input_concat, yt_codecs, yt_output
-    #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
-    #global yt_default_progress_file, MAX_LPF
-
-
-    lineInput = None
-    def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
-    #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
-    def_progress_file = "com/datas/ffmpeg/progress_process.txt"
-    def_seek_start = None #"00:38:17"
-    def_audio_filter = None #"volume=2.2"
-    def_preset = "ultrafast"
-    def_screen = "1280x720"
-    def_fps = "24"
-
-    profiles = {
+profiles = {
     "youtube:1": {
         "profileType":"Youtube Live Streaming 480p",
         "preset": def_preset,
@@ -173,7 +118,35 @@ def main(args):
     }
 }
 
-    #en pruebas
+
+
+def main(args):
+
+    yt_args = False
+    global estado_proceso
+    global hilo_proceso, pid_proceso
+    global yt_last_args
+    global def_profile
+    global last_url
+    #global yt_start, yt_input_concat, yt_codecs, yt_output
+    #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
+    #global yt_default_progress_file, MAX_LPF
+
+
+    global lineInput, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
+    global profiles
+
+
+    if args[0] == "view":
+    	if len(args)>1:
+    	    if args[1] == "profiles":
+    		    print(profiles)
+    		    return
+    print("End View")
+    return
+
+
+
 
 
 #input
@@ -670,6 +643,54 @@ def thread():
     hilo = threading.Thread(target=funcion_en_segundo_plano)
     hilo.daemon = True
     hilo.start()
+
+
+
+def funcion_proceso(args):
+    global estado_proceso
+    try:
+        subprocess.call(["sudo","-u","osiris","bash","com/otvkill"])
+        proceso = multiprocessing.Process(target=_funcion_interna,args=(args,))
+        proceso.start()
+        global pid_proceso
+        pid_proceso = pid_queue.get()  # Obtenemos el PID del proceso hijo desde la cola
+        proceso.join()  # Esperamos a que el proceso hijo se inicie completamente
+        print("Iniciado proceso PID:", pid_proceso)  # Esto debería imprimir el valor actualizado
+    except Exception as e:
+        print("Error al iniciar el proceso:", e)
+    finally:
+        estado_proceso = True
+
+def _funcion_interna(args):
+    try:
+        proceso = subprocess.Popen(args,bufsize=0,close_fds=True,restore_signals=True,shell=False,stdin=None,stdout=None,stderr=subprocess.DEVNULL)
+        pid_proceso = proceso.pid
+        pid_queue.put(pid_proceso)  # Pasamos el PID del proceso hijo a la cola
+        print("Iniciado Hilo", pid_proceso)
+    except Exception as e:
+        print("Error Popen:", e)
+        return
+
+def detener_proceso():
+    global estado_proceso
+    global pid_proceso
+    if estado_proceso:
+        try:
+            if pid_proceso is not None:
+                os.kill(pid_proceso, signal.SIGKILL)
+                estado_proceso = False
+                print("Detenido proceso PID:", pid_proceso)
+                pid_proceso = None
+        except Exception as e:
+            print("Error al detener el proceso:", e)
+    else:
+        print("No existe proceso abierto")
+
+
+
+
+
+
 
 
 
