@@ -17,11 +17,12 @@ estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
 pid_proceso = None
 yt_last_args = False
-def_profile = "rumble:860"
+profile_name = "youtube:2"
 
 def funcion_proceso(args):
     global estado_proceso
     try:
+        subprocess.call(["sudo","-u","osiris","bash","com/otvkill"])
         proceso = multiprocessing.Process(target=_funcion_interna,args=(args,))
         proceso.start()
         global pid_proceso
@@ -81,6 +82,7 @@ def main(args):
     def_audio_filter = None #"volume=2.2"
     def_preset = "ultrafast"
     def_screen = "1280x720"
+    def_fps = "24"
 
     profiles = {
     "youtube:1": {
@@ -98,19 +100,20 @@ def main(args):
         "screen":"640x420"
     },
         "youtube:2": {
-        "profileType":"Youtube Live Streaming 480p",
+        "profileType":"Youtube Live Streaming 720p",
         "preset": def_preset,
-        "vbr":"2000k",
+        "vbr":"4000k",
         "abr":"128k",
-        "bufsize":"5000k",
+        "bufsize":"10000k",
         "stream_loop":"-1",
         "input":lineInput,
-        "maxrate":"2500k",
-        "minrate":"756k",
+        "maxrate":"4500k",
+        "minrate":"3500k",
         "output":def_output,
         "progress":def_progress_file,
         "ss":def_seek_start,
-        "screen":def_screen
+        "fps":"24",
+        "screen":"1280x720"
     },
 
         "rumble:860": {
@@ -172,11 +175,6 @@ def main(args):
 
     #en pruebas
 
-# Seleccionar un perfil
-    perfil_actual = def_profile
-    profile_name = perfil_actual
-
-
 
 #input
     yt_default_input = profiles[profile_name].get("input") if "input" in profiles[profile_name] else "com/datas/ffmpeg/intro.mp4"
@@ -231,7 +229,7 @@ def main(args):
     if yt_default_minrate != None:
         yt_default_minrate = ["-minrate",yt_default_minrate]
     else:
-        yt_default_minrate = ""
+        yt_default_minrate = []
 
 
 #maxrate
@@ -239,7 +237,7 @@ def main(args):
     if yt_default_maxrate != None:
         yt_default_maxrate = ["-maxrate",yt_default_maxrate]
     else:
-        yt_default_maxrate = ""
+        yt_default_maxrate = []
 
 
 #output
@@ -283,6 +281,20 @@ def main(args):
             yt_default_audio_filter = ["-af",yt_default_audio_filter]
     else:
         yt_default_audio_filter = []
+
+
+
+#fps (frames x segundo - output)
+
+    yt_default_fps = profiles[profile_name].get("fps") if "fps" in profiles[profile_name] else def_fps
+    if yt_default_fps != None:
+        if yt_default_fps == "":
+            yt_default_fps = []
+        else:
+            yt_default_fps = ["-r",yt_default_fps]
+    else:
+        yt_default_fps = []
+
 
 
 
@@ -387,14 +399,12 @@ def main(args):
     "-pix_fmt",
     "yuv420p",
     "-g",
-    "2",
-    "-r",
-    "30"
-    ] + yt_default_maxrate + yt_default_minrate
+    "2"
+    ] + yt_default_fps + yt_default_maxrate + yt_default_minrate
 
     yt_codecs_start =  logo +  yt_codecs_start
-
-    yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates
+    yt_metadata = ["-metadata","'text=osiristv-fdev'"]
+    yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates + yt_metadata
 
     yt_output = [
     "-f",

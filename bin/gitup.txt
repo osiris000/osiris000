@@ -33,7 +33,7 @@ bin/help
 bin/lib
 bin/osiris
 bin/osiris.py
-
+bin/osiristv
 
 
 bin/osiristv
