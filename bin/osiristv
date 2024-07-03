@@ -12,12 +12,15 @@ if [ -n "$PIDS" ]; then
   for PID in $PIDS; do
     read -p "¿Deseas matar el proceso ffmpeg con PID $PID? (s/n): " respuesta
     if [ "$respuesta" = "s" ]; then
-      kill -9 $PID
-      sudo kill $PID
-      kill $PID
-      echo "Proceso ffmpeg ($PID) ha sido cerrado."
-    else
-      echo "Proceso ffmpeg ($PID) no ha sido cerrado."
+
+if kill -9 $PID 2>/dev/null; then
+    echo "El proceso con PID $PID fue terminado."
+else
+    echo "El proceso con PID $PID no existe o no tienes permisos suficientes."
+    echo "Probar con sudo"
+    sudo kill -9 $PID ;
+fi
+
     fi
   done
 else
@@ -34,10 +37,10 @@ fi
 echo "ffmpeg -y -re -f x11grab -video_size 640x380 -framerate 30 -i :0.0+175,190 -f pulse -i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor -f pulse -i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.iec958-stereo -filter_complex amerge -ac 2  -preset ultrafast -s 640x420 -b:a 128k -b:v 10000k -bufsize 20000k  -fflags +genpts  -c:v libx264 -c:a aac -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -pix_fmt yuv420p -g 4 -crf 22 -threads 6 -minrate 10000k -r 30 -maxrate 12000k -f flv rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy "
 
 exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size 640x380 \
--framerate 20 -i :0.0+175,175 -f pulse  -thread_queue_size 512 \
--i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor -f pulse \
-\
--thread_queue_size 512 \
+-framerate 20 -i :0.0+176,175 \
+-f pulse  -thread_queue_size 512 \
+-i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor \
+-f pulse -thread_queue_size 512 \
 -i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.iec958-stereo \
 \
 -ac 2 -ar 44100 -filter_complex amerge -vsync 1   -preset ultrafast \

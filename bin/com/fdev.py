@@ -28,6 +28,7 @@ def_audio_filter = None #"volume=2.2"
 def_preset = "ultrafast"
 def_screen = "1280x720"
 def_fps = "24"
+def_intro_file = "com/datas/ffmpeg/intro.mp4"
 
 profiles = {
     "youtube:1": {
@@ -119,6 +120,10 @@ profiles = {
 }
 
 
+play = []
+
+
+yt_default_list_dir = "com/datas/ffmpeg"
 
 def main(args):
 
@@ -128,13 +133,15 @@ def main(args):
     global yt_last_args
     global def_profile
     global last_url
+    global play
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
-    yt_default_list_dir = "com/datas/ffmpeg/tv"
 
-    global lineInput, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
+
+    global lineInput, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
     global profiles
+    global yt_default_list_dir
 
     if args[0] == "view":
         if len(args)>1:
@@ -145,19 +152,41 @@ def main(args):
         return
     elif args[0] == "ls":
         if len(args)>1:
-            if args[1] == "tv":
-                print("---------------")
-                file_list = list_files(yt_default_list_dir)
-                for file in file_list:
-                    print(file)
-                print("---------------")
+            if os.path.isdir(yt_default_list_dir+"/"+args[1]):
+                yt_default_list_dir = yt_default_list_dir+"/"+args[1]
+            else:
+                print("IS NOT PATH")
                 return
+        print("---------------")
+        file_list = list_files(yt_default_list_dir)
+        play = []
+        n = 0
+        for file in file_list:
+            n = n + 1
+            print(str(n)+" - "+file)
+            play.append(file)
+        print("---------------")
         print("End ls")
         return
-
+    elif args[0] == "play":
+        if len(args)>1:
+            if args[1] == "tv":
+                if len(args)>2:
+                    try:
+                        intn = int(args[2])
+                        if  intn > 0:
+                            print("PLay:"+str(intn))
+                            print("yt -i \"" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"\" -c")
+                            main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
+                            return
+                    except Exception as e:
+                        print("ERROR:",e)
+                        return
+        print("End Play")
+        return
 
 #input
-    yt_default_input = profiles[profile_name].get("input") if "input" in profiles[profile_name] else "com/datas/ffmpeg/intro.mp4"
+    yt_default_input = profiles[profile_name].get("input") if "input" in profiles[profile_name] else def_intro_file
     if yt_default_input != None:
         yt_default_input = ["-i",yt_default_input]
     else:
@@ -354,7 +383,7 @@ def main(args):
 
     yt_input_intro = [
   "-i",
-  "com/datas/ffmpeg/intro.mp4"
+  def_intro_file
     ]
 
 
@@ -633,9 +662,10 @@ class ConcatenadorFFmpeg:
 
 def list_files(directory):
     files = os.listdir(directory)
+    files.sort()    
     numbered_files = []
     for index, file in enumerate(files, start=1):
-        numbered_files.append(f"{index}. {file}")
+        numbered_files.append(f"{file}")
     return numbered_files
 
 
