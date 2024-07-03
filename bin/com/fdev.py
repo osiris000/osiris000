@@ -123,7 +123,7 @@ profiles = {
 play = []
 
 
-yt_default_list_dir = "com/datas/ffmpeg"
+def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
 
 def main(args):
 
@@ -141,7 +141,7 @@ def main(args):
 
     global lineInput, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
     global profiles
-    global yt_default_list_dir
+    global yt_default_list_dir,def_fdir
 
     if args[0] == "view":
         if len(args)>1:
@@ -154,8 +154,10 @@ def main(args):
         if len(args)>1:
             if os.path.isdir(yt_default_list_dir+"/"+args[1]):
                 yt_default_list_dir = yt_default_list_dir+"/"+args[1]
+            elif args[1] == "*":
+                yt_default_list_dir = def_fdir
             else:
-                print("IS NOT PATH")
+                print(" IS NOT PATH")
                 return
         print("---------------")
         file_list = list_files(yt_default_list_dir)
@@ -163,10 +165,10 @@ def main(args):
         n = 0
         for file in file_list:
             n = n + 1
-            print(str(n)+" - "+file)
+            print("   "+str(n)+" - "+file)
             play.append(file)
         print("---------------")
-        print("End ls")
+        print(" End ls")
         return
     elif args[0] == "play":
         if len(args)>1:
@@ -175,14 +177,14 @@ def main(args):
                     try:
                         intn = int(args[2])
                         if  intn > 0:
-                            print("PLay:"+str(intn))
-                            print("yt -i \"" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"\" -c")
+                            print(" PLay:"+str(intn))
+                            print(" yt -i \"" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"\" -c")
                             main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
                             return
                     except Exception as e:
-                        print("ERROR:",e)
+                        print(" ERROR:",e)
                         return
-        print("End Play")
+        print(" End Play")
         return
 
 #input
