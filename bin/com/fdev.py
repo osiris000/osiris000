@@ -179,6 +179,11 @@ def main(args):
                         if  intn > 0:
                             print(" PLay:"+str(intn))
                             print(" yt -i \"" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"\" -c")
+                            if len(args)>3:
+                                if args[3] == "probe":
+                                    subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
+                                    print("--End Probe-----------------")
+                                    return
                             main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
                             return
                     except Exception as e:
@@ -585,7 +590,7 @@ def interchange(yt_args,kill_l):
             try:
                 os.kill(kill_l, signal.SIGKILL)
 #uso os kill en vez de subprocess                            subprocess.call(["kill",str(kill_l)],shell=True)
-                print("KILL:",kill_l)
+#                print("KILL:",kill_l)
                 break
             except Exception as e:
                 print("CH PID WARN",e)
@@ -606,10 +611,10 @@ def interchange2(yt_args,kill_l):
         #print("KILL:",kill_l)
     except Exception as e:
         print("CH PID WARN",e)
-    print("KILL:",kill_l)
+ #   print("KILL:",kill_l)
     funcion_proceso(yt_args)
-    print("New Proceso iniciado:",pid_proceso)
-
+ #   print("New Proceso iniciado:",pid_proceso)
+    return
 
 
 
