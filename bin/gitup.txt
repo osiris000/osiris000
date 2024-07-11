@@ -67,6 +67,8 @@ bin/com/hls.py
 bin/com/sniff.py
 bin/com/scanip.py
 bin/com/blockchain.py
+bin/com/selecttv.py
+bin/com/otvkill
 
 #bin/com/lib
 

@@ -17,10 +17,11 @@ estado_proceso = False
 pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del proceso hijo
 pid_proceso = None
 yt_last_args = False
-profile_name = "youtube:2"
+
 
 lineInput = None
 def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+def_fout = "flv"
 #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"
 def_seek_start = None #"00:38:17"
@@ -29,6 +30,7 @@ def_preset = "ultrafast"
 def_screen = "1280x720"
 def_fps = "24"
 def_intro_file = "com/datas/ffmpeg/intro.mp4"
+def_profile = "youtube:2"
 
 profiles = {
     "youtube:1": {
@@ -55,6 +57,7 @@ profiles = {
         "input":lineInput,
         "maxrate":"4500k",
         "minrate":"3500k",
+        "fout":"flv",
         "output":def_output,
         "progress":def_progress_file,
         "ss":def_seek_start,
@@ -143,12 +146,25 @@ def main(args):
     global profiles
     global yt_default_list_dir,def_fdir
 
+
+    profile_name = def_profile
+
     if args[0] == "view":
+        print("\n---- view ---------------------------\n")
         if len(args)>1:
             if args[1] == "profiles":
                 print(profiles)
                 return
-        print("End View")
+            elif args[1] == "profile":
+                if len(args) > 2:
+                    if args[2] in profiles:
+                        print("view profile:"+args[2]+"\n",profiles[args[2]])
+                    else:
+                        print("Profile: "+args[2]+" :Not exists")
+                else:
+                    print("Profile Active:",def_profile,"\n")
+                    print("",profiles[def_profile],"\n")
+        print("\n----------End View\n")
         return
     elif args[0] == "ls":
         if len(args)>1:
@@ -191,6 +207,35 @@ def main(args):
                         return
         print(" End Play")
         return
+    elif args[0] == "set":
+        if len(args) >1:
+            try:
+#cambio de valor en perfil
+                if args[1] == "profile":
+                #seleccion de perfil comproblar si existe en variable objeto profiles
+                    if len(args)>2:
+                        if args[2] in profiles:
+#                            print("in profiles",args[2])
+                            if len(args)>3:
+                                if args[3] in profiles[args[2]]:
+#                                    print("Key:"+args[3]+" in profile:"+args[2])
+                                    if len(args)>4:
+                                        value = profiles.get(args[2], {}).get(args[3], None)
+                                        print("Value change to:",value)
+                                        profiles[args[2]][args[3]] = args[4]
+                                        print("Profile:",args[2],profiles[args[2]])
+                                else:
+                                    print("NOT Key:"+args[3]+" in profile:"+args[2])
+                            else:
+                                def_profile = args[2]
+                                print("SET PROFILE:",def_profile)
+                        else:
+                            print("No existe en profiles:",args[2])
+            except Exception as e:
+                print("Error in set:",e)
+        print("Exit Set:",args)
+        return
+
 
 #input
     yt_default_input = profiles[profile_name].get("input") if "input" in profiles[profile_name] else def_intro_file
@@ -250,15 +295,26 @@ def main(args):
 
 #maxrate
     yt_default_maxrate = profiles[profile_name].get("maxrate") if "maxrate" in profiles[profile_name] else "750k"
-    if yt_default_maxrate != None:
+    if yt_default_maxrate != None and yt_default_maxrate != "None":
         yt_default_maxrate = ["-maxrate",yt_default_maxrate]
     else:
         yt_default_maxrate = []
 
 
+
+#output
+    yt_default_fout = profiles[profile_name].get("fout") if "fout" in profiles[profile_name] else def_fout
+    if yt_default_fout != None and yt_default_fout != "None":
+        yt_default_fout = ["-f",yt_default_fout]
+    else:
+        yt_default_fout = []
+
+
+
+
 #output
     yt_default_output_url = profiles[profile_name].get("output") if "output" in profiles[profile_name] else def_output
-    if yt_default_output_url != None:
+    if yt_default_output_url != None and yt_default_output_url != "None" :
         yt_default_output_url = [yt_default_output_url]
     else:
         yt_default_output_url = ""
@@ -266,10 +322,10 @@ def main(args):
 
 #progress
     yt_default_progress_file = profiles[profile_name].get("progress") if "progress" in profiles[profile_name] else def_progress_file
-    if yt_default_progress_file != None:
+    if yt_default_progress_file != None and yt_default_progress_file != "None" :
         yt_default_progress_file = ["-progress",yt_default_progress_file]
     else:
-        yt_default_progress_file = ""
+        yt_default_progress_file = []
 
 
 #seek start
@@ -420,9 +476,7 @@ def main(args):
     yt_metadata = ["-metadata","'text=osiristv-fdev'"]
     yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates + yt_metadata
 
-    yt_output = [
-    "-f",
-    "flv"] + yt_default_output_url + yt_default_progress_file 
+    yt_output = yt_default_fout + yt_default_output_url + yt_default_progress_file 
 
     try:
         if args[0].startswith("http://") or args[0].startswith("https://"):
@@ -433,9 +487,11 @@ def main(args):
         if args[0] == "youtube" or args[0] == "yt" :
             
             if len(args) == 1:
-                args.append("intro")
-
-
+                if profiles[def_profile]["input"] != None and profiles[def_profile]["input"] != "None":
+                    args.append("-i")
+                    args.append(profiles[def_profile]["input"])
+                else:
+                    args.append("intro")
             if args[1] == "lasturl":
                 if last_url:
                     print("MAIN:",last_url)

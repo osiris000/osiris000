@@ -1,27 +1,32 @@
 <?php
-
 session_start();
+//session_unset();session_destroy();
+
+if(isset($_SESSION["REGUSER"])):
 
 
-
-
-if($_SESSION["REGUSER"]):
+print_r($_SESSION["REGUSER"]);
+echo "ARE LOGED";
 
 /*  está logueado se sale   */
 
 exit;
 
-endif;
-
-if($_POST["action"]){
+elseif($_POST["action"]):
 echo<<<REG
-
+action reg<!-- Action REg -->
 REG;
 
 include 'rusri.php';
 
 exit;
-}
+
+else:
+
+echo "<!--REGISTRO acceso-->";
+
+endif;
+
 
 
 
@@ -29,12 +34,7 @@ exit;
 
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro / Acceso de usuarios</title>
+
 <style>
 /* Estilos generales */
 body {
@@ -120,8 +120,7 @@ h2 {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 </style>
-</head>
-<body>
+
 
 <div class="container">
   <h2>Usuarios</h2>
@@ -153,8 +152,3 @@ h2 {
   
   <div id="reginfo"></div>
 </div>
-
-
-</body>
-</html>
-

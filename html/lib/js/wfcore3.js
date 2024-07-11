@@ -393,6 +393,7 @@ const wfcore = function (param) {
                           def_tag = "div"
                         autoclass=false
                         ptr = /^(\*)([^\d]+)([0-9]+)/
+                        //    alert(coincidencia.length)
                         if(ptr.test(coincidencia[1])){ 
 
                            def_tag = coincidencia[1].match(/[a-zA-Z]/g);
