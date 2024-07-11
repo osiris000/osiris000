@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Obtener la ruta completa del script
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+# Cambiar al directorio del script
+cd "$SCRIPT_DIR" || { echo "Failed to change directory to $SCRIPT_DIR"; exit 1; }
+
+# URL de salida para la transmisión a YouTube
+output_url="rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+
+# Ruta al archivo que contiene los parámetros de filtro
+filter_params_file="com/datas/ffmpeg/filter_params.txt"
+
+# Dar permisos de escritura al archivo de parámetros (si es necesario)
+chmod 0777 "$filter_params_file"
+
+# Valores iniciales por defecto del filtro
+default_brightness=0.5
+default_contrast=1.0
+
+# Función para obtener el PID del proceso FFmpeg
+get_ffmpeg_pid() {
+    pgrep -f "ffmpeg.*osiristv"
+}
+
+# Función para iniciar FFmpeg con los parámetros iniciales
+start_ffmpeg() {
+    echo "Iniciando FFmpeg con parámetros por defecto..."
+
+ #testsrc=size=1280x720 \
+
+    # Construir comando FFmpeg con los parámetros de filtro por defecto
+    ffmpeg_command="ffmpeg -re -i com/datas/ffmpeg/intro.mp4  \
+                    -vf eq=brightness=$default_brightness:contrast=$default_contrast \
+                    -c:v libx264 -preset ultrafast -b:v 2500k -bufsize 2500k \
+                    -maxrate 4000k -metadata "text=osiristv" -g 2 -f flv $output_url"
+
+echo "$ffmpeg_command"
+
+    # Ejecutar el comando FFmpeg en segundo plano y redirigir la salida a /dev/null
+
+
+    nohup $ffmpeg_command >/dev/null 2>&1 &
+
+}
+
+
+# Verificar si FFmpeg no está en ejecución
+if ! pgrep -f "ffmpeg.*osiristv" > /dev/null; then
+    echo "No se encontró un proceso FFmpeg en ejecución. Iniciando FFmpeg..."
+    start_ffmpeg
+fi
+
+# Verificar y establecer los parámetros por defecto si el archivo no existe
+if [ ! -f "$filter_params_file" ]; then
+    echo "Creando archivo de parámetros por defecto: $filter_params_file"
+    echo "$default_brightness" > "$filter_params_file"
+    echo "$default_contrast" >> "$filter_params_file"
+fi
+
+# Monitorear y ajustar el filtro dinámicamente
+while true; do
+    # Obtener el PID de FFmpeg en ejecución
+    ffmpeg_pid=$(get_ffmpeg_pid)
+    if [ -z "$ffmpeg_pid" ]; then
+        echo "No se encontró un proceso FFmpeg con el generador de señales en ejecución."
+echo "Ejecutando..."
+    start_ffmpeg
+#        exit 1
+    fi
+    echo "Proceso FFmpeg encontrado con PID: $ffmpeg_pid"
+
+    # Leer los parámetros del filtro desde el archivo
+    new_brightness=$(awk 'NR==1' "$filter_params_file")
+    new_contrast=$(awk 'NR==2' "$filter_params_file")
+
+    # Ajustar el filtro si hay cambios
+    if [[ "$new_brightness" != "$brightness" || "$new_contrast" != "$contrast" ]]; then
+        brightness=$new_brightness
+        contrast=$new_contrast
+        adjust_filter "$brightness" "$contrast"
+    fi
+
+    sleep 5  # Esperar antes de la próxima verificación
+done

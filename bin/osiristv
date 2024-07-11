@@ -6,39 +6,34 @@ y=175
 width=640
 height=380
 
-
-#!/bin/bash
-
 # Obtener la ruta completa del script
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # Cambiar al directorio del script
 cd "$SCRIPT_DIR" || { echo "Failed to change directory to $SCRIPT_DIR"; exit 1; }
 
-
-
 # Verificar si se pasa el parámetro -screen
 if [ "$1" == "-screen" ]; then
     # Ejecutar el script de Python y capturar la salida
+echo "#################################"
+echo "-------Ositistv screen-----------"
+echo "-------Seleccionar pantalla------"
     rect=$(python3 com/selecttv.py)
-
-#echo $rect
-#echo "END"
+echo "---------------------------------"
+echo "#################################"
+echo $rect
+echo "#################################"
 #exit
-
     # Verificar si la selección se realizó o si se cerró la ventana sin seleccionar
     if [ -z "$rect" ]; then
         echo "Selection cancelled or window closed"
 #        exit 1
     fi
-
     # Dividir los valores de la salida
     IFS=',' read -r x y width height <<< "$rect"
+    echo "Using values: x=$x, y=$y, width=$width, height=$height"
+
 fi
-
-
-#exit 1
-
 
 # Detectar todos los procesos de ffmpeg que contienen "osiristv"
 PIDS=$(ps aux | grep ffmpeg | grep "osiristv" | grep -v grep | awk '{print $2}')
@@ -67,29 +62,22 @@ else
   echo "No se encontró ningún proceso ffmpeg con 'osiristv' corriendo."
 fi
 
-
-
-
-
-
-
-#exec ffmpeg -y -re -f x11grab -video_size 720x460 -framerate 10 -i :0.0+180,180 -f alsa -ac 2 -i pulse  -preset ultrafast -s 860x540 -b:a 128k -b:v 5000k -bufsize 15000k -c:v h264 -c:a aac -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -movflags +faststart -pix_fmt yuv420p -g 2 -crf 18 -minrate 728k -r 15 -maxrate 6000k -minrate 860k -f flv rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy 
-echo "ffmpeg -y -re -f x11grab -video_size 640x380 -framerate 30 -i :0.0+175,190 -f pulse -i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor -f pulse -i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.iec958-stereo -filter_complex amerge -ac 2  -preset ultrafast -s 640x420 -b:a 128k -b:v 10000k -bufsize 20000k  -fflags +genpts  -c:v libx264 -c:a aac -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -pix_fmt yuv420p -g 4 -crf 22 -threads 6 -minrate 10000k -r 30 -maxrate 12000k -f flv rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy "
-
 cd com/datas/ffmpeg
 
 # Usar los valores para grabar el escritorio con ffmpeg
 exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${height} \
--framerate 20 -i :0.0+${x},${y} \
+-framerate 10 -i :0.0+${x},${y} \
 -f pulse -thread_queue_size 512 \
 -i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor \
 -f pulse -thread_queue_size 512 \
 -i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.iec958-stereo \
 -ac 2 -ar 44100 -filter_complex amerge -vsync 1 -preset ultrafast \
--s 640x420 -b:a 128k -b:v 10000k -bufsize 20000k \
--fflags +genpts -c:v libx264 -c:a aac -bsf:v h264_mp4toannexb \
--bsf:a aac_adtstoasc -pix_fmt yuv420p -g 4 -crf 26 -threads 6 -minrate 10000k \
--r 20 -maxrate 12000k \
+-vf "scale='if(gt(iw,ih),-2,trunc(iw/2)*2)':'if(gt(iw,ih),trunc(ih/2)*2,-2)'"  \
+-b:a 128k -b:v 12500k -bufsize 15000k \
+-fflags +genpts \
+-c:v h264 -c:a aac -bsf:v h264_mp4toannexb \
+-bsf:a aac_adtstoasc -pix_fmt yuv420p -g 2 -crf 18 -threads 3 -minrate 8000k \
+-r 10 -maxrate 15000k \
 -metadata title="osiristv" \
 -f flv rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy
 #-f mpegts pruebas.mp4.ts

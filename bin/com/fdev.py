@@ -330,7 +330,7 @@ def main(args):
 
 #seek start
     yt_default_seek_start = profiles[profile_name].get("ss") if "ss" in profiles[profile_name] else "00:00:00.000"
-    if yt_default_seek_start != None:
+    if yt_default_seek_start != None and yt_default_seek_start != "None":
         yt_default_seek_start = ["-ss",yt_default_seek_start]
     else:
         yt_default_seek_start = []
@@ -338,7 +338,7 @@ def main(args):
 
 #stram_loop
     yt_default_stream_loop = profiles[profile_name].get("stream_loop") if "stream_loop" in profiles[profile_name] else "-1"
-    if yt_default_stream_loop != None:
+    if yt_default_stream_loop != None and yt_default_stream_loop != "None":
         yt_default_stream_loop = ["-stream_loop",yt_default_stream_loop]
     else:
         yt_default_stream_loop = []

@@ -1,4 +1,6 @@
 
+#para directorio osirisp root
+
 #Ignores
 .gitignore
 
@@ -34,7 +36,7 @@ bin/lib
 bin/osiris
 bin/osiris.py
 bin/osiristv
-
+bin/pilottv
 
 bin/osiristv
 bin/server
