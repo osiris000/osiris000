@@ -21,6 +21,11 @@ include('../lib/php/lib.php');
 
 //requiere method post
 
+if(!$_POST["divid"]):
+	$divid = "div2";
+else:
+	$divid = $_POST["divid"];
+endif;
 
 
 
@@ -32,9 +37,9 @@ if($_POST["edit"] == "article"):
 if(!$_SESSION["REGUSER"]) {
 	die("
 
-div2.innerHTML = `
+{$divid}.innerHTML = `
 <div style='margin:0 auto 0 auto;width:100%;'>
-<h1 align=center style='padding:20px; background:white;'>Se ha cerrado la sesión</h1>
+<h1 align=center style='padding:20px; background:white;'>Inicie sesión para Acceder</h1>
 </div>
 `
 
@@ -46,6 +51,9 @@ div2.innerHTML = `
 $_SESSION["SECURE_JSON"] = $_SERVER["DOCUMENT_ROOT"]."/textos/".md5($_SESSION["REGUSER_EMAIL"])."_article_secure.json";
 $feb = $_SERVER["DOCUMENT_ROOT"]."/textos/".md5($_SESSION["REGUSER_EMAIL"])."_article.json";
 $chfed = $_SERVER["DOCUMENT_ROOT"]."/textos/".md5($_SESSION["REGUSER_EMAIL"])."_article_pending.json";
+
+
+
 
 
 if($_POST["action"]=="revisar"):
@@ -215,8 +223,8 @@ moveTag(BUTTON_A1,BOTTOM_FORM);
 
 
 
-div2.innerHTML = ""; 
-moveTag(ARTICLE_MAIN,div2);
+{$divid}.innerHTML = ""; 
+moveTag(ARTICLE_MAIN,{$divid});
 
 
 
@@ -409,7 +417,7 @@ elseif($_POST["edit"] == "save"):
 if(!$_SESSION["REGUSER"]) {
 	die("
 
-div2.innerHTML = `
+{$divid}.innerHTML = `
 <div style='margin:0 auto 0 auto;width:100%;'>
 <h1 align=center style='padding:20px; background:white;'>Se ha cerrado la sesión</h1>
 </div>

@@ -20,6 +20,7 @@ yt_last_args = False
 
 
 lineInput = None
+def_re = True
 def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
 def_fout = "flv"
 #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
@@ -62,7 +63,8 @@ profiles = {
         "progress":def_progress_file,
         "ss":def_seek_start,
         "fps":"24",
-        "screen":"1280x720"
+        "screen":"1280x720",
+        "audio_filter":def_audio_filter
     },
 
         "rumble:860": {
@@ -117,6 +119,27 @@ profiles = {
         "audio_filter":def_audio_filter
     },
 
+
+        "makets": {
+        "re":None,
+        "profileType":"mp4 to ts",
+        "preset": def_preset,
+        "vbr":None,
+        "abr":None,
+        "bufsize":None,
+        "stream_loop":None,
+        "input":lineInput,
+        "maxrate":None,
+        "minrate":None,
+        "output":"com/datas/ffmpeg/defts.ts",
+        "progress":"com/datas/ffmpeg/makets_progress.ts",
+        "ss":def_seek_start,
+        "screen":def_screen,
+        "fout":"mpegts",
+        "audio_filter":def_audio_filter
+    },
+
+
     "perfil2": {
         "preset": "slow"
     }
@@ -142,7 +165,7 @@ def main(args):
     #global yt_default_progress_file, MAX_LPF
 
 
-    global lineInput, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
+    global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
     global profiles
     global yt_default_list_dir,def_fdir
 
@@ -164,6 +187,10 @@ def main(args):
                 else:
                     print("Profile Active:",def_profile,"\n")
                     print("",profiles[def_profile],"\n")
+            elif args[1] == "progress": 
+#value = profiles.get(args[2], {}).get(args[3], None)
+#                print(profiles[def_profile]["progress"])
+                subprocess.call(["tail",profiles[def_profile]["progress"],"-n","13"]) 
         print("\n----------End View\n")
         return
     elif args[0] == "ls":
@@ -237,57 +264,66 @@ def main(args):
         return
 
 
+
+#output
+    yt_default_re = profiles[profile_name].get("re") if "re" in profiles[profile_name] else def_re
+    if yt_default_re == True :
+        yt_default_re = ["-re"]
+    else:
+        yt_default_re = []
+
+
 #input
     yt_default_input = profiles[profile_name].get("input") if "input" in profiles[profile_name] else def_intro_file
-    if yt_default_input != None:
+    if yt_default_input != None and yt_default_input != "None":
         yt_default_input = ["-i",yt_default_input]
     else:
-        yt_default_input = ""
+        yt_default_input = []
 
 
 #preset
     yt_default_preset = profiles[profile_name].get("preset") if "preset" in profiles[profile_name] else "ultrafast"
-    if yt_default_preset != None:
+    if yt_default_preset != None and yt_default_preset !="None":
         yt_default_preset = ["-preset",yt_default_preset]
     else:
-        yt_default_preset = ""
+        yt_default_preset = []
 
 
 #screen
     yt_default_screen = profiles[profile_name].get("screen") if "screen" in profiles[profile_name] else "856x480"
-    if yt_default_screen != None:
+    if yt_default_screen != None and yt_default_screen != "None":
         yt_default_screen = ["-s",yt_default_screen]
     else:
-        yt_default_screen = ""
+        yt_default_screen = []
 
 
 #bufersize
     yt_default_buffer_size = profiles[profile_name].get("bufsize") if "bufsize" in profiles[profile_name] else "1500k"
-    if yt_default_buffer_size != None:
+    if yt_default_buffer_size != None and yt_default_buffer_size != "None":
         yt_default_buffer_size = ["-bufsize",yt_default_buffer_size]
     else:
-        yt_default_buffer_size = ""
+        yt_default_buffer_size = []
 
 
 #VideoBitRate (vbr)
     yt_default_vbr = profiles[profile_name].get("vbr") if "vbr" in profiles[profile_name] else "1500k"
-    if yt_default_vbr != None:
+    if yt_default_vbr != None and yt_default_vbr != "None":
         yt_default_vbr = ["-b:v",yt_default_vbr]
     else:
-        yt_default_vbr = ""
+        yt_default_vbr = []
 
 
 #AudioBitRate (abr)
     yt_default_abr = profiles[profile_name].get("abr") if "abr" in profiles[profile_name] else "128k"
-    if yt_default_abr != None:
+    if yt_default_abr != None and yt_default_abr != "None":
         yt_default_abr = ["-b:a",yt_default_abr]
     else:
-        yt_default_abr = ""
+        yt_default_abr = []
 
 
 #minrate
     yt_default_minrate = profiles[profile_name].get("minrate") if "minrate" in profiles[profile_name] else "256k"
-    if yt_default_minrate != None:
+    if yt_default_minrate != None  and yt_default_minrate != "None":
         yt_default_minrate = ["-minrate",yt_default_minrate]
     else:
         yt_default_minrate = []
@@ -302,7 +338,7 @@ def main(args):
 
 
 
-#output
+#fout -- format output
     yt_default_fout = profiles[profile_name].get("fout") if "fout" in profiles[profile_name] else def_fout
     if yt_default_fout != None and yt_default_fout != "None":
         yt_default_fout = ["-f",yt_default_fout]
@@ -391,12 +427,12 @@ def main(args):
 
     yt_start = [
     "ffmpeg",
-    "-y"] + yt_default_stream_loop + ["-re"] + yt_default_seek_start 
+    "-y"] + yt_default_stream_loop +  yt_default_re  + yt_default_seek_start 
 
 
     yt_start_intro = [
     "ffmpeg",
-    "-y"] + ["-stream_loop","-1"] + ["-re"]  
+    "-y"] + ["-stream_loop","-1"] + ["-re"] 
 
     yt_input_concat = [
     "-f",
@@ -580,7 +616,7 @@ def main(args):
                 print("-------------------------------------------")
 
         elif args[0] == "geturl" and len(args) > 1:
-            argse = ["yt-dlp", "-f", "best[height<=720]/best", "--get-url", args[1]]
+            argse = ["sudo","yt-dlp", "-f", "best[height<=720]/best", "--get-url", args[1]]
             try:
                 p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 output, _ = p.communicate()
@@ -606,7 +642,7 @@ def main(args):
             del args[:1]
             args.insert(0,"yt-dlp")
             print(args)
-            subprocess.call(args,cwd="com/datas/ffmpeg")
+            subprocess.call(["sudo"]+args,cwd="com/datas/ffmpeg")
         elif args[0] == "mklist":
             print("Mklist")
 # Uso de la clase ConcatenadorFFmpeg

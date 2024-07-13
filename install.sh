@@ -22,8 +22,8 @@ check_command_installed /usr/bin/Osiris-python3.9-venv
 . bin/venv.sh
 
 
-#check_command_installed /usr/bin/Osiris-venv-activate
-#check_command_installed /usr/bin/Osiris-venv-export
+check_command_installed /usr/bin/Osiris-venv-activate
+check_command_installed /usr/bin/Osiris-venv-export
 
 #check_command_installed /usr/bin/depend
 

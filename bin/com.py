@@ -208,7 +208,7 @@ def command_line():
                                         if has_single_argument(module.main):
                                             module.main(args[1:])
                                         else:
-                                            print(f"La función 'main' en {args[0]}.py debe recibir exactamente un argumento.")
+                                            print(f"La función 'main' en {args[0]}.py debe recibir exactamente argumentos.")
                                     else:
                                         print(f"La función 'main' no está definida correctamente en {args[0]}.py")
                                 except ImportError as er3:

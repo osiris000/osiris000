@@ -30,7 +30,7 @@ ajax({
 datas:`nodatas`,
 method:`POST`,
 location:`/engines/rusr.php`,
-id:`div2`,
+id:`$divid`,
 handler:`UNIKE1`,
 block:true	
 })

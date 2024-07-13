@@ -44,8 +44,18 @@ if( ! $data) die("alert('nodata_err');");
 $data = json_decode($data,true);
 
 
+if($_SESSION["ARTICLE_ID"]==""):
 
-$sql = "select id from edit_files where file_id='".$_SESSION["ARTICLE_ID"]."'";
+echo<<<JS
+alert(`
+Article_id Error
+`);
+JS;
+exit;
+endif;
+
+
+$sql = "select id from edit_files where user_id='".$_SESSION["REGUSER_ID"]."' && file_id='".$_SESSION["ARTICLE_ID"]."'";
 $rquery = $mysqli->query($sql);
 $article_exists =  $rquery->num_rows;
 

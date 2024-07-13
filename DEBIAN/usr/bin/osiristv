@@ -1,6 +1,11 @@
 #!/bin/bash
 
+if [ "$1" = "-pilot" ]; then
+COMANDO="/var/www/osiris000/bin/pilottv"
+else
 COMANDO="/var/www/osiris000/bin/osiristv"
+fi
+
 
 if command -v xterm &> /dev/null
 then

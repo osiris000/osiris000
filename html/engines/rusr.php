@@ -2,7 +2,7 @@
 session_start();
 //session_unset();session_destroy();
 
-if(isset($_SESSION["REGUSER"])):
+if($_SESSION["REGUSER"]):
 
 
 print_r($_SESSION["REGUSER"]);
@@ -21,9 +21,10 @@ include 'rusri.php';
 
 exit;
 
-else:
 
-echo "<!--REGISTRO acceso-->";
+#else:
+
+#echo "<!--REGISTRO acceso-->";
 
 endif;
 

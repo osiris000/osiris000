@@ -23,7 +23,6 @@ port-audio          apt install portaudio19-dev
 
 Osiris-python3.9-venv 			eval python3.9 -m venv bin/com/osiris_env 
 Osiris-venv-activate 			eval source bin/com/osiris_env/bin/activate
-
 Osiris-venv-export 			eval export PYTHONPATH=".:$VIRTUAL_ENV/lib/python3.9/site-packages"
 
 yt-dlp 				pip install yt-dlp
