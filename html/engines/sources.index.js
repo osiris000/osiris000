@@ -74,6 +74,72 @@ a1.className = "lmenu"
 
 
 
+//a4 Directorio
+
+a4.innerHTML = "Directorio"
+
+a4.className = "lmenu"
+
+
+a4.onclick = function(){
+
+if(Directorio.src=="about:blank"){
+	Directorio.src="app/freedirectory/index.php"
+}
+
+dmenu('Directorio','dispApp')
+
+
+}
+
+
+
+a5.innerHTML = "miTv"
+
+a5.className = "lmenu"
+
+
+a5.onclick = function(){
+
+if(miTv.src=="about:blank"){
+	miTv.src="app/mitv"
+}
+
+dmenu('miTv','dispApp')
+
+
+}
+
+
+
+
+a6.innerHTML = "Datas Info"
+
+a6.className = "lmenu"
+
+
+a6.onclick = function(){
+
+if(datasInfo.src=="about:blank"){
+	datasInfo.src="https://"+window.location.hostname+":8081/datas/index.007.html"
+}
+
+dmenu('datasInfo','dispApp')
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Estilos*/
 

@@ -1,7 +1,8 @@
 <?php
 set_time_limit(0);
+session_start();
+if(!$_SESSION["REGUSER"]) die("<h6 style='background:white;'><!--*/ alert('Se ha cerrado la sesión'); /*--> Inicia Sesión Para usar herramientas</h6>");
 
-echo "IS";
 include $_SERVER["DOCUMENT_ROOT"]."/lib/php/lib.php";
 
 $_REQUEST["url"] ? $url = $_REQUEST["url"] : die("Not Url") ; 
@@ -95,7 +96,7 @@ $fname = format_title_for_url($fname);
 
 $fname = $path.$fname.".".$ext;
 
-$fname = str_replace('../',"",$fname);
+$fname = @str_replace('../',"",$fname);
 
 $x = file_get_contents($url);
 

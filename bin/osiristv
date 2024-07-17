@@ -68,9 +68,9 @@ cd com/datas/ffmpeg
 exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${height} \
 -framerate 10 -i :0.0+${x},${y} \
 -f pulse -thread_queue_size 512 \
--i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor \
+-i alsa_output.pci-0000_00_1b.0.stereo-fallback.monitor \
 -f pulse -thread_queue_size 512 \
--i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.iec958-stereo \
+-i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.stereo-fallback \
 -ac 2 -ar 44100 -filter_complex amerge -vsync 1 -preset ultrafast \
 -vf "scale='if(gt(iw,ih),-2,trunc(iw/2)*2)':'if(gt(iw,ih),trunc(ih/2)*2,-2)'"  \
 -b:a 128k -b:v 12500k -bufsize 15000k \

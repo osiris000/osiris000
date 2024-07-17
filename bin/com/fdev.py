@@ -10,6 +10,37 @@ import lib.ffmpeg
 import random
 
 
+# Determinar la ruta completa del script en ejecución
+ruta_script = os.path.abspath(__file__)
+
+# Determinar el directorio del script en ejecución
+directorio_script = os.path.dirname(ruta_script)
+
+# Determinar la ruta del directorio que deseas agregar a PYTHONPATH
+directorio_a_agregar = os.path.join(directorio_script, 'play3')
+print(directorio_script)
+
+# Verificar si el directorio existe
+if os.path.isdir(directorio_a_agregar):
+    # Añadir el directorio al sys.path
+    sys.path.append(directorio_a_agregar)
+    print(f"Directorio '{directorio_a_agregar}' agregado a PYTHONPATH.")
+else:
+    print(f"El directorio '{directorio_a_agregar}' no existe.")
+
+# Imprimir sys.path para verificar
+print("sys.path:", sys.path)
+
+# Ahora puedes importar módulos desde el directorio 'play3'
+try:
+    import play4 as play3 # Suponiendo que arch.py está en el directorio 'play3'
+    print("Play3.4 hls Imported")
+    #play3.detect_memory_leak()  # Llamar a alguna función en arch.py
+except ImportError as e:
+    print("No se pudo importar el módulo:", e)
+
+
+
 
 last_url = False
 prueba = False
@@ -148,6 +179,8 @@ profiles = {
 
 play = []
 
+intn = 0
+
 
 def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
 
@@ -160,6 +193,7 @@ def main(args):
     global def_profile
     global last_url
     global play
+    global intn
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
@@ -197,6 +231,8 @@ def main(args):
         if len(args)>1:
             if os.path.isdir(yt_default_list_dir+"/"+args[1]):
                 yt_default_list_dir = yt_default_list_dir+"/"+args[1]
+            elif os.path.isdir(args[1]):
+                yt_default_list_dir = args[1]
             elif args[1] == "*":
                 yt_default_list_dir = def_fdir
             else:
@@ -230,6 +266,40 @@ def main(args):
                             main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
                             return
                     except Exception as e:
+                        print(" ERROR:",e)
+                        return
+            elif args[1] == "hls":
+                print("play3 hls started")
+                if len(args)>2:
+                    try:
+                        intn = int(args[2])
+                        if  intn > 0:
+                            print(" Hls PLay:"+str(intn))
+                            print("../../" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"")
+                            if len(args)>3:
+                                if args[3] == "probe":
+                                    subprocess.call(["ffprobe","-i","../../"+yt_default_list_dir +"/"+ play[int(intn) - 1]])
+                                    print("--End Probe-----------------")
+                                    return
+                            if play3.last_process != None:
+                                print("PROC EXISTS - KILL:",play3.last_process)
+#                                play3.kill_last_process()
+#                                os.kill(play3.last_process, signal.SIGKILL)
+#                                subprocess.call(['kill', '-9', str(play3.last_process)])
+                            else:
+                                print("NEW PROCESS WHITE")
+#                            play3.start_ffmpeg('/var/www/osiris000/bin/com/datas/ffmpeg/viajes-espaciales-4.4-sobrevivir-al-vacío.mp4')
+                            play3.start_ffmpeg(os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1]))
+                            return
+                    except Exception as e:
+                        if args[2] == "lasturl":
+                            print("\nLASTURL\n")
+                            if last_url != "" and last_url != False:
+                                print("Playing Last_url:",last_url)
+                                play3.start_ffmpeg(last_url)
+                            else:
+                                print("NO EXISTE URL EN VARIABLE last_url")
+                        return
                         print(" ERROR:",e)
                         return
         print(" End Play")

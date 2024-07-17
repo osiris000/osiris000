@@ -153,7 +153,7 @@ onclick='
 
   z[mxurl] = document.createElement("div") ;
   z[mxurl].id = "d_"+mxurl ;
-  z[mxurl].innerHTML = `<b>Importing:<br>`+document.getElementById("ajxurl").value+`<br><img src="https://vtwitt.com/jsa/cargando.gif" height=20>`;
+  z[mxurl].innerHTML = `<b>Importing:<br>`+document.getElementById("ajxurl").value+`<br><img src="/img/cargando.gif" height=20>`;
   document.getElementById("ajxres").prepend(z[mxurl]) ;
   ajax({
   	datas:"url="+encodeURIComponent(document.getElementById("ajxurl").value)+"&path=<?=$_SESSION["path"]?>&option="+document.getElementById("select").value,
@@ -218,6 +218,10 @@ $menu .= "
 $visor .=  "<div class='visor' id='$extvalue'>";
 if(isset($lists["FILE"])){
 
+
+asort($lists["FILE"]);
+
+
 $visor .= extoption($extvalue);
 
 
@@ -246,7 +250,7 @@ case 'bmp':
 case 'ico':
 
 
-$innerDiv = $setSrc." ".$setPoster." ".$setBGIMG."<div><img src=\"https://vtwitt.com/jsa/media/im.php?ratio=180&img=".$_SESSION["path"].$value[0]."\"></div>
+$innerDiv = $setSrc." ".$setPoster." ".$setBGIMG."<div><img src=\"".$_SESSION["path"].$value[0]."\" style=\"height:50vh;width:auto;\"></div>
 ";
 
 break;
@@ -330,7 +334,7 @@ $divsplays = "<div id='".$idsN."' style='display:none;' class='displays'></div>"
 
 $visor .= "<div><a href='".$_SESSION["path"].$value[0]."' target='_blank' title='".
 
-$value[1]."'>open</a> ".$view." ".fileoption($value[2],$value[0])."&nbsp;<span>$value[1]</span> $divsplays </div>";
+$value[1]."'>open</a> ".$view." ".fileoption($value[2],$value[0])."&nbsp;<span>".ucwords(strtolower($value[1]))."</span> $divsplays </div>";
 
 
 
