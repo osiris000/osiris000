@@ -423,7 +423,12 @@ function formatArticle($title, $description, $article) {
   $formattedArticle .= "<h2>" . $title . "</h2>";
 
   // Lead paragraph (summarize from $description)
-  $leadParagraph = substr($description, 0, strpos($description, '.', 150)); // Limit to 150 chars with first sentence
+
+$offset = 150;
+$leadParagraph = ($position !== false) ? substr($description, 0, $position) : substr($description, 0, min($offset, strlen($description)));
+
+
+#  $leadParagraph = substr($description, 0, strpos($description, '.', 150)); // Limit to 150 chars with first sentence
   $formattedArticle .= "<p class='lead'>" . $leadParagraph . "</p>";
 
   // Body paragraphs (extract from $article)

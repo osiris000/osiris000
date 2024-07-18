@@ -203,8 +203,14 @@ def main(args):
     global profiles
     global yt_default_list_dir,def_fdir
 
+    
 
     profile_name = def_profile
+
+    try:
+        yt_default_list_dir = os.path.abspath(yt_default_list_dir)
+    except Exception as e:
+        print("Error (Path) : ",e)
 
     if args[0] == "view":
         print("\n---- view ---------------------------\n")
@@ -224,7 +230,13 @@ def main(args):
             elif args[1] == "progress": 
 #value = profiles.get(args[2], {}).get(args[3], None)
 #                print(profiles[def_profile]["progress"])
-                subprocess.call(["tail",profiles[def_profile]["progress"],"-n","13"]) 
+                try:
+                    print("\n---------- Progress TV ---")
+                    subprocess.call(["tail",profiles[def_profile]["progress"],"-n","13"])
+                    print("\n------ Progress HLS ---")
+                    subprocess.call(["tail",play3.hls_progress_file,"-n","13"]) 
+                except Exception as e:
+                     print("Error:",e)
         print("\n----------End View\n")
         return
     elif args[0] == "ls":
@@ -275,10 +287,10 @@ def main(args):
                         intn = int(args[2])
                         if  intn > 0:
                             print(" Hls PLay:"+str(intn))
-                            print("../../" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"")
+                            print(" → " + yt_default_list_dir +"/"+ play[int(intn) - 1] +"")
                             if len(args)>3:
                                 if args[3] == "probe":
-                                    subprocess.call(["ffprobe","-i","../../"+yt_default_list_dir +"/"+ play[int(intn) - 1]])
+                                    subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
                                     print("--End Probe-----------------")
                                     return
                             if play3.last_process != None:

@@ -67,7 +67,8 @@ const ajax = function (ajax, auto_index = $ajax.length) {
         console.log("ID" + $ajax[auto_index].id);
         console.log("Ready State:" + $ajax[auto_index].xhr[0].readyState);
 
-        if ($ajax[auto_index].xhr[0].readyState == 3 || $ajax[auto_index].xhr[0].readyState == 4) {
+
+        if ($ajax[auto_index].xhr[0].readyState == 4) {
             let responseText = $ajax[auto_index].xhr[0].responseText;
             
 
@@ -84,9 +85,9 @@ const ajax = function (ajax, auto_index = $ajax.length) {
                     document.getElementById($ajax[auto_index].id).innerHTML = responseText;
                 }
             }
-        }
+        
 
-        if ($ajax[auto_index].xhr[0].readyState == 4) {
+        
             $ajax[auto_index].end = true;
         }
     };

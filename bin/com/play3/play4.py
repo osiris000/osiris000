@@ -19,8 +19,6 @@ def kill_last_process():
         finally:
             last_process = None
 
-import subprocess
-import threading
 
 def ejecutar_proceso(command, cwd):
     global last_process
@@ -88,6 +86,7 @@ def start_ffmpeg(url):
 last_process = None
 last_url = ""
 command = []
+hls_progess_file = "/var/www/osiris000/bin/com/datas/ffmpeg/progress_hls.txt"
 
 # Inicia el proceso con la URL deseada
 #start_ffmpeg("/var/www/osiris000/bin/com/datas/ffmpeg/viajes-espaciales-4.4-sobrevivir-al-vacío.mp4")
