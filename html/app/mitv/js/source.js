@@ -41,11 +41,8 @@ SPLASH_CONTENT = {
 
 TAG:"div",
 
-innerHTML:`<p><iframe src="https://vtwitt.com/tv" width="840px" height="520px">
-
-
-
-</iframe></p>`
+innerHTML:`<p><!--iframe src="https://vtwitt.com/tv" width="840px" height="520px"></iframe--></p>`,
+style:"display:none;"
 
 
 }

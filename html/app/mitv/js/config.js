@@ -14,7 +14,7 @@ wfcore = "js/wfcore2.js?v=1"
 
 /* js indexfile */
 
-indexFile = "js/index.js?v=1"
+indexFile = "js/index.js?v=1.0"
 
 /* paneles */
 
@@ -30,7 +30,7 @@ source = "js/source.js?v=1"
 const loadIfNavigator = {
  
 firefox : {
- 	css: 'css/firefox.css'
+ 	css: 'css/chrome.css'
  },
 
  chrome : {
