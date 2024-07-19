@@ -38,10 +38,7 @@ onload = function(){
 
 
 IntroApp.innerHTML += `
-
-<br>
-<iframe class="rumble" layout="responsive" style="width:60vw;height:60vh;" src="tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8" frameborder="0" allowfullscreen></iframe>
-<br><br>
+<iframe id='iftvx2' class="rumble" layout="responsive" style="width:95vw;height:80vh;display:flex" src="tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8" frameborder="0" allowfullscreen></iframe>
 `
 
 

@@ -3,7 +3,6 @@ MAINPANEL = {
 
 TAG:"main",
 className:"panel_principal",
-style:"cursor:pointer"
 
 }
 
@@ -11,7 +10,6 @@ style:"cursor:pointer"
 INTRO_APP = {
 
 TAG:"div",
-click:` this.style.display='none' `,
 innerHTML:``
 
 }
@@ -22,7 +20,7 @@ SPLASH = {
 
 TAG:"button",
 innerHTML:"Menú",
-click:`document.getElementById('splash-container').style.display = 'flex';`
+click:`document.getElementById('splash-container').style.display = 'flex';`,
 
 
 
@@ -41,8 +39,10 @@ SPLASH_CONTENT = {
 
 TAG:"div",
 
-innerHTML:`<p><!--iframe src="https://vtwitt.com/tv" width="840px" height="520px"></iframe--></p>`,
-style:"display:none;"
+innerHTML:`
+<button type="button" onclick="document.getElementById('iftvx2').src='tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8'">Reload Channel</button>
+`,
+style:"display:block;"
 
 
 }
@@ -53,6 +53,5 @@ CLOSE_SPLASH = {
 TAG:"button",
 innerHTML: "Cerrar",
 click:`document.getElementById('splash-container').style.display = 'none';`
-
 
 }

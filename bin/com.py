@@ -16,41 +16,41 @@ import sys
 import subprocess
 import time
 
+osiris_bin_path = os.path.abspath(__file__)
+# Determinar el directorio del script en ejecución
+osiris_bin_dir = os.path.dirname(osiris_bin_path)
+
+
 def habilitar_y_exportar_venv(nombre_venv):
-
-
+    global osiris_bin_dir
     # Comando para habilitar el entorno virtual
-    comando_habilitar = f"sh source com/{nombre_venv}/bin/activate"
 
+    comando_habilitar = f"bash -c 'source {osiris_bin_dir}/com/{nombre_venv}/bin/activate'"
     # Ejecutar el comando para habilitar el entorno virtual
-
-    try:
-        subprocess.run(comando_habilitar, shell=True)
-        print("Init com:",comando_habilitar)
-    except Exception as e:
-        print("Error habilitando:",e)
-
-
     # Exportar el entorno virtual
-    comando_exportar = f"bash eval export PYTHONPATH=\".:com/{nombre_venv}lib/python3.9/site-packages\""
-
-    # Ejecutar el comando para exportar el entorno virtual
+    directorio_a_agregar = f"{osiris_bin_dir}/com/{nombre_venv}/lib/python3.9/site-packages"
 
     try:
-        subprocess.run(comando_exportar, shell=True)
-        print("Init com:",comando_exportar)
+        if os.path.isdir(directorio_a_agregar):
+            print("EXISTE PATH... Habilitando...: ",directorio_a_agregar)
+            if directorio_a_agregar in sys.path:
+                print("El directorio ya existe en el path")
+            else:
+                sys.path.append(directorio_a_agregar)
+            print("Activando venv:",nombre_venv)
+            subprocess.call("python3.9 -m venv "+osiris_bin_dir+"/bin/com/"+nombre_venv,shell=True)
+            print("Source....:",comando_habilitar)
+            subprocess.call(comando_habilitar, shell=True)
+        else:
+            print("RUTA INVÁLIDA")
+            return
     except Exception as e:
-        print("Error Exportando:",e)
-
-    if os.environ.get("PYTHONPATH"):
-        print("##########")
-        #return
-    else:
-    	print("..........")
+        print("Error habilitando Source:",e)
+    print("PYTONPATH:",sys.path)
 
 # Nombre de tu entorno virtual
 nombre_venv = "osiris_env"
-
+#habilitar_y_exportar_venv(nombre_venv)
 # Llamada a la función para habilitar y exportar el entorno virtual
 
 common.f()

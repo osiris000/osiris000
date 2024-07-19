@@ -441,7 +441,7 @@ autoplay></video>
  </div>
  
  
-<span style="font-size:3.5vh;font-weight:bold;color:#de3444;margin:18px;"> Consola del reproductor</span>
+<span style="font-size:3.5vh;font-weight:bold;color:#de3444;margin:18px;"> Consola </span>
 
  <div id="progress_c"></div>
  

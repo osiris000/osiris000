@@ -294,7 +294,7 @@ def main(args):
                                     print("--End Probe-----------------")
                                     return
                             if play3.last_process != None:
-                                print("PROC EXISTS - KILL:",play3.last_process)
+                                print("PROC EXISTS - KILL:",play3.last_process.pid)
 #                                play3.kill_last_process()
 #                                os.kill(play3.last_process, signal.SIGKILL)
 #                                subprocess.call(['kill', '-9', str(play3.last_process)])
@@ -314,6 +314,14 @@ def main(args):
                         return
                         print(" ERROR:",e)
                         return
+            elif args[1] == "mpv":
+                try:
+                    intn = int(args[2])
+                    if  intn > 0:
+                        print(" MPV PLay:"+str(intn))
+                        subprocess.Popen(["bash","--","com/script/showim.sh",os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1])],stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,shell=False)
+                except Exception as e:
+                    print("MPV Exception:",e)
         print(" End Play")
         return
     elif args[0] == "set":
@@ -730,7 +738,7 @@ def main(args):
 # Uso de la clase ConcatenadorFFmpeg
             extension = '.mp4'
             archivo_concat = 'concat_list.txt'
-            directorio_destino = 'com/datas/ffmpeg'
+            directorio_destino = 'com/datas/ffmpeg/playlist'
             directorio_origen = yt_default_list_dir
             concatenador = ConcatenadorFFmpeg(extension, archivo_concat, directorio_origen, directorio_destino)
             concatenador.concatenar_archivos()

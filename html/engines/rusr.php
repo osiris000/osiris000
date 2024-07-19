@@ -1,12 +1,29 @@
 <?php
 session_start();
 //session_unset();session_destroy();
+if($_POST["action"]=="closesession"):
+session_unset();
 
-if($_SESSION["REGUSER"]):
+elseif($_SESSION["REGUSER"]):
 
 
-print_r($_SESSION["REGUSER"]);
-echo "ARE LOGED";
+//print_r($_SESSION);
+echo<<<LOGED
+
+<div style="padding:50px">
+ <h3>ARE LOGED</h3>
+
+<button onclick='ajax({
+  location:"/engines/rusr.php",
+  method:"POST",
+  datas:"action=closesession",
+  eval:false,
+  id:"regInf"
+  });top.location.reload()'> Cerrar Sesión </button>
+
+</div>
+
+LOGED;
 
 /*  está logueado se sale   */
 
