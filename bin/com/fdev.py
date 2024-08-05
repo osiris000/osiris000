@@ -180,7 +180,7 @@ profiles = {
 play = []
 
 intn = 0
-
+lib_url = False
 
 def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
 
@@ -193,7 +193,7 @@ def main(args):
     global def_profile
     global last_url
     global play
-    global intn
+    global intn,lib_url
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
@@ -237,10 +237,18 @@ def main(args):
                     subprocess.call(["tail",play3.hls_progress_file,"-n","13"]) 
                 except Exception as e:
                      print("Error:",e)
+            elif args[1] == "lib":
+                mostrar_datos_del_archivo()
         print("\n----------End View\n")
         return
     elif args[0] == "ls":
         if len(args)>1:
+            try:
+                intn = int(args[1])
+                args[1] = play[int(intn) - 1]
+            except Exception as e:
+                intn = 0
+
             if os.path.isdir(yt_default_list_dir+"/"+args[1]):
                 yt_default_list_dir = yt_default_list_dir+"/"+args[1]
             elif os.path.isdir(args[1]):
@@ -259,7 +267,7 @@ def main(args):
             print("   "+str(n)+" - "+file)
             play.append(file)
         print("---------------")
-        print(" End ls")
+        print(" End ls:",os.path.abspath(yt_default_list_dir))
         return
     elif args[0] == "play":
         if len(args)>1:
@@ -287,7 +295,7 @@ def main(args):
                         intn = int(args[2])
                         if  intn > 0:
                             print(" Hls PLay:"+str(intn))
-                            print(" → " + yt_default_list_dir +"/"+ play[int(intn) - 1] +"")
+                            print(" → " ,play[int(intn) - 1] +"")
                             if len(args)>3:
                                 if args[3] == "probe":
                                     subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
@@ -301,7 +309,19 @@ def main(args):
                             else:
                                 print("NEW PROCESS WHITE")
 #                            play3.start_ffmpeg('/var/www/osiris000/bin/com/datas/ffmpeg/viajes-espaciales-4.4-sobrevivir-al-vacío.mp4')
-                            play3.start_ffmpeg(os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1]))
+                            if play[int(intn)-1].startswith("http://") or play[int(intn)-1].startswith("https://"):
+                                lib_url = ""
+                                main(["geturl",play[int(intn) - 1]])
+                                if lib_url != "":
+                                    play3.start_ffmpeg(lib_url)
+                                    print("Play LIB import")
+                                else:
+                                    play3.start_ffmpeg(play[int(intn)-1])
+                                    print("Play Lib Direct")
+                                return
+                            else:
+                                play3.start_ffmpeg(os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1]))
+                                print("DIR:",yt_default_list_dir) 
                             return
                     except Exception as e:
                         if args[2] == "lasturl":
@@ -348,6 +368,8 @@ def main(args):
                                 print("SET PROFILE:",def_profile)
                         else:
                             print("No existe en profiles:",args[2])
+                elif args[1] == "lib":
+                    guardar_datos_en_archivo()
             except Exception as e:
                 print("Error in set:",e)
         print("Exit Set:",args)
@@ -716,6 +738,7 @@ def main(args):
                         subprocess.call(["ffprobe","-i",output])
                         pi = True
                         last_url = output
+                        lib_url = output
                     except Exception as e:
                         print("ERROR:",e)
                         pi = False
@@ -923,6 +946,69 @@ def detener_proceso():
         print("No existe proceso abierto")
 
 
+
+
+def guardar_datos_en_archivo():
+    # Nombre del archivo
+    nombre_archivo = "datos.txt"
+
+    # Abrir el archivo en modo append y lectura ('a+')
+    archivo = open(nombre_archivo, 'a+')
+
+    try:
+        # Pedir inputs
+        canal = input("Ingrese el canal: ")
+        url = input("Ingrese la URL: ")
+        descripcion = input("Ingrese la descripción: ")
+        xdata = input("Ingrese el xdata: ")
+
+        # Formato de la línea a agregar
+        linea = f'[canal:"{canal}",url:"{url}",descripcion:"{descripcion}",xdata:"{xdata}"]\n'
+
+        # Escribir la línea en el archivo
+        archivo.write(linea)
+
+        print("Datos guardados exitosamente.")
+    finally:
+        # Cerrar el archivo
+        archivo.close()
+
+
+def mostrar_datos_del_archivo():
+    global play
+    play = []
+    nombre_archivo = "datos.txt"
+    s = 0
+    try:
+        with open(nombre_archivo, 'r') as archivo:
+            lineas = archivo.readlines()
+            
+        for linea in lineas:
+            # Remover los caracteres de inicio y fin: '[', ']'
+            linea = linea.strip()[1:-1]
+            # Dividir la línea en partes separadas por comas
+            partes = linea.split(',')
+            # Crear un diccionario para almacenar los datos
+            datos = {}
+            for parte in partes:
+                # Dividir cada parte en clave y valor, pero solo una vez
+                clave, valor = parte.split(':', 1)
+                # Remover las comillas del valor y espacios extra
+                valor = valor.strip().strip('"')
+                # Remover espacios y comillas de la clave
+                clave = clave.strip().strip('"')
+                # Agregar al diccionario
+                datos[clave] = valor
+            play.append(datos['url'])
+            s=s+1
+
+            # Mostrar los datos de manera legible
+            print(f"{s} - Canal: {datos['canal']} \n  Descripción: {datos['descripcion']}  |||  xData: {datos['xdata']}")
+            print(" ",datos['url'],"\n")
+    except FileNotFoundError:
+        print(f"El archivo {nombre_archivo} no existe.")
+    except Exception as e:
+        print(f"Ocurrió un error al leer el archivo: {e}")
 
 
 

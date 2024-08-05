@@ -99,8 +99,22 @@ def extraer_y_vaciar(array):
 
 
 
-def main(args):
+def netapp(args):
+    try:
+        subprocess.Popen(args)
+        print(args)
+    except Exception as e:
+        print("PIPE ERROR :",e)
 
+netapps = ["nmap","telnet"]
+
+def main(args):
+    global netmapps
+
+    if args[0] in netapps:
+        netapp(args)
+        print("--- END APP ---- :",args[0])
+        return
 
     if len(args) == 1:
         print("Scanip: Es necesario más de un parametro")

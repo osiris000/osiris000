@@ -64,6 +64,9 @@ fi
 
 cd com/datas/ffmpeg
 
+
+OUTPUT = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
+
 # Usar los valores para grabar el escritorio con ffmpeg
 exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${height} \
 -framerate 10 -i :0.0+${x},${y} \

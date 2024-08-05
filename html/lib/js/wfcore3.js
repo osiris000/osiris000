@@ -69,20 +69,19 @@ const ajax = function (ajax, auto_index = $ajax.length) {
 
 
         if ($ajax[auto_index].xhr[0].readyState == 4) {
-            let responseText = $ajax[auto_index].xhr[0].responseText;
-            
+                        
 
            if($ajax[auto_index].eval == true){        
    
-                    new Function(responseText)();
+                    new Function($ajax[auto_index].xhr[0].responseText)();
 
           }
 
             if ($ajax[auto_index].id) {
                 if ($ajax[auto_index].id.charAt(0) === '+') {
-                    document.getElementById($ajax[auto_index].id.substring(1)).innerHTML += responseText;
+                    document.getElementById($ajax[auto_index].id.substring(1)).innerHTML += $ajax[auto_index].xhr[0].responseText;
                 } else {
-                    document.getElementById($ajax[auto_index].id).innerHTML = responseText;
+                    document.getElementById($ajax[auto_index].id).innerHTML = $ajax[auto_index].xhr[0].responseText;
                 }
             }
         
@@ -105,106 +104,7 @@ const ajax = function (ajax, auto_index = $ajax.length) {
 };
 
 
-
-
-/*
-
-const ajax = function (ajax,auto_index = $ajax.length) {
-
-ajax.handler ? auto_index = ajax.handler : auto_index = auto_index ;
-
-
-if($ajax[auto_index]){
-
-if($ajax[auto_index].block==true 
-&& $ajax[auto_index].end !== true){
-
-console.log("BLOCKED:",auto_index) 
-return "blocked hadler"
-
-} 
-} else {   $ajax[auto_index] = new Array()   }
-
-
-$ajax[auto_index] = {
-xhr : [new XMLHttpRequest()] || false ,
-location:  ajax.location || "",
-async:  ajax.async || true,
-datas: ajax.datas || false,
-method:  ajax.method || "GET",
-id:  ajax.id || false,
-eval:  ajax.eval || false,
-handler: auto_index,
-block: ajax.block || false,
-end: false
-}
-
-
-if($ajax[auto_index].method.toUpperCase()=="GET"){
-
-$ajax[auto_index].location = $ajax[auto_index].location+"?"+$ajax[auto_index].datas;    
-
-}  
-
-
-$ajax[auto_index].xhr[0].open($ajax[auto_index].method,$ajax[auto_index].location,$ajax[auto_index].async)
-
-
-$ajax[auto_index].xhr[0].onreadystatechange = function (){
-
-console.log("ID"+$ajax[auto_index].id)
-console.log("Ready State:"+$ajax[auto_index].xhr[0].readyState)
-
-
-
-if($ajax[auto_index].xhr[0].readyState == 4){
-
-if($ajax[auto_index].eval == true){
-new Function( $ajax[auto_index].xhr[0].responseText )();
-}
-
-if($ajax[auto_index].id){
-
-
-if ($ajax[auto_index].id.charAt(0) === '+') {
-
-document.getElementById($ajax[auto_index].id.substring(1)).innerHTML += $ajax[auto_index].xhr[0].responseText
-} else {
-
-
-document.getElementById($ajax[auto_index].id).innerHTML = $ajax[auto_index].xhr[0].responseText
- }
-
-}
-
-$ajax[auto_index].end = true 
-
-} 
-
-
-}
-
-
-
-
-if($ajax[auto_index].method.toUpperCase()=="POST"){
-
-$ajax[auto_index].xhr[0].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-$ajax[auto_index].xhr[0].send($ajax[auto_index].datas)
-
-} else $ajax[auto_index].xhr[0].send()
-
-
-
-console.log($ajax[auto_index])
-
-return $ajax[auto_index]
-}
-
-*/
-
-
-/*compatibilidad vieja ajaxPost*/
+/*compatibilidad con vieja ajaxPost*/
 
 ajaxPost = function(datas="",id="",location="",method=""){
 return ajax({

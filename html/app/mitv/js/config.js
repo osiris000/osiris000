@@ -30,15 +30,15 @@ source = "js/source.js?v=1"
 const loadIfNavigator = {
  
 firefox : {
- 	css: 'css/chrome.css'
+ 	css: 'css/chrome.css?v=1'
  },
 
  chrome : {
- 	css: 'css/chrome.css'
+ 	css: 'css/chrome.css?v=1'
  },
   
  default: {
-    css: 'css/chrome.css',
+    css: 'css/chrome.css?v=1',
 
   }
 };
