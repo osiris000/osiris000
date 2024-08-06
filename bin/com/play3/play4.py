@@ -87,7 +87,7 @@ def start_ffmpeg(url):
     '-hls_time', '2', '-hls_list_size', '30',
     '-hls_flags', '+omit_endlist+delete_segments+append_list',
     '-master_pl_name', 'master_ultrafast.m3u8',
-    '-hls_segment_filename', os.path.join(hls_path, 'segment_%Y%m%d%H%M%S.ts'),
+    '-hls_segment_filename', hls_path+"/%Y%m%d%H%M%S.ts",
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
     '-fflags', '+nobuffer+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0'
 ]
