@@ -8,6 +8,9 @@ import sys
 import multiprocessing
 import lib.ffmpeg
 import random
+import requests
+import re
+
 
 
 # Determinar la ruta completa del script en ejecución
@@ -41,7 +44,7 @@ except ImportError as e:
 
 
 
-
+cookies = ""
 last_url = False
 prueba = False
 estado_proceso = False
@@ -197,7 +200,7 @@ def main(args):
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
-
+    global cookies
 
     global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
     global profiles
@@ -302,7 +305,7 @@ def main(args):
                                     print("--End Probe-----------------")
                                     return
                             if play3.last_process != None:
-                                print("PROC EXISTS - KILL:",play3.last_process.pid)
+                                print("DETECTED PROCESS:",play3.last_process.pid)
 #                                play3.kill_last_process()
 #                                os.kill(play3.last_process, signal.SIGKILL)
 #                                subprocess.call(['kill', '-9', str(play3.last_process)])
@@ -313,11 +316,16 @@ def main(args):
                                 lib_url = ""
                                 main(["geturl",play[int(intn) - 1]])
                                 if lib_url != "":
-                                    play3.start_ffmpeg(lib_url)
+#                                    play3.start_ffmpeg(lib_url)
                                     print("Play LIB import")
-                                else:
-                                    play3.start_ffmpeg(play[int(intn)-1])
-                                    print("Play Lib Direct")
+                                    check_i = check_url_type(lib_url)
+#                                    print("chk",check_i)
+                                    if check_i == "Directory":
+                                        print("INVALID URL:",lib_url)
+                                        return
+                                    else:
+                                        play3.start_ffmpeg(lib_url)
+                                        print("Play Lib Direct")
                                 return
                             else:
                                 play3.start_ffmpeg(os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1]))
@@ -727,28 +735,46 @@ def main(args):
                 print("PID:",pid_proceso)
                 print("-------------------------------------------")
 
+ 
+
+
         elif args[0] == "geturl" and len(args) > 1:
-            argse = ["sudo","yt-dlp", "-f", "best[height<=720]/best", "--get-url", args[1]]
+            argse = ["sudo", "yt-dlp", "-f", "best[height<=720]/best", "--get-url", args[1]]
             try:
                 p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 output, _ = p.communicate()
                 output = output.decode('utf-8').strip()
+
+                if not output.startswith("http://") and not output.startswith("https://"):
+            # Retry without the -f option if the first attempt fails
+                    argse = ["sudo", "yt-dlp", "--get-url", args[1]]
+                    p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                    output, _ = p.communicate()
+                    output = output.decode('utf-8').strip()
+
                 if output.startswith("http://") or output.startswith("https://"):
                     try:
-                        subprocess.call(["ffprobe","-i",output])
+                        subprocess.call(["ffprobe", "-i", output])
                         pi = True
                         last_url = output
                         lib_url = output
                     except Exception as e:
-                        print("ERROR:",e)
+                        print("ERROR:", e)
                         pi = False
-                if pi == True:
-                    print("Escriba 'yt lasturl' y pulse enter para cambiar stream a:",last_url)
                 else:
-                    print("ERROR PI")    
-                print("URL:", output)
+                    pi = False
+                    lib_url = args[1]
+
+                if pi == True:
+                    print("Escriba 'yt lasturl' y pulse enter para cambiar stream a:", last_url)
+                else:
+                    print("ERROR EXTRACT")
+        
+                if output != "":
+                    print("URL:", output)
             except Exception as e:
-                print("ERROR:", e)
+                print("ERROR-:", e)
+                return 
             return
 
         elif args[0] == "import":
@@ -1011,10 +1037,104 @@ def mostrar_datos_del_archivo():
         print(f"Ocurrió un error al leer el archivo: {e}")
 
 
+def check_url_type(url):
+    try:
+        # Perform a HEAD request to get headers only
+        response = requests.head(url, allow_redirects=True)
+        
+        # Extract the Content-Type header
+        content_type = response.headers.get('Content-Type', '').lower()
+        
+        # Common Content-Types for directories
+        directory_content_types = ['text/html', 'text/plain']
+        
+        # Check if the URL is likely a directory
+        if any(content_type.startswith(ct) for ct in directory_content_types):
+            print("INVALID CONTENT-TYPE:",content_type)
+            return 'Directory'
+        else:
+            return 'File'
+    
+    except requests.RequestException as e:
+        print(f"Error checking URL: {e}")
+        return 'Error'
 
 
+
+
+
+"""
+import sqlite3, Crypto.Cipher.AES, Crypto.Protocol.KDF  # pip install pycrypto
+
+def cookie_brave_decrypt(encrypted_value:bytes, key:bytes):
+    plaintxt = Crypto.Cipher.AES.new(key, Crypto.Cipher.AES.MODE_CBC, IV=IV).decrypt(encrypted_value[3:])
+    return plaintxt[:-plaintxt[-1]].decode('utf8')
+
+def cookies_get(url:str, dbpath:str):
+    key  = Crypto.Protocol.KDF.PBKDF2(PASSWORD.encode('utf8'), SALT, LENGTH, NITERS)
+    conn = sqlite3.connect(dbpath)
+    cur  = conn.cursor()
+
+    print('\n---------------------------------------------------------------#')
+    cur.execute('PRAGMA table_info(cookies)')  #  "SELECT *  FROM sqlite_master  WHERE type ='table' AND name NOT LIKE 'sqlite_%'")
+    for row in cur.fetchall():  print(row)
+    print('\n---------------------------------------------------------------#')
+    cur.execute(f'SELECT *  FROM cookies')
+    for row in cur.fetchall():  print(row)
+
+    cur.execute(f'SELECT name,encrypted_value  FROM cookies  WHERE host_key = ?', [url])
+    cookies = {name:cookie_brave_decrypt(encrypted_value,key) for name,encrypted_value in cur.fetchall()}
+    print('\n---------------------------------------------------------------#')
+    for name,encrypted_value in cookies.items():  print(f'{name:32} {encrypted_value}')
+
+    conn.close()
+    return cookies
+
+PASSWORD = 'peanuts'
+SALT     = b'saltysalt'
+NITERS   = 1
+IV       = b' ' * 16
+LENGTH   = 16
+cookies  = cookies_get('.youtube.com', '/home/osiris/.config/BraveSoftware/Brave-Browser/Default/Cookies')
+
+print(cookies)
+
+
+
+
+import sqlite3
+
+def parse_cookies(cookie_file):
+    # Conectarse a la base de datos de cookies
+    conn = sqlite3.connect(cookie_file)
+    cursor = conn.cursor()
+    
+    # Ejecutar la consulta para extraer cookies de YouTube
+    cursor.execute("SELECT host_key, name, encrypted_value FROM cookies WHERE host_key LIKE '%youtube.com%'")
+    cookies = cursor.fetchall()
+    
+    # Verificar si las cookies están presentes
+    for row in cookies:
+        print(row)
+    
+    # Formatear las cookies en el formato de encabezado HTTP
+    cookie_header = "; ".join([f"{name}={value}" for _, name, value in cookies if name and value])
+    
+    # Cerrar la conexión a la base de datos
+    conn.close()
+    
+    return cookie_header
+
+
+# Ruta al archivo de cookies de Chrome
+cookie_file = '/home/osiris/.config/google-chrome/Default/Cookies'
+cookies = parse_cookies(cookie_file)
+
+# Imprimir el encabezado de cookies
+print(cookies)
 
 
 
 print('Creado módulo-comando ffmpeg y fecha y hora: 2024-02-06 07:26:29.243208')
 
+"""
