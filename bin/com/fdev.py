@@ -182,6 +182,11 @@ profiles = {
 
 play = []
 
+
+input_protocols = ["http://","https://",'rtmp://'] #protocolos válidos input server
+iprot = tuple(input_protocols)
+
+
 intn = 0
 lib_url = False
 
@@ -196,7 +201,7 @@ def main(args):
     global def_profile
     global last_url
     global play
-    global intn,lib_url
+    global intn,lib_url,iprot
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
@@ -301,7 +306,18 @@ def main(args):
                             print(" → " ,play[int(intn) - 1] +"")
                             if len(args)>3:
                                 if args[3] == "probe":
-                                    subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
+                                    if play[int(intn)-1].startswith(iprot):
+                                        last_url = ""
+                                        main([play[int(intn)-1]])
+                                        if last_url != "":
+                                            print("End probe HLS URL PARSED")
+                                        else:
+                                            print("ERROR INPUT FOR PROBE")
+                                            print("Intento CON URL ORIGINAL",play[int(intn)-1])
+                                            subprocess.call(["ffprobe","-i", play[int(intn) - 1]])
+                                            print("End probe HLS URL ORIGINAL")
+                                    else:
+                                        subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
                                     print("--End Probe-----------------")
                                     return
                             if play3.last_process != None:
@@ -323,6 +339,8 @@ def main(args):
                                     if check_i == "Directory":
                                         print("INVALID URL:",lib_url)
                                         return
+                                    elif check_i == "Timeout":
+                                        print("TIMEOUT INSPECT FOR:",lib_url)                                       
                                     else:
                                         play3.start_ffmpeg(lib_url)
                                         print("Play Lib Direct")
@@ -1037,10 +1055,10 @@ def mostrar_datos_del_archivo():
         print(f"Ocurrió un error al leer el archivo: {e}")
 
 
-def check_url_type(url):
+def check_url_type(url, timeout=10):
     try:
-        # Perform a HEAD request to get headers only
-        response = requests.head(url, allow_redirects=True)
+        # Perform a HEAD request to get headers only with a timeout
+        response = requests.head(url, allow_redirects=True, timeout=timeout)
         
         # Extract the Content-Type header
         content_type = response.headers.get('Content-Type', '').lower()
@@ -1050,14 +1068,19 @@ def check_url_type(url):
         
         # Check if the URL is likely a directory
         if any(content_type.startswith(ct) for ct in directory_content_types):
-            print("INVALID CONTENT-TYPE:",content_type)
+            print("INVALID CONTENT-TYPE:", content_type)
             return 'Directory'
         else:
             return 'File'
     
+    except requests.Timeout:
+        print("Request timed out")
+        return 'Timeout'
+    
     except requests.RequestException as e:
         print(f"Error checking URL: {e}")
         return 'Error'
+
 
 
 
