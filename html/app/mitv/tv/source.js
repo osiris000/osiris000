@@ -76,39 +76,15 @@ style:"cursor:pointer"}
 const SUGGESTIONS_PANEL = { TAG: "section",
 className:"suggestions" ,
  innerHTML: `
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-3185107427297382"
-     data-ad-slot="1119731952"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-
-<!--
-Pruebas:<br>
-
-<a href="javascript:void(0)" onclick="
-ajax('url=https://vtwitt.com/tv/cinetv.m3u8','','/tv/ivideo3.php','GET')
-">Cambio de Canal m3u8</a>
-
-<br>
-
-<a href="javascript:void(0)" onclick="
-ajax('url=https://www.youtube.com/watch?v=UI_jSsHm6TE','','/tv/ivideo3.php','GET')
-">Cambio a Vídeo Youtube</a>
 
 
-<br>
 
-<a href="javascript:void(0)" onclick="
-ajax('url=https://youtube.com/?v=SBCpGpw46as','','/tv/ivideo3.php','GET')
-">Youtube Short</a>
+Canales:<br>
 
-<br>
+<a href="javascript:void(0)" onclick="xvd('../channels/main/live-ts/master_ultrafast.m3u8')">Play Main</a>
 
-<a href="javascript:void(0)" onclick="
-ajax('x=tunel&url=https://youtu.be/gKtPmFcGD-Q','','/tv/ivideo3.php','GET')
-">Cambio a Vídeo Youtube [Pipe 403]</a>
--->` }
+
+` }
 
 
 const FOOTER_PANEL = { TAG: "footer",

@@ -247,6 +247,19 @@ def main(args):
                      print("Error:",e)
             elif args[1] == "lib":
                 mostrar_datos_del_archivo()
+            elif args[1] == "play":
+                if len(args)>2:
+                    try:
+                        if int(args[2]) > 0 and int(args[2]) <= len(play):
+                            print("VIEW PLAY:",str(args[2]))
+                            print("VALUE:",play[int(args[2]) - 1])
+                        else:
+                            print("Número fuera de rango:",args[2])
+                    except Exception as e:
+                        if isinstance(args[2], int) == False:
+                            print(" -> view play Requiere un número como parámetro")
+                        else:
+                            print("ERROR:",e)
         print("\n----------End View\n")
         return
     elif args[0] == "ls":
@@ -1071,8 +1084,8 @@ def check_url_type(url, timeout=10):
             print("INVALID CONTENT-TYPE:", content_type)
             return 'Directory'
         else:
-            return 'File'
-    
+            print("Content-type:",content_type)
+            return 'File'   
     except requests.Timeout:
         print("Request timed out")
         return 'Timeout'
