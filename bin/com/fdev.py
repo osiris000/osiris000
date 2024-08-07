@@ -26,8 +26,12 @@ print(directorio_script)
 # Verificar si el directorio existe
 if os.path.isdir(directorio_a_agregar):
     # Añadir el directorio al sys.path
-    sys.path.append(directorio_a_agregar)
-    print(f"Directorio '{directorio_a_agregar}' agregado a PYTHONPATH.")
+    if not directorio_a_agregar in sys.path:
+        sys.path.append(directorio_a_agregar)
+        print(f"Directorio '{directorio_a_agregar}' agregado a PYTHONPATH.")
+    else:
+        print("Ya existe path en sys:",directorio_a_agregar)
+ #       sys.path = [path for path in sys.path if path != directorio_a_agregar]
 else:
     print(f"El directorio '{directorio_a_agregar}' no existe.")
 
@@ -313,6 +317,10 @@ def main(args):
                 print("play3 hls started")
                 if len(args)>2:
                     try:
+                        if args[2] == "kill":
+                            print("KILLING LAST PROCESS")
+                            play3.kill_last_process()
+                            return
                         intn = int(args[2])
                         if  intn > 0:
                             print(" Hls PLay:"+str(intn))

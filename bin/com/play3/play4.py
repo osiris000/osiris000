@@ -76,6 +76,9 @@ def start_ffmpeg(url):
     'ffmpeg',
     '-loglevel', 'warning',  # Ajusta el nivel de log según tus necesidades
     '-y', '-re', '-stream_loop', '-1', '-i', url,
+    '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
+    '-af', 'aresample=async=1',  # Audio buffer filter
+    '-async','1',
     '-c:v', 'libx264', '-preset', 'veryfast',  # Ajuste de preset más balanceado
     '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
@@ -89,7 +92,9 @@ def start_ffmpeg(url):
     '-master_pl_name', 'master_ultrafast.m3u8',
     '-hls_segment_filename', hls_path+"/%Y%m%d%H%M%S.ts",
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
-    '-fflags', '+nobuffer+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0'
+    '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
+    '-reconnect','1','-reconnect_streamed','1','-reconnect_delay_max','2'
+
 ]
 
 
