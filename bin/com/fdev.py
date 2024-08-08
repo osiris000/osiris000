@@ -805,9 +805,9 @@ def main(args):
                     lib_url = args[1]
 
                 if pi == True:
-                    print("Escriba 'yt lasturl' y pulse enter para cambiar stream a:", last_url)
+                    print("Establecido lasturl a:", last_url)
                 else:
-                    print("ERROR EXTRACT")
+                    print("EXTRACT ERROR")
         
                 if output != "":
                     print("URL:", output)

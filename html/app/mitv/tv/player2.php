@@ -850,20 +850,7 @@ document.getElementById("splay").style.display = "none"
             });
             
             
-            up = 0;
-            video.addEventListener('timeupdate', (event) => {
-            up++  ;
-  log('Update:'+up,"TIMEUPDATE");
- currentTime = video.currentTime;
-
-	  checkBuffer(video)
-	  
-	  log("UPG:"+updateProgress(counter) ,"Crash")
-	 
-	if(counter>120)   location.reload()
-	
-	
-	});
+ 
             
               hls.on(Hls.Events.MEDIA_BUFFER_EMPTY, function() {
           log("EmptyBuffer","ERROR");
@@ -889,17 +876,26 @@ fullscreenButton.addEventListener('click', () => {
          
        
          
-         
-         
-  
-  video.addEventListener('timeupdate',(event) => {
-  
-
  
 
+
+            up = 0;
+    video.addEventListener('timeupdate', (event) => {
+            up++  ;
+  log('Update:'+up,"TIMEUPDATE");
+ currentTime = video.currentTime;
+
+    checkBuffer(video)
+    
+    log("UPG:"+updateProgress(counter) ,"Crash")
+   
+  if(counter>120)   location.reload()
+  
+ 
+ 
 log("Current:"+currentTime,"currentTime")
 
-retroceso = 15
+retroceso = 8
 
   if (video.buffered.length > 0 && (currentTime > (retroceso))) {
     
@@ -915,14 +911,15 @@ retroceso = 15
    
   
     // Verificar si el tiempo restante en el búfer es suficiente para retroceder 5 segundos antes de que la línea de tiempo se pare
-    if ((bufferTime < (retroceso/7))) {
+    if ((bufferTime < 0.5)) {
     
        loadingText.style.display = "none";
       log("ajuste: "+(bufferTime + (retroceso / currentTime) ) ,"AJUSTE-DE-BUFFER");
      
-     
+     // hls.refreshManifest();
+
  
-  setTimeout(function(){   hls.startLoad()},2000)
+  //setTimeout(function(){   hls.startLoad()},1000)
 
    
        video.currentTime =   bufferEnd  - (retroceso)
@@ -1076,7 +1073,7 @@ const bufferEmptyTimeout = setTimeout(() => {
   if (bufferEmpty) {
     console.log('El reproductor está en bucle debido a un problema con el buffer de video.');
   }
-}, 5000);
+}, 20000);
 
 hls.on(Hls.Events.BUFFER_APPENDED, (event, data) => {
   if (video.buffered.length === 0) {
@@ -1150,7 +1147,7 @@ interval = setInterval(function() {
 // video.refreshManifest();
   } else if(( counter) >  3.5 * (retry_time / 1.2)) {log("Retry:"+counter+":"+retry_time,"RETRY") ; /*hls.startLoad();*/ }
  } else {log("X-Retry:"+counter,"RETRY") ;}
-}, 250);
+}, 10000);
 
 
 }
@@ -1324,19 +1321,6 @@ document.addEventListener("mousedown", (event) => {
 });
 
 
-/*
-document.addEventListener("mousemove", (event) => {
-  if (isDragging) {
-    const volumeBarWidth = volumeBarContainer.clientWidth;
-    let newVolume = startVolume + Math.round((event.offsetX - startPositionX) / volumeBarWidth * 100);
-    newVolume = Math.max(0, Math.min(newVolume, 100));
-    video.volume = newVolume / 100;
-    volumeBar.style.width = newVolume + "%";
-    volumeBar.setAttribute("data-volume", newVolume);
-  }
-});
-
-*/
 
 document.addEventListener("mouseup", () => {
   isDragging = false;
@@ -1350,7 +1334,7 @@ document.addEventListener("mouseup", () => {
    
 video.controls = false ; 
    
-   video.volume = 0.45
+   video.volume = 0.25
    
       
      const volumeLevel = (video.volume * 100).toFixed(0);

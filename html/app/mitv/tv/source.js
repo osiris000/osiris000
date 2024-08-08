@@ -46,7 +46,7 @@ className:"player_panel"}
 const VIDEO_PLAYER = { TAG:"video",
 className:"video_player",
 poster:"https://compostela21.com/img/connecting-loading.gif", 
-style:"text-align:center;display:block;"
+style:"text-align:center;display:block;max-height:80vh"
 }
 
 const VIDEO_PLAYER_CONTROLS = { TAG:"div",

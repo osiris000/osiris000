@@ -77,24 +77,24 @@ def start_ffmpeg(url):
     '-loglevel', 'warning',  # Ajusta el nivel de log según tus necesidades
     '-y', '-re', '-stream_loop', '-1', '-i', url,
     '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
-    '-af', 'aresample=async=1',  # Audio buffer filter
-    '-async','1',
+    '-filter_complex', '[0:a]aresample=async=1[loud];[loud]loudnorm=I=-12:TP=-1.5:LRA=11[aout]',
+    '-map', '0:v',  # Mapear video desde el primer input
+    '-map', '[aout]',  # Mapear audio desde el filtro complejo
     '-c:v', 'libx264', '-preset', 'veryfast',  # Ajuste de preset más balanceado
     '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
     '-b:v', '2800k', '-s:v', '854x480', '-maxrate:v', '5000k', '-bufsize:v', '5000k',
     '-g', '20', '-sc_threshold', '50',
     '-ignore_unknown',  # Incluir esta opción para manejar flujos desconocidos
-    "-strftime","1", #Habilitar formatos fecha
+    '-strftime', '1',  # Habilitar formatos fecha
     '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
     '-hls_time', '2', '-hls_list_size', '30',
     '-hls_flags', '+omit_endlist+delete_segments+append_list',
     '-master_pl_name', 'master_ultrafast.m3u8',
-    '-hls_segment_filename', hls_path+"/%Y%m%d%H%M%S.ts",
+    '-hls_segment_filename', os.path.join(hls_path, '%Y%m%d%H%M%S.ts'),
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
     '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
-    '-reconnect','1','-reconnect_streamed','1','-reconnect_delay_max','2'
-
+    '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2'
 ]
 
 

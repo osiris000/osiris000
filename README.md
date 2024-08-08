@@ -1,3 +1,7 @@
+
+
+<!--
+
 <h1>Osiris Dynamic Shell</h1>
 
 ODS es una shell dinámica sobre la shell del sistema escrita en Bash y Python principalmente.   
@@ -486,17 +490,15 @@ Comandos:
 
 
 Contacto para más información y otros asuntos: osiris.osscom@gmail.com  
-<!--Envíe su petición para incluir un comando-app en esta distribución oficial del sistema Osiris Base.   -->
-
 
 
 ¿Quieres que Osiris000 siga creciendo? Con tu apoyo, un sistema operativo libre con control de privacidad orientado a internet/web2++ y multimedia, fácil de usar y fiable :   
+
+-->
+
   ☕️ https://www.buymeacoffee.com/osiris000   
 
 <img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=40 height=40>&nbsp;&nbsp;<b>bc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
-
-
-
 
 
 Puedes ayudar a que este proyecto avance más rápido compartiendo este link: https://www.buymeacoffee.com/osiris000  (gmni007)
