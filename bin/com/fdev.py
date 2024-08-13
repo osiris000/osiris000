@@ -334,9 +334,29 @@ def main(args):
                             return
                         intn = int(args[2])
                         if  intn > 0 and len(args) == 3:
-                            print(" Hls PLay:"+str(intn))
-#                            play3.start_ffmpeg(play[int(intn) - 1])
+                            if play[int(intn)-1].startswith(iprot):
+                                print(" Hls PLay URL:"+str(intn))
+                                lib_url = ""
+                                main(["geturl",play[int(intn) - 1]])
+                                if lib_url != "":
+#                                    play3.start_ffmpeg(lib_url)
+                                    print("Play LIB import")
+                                    check_i = check_url_type(lib_url)
+#                                    print("chk",check_i)
+                                    if check_i == "Directory":
+                                        print("INVALID URL:",lib_url)
+                                        return
+                                    elif check_i == "Timeout":
+                                        print("TIMEOUT INSPECT FOR:",lib_url)                                       
+                                    else:
+                                        play3.start_ffmpeg(lib_url)
+                                        print("Play Lib Direct")
+
+                            else:
+                                print(" Hls PLay FILE:"+str(intn))
+                                play3.start_ffmpeg(yt_default_list_dir +"/"+ play[int(intn) - 1])
                             print(" → " ,play[int(intn) - 1] +"")  
+                            return
                         elif len(args)>3:
                             if args[3] == "probe":
                                 if play[int(intn)-1].startswith(iprot):
@@ -355,32 +375,8 @@ def main(args):
                                 return
                             if play3.last_process != None:
                                 print("DETECTED PROCESS:",play3.last_process.pid)
-#                                play3.kill_last_process()
-#                                os.kill(play3.last_process, signal.SIGKILL)
-#                                subprocess.call(['kill', '-9', str(play3.last_process)])
                             else:
                                 print("NEW PROCESS WHITE")
-#                            play3.start_ffmpeg('/var/www/osiris000/bin/com/datas/ffmpeg/viajes-espaciales-4.4-sobrevivir-al-vacío.mp4')
-                            if play[int(intn)-1].startswith("http://") or play[int(intn)-1].startswith("https://"):
-                                lib_url = ""
-                                main(["geturl",play[int(intn) - 1]])
-                                if lib_url != "":
-#                                    play3.start_ffmpeg(lib_url)
-                                    print("Play LIB import")
-                                    check_i = check_url_type(lib_url)
-#                                    print("chk",check_i)
-                                    if check_i == "Directory":
-                                        print("INVALID URL:",lib_url)
-                                        return
-                                    elif check_i == "Timeout":
-                                        print("TIMEOUT INSPECT FOR:",lib_url)                                       
-                                    else:
-                                        play3.start_ffmpeg(lib_url)
-                                        print("Play Lib Direct")
-                                return
-                            else:
-                                play3.start_ffmpeg(os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1]))
-                                print("DIR:",yt_default_list_dir) 
                             return
                     except Exception as e:
                         if args[2] == "lasturl":
