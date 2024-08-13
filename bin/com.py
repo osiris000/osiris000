@@ -23,30 +23,14 @@ osiris_bin_dir = os.path.dirname(osiris_bin_path)
 
 def habilitar_y_exportar_venv(nombre_venv):
     global osiris_bin_dir
-    # Comando para habilitar el entorno virtual
-
-    comando_habilitar = f"bash -c 'source {osiris_bin_dir}/com/{nombre_venv}/bin/activate'"
-    # Ejecutar el comando para habilitar el entorno virtual
-    # Exportar el entorno virtual
-    directorio_a_agregar = f"{osiris_bin_dir}/com/{nombre_venv}/lib/python3.9/site-packages"
-
     try:
-        if os.path.isdir(directorio_a_agregar):
-            print("EXISTE PATH... Habilitando...: ",directorio_a_agregar)
-            if directorio_a_agregar in sys.path:
-                print("El directorio ya existe en el path")
-            else:
-                sys.path.append(directorio_a_agregar)
-            print("Activando venv:",nombre_venv)
-            subprocess.call("python3.9 -m venv "+osiris_bin_dir+"/bin/com/"+nombre_venv,shell=True)
-            print("Source....:",comando_habilitar)
-            subprocess.call(comando_habilitar, shell=True)
-        else:
-            print("RUTA INVÁLIDA")
-            return
+        env_vars = subprocess.Popen(["printenv | grep -i osiris"],stdout=subprocess.PIPE, text=True,shell=True).communicate()[0]
+        print(env_vars)
     except Exception as e:
-        print("Error habilitando Source:",e)
-    print("PYTONPATH:",sys.path)
+        print("Error:",e)
+    print("PYTHONPATH."," | ".join(sys.path))
+#    print(os.environ)
+
 
 # Nombre de tu entorno virtual
 nombre_venv = "osiris_env"
@@ -98,6 +82,7 @@ def command_line():
         readline.add_history(command)  # Agregar los comandos al historial
 #    time.sleep(0.3)
     try:
+#        os.system('clear')
         com = input(">>> "+use_command)
         com = com.lstrip()
         if com == "":
@@ -130,8 +115,15 @@ def command_line():
 
     if args[0] == "--venv":
         habilitar_y_exportar_venv(nombre_venv)
-        print("Activando venv:",nombre_venv)
+#        print("venv:",nombre_venv)
         command_line()
+
+    if args[0] == "--reload":
+#        habilitar_y_exportar_venv(nombre_venv)
+        print("RELOAD COM")
+        com.run()
+        return
+
 
     if args[0] == "mount" and len(args) > 1:
         if args[1] not in valid_commands:

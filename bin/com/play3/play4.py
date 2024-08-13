@@ -47,6 +47,11 @@ def kill_last_process():
         
         last_process = None
 
+
+def listar_procesos():
+     print("FUTURE PLAY 5")
+
+
 def ejecutar_proceso(command, cwd):
     """ Ejecuta el proceso en segundo plano """
     global last_process
@@ -68,25 +73,29 @@ def start_ffmpeg(url):
     global command
     global hls_path
     global hls_progress_file
-
+    global ffcom_metadata
     kill_last_process()  # Mata el proceso actual antes de iniciar uno nuevo
 
 
     command = [
     'ffmpeg',
-    '-loglevel', 'warning',  # Ajusta el nivel de log según tus necesidades
-    '-y', '-re', '-stream_loop', '-1', '-i', url,
+    '-y',
+    '-re',
+    '-loglevel', 'warning',
+    '-f', 'lavfi', '-i', 'color=c=black:s=854x480',
+    '-stream_loop', '-1', '-i', url,  # Aplicar stream_loop aquí
     '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
-    '-filter_complex', '[0:a]aresample=async=1[loud];[loud]loudnorm=I=-12:TP=-1.5:LRA=11[aout]',
-    '-map', '0:v',  # Mapear video desde el primer input
-    '-map', '[aout]',  # Mapear audio desde el filtro complejo
-    '-c:v', 'libx264', '-preset', 'veryfast',  # Ajuste de preset más balanceado
+    '-af', 'aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11',
+    '-filter_complex', '[1:v]scale=854:480[scaled];[0:v][scaled]overlay=shortest=1',
+    '-map', '0:v',
+    '-map', '1:a',
+    '-c:v', 'libx264', '-preset', 'ultrafast',
     '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
-    '-b:v', '2800k', '-s:v', '854x480', '-maxrate:v', '5000k', '-bufsize:v', '5000k',
+    '-b:v', '2500k', '-s:v', '854x480', '-maxrate:v', '3000k', '-bufsize:v', '5000k',
     '-g', '20', '-sc_threshold', '50',
-    '-ignore_unknown',  # Incluir esta opción para manejar flujos desconocidos
-    '-strftime', '1',  # Habilitar formatos fecha
+    '-ignore_unknown',
+    '-strftime', '1',
     '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
     '-hls_time', '2', '-hls_list_size', '30',
     '-hls_flags', '+omit_endlist+delete_segments+append_list',
@@ -94,8 +103,9 @@ def start_ffmpeg(url):
     '-hls_segment_filename', os.path.join(hls_path, '%Y%m%d%H%M%S.ts'),
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
     '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
-    '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2'
+    '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2', '-metadata', ffcom_metadata
 ]
+
 
 
     print("Executing command in background:", " ".join(command))
@@ -115,3 +125,5 @@ last_url = ""
 command = []
 hls_progress_file = "/var/www/osiris000/bin/com/datas/ffmpeg/progress_hls.txt"
 hls_path = "/var/www/osiris000/html/app/mitv/channels/main/live-ts"
+ffcom_metadata = "text=osiris-tv-hls"
+

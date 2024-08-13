@@ -9,15 +9,3 @@
 <script src="load.js"></script></head>
 <!-- Google tag (gtag.js) -->
 
-
-
-
-
-
-
-
-
-
-
-
-

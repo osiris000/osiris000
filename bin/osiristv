@@ -76,13 +76,13 @@ exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${heig
 -i alsa_input.usb-C-Media_Electronics_Inc._USB_Advanced_Audio_Device-00.stereo-fallback \
 -ac 2 -ar 44100 -filter_complex amerge -vsync 1 -preset ultrafast \
 -vf "scale='if(gt(iw,ih),-2,trunc(iw/2)*2)':'if(gt(iw,ih),trunc(ih/2)*2,-2)'"  \
+-loglevel warning \
 -b:a 128k -b:v 12500k -bufsize 15000k \
 -fflags +genpts \
 -c:v h264 -c:a aac -bsf:v h264_mp4toannexb \
 -bsf:a aac_adtstoasc -pix_fmt yuv420p -g 2 -crf 18 -threads 3 -minrate 8000k \
 -r 10 -maxrate 15000k \
--metadata title="osiristv" \
+-metadata title="text=osiristv:mode=scren:type:tv" \
 -f flv rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy
-#-f mpegts pruebas.mp4.ts
 
 exit 1

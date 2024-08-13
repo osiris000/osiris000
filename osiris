@@ -1,34 +1,26 @@
-#!/usr/bin/bash
-
-
-
-echo "Opción no implementada, ejecute '. osiris'  en la consola para acceder si tiene problemas "
-
-
-echo "Para usarlo correctamente cambie en el archivo osiris la línea posterior a este comando a su directorio de instación de osiris si ya lo tiene instalado, en caso contrario ejecute la orden anterior  "
-
-echo "Al hacer los cambios, si le funciona, puede deshabilitar esta información comentándolos"  
-
-
-cd /var/www/osiris000
+#!/bin/bash
+echo "OSIRIS PATH ROOT:" $OSIRIS000_BASEPATH
+cd $OSIRIS000_BASEPATH
 
 # Verificar si se proporcionó un argumento
+
 if [ $# -eq 1 ]; then
 
-
 if [ "$EUID" -ne 0 ]; then
-	    echo "Este script debe ejecutarse como root."
-	    exit 1
+        echo "Este script debe ejecutarse como root."
+        exit 1
 #    eval su
 #    cd $(realpath "$0")
 fi
 
     # Si hay un argumento, utilizarlo como nombre de archivo para la redirección
-    cd bin && /usr/bin/python3 "osiris.py"
+    cd bin 
+    python3 "osiris.py"
    exit 1
 else
     # Si no se proporciona ningún argumento, redirigir a un archivo predeterminado
-    . osiris.sh
+   . osiris.sh
 fi
 
 . osiris.sh
+

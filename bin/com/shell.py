@@ -2,9 +2,9 @@ import subprocess
 
 
 def main(args):
-    print('Args dentro de shell', args)
+
     try:
-        subprocess.call(args)
+        subprocess.call(args,cwd="com/osiris_env")
     except Exception as e:
         print("ERROR:",e)
     return

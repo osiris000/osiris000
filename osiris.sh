@@ -1,9 +1,6 @@
 #!/bin/bash
 
 
-# Comprobar si el usuario es root
-
-
 if [ "$(id -u)" -eq 0 ]; then
     echo "El usuario es root. Continuando con el script."
 else
@@ -36,11 +33,3 @@ fi
 python_osiris_path="osiris.py"
 
 cd bin && /usr/bin/python3 "$python_osiris_path"
-
-
-
-
-
-
-
-

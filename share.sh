@@ -39,7 +39,7 @@ apt_install_command() {
 }
 
 
-# Función para comprobar si un comando está instalado
+
 # Función para comprobar si un comando está instalado
 check_command_installed() {
   command_path=$1

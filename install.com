@@ -3,9 +3,12 @@
 
 #instalamos aplicaciones necesarias
 
+
+date				apt install date
+
 python3.9-venv  	apt install python3-pip python3.9-venv
 python3.9 			apt install python3.9 python3.9-venv
-pip3				apt install python3.9-pip
+pip				    apt install pip
 php					apt install php php-fpm php-mysqli php-all-dev
 apache2 			apt install apache2 libapache2-mod-php libapache2-mod-fcgid 
 
@@ -21,14 +24,11 @@ tor 				apt install tor
 port-audio          apt install portaudio19-dev
 
 
-Osiris-python3.9-venv 			eval python3.9 -m venv bin/com/osiris_env 
-Osiris-venv-activate 			eval source bin/com/osiris_env/bin/activate
-Osiris-venv-export 			eval export PYTHONPATH=".:$VIRTUAL_ENV/lib/python3.9/site-packages"
 
 yt-dlp 				pip install yt-dlp
 
 
-#; source tutorial-env/bin/activate
+# source tutorial-env/bin/activate
 
 
 #etc.. si no se chekea desde install.sh, se ignora
@@ -39,4 +39,6 @@ depend pip install python-bitcoinlib Flask
 depend /usr/sbin/a2enmod ssl rewrite
 depend apt install whois
 
+#Osiris packs
 
+venv-Opack  eval . bin/venv.sh

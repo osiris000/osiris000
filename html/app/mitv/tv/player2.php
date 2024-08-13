@@ -312,6 +312,7 @@ overflow:hidden;
 
 
 
+
           
 </style>
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -401,12 +402,27 @@ autoplay></video>
 
 <div id="progress-container"><div id="progress-bar"></div></div>
 
+
+
+
+
+
+
+
+<div style="justify-content:center;align-items:center;display:flex;overflow:hidden;margin:25.8px 30px auto auto;float:right;">
+
 <div id="buffer-container"><div id="buffer-bar"></div></div>
+&nbsp;&nbsp;
+  <a  href="javascript:void(0)" 
+  onclick="xplayer(`<?=$_REQUEST["chn"]?>?&nocache=<?=$nocacherand?>&`)">
+  <img src="img/reload.png" style="width:201x;height:20px;"></a>
+&nbsp;&nbsp;&nbsp;
 
-
-<div style="overflow:hidden;display:inline-block;text-valign:middle;margin:24.8px 30px auto auto;float:right;">
-<a href="javascript:void(0);" onclick="document.getElementById('video').style.height='70%';document.getElementById('m').style.display='block';" style="padding:1px 3px;color: #333; text-decoration: none; border: 1px solid #333; margin:0;; border-radius: 10px; animation: fadeIn 0.5s ease-in-out; -webkit-animation-fill-mode: forwards;background:rgba(222,222,222,0.6)">Consola</a>
+  <a href="javascript:void(0);" onclick="document.getElementById('video').style.height='70%';document.getElementById('m').style.display='block';" style="padding:0px 3px;color: #333; text-decoration: none; border: 1px solid #333; margin:0;; border-radius: 10px; animation:fadeIn 0.5s ease-in-out; -webkit-animation-fill-mode: forwards;background:rgba(222,222,222,0.6)">Consola</a>
 </div>
+
+
+
       
 <div id="play-pause-button"></div>
 
@@ -456,35 +472,6 @@ autoplay></video>
 
 
 
-
-var mut = `<svg viewBox="0 0 60 60" class="ppb"  style="padding-right:5px;">
-  <circle cx="30" cy="30" r="25" fill="none" stroke="#999" stroke-width="4" stroke-opacity="0.9" />
-  <rect x="10" y="15" width="10" height="30" rx="2" ry="2" fill="#666" />
-  <rect x="22" y="10" width="10" height="40" rx="2" ry="2" fill="#666" />
-  <rect x="34" y="5" width="10" height="50" rx="2" ry="2" fill="#666" />
-  <rect x="46" y="0" width="10" height="60" rx="2" ry="2" fill="#666" />
-</svg>`
-
-var vol = `<svg viewBox="0 0 60 60" class="ppb" style="padding-right:5px;">
-  <circle cx="30" cy="30" r="25" fill="none" stroke="#999" stroke-width="4" stroke-opacity="0.1" />
-  <rect x="10" y="15" width="20" height="30" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
-  <rect x="22" y="10" width="20" height="40" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
-  <rect x="34" y="5" width="20" height="50" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
-  <rect x="46" y="0" width="20" height="60" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
-</svg>` 
-
-
-
-var b_play = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="ppb">
-  <circle cx="15" cy="15" r="15.5" fill="#4CAA50"/>
-  <path d="M11.25 21.375l10.125-6.75L11.25 7.875v13.5z" fill="#FFF"/>
-</svg>`
-
-var b_pause = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="ppb">
-  <circle cx="15" cy="15" r="15.5" fill="#f4a336"/>
-  <rect x="10.5" y="8.25" width="2.25" height="13.5" fill="#FFF"/>
-  <rect x="17.25" y="8.25" width="2.25" height="13.5" fill="#FFF"/>
-</svg>`
 
 
 
@@ -540,23 +527,47 @@ id.innerHTML = d
 
 }
 
-interval = false ;
 
 
 
-function xplayer(videoSrc){
 
 
-var retry_time = 0 ;
-var bufferSize = 0;
-var elapsedTime = 0;
-let counter = 0;
+
+var mut = `<svg viewBox="0 0 60 60" class="ppb"  style="padding-right:5px;">
+  <circle cx="30" cy="30" r="25" fill="none" stroke="#999" stroke-width="4" stroke-opacity="0.9" />
+  <rect x="10" y="15" width="10" height="30" rx="2" ry="2" fill="#666" />
+  <rect x="22" y="10" width="10" height="40" rx="2" ry="2" fill="#666" />
+  <rect x="34" y="5" width="10" height="50" rx="2" ry="2" fill="#666" />
+  <rect x="46" y="0" width="10" height="60" rx="2" ry="2" fill="#666" />
+</svg>`
+
+var vol = `<svg viewBox="0 0 60 60" class="ppb" style="padding-right:5px;">
+  <circle cx="30" cy="30" r="25" fill="none" stroke="#999" stroke-width="4" stroke-opacity="0.1" />
+  <rect x="10" y="15" width="20" height="30" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
+  <rect x="22" y="10" width="20" height="40" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
+  <rect x="34" y="5" width="20" height="50" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
+  <rect x="46" y="0" width="20" height="60" rx="2" ry="2" fill="none" stroke="#666" stroke-width="4" stroke-opacity="1" />
+</svg>` 
 
 
-video = document.getElementById("video");
+
+var b_play = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="ppb">
+  <circle cx="15" cy="15" r="15.5" fill="#4CAA50"/>
+  <path d="M11.25 21.375l10.125-6.75L11.25 7.875v13.5z" fill="#FFF"/>
+</svg>`
+
+var b_pause = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="ppb">
+  <circle cx="15" cy="15" r="15.5" fill="#f4a336"/>
+  <rect x="10.5" y="8.25" width="2.25" height="13.5" fill="#FFF"/>
+  <rect x="17.25" y="8.25" width="2.25" height="13.5" fill="#FFF"/>
+</svg>`
+
+
+
+
+
 
 var loadingText = document.getElementById("loadingText");
-
 const controlsContainer = document.getElementById("controls-container");
 const playPauseButton = document.getElementById("play-pause-button");
 const progressBar = document.getElementById("progress-bar");
@@ -566,164 +577,64 @@ const muteUnmuteButton = document.getElementById("mute-unmute-button");
 const volumeBarContainer = document.getElementById("volume-bar-container");
 const volumeBar = document.getElementById("volume-bar");
 
+playPauseButton.innerHTML = ''+b_play+'';
+muteUnmuteButton.innerHTML = ''+vol+'';       
 
-        if (Hls.isSupported()) {
+
+video = document.getElementById("video");
+
+function xplayer(videoSrc){
+
+
+if (Hls.isSupported()) {
   
- 
-
-const hlsConfig = {
-  fragLoadingTimeOut: 30000, // Incrementar el tiempo de espera para la carga de fragmentos
-  fragLoadingMaxRetry: 10, // Incrementar el número de intentos de carga de fragmentos
-  fragLoadingRetryDelay: 1000, // Tiempo de espera entre reintentos de carga de fragmentos
-  manifestLoadingTimeOut: 20000, // Incrementar el tiempo de espera para la carga del manifiesto HLS
-  manifestLoadingMaxRetry: 10, // Incrementar el número de intentos de carga del manifiesto HLS
-  manifestLoadingRetryDelay: 500, // Tiempo de espera entre reintentos de carga del manifiesto HLS
-  enableWorker: true, // Habilita el uso de Web Workers para mejorar el rendimiento
-  enableSoftwareAES: true, // Habilita el descifrado de AES en software
-  maxBufferLength: 120, // Aumentar la longitud máxima del buffer en segundos
-  maxMaxBufferLength: 300, // Aumentar la longitud máxima del buffer en casos extremos
-  maxBufferSize: 100 * 1024 * 1024, // Aumentar el tamaño máximo del buffer en bytes
-  levelLoadingMaxRetry: 6, // Número máximo de intentos de carga de niveles
-  levelLoadingRetryDelay: 1000, // Tiempo de espera entre reintentos de carga de niveles
-  startLevel: -1, // Nivel de inicio (auto-selección)
-  defaultAudioCodec: undefined, // Codec de audio predeterminado (auto-selección)
-  enableCEA708Captions: true, // Habilita subtítulos CEA-708
-  enableWebVTT: true, // Habilita subtítulos WebVTT
-  enableMP2TSDT: true, // Habilita la tabla de descripciones de flujo MPEG-TS
-  enableLowLatency: true, // Habilitar latencia baja si es necesario
-  capLevelToPlayerSize: true, // Ajusta el nivel al tamaño del reproductor
-  smoothSwitching: true, // Permite cambios de nivel suaves
-  abrEwmaFastLive: 5.0, // Ajustes para la estimación de ancho de banda rápido en live
-  abrEwmaSlowLive: 9.0, // Ajustes para la estimación de ancho de banda lento en live
-  abrEwmaFastVoD: 3.0, // Ajustes para la estimación de ancho de banda rápido en VoD
-  abrEwmaSlowVoD: 9.0, // Ajustes para la estimación de ancho de banda lento en VoD
-  abrEwmaDefaultEstimate: 500000, // Estimación de ancho de banda predeterminada
-  abrBandWidthFactor: 0.8, // Factor de ancho de banda para ABR
-  abrBandWidthUpFactor: 0.7, // Factor de incremento de ancho de banda para ABR
-  abrMaxWithRealBitrate: true, // Utiliza la tasa de bits real para la estimación de ABR
-  abrAveragingForBwEstimate: 5000, // Promedio para la estimación de ancho de banda en ABR
-  abrScaledToRealBitrate: true, // Escala a la tasa de bits real
-  enableSoftwareCC: true, // Habilita la decodificación de subtítulos en software
-  widevineLicenseUrl: undefined, // URL de licencia Widevine (si se utiliza)
-  requestMediaKeySystemAccessFunc: undefined, // Función para solicitar acceso a MediaKeySystem (si se utiliza)
-  debug: false, // Deshabilita el modo de depuración
-  xhrSetup: undefined // Función de configuración de XHR (si se necesita)
-};
-
-
-/*
-
-const hlsConfig = {
-  fragLoadingTimeOut: 20000, // Tiempo de espera máximo para la carga de un fragmento
-  fragLoadingMaxRetry: 6, // Número máximo de intentos de carga de fragmentos
-  fragLoadingRetryDelay: 1000, // Tiempo de espera entre reintentos de carga de fragmentos
-  manifestLoadingTimeOut: 10000, // Tiempo de espera máximo para la carga del manifiesto HLS
-  manifestLoadingMaxRetry: 6, // Número máximo de intentos de carga del manifiesto HLS
-  manifestLoadingRetryDelay: 500, // Tiempo de espera entre reintentos de carga del manifiesto HLS
-  enableWorker: true, // Habilita el uso de Web Workers para mejorar el rendimiento
-  enableSoftwareAES: true, // Habilita el descifrado de AES en software
-  maxBufferLength: 60, // Longitud máxima del buffer en segundos
-  maxMaxBufferLength: 120, // Longitud máxima del buffer en casos extremos
-  maxBufferSize: 60 * 1024 * 1024, // Tamaño máximo del buffer en bytes
-  levelLoadingMaxRetry: 6, // Número máximo de intentos de carga de niveles
-  levelLoadingRetryDelay: 1000, // Tiempo de espera entre reintentos de carga de niveles
-  startLevel: -1, // Nivel de inicio (auto-selección)
-  defaultAudioCodec: undefined, // Codec de audio predeterminado (auto-selección)
-  enableCEA708Captions: true, // Habilita subtítulos CEA-708
-  enableWebVTT: true, // Habilita subtítulos WebVTT
-  enableMP2TSDT: true, // Habilita la tabla de descripciones de flujo MPEG-TS
-  enableLowLatency: false, // Deshabilita la latencia baja (puede habilitarse si se necesita)
-  capLevelToPlayerSize: true, // Ajusta el nivel al tamaño del reproductor
-  smoothSwitching: true, // Permite cambios de nivel suaves
-  abrEwmaFastLive: 5.0, // Ajustes para la estimación de ancho de banda rápido en live
-  abrEwmaSlowLive: 9.0, // Ajustes para la estimación de ancho de banda lento en live
-  abrEwmaFastVoD: 3.0, // Ajustes para la estimación de ancho de banda rápido en VoD
-  abrEwmaSlowVoD: 9.0, // Ajustes para la estimación de ancho de banda lento en VoD
-  abrEwmaDefaultEstimate: 500000, // Estimación de ancho de banda predeterminada
-  abrBandWidthFactor: 0.8, // Factor de ancho de banda para ABR
-  abrBandWidthUpFactor: 0.7, // Factor de incremento de ancho de banda para ABR
-  abrMaxWithRealBitrate: true, // Utiliza la tasa de bits real para la estimación de ABR
-  abrAveragingForBwEstimate: 5000, // Promedio para la estimación de ancho de banda en ABR
-  abrScaledToRealBitrate: true, // Escala a la tasa de bits real
-  enableSoftwareCC: true, // Habilita la decodificación de subtítulos en software
-  widevineLicenseUrl: undefined, // URL de licencia Widevine (si se utiliza)
-  requestMediaKeySystemAccessFunc: undefined, // Función para solicitar acceso a MediaKeySystem (si se utiliza)
-  debug: false, // Deshabilita el modo de depuración
-  xhrSetup: undefined // Función de configuración de XHR (si se necesita)
-};
-
-
-
-
-        
-const hlsConfig = {
-  fragLoadingTimeOut: 20000, // Tiempo de espera máximo para la carga de un fragmento
-  fragLoadingMaxRetry: 10, // Número máximo de intentos de carga de fragmentos
-  manifestLoadingTimeOut: 10000, // Tiempo de espera máximo para la carga del manifiesto HLS
-  manifestLoadingMaxRetry: 10, // Número máximo de intentos de carga del manifiesto HLS
-  enableWorker: true,
-  enableSoftwareAES: true,
-  manifestLoadingMaxRetry: 10,
-  manifestLoadingRetryDelay: 5000,
-  maxBufferLength: 60,
-  maxMaxBufferLength: 180,
-  maxBufferSize: 120 * 1024 * 1024,
-  levelLoadingMaxRetry: 4,
-  levelLoadingRetryDelay: 1000,
-  fragLoadingMaxRetry: 4,
-  fragLoadingRetryDelay: 1000,
-  startLevel: -1,
-  defaultAudioCodec: undefined,
-  enableCEA708Captions: true,
-  enableWebVTT: true,
-  enableMP2TSDT: true,
-  enableLowLatency: false,
-  capLevelToPlayerSize: false,
-  smoothSwitching: false,
-  abrEwmaFastLive: 5.0,
-  abrEwmaSlowLive: 9.0,
-  abrEwmaFastVoD: 3.0,
-  abrEwmaSlowVoD: 9.0,
-  abrEwmaDefaultEstimate: 500000,
-  abrBandWidthFactor: 0.95,
-  abrBandWidthUpFactor: 0.7,
-  abrMaxWithRealBitrate: false,
-  abrAveragingForBwEstimate: 5000,
-  abrScaledToRealBitrate: true,
-  enableSoftwareCC: true,
-  widevineLicenseUrl: undefined,
-  requestMediaKeySystemAccessFunc: undefined,
-  debug: false,
-  xhrSetup: undefined
-};
-*/
-
 var hls = new Hls(hlsConfig);
-            
-            
-            
-            
-            video.pause();
-            
- playPauseButton.innerHTML = ''+b_play+'';
- muteUnmuteButton.innerHTML = ''+vol+'';       
-
-
-   
-
-
+ 
+interval = false ;
+var retry_time = 0 ;
+var bufferSize = 0;
+var elapsedTime = 0;
+let counter = 0;
 video.currentTime = 0;
 var  currentTime = video.currentTime;
             
             
-            hls.loadSource(videoSrc+"?"+Date.now());
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-                video.muted = false;
-                video.play();
-            });
-      
+  hls.loadSource(videoSrc+"?"+Date.now());
+  hls.attachMedia(video);
+  hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+  video.muted = false;
+  video.play();
+});
 
+/*Parse Manifest*/
+
+ hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            
+  var levels = hls.levels;
+  var currentLevel = hls.currentLevel;
+  for (var i = 0; i < levels.length; i++) {
+    var level = levels[i];
+    var option = document.createElement('option');
+    option.value = i;
+    option.text = level.width + 'x' + level.height + ' ' + (level.bitrate / 1000) + 'kbps';
+    if (i == currentLevel) {
+      option.selected = true;
+    }
+   log(option.text+"|"+hls.levels.length,"Q",1)
+   console.log(option.text+"|"+hls.levels.length,"Q",1)
+  }
+
+ document.getElementById('quality-selector').addEventListener('change', function() {
+    var selectedLevel = parseInt(this.value);
+    hls.currentLevel = selectedLevel;
+    log("["+selectedLevel+"]","q2")
+  });
+        video.play();
+});
+            
+            
+
+/*Manejo de Errores*/
 
 hls.on(Hls.Events.ERROR, function(event, data) {
   if (data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR) {
@@ -736,88 +647,39 @@ hls.on(Hls.Events.ERROR, function(event, data) {
     console.log('Segmento que falló:', data.frag.url);
 // hls.startLoad()
   }
-});
 
 
-
-
-                  hls.on(Hls.Events.MANIFEST_PARSED, function () {
-            
-             var levels = hls.levels;
-  var currentLevel = hls.currentLevel;
-
-  for (var i = 0; i < levels.length; i++) {
-    var level = levels[i];
-    var option = document.createElement('option');
-    option.value = i;
-    option.text = level.width + 'x' + level.height + ' ' + (level.bitrate / 1000) + 'kbps';
-    if (i == currentLevel) {
-      option.selected = true;
-    }
-  //  document.getElementById('quality-selector').appendChild(option);
-
-log(option.text+"|"+hls.levels.length,"Q",1)
+  if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
+    console.log('El reproductor está en bucle debido a un error de carga de segmentos.');
   }
 
- document.getElementById('quality-selector').addEventListener('change', function() {
-    var selectedLevel = parseInt(this.value);
-    hls.currentLevel = selectedLevel;
-    log("["+selectedLevel+"]","q2")
-  });
-          
-            
-            
-                video.play();
-            });
-            
-            
-            
-            
-            hls.on(Hls.Events.ERROR, function (event, data) {
-                if (data.fatal) {
-                    switch (data.type) {
-                        case Hls.ErrorTypes.NETWORK_ERROR:
-                           log(" Manejar errores de red")
-                           
-             setTimeout(function(){   hls.startLoad()             },5000)
-                            break;
-                        case Hls.ErrorTypes.MEDIA_ERROR:
-		log("// Manejar errores en la media","ERROR")
-//  video.poster = "https://vtwitt.com/img/connecting-loading.gif";
- //  hls.loadSource()		
- //  hls.startLoad()
-//  xplayer(videoSource)
-                            break;
-                        default:
-                        // hls.loadSource(videoSrc)
-     // hls.startLoad()
-                            log(" Manejar otros errores","ERROR")
-                            break;
-                    }
-              
-        
-                }
-               
-          //   hls.loadSource()
-     // hls.startLoad()
-      //video.start()
+  if (data.fatal) {
+    switch(data.type) {
+        case Hls.ErrorTypes.NETWORK_ERROR:
+          console.log("HLS network error");
+          break;
+        case Hls.ErrorTypes.MEDIA_ERROR:
+         // console.log("HLS media error: ", data.details);
+          break;
+        default:
+          console.log("HLS error: ",data.details);
+          break;
+          }
+      if (data.frag && data.frag.url) {
+        console.log("HLS frag url: " ,data.frag.url);
+      }
+      //console.log("HLS error details: " , data);
+    }
 
-            });
-                     
-                     
-                      setInterval(() => {
-    hls.startLoad();
-  }, 30000); 
-                     
+
+ });
 
 
 
+/* continue*/
 
 
-
-
-                     
-                     
+      
             video.addEventListener('canplay', function () {
                 log("Actualizar la interfaz de usuario","PLAY")
 
@@ -877,6 +739,8 @@ fullscreenButton.addEventListener('click', () => {
        
          
  
+/* time update */
+
 
 
             up = 0;
@@ -922,7 +786,7 @@ retroceso = 8
   //setTimeout(function(){   hls.startLoad()},1000)
 
    
-       video.currentTime =   bufferEnd  - (retroceso)
+    //   video.currentTime =   bufferEnd  - (retroceso)
     
      // hls.loadSource(videoSrc);
     
@@ -941,11 +805,29 @@ retroceso = 8
   
   
   
+
+// Update progress bar and time display on timeupdate event
+
+
+if (video.buffered.length > 0) {
+   currentTime = video.currentTime;
+   duration = video.duration;
+   buffered_ = video.buffered.end(0);
+   progressPercentage = (currentTime / duration) * 100;
+   bufferPercentage = (buffered_ / duration) * 100;
+  progressBar.style.width = progressPercentage + "%";
+  bufferBar.style.width = bufferPercentage + "%";
+  timeDisplay.innerHTML = formatTime(currentTime) + " / " + formatTime(duration);
+  }
+  
+
+
+
   
   
   });
-  	
-  	
+    
+    
 
   
   
@@ -954,12 +836,12 @@ retroceso = 8
   
    video.addEventListener('crash', (event) => {
   
-  	
-  	
-  	
-  	
-  	
-     	log("<b style='color:red'>Crash</b>","PLAY")
+    
+    
+    
+    
+    
+      log("<b style='color:red'>Crash</b>","PLAY")
 
 loadingText.style.display = "block";
   
@@ -968,21 +850,21 @@ loadingText.style.display = "block";
   
   
          
-	 video.addEventListener('playing', (event) => {
+   video.addEventListener('playing', (event) => {
   
-  	
-  	
-  	document.getElementById("splay").style.display = "none"
-  	
-  	
-     	log("Playing","PLAY")
+    
+    
+    document.getElementById("splay").style.display = "none"
+    
+    
+      log("Playing","PLAY")
 
 loadingText.style.display = "none";
 //  video.poster = "https://vtwitt.com/img/connecting-loading.gif";
 
-	
-	});
-	   
+  
+  });
+     
         
      
 video.addEventListener("waiting", function() {
@@ -1002,48 +884,6 @@ video.addEventListener("waiting", function() {
             
             
          
-         
-video.addEventListener('error', function(event) {
-  log('Video error: ' + event.target.error.code + ': ' + event.target.error.message,"ERROR");
-  
-  
-  
-  if(event.target.error.code === 4){
-  
-  setTimeout(function(){hls.startLoad()},10000);
-  
-  
-  } else {
-  
-  video.pause();
-  hls.startLoad()
-  video.play()
-  }
-  
-  
-});
-         
-         
-             hls.on(Hls.Events.ERROR, function (event, data) {
-    if (data.fatal) {
-      switch(data.type) {
-        case Hls.ErrorTypes.NETWORK_ERROR:
-          console.log("HLS network error");
-          break;
-        case Hls.ErrorTypes.MEDIA_ERROR:
-          console.log("HLS media error: ", data.details);
-          break;
-        default:
-          console.log("HLS error: ",data.details);
-          break;
-      }
-      if (data.frag && data.frag.url) {
-        console.log("HLS frag url: " ,data.frag.url);
-      }
-      console.log("HLS error details: " , data);
-    }
-  });
-        
         
          
  video.onloadedmetadata = function() {
@@ -1052,10 +892,6 @@ video.addEventListener('error', function(event) {
       };
       
       
-      
-                  
-           
-            
 hls.on(Hls.Events.BUFFER_APPENDED, function(event, data) {
  
  counter = 0
@@ -1084,11 +920,6 @@ hls.on(Hls.Events.BUFFER_APPENDED, (event, data) => {
 });
 
 
-hls.on(Hls.Events.ERROR, (event, data) => {
-  if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && data.details === Hls.ErrorDetails.FRAG_LOAD_ERROR) {
-    console.log('El reproductor está en bucle debido a un error de carga de segmentos.');
-  }
-});
 
 
 
@@ -1240,24 +1071,9 @@ video.addEventListener("loadedmetadata", function() {
   }
 });
 
-// Update progress bar and time display on timeupdate event
-video.addEventListener("timeupdate", function() {
-
-if (video.buffered.length > 0) {
-  const currentTime = video.currentTime;
-  const duration = video.duration;
-  const buffered_ = video.buffered.end(0);
-  const progressPercentage = (currentTime / duration) * 100;
-  const bufferPercentage = (buffered_ / duration) * 100;
-  progressBar.style.width = progressPercentage + "%";
-  bufferBar.style.width = bufferPercentage + "%";
-  timeDisplay.innerHTML = formatTime(currentTime) + " / " + formatTime(duration);
-  }
-  
-});
 
 
-	  function updateProgress(n) {
+    function updateProgress(n) {
   const progressElement = document.getElementById("progress_c");
   progressElement.style.width = n * 4.97 + "%";
   progressElement.style.overflow = "hidden";
@@ -1325,9 +1141,6 @@ document.addEventListener("mousedown", (event) => {
 document.addEventListener("mouseup", () => {
   isDragging = false;
 });
-   
-   
-   
    
    
    
@@ -1427,8 +1240,8 @@ function autoQuality(video) {
 
 async function playVideo(video) {
   try {
-	  video.muted = false
-	 
+    video.muted = false
+   
     await video.play();
 console.log("!PLAY!!")
 
@@ -1446,14 +1259,53 @@ console.log("!PLAY!!")
 
 
 
+/* HLS CONFIG  */  
 
 
+const hlsConfig = {
+  fragLoadingTimeOut: 30000, // Incrementar el tiempo de espera para la carga de fragmentos
+  fragLoadingMaxRetry: 10, // Incrementar el número de intentos de carga de fragmentos
+  fragLoadingRetryDelay: 1000, // Tiempo de espera entre reintentos de carga de fragmentos
+  manifestLoadingTimeOut: 20000, // Incrementar el tiempo de espera para la carga del manifiesto HLS
+  manifestLoadingMaxRetry: 10, // Incrementar el número de intentos de carga del manifiesto HLS
+  manifestLoadingRetryDelay: 500, // Tiempo de espera entre reintentos de carga del manifiesto HLS
+  enableWorker: true, // Habilita el uso de Web Workers para mejorar el rendimiento
+  enableSoftwareAES: true, // Habilita el descifrado de AES en software
+  maxBufferLength: 120, // Aumentar la longitud máxima del buffer en segundos
+  maxMaxBufferLength: 300, // Aumentar la longitud máxima del buffer en casos extremos
+  maxBufferSize: 100 * 1024 * 1024, // Aumentar el tamaño máximo del buffer en bytes
+  levelLoadingMaxRetry: 6, // Número máximo de intentos de carga de niveles
+  levelLoadingRetryDelay: 1000, // Tiempo de espera entre reintentos de carga de niveles
+  startLevel: -1, // Nivel de inicio (auto-selección)
+  defaultAudioCodec: undefined, // Codec de audio predeterminado (auto-selección)
+  enableCEA708Captions: true, // Habilita subtítulos CEA-708
+  enableWebVTT: true, // Habilita subtítulos WebVTT
+  enableMP2TSDT: true, // Habilita la tabla de descripciones de flujo MPEG-TS
+  enableLowLatency: true, // Habilitar latencia baja si es necesario
+  capLevelToPlayerSize: true, // Ajusta el nivel al tamaño del reproductor
+  smoothSwitching: true, // Permite cambios de nivel suaves
+  abrEwmaFastLive: 5.0, // Ajustes para la estimación de ancho de banda rápido en live
+  abrEwmaSlowLive: 9.0, // Ajustes para la estimación de ancho de banda lento en live
+  abrEwmaFastVoD: 3.0, // Ajustes para la estimación de ancho de banda rápido en VoD
+  abrEwmaSlowVoD: 9.0, // Ajustes para la estimación de ancho de banda lento en VoD
+  abrEwmaDefaultEstimate: 500000, // Estimación de ancho de banda predeterminada
+  abrBandWidthFactor: 0.8, // Factor de ancho de banda para ABR
+  abrBandWidthUpFactor: 0.7, // Factor de incremento de ancho de banda para ABR
+  abrMaxWithRealBitrate: true, // Utiliza la tasa de bits real para la estimación de ABR
+  abrAveragingForBwEstimate: 5000, // Promedio para la estimación de ancho de banda en ABR
+  abrScaledToRealBitrate: true, // Escala a la tasa de bits real
+  enableSoftwareCC: true, // Habilita la decodificación de subtítulos en software
+  widevineLicenseUrl: undefined, // URL de licencia Widevine (si se utiliza)
+  requestMediaKeySystemAccessFunc: undefined, // Función para solicitar acceso a MediaKeySystem (si se utiliza)
+  debug: false, // Deshabilita el modo de depuración
+  xhrSetup: undefined // Función de configuración de XHR (si se necesita)
+};
 
-//onload = function(){
+
+//Player Start
 
 xplayer(videoSrc)
 
-//}
 
 </script>
 

@@ -89,18 +89,18 @@ profiles = {
         "youtube:2": {
         "profileType":"Youtube Live Streaming 720p",
         "preset": def_preset,
-        "vbr":"4000k",
+        "vbr":"2500k",
         "abr":"128k",
-        "bufsize":"10000k",
+        "bufsize":"5514k",
         "stream_loop":"-1",
         "input":lineInput,
-        "maxrate":"4500k",
-        "minrate":"3500k",
+        "maxrate":"3000k",
+        "minrate":None,
         "fout":"flv",
         "output":def_output,
         "progress":def_progress_file,
         "ss":def_seek_start,
-        "fps":"24",
+        "fps":"30",
         "screen":"1280x720",
         "audio_filter":def_audio_filter
     },
@@ -227,6 +227,12 @@ def main(args):
     if args[0] == "view":
         print("\n---- view ---------------------------\n")
         if len(args)>1:
+            if args[1] == "proc":
+                #play3.detener_proceso("mi_stream")
+                try:
+                    play3.listar_procesos()
+                except Exception as e:
+                    print("OPCION PARA PLAY5:".e)
             if args[1] == "profiles":
                 print(profiles)
                 return
@@ -298,23 +304,28 @@ def main(args):
         if len(args)>1:
             if args[1] == "tv":
                 if len(args)>2:
+                    if args[2] == "lasturl":
+                        main(["yt","lasturl"])
+                        return   
                     try:
                         intn = int(args[2])
                         if  intn > 0:
                             print(" PLay:"+str(intn))
-                            print(" yt -i \"" + yt_default_list_dir +"/"+ play[int(intn) - 1] +"\" -c")
                             if len(args)>3:
                                 if args[3] == "probe":
                                     subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
                                     print("--End Probe-----------------")
                                     return
-                            main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
-                            return
+                            if play[int(intn) - 1].startswith(iprot):
+                                main([ play[int(intn) - 1]]) 
+                                main(["yt","lasturl"])
+                            else:
+                                main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
                     except Exception as e:
                         print(" ERROR:",e)
-                        return
             elif args[1] == "hls":
                 print("play3 hls started")
+#                play3.gestor.hello("Albert")
                 if len(args)>2:
                     try:
                         if args[2] == "kill":
@@ -322,25 +333,26 @@ def main(args):
                             play3.kill_last_process()
                             return
                         intn = int(args[2])
-                        if  intn > 0:
+                        if  intn > 0 and len(args) == 3:
                             print(" Hls PLay:"+str(intn))
-                            print(" → " ,play[int(intn) - 1] +"")
-                            if len(args)>3:
-                                if args[3] == "probe":
-                                    if play[int(intn)-1].startswith(iprot):
-                                        last_url = ""
-                                        main([play[int(intn)-1]])
-                                        if last_url != "":
-                                            print("End probe HLS URL PARSED")
-                                        else:
-                                            print("ERROR INPUT FOR PROBE")
-                                            print("Intento CON URL ORIGINAL",play[int(intn)-1])
-                                            subprocess.call(["ffprobe","-i", play[int(intn) - 1]])
-                                            print("End probe HLS URL ORIGINAL")
+#                            play3.start_ffmpeg(play[int(intn) - 1])
+                            print(" → " ,play[int(intn) - 1] +"")  
+                        elif len(args)>3:
+                            if args[3] == "probe":
+                                if play[int(intn)-1].startswith(iprot):
+                                    last_url = ""
+                                    main([play[int(intn)-1]])
+                                    if last_url != "":
+                                        print("End probe HLS URL PARSED")
                                     else:
-                                        subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
-                                    print("--End Probe-----------------")
-                                    return
+                                        print("ERROR INPUT FOR PROBE")
+                                        print("Intento CON URL ORIGINAL",play[int(intn)-1])
+                                        subprocess.call(["ffprobe","-i", play[int(intn) - 1]])
+                                        print("End probe HLS URL ORIGINAL")
+                                else:
+                                    subprocess.call(["ffprobe","-i",yt_default_list_dir +"/"+ play[int(intn) - 1]])
+                                print("--End Probe-----------------")
+                                return
                             if play3.last_process != None:
                                 print("DETECTED PROCESS:",play3.last_process.pid)
 #                                play3.kill_last_process()
@@ -567,6 +579,8 @@ def main(args):
 
     sudo_usr = ["sudo","-u","osiris"]
 
+    sudo_usr = []
+
 #    yt_default_output_url = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
     MAX_LPF = 4096 # maximum length progess file
 
@@ -658,7 +672,7 @@ def main(args):
      ]
 
     
-    yt_codecs_start =   yt_default_preset + yt_default_screen + yt_default_abr + yt_default_vbr +  yt_default_buffer_size
+    yt_codecs_start =  ["-loglevel","warning"] +  yt_default_preset + yt_default_screen + yt_default_abr + yt_default_vbr +  yt_default_buffer_size
 
     yt_codecs_rates = yt_default_audio_filter + [
     "-pix_fmt",
@@ -693,7 +707,7 @@ def main(args):
                     main(["yt","-i",last_url,"-c","-M","Lasturl mode change stream"])
                     return
                 else:
-                    print("No Existe last_url")
+                    print("No Existe last_url:".last_url,lib_url)
                 return
             elif args[1] == "intro":
                 yt_args = yt_start_intro + yt_input_intro + yt_codecs + yt_output
@@ -1102,3 +1116,27 @@ def check_url_type(url, timeout=10):
         print(f"Error checking URL: {e}")
         return 'Error'
 
+
+
+
+# Función que será ejecutada por el temporizador
+def temporizador():
+    print("Temporizador activado")
+    while True:
+        #print("Temporizador activado")
+        time.sleep(15)  # Espera 5 segundos entre cada activación
+        
+# Función principal que simula el flujo principal del script
+def flujo_principal():
+    for i in range(10):
+        print(f"Flujo principal en ejecución: {i}")
+        time.sleep(1)  # Espera 1 segundo entre cada iteración
+
+# Crear un hilo para el temporizador
+hilo_temporizador = threading.Thread(target=temporizador, daemon=True)
+hilo_temporizador.start()
+
+# Ejecutar el flujo principal
+#flujo_principal()
+
+# Nota: el hilo del temporizador seguirá ejecutándose en segundo plano
