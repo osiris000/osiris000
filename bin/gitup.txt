@@ -1,3 +1,5 @@
+#dpkg .deb package
+DEBIAN
 
 #para directorio osirisp root
 
@@ -35,6 +37,13 @@ bin/help
 bin/lib
 bin/osiris
 bin/osiris.py
+
+
+#scripts
+bin/scripts/mpvc.sh
+bin/scripts/plaympv.sh
+bin/scripts/tmux1
+
 
 
 #TV
@@ -135,8 +144,6 @@ html/app/mitv/tv/player2.php
 #clones
 #html/clones/observatoriospublicos.es
 
-#dpkg .deb package
-DEBIAN
 
 
 

@@ -30,6 +30,6 @@ fi
 #continue
 
 
-python_osiris_path="osiris.py"
+python_osiris_index_file="osiris.py"
 
-cd bin && /usr/bin/python3 "$python_osiris_path"
+cd $OSIRIS000_BIN && python3 "$python_osiris_index_file"

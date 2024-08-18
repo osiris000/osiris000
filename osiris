@@ -14,7 +14,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
     # Si hay un argumento, utilizarlo como nombre de archivo para la redirección
-    cd bin 
+    cd $OSIRIS000_BIN
     python3 "osiris.py"
    exit 1
 else

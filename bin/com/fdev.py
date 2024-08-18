@@ -89,18 +89,19 @@ profiles = {
         "youtube:2": {
         "profileType":"Youtube Live Streaming 720p",
         "preset": def_preset,
-        "vbr":"2500k",
+        "vbr":"3000k",
         "abr":"128k",
-        "bufsize":"5514k",
+        "bufsize":"7500k",
         "stream_loop":"-1",
         "input":lineInput,
-        "maxrate":"3000k",
+        "maxrate":"5000k",
         "minrate":None,
         "fout":"flv",
         "output":def_output,
         "progress":def_progress_file,
         "ss":def_seek_start,
         "fps":"30",
+        "-crf":"21",
         "screen":"1280x720",
         "audio_filter":def_audio_filter
     },
@@ -228,6 +229,10 @@ def main(args):
         print("\n---- view ---------------------------\n")
         if len(args)>1:
             if args[1] == "proc":
+                try:
+                    multiprocess("Xproc",["date"])
+                except Exception as e:
+                    print("ERROR:",e)
                 #play3.detener_proceso("mi_stream")
                 try:
                     play3.listar_procesos()
@@ -390,13 +395,21 @@ def main(args):
                         print(" ERROR:",e)
                         return
             elif args[1] == "mpv":
+                print("MPV COM")
                 try:
                     intn = int(args[2])
                     if  intn > 0:
                         print(" MPV PLay:"+str(intn))
-                        subprocess.Popen(["bash","--","com/script/showim.sh",os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1])],stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,shell=False)
+                        subprocess.Popen(["scripts/plaympv.sh",os.path.abspath("" + yt_default_list_dir +"/"+ play[int(intn) - 1])],stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,shell=False)
                 except Exception as e:
-                    print("MPV Exception:",e)
+                    if args[2].startswith(iprot):
+                        main([args[2]])
+                        if last_url != "" and last_url != False and last_url != None:
+                            subp = subprocess.Popen(["scripts/plaympv.sh",last_url],stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,shell=False)
+                        print("LT:",last_url,subp)
+                        return
+                    else:
+                        print("MPV Exception:",e)
         print(" End Play")
         return
     elif args[0] == "set":
@@ -1121,7 +1134,6 @@ def temporizador():
     while True:
         #print("Temporizador activado")
         time.sleep(15)  # Espera 5 segundos entre cada activación
-        
 # Función principal que simula el flujo principal del script
 def flujo_principal():
     for i in range(10):
@@ -1129,10 +1141,58 @@ def flujo_principal():
         time.sleep(1)  # Espera 1 segundo entre cada iteración
 
 # Crear un hilo para el temporizador
-hilo_temporizador = threading.Thread(target=temporizador, daemon=True)
-hilo_temporizador.start()
+#hilo_temporizador = threading.Thread(target=temporizador, close_fds=True)
+#hilo_temporizador.start()
 
-# Ejecutar el flujo principal
-#flujo_principal()
 
-# Nota: el hilo del temporizador seguirá ejecutándose en segundo plano
+import subprocess
+
+class ProcessHandler:
+    def __init__(self, name, process, metadata=None):
+        self.name = name
+        self.process = process
+        self.metadata = metadata or {}
+
+    def send_input(self, data):
+        self.process.stdin.write(data.encode())
+        self.process.stdin.flush()
+
+    def read_output(self, data):
+        self.process.stdout.read()
+        self.process.stdout.flush()
+
+    def read_err(self, data):
+        self.process.stderr.read()
+        self.process.stderr.flush()
+
+
+# Global dictionary to store process handlers
+process_handlers = {}
+my_process = {}
+global lastpid
+def start_process(name, command, cwd=".", metadata=None):
+    process_handlers[name] = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process_handlers[name] = ProcessHandler(name, process_handlers[name], metadata)
+    return process_handlers[name]
+
+def get_process_handler(name):
+    return process_handlers.get(name)
+
+def multiprocess(d,v):
+    global my_process
+# Example usage:
+    start_process(d, v, metadata={"user": "john_doe"})
+    #print(handler1.__dict__)
+# Accessing the process through the handler
+    my_process[d] = get_process_handler(d)
+    print(my_process[d].__dict__)
+    print(my_process[d].process)
+    print(my_process[d].name,lastpid)
+    my_process[d].read_output(my_process[d].date)
+
+
+
+
+
+
+

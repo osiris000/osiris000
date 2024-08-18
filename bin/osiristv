@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Valores predeterminados
 x=176
 y=175
@@ -18,7 +17,7 @@ if [ "$1" == "-screen" ]; then
 echo "#################################"
 echo "-------Ositistv screen-----------"
 echo "-------Seleccionar pantalla------"
-    rect=$(python3 com/selecttv.py)
+    rect=$(python3 $OSIRIS000_BIN/com/selecttv.py)
 echo "---------------------------------"
 echo "#################################"
 echo $rect
@@ -62,13 +61,13 @@ else
   echo "No se encontró ningún proceso ffmpeg con 'osiristv' corriendo."
 fi
 
-cd com/datas/ffmpeg
+cd "$OSIRIS000_BIN/com/datas/ffmpeg"
 
 
 OUTPUT = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
 
 # Usar los valores para grabar el escritorio con ffmpeg
-exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${height} \
+sudo -u osiris ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${height} \
 -framerate 10 -i :0.0+${x},${y} \
 -f pulse -thread_queue_size 512 \
 -i alsa_output.pci-0000_00_1b.0.stereo-fallback.monitor \
@@ -85,4 +84,3 @@ exec ffmpeg -y -re -f x11grab -thread_queue_size 512 -video_size ${width}x${heig
 -metadata title="text=osiristv:mode=scren:type:tv" \
 -f flv rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy
 
-exit 1

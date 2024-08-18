@@ -234,7 +234,7 @@ if($value[2] == $extvalue){
 $innerDiv = "";
 $idsN = "id_".$extvalue."_".$ids;
 
-$setSrc = "<a href=\"javascript:setSrc('https://".$_SERVER['SERVER_NAME'].'/jsa/media/'.$_SESSION["path"].rawurlencode($value[0])."','src')\">Aplicar Src</a>";
+$setSrc = "<a href=\"javascript:setSrc('../freedirectory/".$_SESSION["path"].rawurlencode($value[0])."','src')\">Aplicar Src</a>";
 
 $setPoster = "<a href=\"javascript:setSrc('https://".$_SERVER['SERVER_NAME'].'/jsa/media/'.$_SESSION["path"].rawurlencode($value[0])."','poster')\">Aplicar Poster</a>";
 

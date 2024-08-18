@@ -113,10 +113,6 @@ def command_line():
         if args[0] != set_com:
             args.insert(0,set_com)
 
-    if args[0] == "--venv":
-        habilitar_y_exportar_venv(nombre_venv)
-#        print("venv:",nombre_venv)
-        command_line()
 
     if args[0] == "--reload":
 #        habilitar_y_exportar_venv(nombre_venv)
@@ -151,6 +147,10 @@ def command_line():
         set_com = args[2]
         command_line()
         return
+    elif args[0] == "--venv":
+        habilitar_y_exportar_venv(nombre_venv)
+#        print("venv:",nombre_venv)
+        command_line()
     elif args[0] == "exit":
         exit_program()
     elif args[0] == "Reset_Password":
