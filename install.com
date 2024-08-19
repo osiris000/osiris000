@@ -4,6 +4,13 @@
 #instalamos aplicaciones necesarias
 
 
+osiris-env-sys-vars  ./bin/install/osiris_env_sys_vars.sh
+
+python-pack  ./bin/install/python_pack_install.sh
+
+
+
+
 date				apt install date
 
 python3.9-venv  	apt install python3-pip python3.9-venv
@@ -41,8 +48,11 @@ depend apt install whois
 
 #Osiris packs
 
-venv-Opack  eval . bin/venv.sh
+venv-activate  eval . bin/venv.sh
 
 node-Opack eval . bin/install/node_install.sh
-terminator-Opack  ./bin/install/terminator_install.sh
+terminator-Opack  . bin/install/terminator_install.sh
+ffmpeg-pack . bin/install/ffmpeg_install.sh
+tmux-pack . bin/install/tmux_install.sh
 
+#END

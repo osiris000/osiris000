@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <script src="../../lib/js/wfcore3.js"></script>
 
 <script>
@@ -156,7 +159,7 @@ onclick='
   z[mxurl].innerHTML = `<b>Importing:<br>`+document.getElementById("ajxurl").value+`<br><img src="/img/cargando.gif" height=20>`;
   document.getElementById("ajxres").prepend(z[mxurl]) ;
   ajax({
-  	datas:"url="+encodeURIComponent(document.getElementById("ajxurl").value)+"&path=<?=$_SESSION["path"]?>&option="+document.getElementById("select").value,
+  	datas:"url="+encodeURIComponent(document.getElementById("ajxurl").value)+"&option="+document.getElementById("select").value,
   	id:z[mxurl].id,
   	location:"import.php",
   	method:"GET",

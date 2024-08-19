@@ -63,8 +63,8 @@ def ejecutar_proceso(command, cwd):
     # Abrir el proceso en segundo plano
     process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.PIPE, close_fds=True)
     last_process = process
-
     print("Process started with PID:", process.pid)
+
 
 def start_ffmpeg(url):
     """ Inicia el proceso ffmpeg con los parámetros especificados """

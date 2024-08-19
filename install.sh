@@ -4,17 +4,27 @@ type check_command_installed >/dev/null 2>&1 || . osiris.sh
 
 # Comprobación de aplicaciones instaladas.
 
-check_command_installed  /usr/bin/date && /usr/bin/date -R 
 
-check_command_installed venv-Opack --version
+check_command_installed osiris-env-sys-vars
+check_command_installed venv-activate --version
 
-check_command_installed node-Opack --version
 
-check_command_installed terminator-Opack 
+check_command_installed /usr/bin/python-pack
+#check_command_installed node-Opack --version
+#check_command_installed terminator-Opack 
+check_command_installed ffmpeg-pack
+#check_command_installed tmux-pack
 
-#check_command_installed /usr/bin/python3.9 --version
-#check_command_installed /usr/bin/python3.9-venv --version
 
+
+
+
+
+
+
+
+
+#check_command_installed  /usr/bin/date && /usr/bin/date -R 
 
 
 #check_command_installed /usr/bin/pip

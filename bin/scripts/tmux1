@@ -5,7 +5,7 @@ SESSION_NAME="${SESSION_NAME:-my_tmux_session_$(date +%s)}"
 VIDEO_FILE="${VIDEO_FILE:-/var/www/osiris000/bin/com/datas/ffmpeg/intro.mp4}"
 ERROR_LOG="${ERROR_LOG:-mpv_errors.log}"
 COMMAND_PANEL0="${COMMAND_PANEL0:-$OSIRIS000_BASEPATH/osiris}"
-COMMAND_PANEL1="${COMMAND_PANEL1:-$HOME/otvs -screen}"
+COMMAND_PANEL1="${COMMAND_PANEL1:-$HOME/otvs -screen -prompt}"
 COMMAND_PANEL2="${COMMAND_PANEL2:-$OSIRIS000_BIN/pilottv}"
 COMMAND_PANEL3="${COMMAND_PANEL3:-$OSIRIS000_BIN/scripts/mpvc.sh}"
 

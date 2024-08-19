@@ -37,12 +37,17 @@ bin/help
 bin/lib
 bin/osiris
 bin/osiris.py
-
+bin/venv.sh
 
 #scripts
 bin/scripts/mpvc.sh
 bin/scripts/plaympv.sh
 bin/scripts/tmux1
+
+
+#inst folder
+bin/install
+
 
 
 

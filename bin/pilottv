@@ -15,7 +15,8 @@ output_url="rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
 # Ruta al archivo que contiene los parámetros de filtro
 filter_params_file="$OSIRIS000_BIN/com/datas/ffmpeg/filter_params.txt"
 
-inspector_time=8
+inspector_time=5
+
 
 stream_loop="-stream_loop -1"
 

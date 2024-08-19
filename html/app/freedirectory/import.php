@@ -1,21 +1,18 @@
 <?php
-set_time_limit(0);
 session_start();
-if(!$_SESSION["REGUSER"]) die("<h6 style='background:white;'><!--*/ alert('Se ha cerrado la sesión'); /*--> Inicia Sesión Para usar herramientas</h6>");
+set_time_limit(0);
+if(!$_SESSION["REGUSER"]) die("<h5 style='background:white;'><!--*/ alert('Se ha cerrado la sesión'); /*--> Inicia Sesión Para usar herramientas</h5>");
 
 include $_SERVER["DOCUMENT_ROOT"]."/lib/php/lib.php";
 
 $_REQUEST["url"] ? $url = $_REQUEST["url"] : die("Not Url") ; 
-$_REQUEST["path"] ? $path = $_REQUEST["path"] : die("Path Error") ; 
+$_SESSION["path"] ? $path = $_SESSION["path"] : die("Path Error") ; 
 $_REQUEST["option"] ? $option = $_REQUEST["option"] : die("Option fail") ;
 
 $ext = pathinfo($url)["extension"] ;
 $fname = pathinfo($url)["filename"] ; 
 
- 
-
- $path = filter_var($path, FILTER_CALLBACK, array('options' => 'escapeshellarg'));
-
+$path = filter_var($path, FILTER_CALLBACK, array('options' => 'escapeshellcmd'));
 
 
 switch($ext){
@@ -92,16 +89,18 @@ case 'txt':
 case 'html':
 
 
-$fname = format_title_for_url($fname);
+$fname = format_title_for_url(rawurldecode($fname));
 
 $fname = $path.$fname.".".$ext;
 
-$fname = @str_replace('../',"",$fname);
+//$fname = @str_replace('../',"",$fname);
 
 $x = file_get_contents($url);
 
-if($x) {
+echo $fname;
+//exit;
 
+if($x) {
 
 
 $id = fopen($fname,"w") or die("writeError");
@@ -109,7 +108,7 @@ fwrite($id,$x);
 fclose($id);
 
 
-echo "<a href='https://vtwitt.com/jsa/media/".$fname."' target='_blank'>".$fname."</a>";
+echo "<a href='".$fname."' target='_blank'>".$fname."</a>";
 } else echo "Not FGC";
 break;
 

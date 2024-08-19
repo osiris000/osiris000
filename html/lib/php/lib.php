@@ -60,7 +60,7 @@ function format_title_for_url($title, $encoding = "utf-8") {
   $title = mb_convert_encoding($title, "UTF-8", $encoding);
 
   // Reemplazamos los caracteres especiales por guiones bajos.
-  $title = preg_replace("/[^a-z0-9-.,áéíóúñÑü\n\t]/", "", $title);
+  $title = preg_replace("/[^a-z0-9.,áéíóúñÑü\n\t]/", "", $title);
 
   // Eliminamos los guiones consecutivos.
   $title = preg_replace("/-+/", "-", $title);
