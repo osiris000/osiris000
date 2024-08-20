@@ -80,11 +80,11 @@ kill_mpv() {
 # Bucle principal de comandos
 while true; do
     echo
-    echo "Comando (list, list .., play n, kill, salir):"
+    echo "Comando (ls, ls .., play n, kill, salir):"
     read -r cmd args
 
     case "$cmd" in
-        list)
+        ls)
             if [[ "$args" == ".." ]]; then
                 current_dir=$(dirname "$current_dir")
             elif [[ "$args" =~ ^[0-9]+$ ]]; then
