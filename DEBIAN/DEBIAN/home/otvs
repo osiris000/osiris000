@@ -136,8 +136,7 @@ function start_ffmpeg() {
     echo "Framerate: ${framerate}"
     echo "Formato de salida: FLV"
     echo "Iniciando el proceso de grabación y streaming..."
-    killer
-    ffmpeg -y -re -f x11grab -thread_queue_size 256 -video_size ${w}x${h} \
+    ffmpeg -loglevel warning -y -re -f x11grab -thread_queue_size 256 -video_size ${w}x${h} \
     -framerate ${framerate} -i :0.0+${x},${y} \
     -f pulse -thread_queue_size 256 \
     -i alsa_output.pci-0000_00_1b.0.stereo-fallback.monitor \
@@ -155,52 +154,11 @@ function start_ffmpeg() {
     -f flv ${output} \
     -fflags nobuffer+genpts+igndts+discardcorrupt \
     -flags low_delay -max_delay 0 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2 \
-    -metadata title="text=osiristv" > ffmpeg.log 2>&1 &
-
-    
+    -metadata "text=osiristvscreen" > ffmpeg.log 2>&1 &
     ffmpeg_pid=$!
     disown
     echo "ffmpeg PID: $ffmpeg_pid"
 }
-
-
-function killer() {
-# Detectar todos los procesos de ffmpeg que contienen "osiristv"
-PIDS=$(ps aux | grep ffmpeg | grep "osiristv" | grep -v grep | awk '{print $2}')
-# Verificar si hay algún proceso de ffmpeg corriendo con "osiristv"
-if [ -n "$PIDS" ]; then
-    echo "Se encontraron los siguientes procesos de ffmpeg con 'osiristv' corriendo:"
-    echo "$PIDS"
-  
-    # Iterar sobre cada PID y preguntar si deseas matarlo
-    for PID in $PIDS; do
-
-        input=""
-        while [[ "${input,,}" != "s" && "${input,,}" != "n" ]]; do
-        read -p "¿Deseas matar el proceso ffmpeg con PID $PID? (s/n): " input
-        done
-
-        if [ "${input,,}" = "s" ]; then
-            if kill -9 $PID 2>/dev/null; then
-                echo "El proceso con PID $PID fue terminado."
-            else
-                echo "El proceso con PID $PID no existe o no tienes permisos suficientes."
-                echo "Probar con sudo"
-                sudo kill -9 $PID ;
-            fi
-        else
-            echo "Decidió no matar el proceso: $PID"
-            echo "Se continúa la inspección de procesos"
-            continue
-        fi
-    done
-
-else
-    echo "No se encontró ningún proceso ffmpeg con 'osiristv' corriendo."
-fi
-
-}
-
 
 function screen() {
     # Ejecutar el script de Python y capturar la salida

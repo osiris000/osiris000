@@ -49,15 +49,10 @@ bin/scripts/tmux1
 bin/install
 
 
-
-
 #TV
-bin/osiristv
+# cambia a /home/*user*/otvs   bin/osiristv
 bin/pilottv
 #...
-
-
-bin/osiristv
 bin/server
 bin/server.rs
 bin/src

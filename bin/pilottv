@@ -1,95 +1,112 @@
 #!/bin/bash
 # pilottv
 
+# Variables de configuración
+SCRIPT_NAME="pilottv"
+OUTPUT_URL="rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+FILTER_PARAMS_FILE="$OSIRIS000_BIN/com/datas/ffmpeg/filter_params.txt"
+INSPECTOR_TIME=3
+FFMPEG_CMD="ffmpeg -re -stream_loop -1 -i com/datas/ffmpeg/intro.mp4 \
+    -c:v libx264 -preset veryfast -crf 23 -b:v 3000k -maxrate 3500k \
+    -bufsize 7000k -pix_fmt yuv420p -g 50 -metadata text=osiris-pilot-tv \
+    -f flv $OUTPUT_URL"
+
 # Obtener la ruta completa del script
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # Cambiar al directorio del script
 cd "$SCRIPT_DIR" || { echo "Failed to change directory to $SCRIPT_DIR"; exit 1; }
 
-# tiempo del buble comprobacion de procesos
-
-# URL de salida para la transmisión 
-output_url="rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
-
-# Ruta al archivo que contiene los parámetros de filtro
-filter_params_file="$OSIRIS000_BIN/com/datas/ffmpeg/filter_params.txt"
-
-inspector_time=5
-
-
-stream_loop="-stream_loop -1"
-
 # Dar permisos de escritura al archivo de parámetros (si es necesario)
-chmod 0777 "$filter_params_file"
+chmod 0777 "$FILTER_PARAMS_FILE"
 
 # Valores iniciales por defecto del filtro
-default_brightness=0.5
-default_contrast=1.0
+DEFAULT_BRIGHTNESS=0.5
+DEFAULT_CONTRAST=1.0
 
-# Función para obtener el PID del proceso FFmpeg
-get_ffmpeg_pid() {
-    pgrep -f "ffmpeg.*osiristv"
+# Función para obtener los PIDs de los procesos FFmpeg que contienen "osiristvscreen"
+get_osiristvscreen_pids() {
+    ps aux | grep '[f]fmpeg' | grep "osiristvscreen" | awk '{print $2}'
+}
+
+# Función para obtener los PIDs de los procesos FFmpeg que contienen "osiris-pilot-tv"
+get_pilot_pids() {
+    ps aux | grep '[f]fmpeg' | grep "osiris-pilot-tv" | awk '{print $2}'
 }
 
 # Función para iniciar FFmpeg con los parámetros iniciales
 start_ffmpeg() {
-    echo "Iniciando FFmpeg con parámetros por defecto..."
-
- #testsrc=size=1280x720 \
-
-    # Construir comando FFmpeg con los parámetros de filtro por defecto
-#                    -vf eq=brightness=$default_brightness:contrast=$default_contrast \
-
-    ffmpeg_command="ffmpeg -re $stream_loop  -i com/datas/ffmpeg/intro.mp4  \
-                    -c:v libx264 -preset ultrafast -b:v 2500k -bufsize 2500k \
-                    -maxrate 4000k -metadata "text=osiristv" -g 2 -f flv $output_url"
-
-echo "$ffmpeg_command"
-
+    echo "Iniciando FFmpeg (osiris-pilot-tv) con parámetros por defecto..."
+    echo "$FFMPEG_CMD"
     # Ejecutar el comando FFmpeg en segundo plano y redirigir la salida a /dev/null
-
-
-    nohup $ffmpeg_command >/dev/null 2>&1 &
-
+    nohup $FFMPEG_CMD >/dev/null 2>&1 &
 }
 
+# Función para verificar si un PID aún está activo
+is_pid_active() {
+    ps -p "$1" > /dev/null 2>&1
+}
 
-# Verificar si FFmpeg no está en ejecución
-if ! pgrep -f "ffmpeg.*osiristv" > /dev/null; then
-    echo "No se encontró un proceso FFmpeg en ejecución. Iniciando FFmpeg..."
-    start_ffmpeg
-fi
-
-# Verificar y establecer los parámetros por defecto si el archivo no existe
-if [ ! -f "$filter_params_file" ]; then
-    echo "Creando archivo de parámetros por defecto: $filter_params_file"
-    echo "$default_brightness" > "$filter_params_file"
-    echo "$default_contrast" >> "$filter_params_file"
-fi
-
-# Monitorear y ajustar el filtro dinámicamente
+# Bucle principal de inspección
 while true; do
-    # Obtener el PID de FFmpeg en ejecución
-    ffmpeg_pid=$(get_ffmpeg_pid)
-    if [ -z "$ffmpeg_pid" ]; then
-        echo "No se encontró un proceso FFmpeg con el generador de señales en ejecución."
-echo "Ejecutando..."
-    start_ffmpeg
-#        exit 1
+    clear
+    #echo "-----------------------------------------------------"
+    echo "Comprobando procesos FFmpeg..."
+
+    # Obtener los PIDs de los procesos FFmpeg con "osiristvscreen" en su comando
+    ffmpeg_pids=$(get_osiristvscreen_pids)
+    echo "PIDs de procesos detectados con 'osiristvscreen': $ffmpeg_pids"
+    pid_count=$(echo "$ffmpeg_pids" | wc -l)
+
+    # Si no se detectan procesos osiristvscreen
+    if [ "$pid_count" -eq 0 ]; then
+        echo "No se encontró un proceso FFmpeg en ejecución con 'osiristvscreen'. Verificando nuevamente en 1 segundo..."
+        sleep 1
+        ffmpeg_pids=$(get_osiristvscreen_pids)
+        pid_count=$(echo "$ffmpeg_pids" | wc -l)
+        
+        if [ "$pid_count" -eq 0 ]; then
+            echo "No se encontró un proceso FFmpeg en la segunda comprobación. Iniciando FFmpeg (osiris-pilot-tv)..."
+            start_ffmpeg
+        fi
+    else
+        echo "Procesos FFmpeg con 'osiristvscreen' detectados. Verificando procesos de osiris-pilot-tv..."
+
+        # Verificar si hay procesos osiris-pilot-tv en ejecución
+        pilot_pids=$(get_pilot_pids)
+        if [ ! -z "$pilot_pids" ]; then
+            echo "PIDs de procesos osiris-pilot-tv encontrados: $pilot_pids"
+            for pid in $pilot_pids; do
+                if is_pid_active "$pid"; then
+                    kill -9 "$pid"
+                    echo "Proceso osiris-pilot-tv con PID: $pid terminado porque un proceso 'osiristvscreen' está corriendo."
+                fi
+            done
+        fi
+
+        echo "Verificando múltiples procesos 'osiristvscreen'..."
+        # Si hay múltiples procesos osiristvscreen, mata todos menos el más reciente
+        if [ "$pid_count" -gt 1 ]; then
+            echo "Se encontraron múltiples procesos FFmpeg con 'osiristvscreen'. PIDs detectados: $ffmpeg_pids"
+            latest_pid=$(echo "$ffmpeg_pids" | sort -n | tail -n 1)
+
+            # Verificar y matar todos los procesos menos el más reciente
+            for pid in $ffmpeg_pids; do
+                if [ "$pid" -ne "$latest_pid" ]; then
+                    echo "Verificando PID: $pid"
+                    if is_pid_active "$pid"; then
+                        kill -9 "$pid"
+                        sudo  kill -9 "$pid"
+                        echo "Matado proceso FFmpeg con PID: $pid"
+                    else
+                        echo "El PID $pid ya no está activo, no se requiere matar."
+                    fi
+                fi
+            done
+        else
+            echo "Proceso FFmpeg en ejecución con PID: $ffmpeg_pids"
+        fi
     fi
-    echo "Proceso FFmpeg encontrado con PID: $ffmpeg_pid"
 
-    # Leer los parámetros del filtro desde el archivo
-    new_brightness=$(awk 'NR==1' "$filter_params_file")
-    new_contrast=$(awk 'NR==2' "$filter_params_file")
-
-    # Ajustar el filtro si hay cambios
-    if [[ "$new_brightness" != "$brightness" || "$new_contrast" != "$contrast" ]]; then
-        brightness=$new_brightness
-        contrast=$new_contrast
-        adjust_filter "$brightness" "$contrast"
-    fi
-
-    sleep $inspector_time  # Esperar antes de la próxima verificación
+    sleep $INSPECTOR_TIME  # Esperar antes de la próxima verificación
 done

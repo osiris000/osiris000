@@ -125,5 +125,5 @@ last_url = ""
 command = []
 hls_progress_file = "/var/www/osiris000/bin/com/datas/ffmpeg/progress_hls.txt"
 hls_path = "/var/www/osiris000/html/app/mitv/channels/main/live-ts"
-ffcom_metadata = "text=osiris-tv-hls"
+ffcom_metadata = "text=osiris-hls"
 

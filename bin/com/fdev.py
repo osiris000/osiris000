@@ -691,7 +691,7 @@ def main(args):
     ] + yt_default_fps + yt_default_maxrate + yt_default_minrate
 
     yt_codecs_start =  logo +  yt_codecs_start
-    yt_metadata = ["-metadata","'text=osiristv-fdev'"]
+    yt_metadata = ["-metadata","'text=osiristvscreen'"]
     yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates + yt_metadata
 
     yt_output = yt_default_fout + yt_default_output_url + yt_default_progress_file 
@@ -996,7 +996,7 @@ def thread():
 def funcion_proceso(args):
     global estado_proceso
     try:
-        subprocess.call(["sudo","-u","osiris","bash","com/otvkill"])
+        #subprocess.call(["sudo","-u","osiris","bash","com/otvkill"])
         proceso = multiprocessing.Process(target=_funcion_interna,args=(args,))
         proceso.start()
         global pid_proceso
