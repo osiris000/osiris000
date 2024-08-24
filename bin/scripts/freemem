@@ -9,69 +9,59 @@ PORCENTAJE_UMBRAL=5
 # Memoria libre mínima fija (en MB)
 MEMORIA_MINIMA_FIJA=256
 
-# Habilitar swap file
-# Verifica si /swapfile existe
-if [ -f /swapfile ]; then
-    echo "/swapfile existe."
-
-    # Verifica si /swapfile ya está en uso
-    if ! swapon --show=NAME | grep -q '^/swapfile$'; then
-        echo "/swapfile no está en uso. Activando swap..."
-
-        # Activa swap en /swapfile
-        sudo swapon /swapfile
-
-        if [ $? -eq 0 ]; then
-            echo "Swap activado correctamente en /swapfile."
-        else
-            echo "Hubo un problema al activar el swap en /swapfile."
-        fi
-    else
-        echo "/swapfile ya está en uso."
-    fi
-else
-    echo "/swapfile no existe."
-fi
-
+# Archivo de log
+LOGFILE="${OSIRIS000_BIN}/com/datas/freemem.log"
 
 # Función para comprobar el estado del servidor gráfico y reiniciarlo si es necesario
 comprobar_servidor_grafico() {
     if ! pgrep -x "Xorg" > /dev/null && ! pgrep -x "wayland" > /dev/null; then
-        echo "Servidor gráfico no encontrado, intentando reiniciar..."
+        echo "$(date) - Servidor gráfico no encontrado, intentando reiniciar..." >> "$LOGFILE"
         reiniciar_servidor_grafico
     else
         if ! xdpyinfo > /dev/null 2>&1; then
-            echo "Servidor gráfico no responde, intentando reiniciar..."
+            echo "$(date) - Servidor gráfico no responde, intentando reiniciar..." >> "$LOGFILE"
             reiniciar_servidor_grafico
         else
-            echo "Servidor gráfico funcionando correctamente."
+            echo "$(date) - Servidor gráfico funcionando correctamente." >> "$LOGFILE"
         fi
     fi
 }
 
 
-matar_zombies(){
 
-
-echo "Detectando procesos zombie..."
-
-# Buscar todos los procesos zombie (estado Z)
-zombie_pids=$(ps aux | awk '$8=="Z" {print $2}')
-
-if [ -z "$zombie_pids" ]; then
-    echo "No se encontraron procesos zombie."
-else
-echo "Se encontraron los siguientes procesos zombie: $zombie_pids"
-ps -p $zombie_pids -f 
-fi
-
+send_alert_to_monitoring() {
+    # Función que envía un mensaje al sistema de monitoreo
+    local message="$1"
+    # Comando de ejemplo, reemplaza con la integración real
+    echo "LOGFILE:$LOGFILE"
+    echo "$message" 
 }
+
+matar_zombies() {
+    echo "$(date) - Detectando procesos zombie..." >> "$LOGFILE"
+    mapfile -t zombie_pids < <(ps aux | awk '$8=="Z" {print $2}')
+
+    if [ ${#zombie_pids[@]} -eq 0 ]; then
+        echo "$(date) - No se encontraron procesos zombie." >> "$LOGFILE"
+    else
+        for zombie_pid in "${zombie_pids[@]}"; do
+            ppid=$(ps -p "$zombie_pid" -o ppid=)
+            if [ -n "$ppid" ]; then
+                message="$(date) - ALERT: Proceso padre $ppid ha generado un zombie $zombie_pid."
+                echo "$message" >> "$LOGFILE"
+                send_alert_to_monitoring "$message"
+            fi
+        done
+    fi
+}
+
 
 
 
 # Función para reiniciar el servidor gráfico
 reiniciar_servidor_grafico() {
     DISPLAY_MANAGER=$(cat /etc/X11/default-display-manager)
+    echo "$(date) - Reiniciando el servidor gráfico..." >> "$LOGFILE"
 
     if [[ "$DISPLAY_MANAGER" == *"/lightdm" ]]; then
         sudo systemctl restart lightdm
@@ -80,17 +70,17 @@ reiniciar_servidor_grafico() {
     elif [[ "$DISPLAY_MANAGER" == *"/sddm" ]]; then
         sudo systemctl restart sddm
     else
-        echo "Gestor de display no soportado o no encontrado: $DISPLAY_MANAGER"
+        echo "$(date) - Gestor de display no soportado o no encontrado: $DISPLAY_MANAGER" >> "$LOGFILE"
     fi
 
-    echo "Servidor gráfico reiniciado."
+    echo "$(date) - Servidor gráfico reiniciado." >> "$LOGFILE"
 }
 
+# Bucle principal
 while true; do
-
-    echo "===================="
-    echo "Comprobando la memoria..."
-    echo "===================="
+    echo "$(date) - ====================" >> "$LOGFILE"
+    echo "$(date) - Comprobando la memoria..." >> "$LOGFILE"
+    echo "$(date) - ====================" >> "$LOGFILE"
 
     # Comprobar el estado del servidor gráfico antes de liberar memoria
     comprobar_servidor_grafico
@@ -106,7 +96,7 @@ while true; do
     MEM_UMBRAL_FINAL=$(( UMBRAL_MEMORIA > MEMORIA_MINIMA_FIJA ? UMBRAL_MEMORIA : MEMORIA_MINIMA_FIJA ))
 
     if [ "$MEM_LIBRE" -lt "$MEM_UMBRAL_FINAL" ]; then
-        echo "Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..."
+        echo "$(date) - Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..." >> "$LOGFILE"
         # Sincronizar el sistema de archivos
         sync
 
@@ -119,20 +109,19 @@ while true; do
         sysctl vm.swappiness=10
 
         # Mostrar estado de la memoria después de liberar
-        echo "Memoria después de liberar:"
-        free -m
+        echo "$(date) - Memoria después de liberar:" >> "$LOGFILE"
+        free -m >> "$LOGFILE"
     else
-        echo "Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria."
+        echo "$(date) - Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria." >> "$LOGFILE"
     fi
 
     # Comprobar el estado del servidor gráfico después de liberar memoria
-    matar_zombies   
-    sleep 2
+    matar_zombies
+    # Comprobar el estado del servidor gráfico
     comprobar_servidor_grafico
-    echo "===================="
-    echo "Esperando $INTERVALO segundos..."
-    echo "===================="
-
+    echo "$(date) - ====================" >> "$LOGFILE"
+    echo "$(date) - Esperando $INTERVALO segundos..." >> "$LOGFILE"
+    echo "$(date) - ====================" >> "$LOGFILE"
 
     # Esperar el intervalo de tiempo especificado
     sleep $INTERVALO
