@@ -11,7 +11,7 @@ PIPE2="${PIPE_DIR}/${PIPE2_NAME}"
 
 LOGFILE1="${PIPE_DIR}/pipe1.log"
 LOGFILE2="${PIPE_DIR}/pipe2.log"
-PROGRAM_LOG="${PIPE_DIR}/program.log"
+PROGRAM_LOG="${PIPE_DIR}/performance.log"
 
 P1N="BUCLE 1"
 P2N="BUCLE 2"
@@ -73,7 +73,7 @@ run_program() {
     # Redirigir la salida estándar y los errores del programa al pipe
     stdbuf -oL "$program" > "$pipe" 2>&1 &
     PROGRAM_PID=$!
-    echo "$program iniciado con PID: $PROGRAM_PID" >> "$log_file"
+    echo "$(date) - PROGRAM_START[PID:$PROGRAM_PID] = $program" >> "$log_file"
 
     # Monitorización del proceso
     while true; do
@@ -103,6 +103,7 @@ while true; do
         if [ "$data" == "MEM" ]; then
             echo "Starting freemem:$data"
             echo "Starting freemem..." >> "$PIPE1"
+            echo "PROGRAM LOG: $PROGRAM_LOG" >> "$PIPE1"            
             # Ejecutar el programa 'freemem' en segundo plano y redirigir la salida a PIPE1
             run_program "$OSIRIS000_BIN/scripts/freemem" "$PIPE1" "$PROGRAM_LOG" & 
         elif [ "$data" == "OTRO" ]; then
