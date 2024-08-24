@@ -59,7 +59,7 @@ yt_last_args = False
 
 lineInput = None
 def_re = True
-def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
 def_fout = "flv"
 #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"
@@ -70,6 +70,7 @@ def_screen = "1280x720"
 def_fps = "24"
 def_intro_file = "com/datas/ffmpeg/intro.mp4"
 def_profile = "youtube:2"
+def_logo_tv = "logo.png"
 
 profiles = {
     "youtube:1": {
@@ -103,7 +104,8 @@ profiles = {
         "fps":"30",
         "-crf":"21",
         "screen":"1280x720",
-        "audio_filter":def_audio_filter
+        "audio_filter":def_audio_filter,
+        "logo":def_logo_tv
     },
 
         "rumble:860": {
@@ -406,8 +408,12 @@ def main(args):
                         main([args[2]])
                         if last_url != "" and last_url != False and last_url != None:
                             subp = subprocess.Popen(["scripts/plaympv.sh",last_url],stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,shell=False)
-                        print("LT:",last_url,subp)
+                            print("HTTP DIRECT:",last_url)
                         return
+                    elif args[2] == "lasturl":
+                        if last_url != "" and last_url != False and last_url != None:
+                            subp = subprocess.Popen(["/home/osiris/plaympv.sh",last_url],stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,shell=False)
+                            print("LAST URL:",last_url)                                                
                     else:
                         print("MPV Exception:",e)
         print(" End Play")
@@ -585,6 +591,17 @@ def main(args):
 
 
 
+# logo default (image)
+
+    yt_logo_tv = profiles[profile_name].get("logo") if "logo" in profiles[profile_name] else def_logo_tv
+    if yt_logo_tv != None:
+        if yt_logo_tv == "":
+            yt_logo_tv = def_logo_tv
+    else:
+        yt_logo_tv = def_logo_tv
+
+
+
 
     sudo_usr = ["sudo","-u","osiris"]
 
@@ -670,7 +687,7 @@ def main(args):
 
     logo_loop = ["-loop","1"]
     logo_loop = []
-    logo_input = ["-i","com/datas/ffmpeg/logo.png"]
+    logo_input = ["-i","com/datas/ffmpeg/"+yt_logo_tv]
     
     logo = logo_loop + logo_input + [
     "-filter_complex", "[0:v]scale=-2:ih*1.8[v];[v]overlay=W-w-15:20:enable='between(t,0,inf)'",
@@ -829,6 +846,8 @@ def main(args):
 
                 if pi == True:
                     print("Establecido lasturl a:", last_url)
+                    with open("com/datas/lasturl.txt","w") as luf:
+                        luf.write(last_url)
                 else:
                     print("EXTRACT ERROR")
         

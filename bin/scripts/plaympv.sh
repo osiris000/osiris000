@@ -1,13 +1,27 @@
 #!/bin/bash
 
-GIF_PATH=$1
+# Archivo a reproducir (puede ser un archivo local o una URL)
+GIF_PATH="$1"
 
-echo "---->${GIF_PATH}<------"
+# Verifica si el archivo fue especificado
+if [[ -z "$GIF_PATH" ]]; then
+    echo "Debe especificar un archivo o URL para reproducir."
+    exit 1
+fi
 
-#sleep 2
+# Ruta para el socket (no se usa directamente en este caso, pero puede ser útil para otras aplicaciones)
+vlc_socket="/tmp/vlc_socket_$$"
 
-mpv --no-config --audio-device=alsa --background='0.0' --keep-open=yes --loop=inf --geometry=50%:50% --no-border --panscan=1.0 --ontop --player-operation-mode=pseudo-gui "$GIF_PATH" &2>1 &
+# Función para iniciar VLC
+start_vlc() {
+    # Inicia VLC en segundo plano con las opciones adecuadas para video y audio
+    cvlc --no-fullscreen --loop "$GIF_PATH" > /dev/null 2>&1 &
+    vlc_pid=$!
+    echo "VLC iniciado con PID $vlc_pid"
+}
 
+# Crea el socket y ejecuta VLC
+start_vlc
 
-#mpv --no-config --background='0.0'  --audio-device=pulse --keep-open=yes --loop=inf --geometry=50%:50% --no-border --panscan=1.0 --ontop --player-operation-mode=pseudo-gui  "$GIF_PATH"
-#mpv --no-config --keep-open=yes --loop=inf --geometry=50%:50% --no-border --ontop "$GIF_PATH"
+# Limpieza del socket al salir (actualmente no se usa, pero se deja para posibles usos futuros)
+#trap "rm -f '$vlc_socket'; kill $vlc_pid" EXIT

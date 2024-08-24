@@ -6,7 +6,9 @@ type check_command_installed >/dev/null 2>&1 || . osiris.sh
 
 
 check_command_installed osiris-env-sys-vars
-check_command_installed venv-activate --version
+
+#activamos directorio virtual
+eval . bin/venv.sh
 
 
 check_command_installed /usr/bin/python-pack

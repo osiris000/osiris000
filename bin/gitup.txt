@@ -39,10 +39,12 @@ bin/osiris
 bin/osiris.py
 bin/venv.sh
 
-#scripts
+#scripts obin
 bin/scripts/mpvc.sh
 bin/scripts/plaympv.sh
+bin/script/cleardep.sh
 bin/scripts/tmux1
+bin/scripts/freemem
 
 
 #inst folder

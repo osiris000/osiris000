@@ -1,0 +1,129 @@
+#!/bin/bash
+
+
+# Intervalo de tiempo entre cada ejecución en segundos
+INTERVALO=60
+
+# Porcentaje de memoria libre mínima requerida
+PORCENTAJE_UMBRAL=5
+
+# Memoria libre mínima fija (en MB)
+MEMORIA_MINIMA_FIJA=256
+
+# Habilitar swap file
+# Verifica si /swapfile existe
+if [ -f /swapfile ]; then
+    echo "/swapfile existe."
+
+    # Verifica si /swapfile ya está en uso
+    if ! swapon --show=NAME | grep -q '^/swapfile$'; then
+        echo "/swapfile no está en uso. Activando swap..."
+
+        # Activa swap en /swapfile
+        sudo swapon /swapfile
+
+        if [ $? -eq 0 ]; then
+            echo "Swap activado correctamente en /swapfile."
+        else
+            echo "Hubo un problema al activar el swap en /swapfile."
+        fi
+    else
+        echo "/swapfile ya está en uso."
+    fi
+else
+    echo "/swapfile no existe."
+fi
+
+
+
+
+
+
+
+
+
+# Función para comprobar el estado del servidor gráfico y reiniciarlo si es necesario
+comprobar_servidor_grafico() {
+    if ! pgrep -x "Xorg" > /dev/null && ! pgrep -x "wayland" > /dev/null; then
+        echo "Servidor gráfico no encontrado, intentando reiniciar..."
+        reiniciar_servidor_grafico
+    else
+        if ! xdpyinfo > /dev/null 2>&1; then
+            echo "Servidor gráfico no responde, intentando reiniciar..."
+            reiniciar_servidor_grafico
+        else
+            echo "Servidor gráfico funcionando correctamente."
+        fi
+    fi
+}
+
+# Función para reiniciar el servidor gráfico
+reiniciar_servidor_grafico() {
+    DISPLAY_MANAGER=$(cat /etc/X11/default-display-manager)
+
+    if [[ "$DISPLAY_MANAGER" == *"/lightdm" ]]; then
+        sudo systemctl restart lightdm
+    elif [[ "$DISPLAY_MANAGER" == *"/gdm3" ]]; then
+        sudo systemctl restart gdm
+    elif [[ "$DISPLAY_MANAGER" == *"/sddm" ]]; then
+        sudo systemctl restart sddm
+    else
+        echo "Gestor de display no soportado o no encontrado: $DISPLAY_MANAGER"
+    fi
+
+    echo "Servidor gráfico reiniciado."
+}
+
+while true; do
+
+   . $OSIRIS000_BIN/scripts/cleardep.sh
+
+
+    echo "===================="
+    echo "Comprobando la memoria..."
+    echo "===================="
+
+    # Comprobar el estado del servidor gráfico antes de liberar memoria
+    comprobar_servidor_grafico
+
+    # Obtener la memoria total y la memoria libre actual (en MB)
+    MEM_TOTAL=$(free -m | awk '/^Mem:/{print $2}')
+    MEM_LIBRE=$(free -m | awk '/^Mem:/{print $7}')
+
+    # Calcular el umbral de memoria libre en MB
+    UMBRAL_MEMORIA=$(( MEM_TOTAL * PORCENTAJE_UMBRAL / 100 ))
+
+    # Usar el mayor valor entre el umbral calculado y la memoria mínima fija
+    MEM_UMBRAL_FINAL=$(( UMBRAL_MEMORIA > MEMORIA_MINIMA_FIJA ? UMBRAL_MEMORIA : MEMORIA_MINIMA_FIJA ))
+
+    if [ "$MEM_LIBRE" -lt "$MEM_UMBRAL_FINAL" ]; then
+        echo "Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..."
+        
+        # Sincronizar el sistema de archivos
+        sync
+
+        # Liberar el caché de página, inodos y dentries
+        echo 3 > /proc/sys/vm/drop_caches
+
+        # Deshabilitar y habilitar swap
+        swapoff -a && swapon -a
+        # Ajustar swappiness (opcional)
+        sysctl vm.swappiness=10
+
+        # Mostrar estado de la memoria después de liberar
+        echo "Memoria después de liberar:"
+        free -m
+    else
+        echo "Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria."
+    fi
+
+    # Comprobar el estado del servidor gráfico después de liberar memoria
+    comprobar_servidor_grafico
+
+    echo "===================="
+    echo "Esperando $INTERVALO segundos..."
+    echo "===================="
+
+    # Esperar el intervalo de tiempo especificado
+    sleep $INTERVALO
+done

@@ -48,7 +48,7 @@ depend apt install whois
 
 #Osiris packs
 
-venv-activate  eval . bin/venv.sh
+
 
 node-Opack eval . bin/install/node_install.sh
 terminator-Opack  . bin/install/terminator_install.sh

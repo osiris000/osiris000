@@ -1,13 +1,14 @@
 #!/bin/bash
 # pilottv
-
+echo "STARTING PILOTTV"
 # Variables de configuración
 SCRIPT_NAME="pilottv"
-OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"}
+OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
 INSPECTOR_TIME=${2:-3}
-FFMPEG_CMD="ffmpeg -re -stream_loop -1 -i com/datas/ffmpeg/intro.mp4 \
-    -c:v libx264 -preset veryfast -crf 23 -b:v 3000k -maxrate 3500k \
-    -bufsize 7000k -pix_fmt yuv420p -g 50 -metadata text=osiris-pilot-tv \
+FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
+FFMPEG_CMD="ffmpeg -re -stream_loop -1 -i com/datas/ffmpeg/intro.mp4  \
+    -c:v libx264 -preset ultrafast -crf 18 -b:v 5000k -maxrate 5000k \
+    -bufsize 10000k -pix_fmt yuv420p -g 2 -metadata text=osiris-pilot-tv \
     -f flv $OUTPUT_URL"
 
 # Obtener la ruta completa del script
@@ -26,12 +27,21 @@ get_pilot_pids() {
     ps aux | grep '[f]fmpeg' | grep "osiris-pilot-tv" | awk '{print $2}'
 }
 
+
+get_hls_pids(){
+
+    ps aux | grep '[f]fmpeg' | grep "osiristv-hls-*" | awk '{print $2}'
+
+
+}
+
+
 # Función para iniciar FFmpeg con los parámetros iniciales
 start_ffmpeg() {
     echo "Iniciando FFmpeg (osiris-pilot-tv) con parámetros por defecto..."
     echo "$FFMPEG_CMD"
     # Ejecutar el comando FFmpeg en segundo plano
-    $FFMPEG_CMD >/dev/null 2>&1 &
+    $FFMPEG_CMD >/dev/null  2>&1 &
 }
 
 # Función para verificar si un PID aún está activo
@@ -61,8 +71,25 @@ kill_process() {
 # Bucle principal de inspección
 while true; do
     clear
-    echo "Comprobando procesos FFmpeg..."
+    echo "PILOT TV START"
+    echo " ..."
+    echo "Comprobando procesos ..."
 
+
+    # Obtener procesos HLS
+    hls_pids=$(get_hls_pids)
+    pid_hls_count=$(echo "$hls_pids" | wc -w)
+    if [ "$pid_hls_count" -gt 0 ]; then
+
+    # A partir de aquí se comprueba que no haya canales hls duplicados osiristv-hls-* donde * es el canal
+    #PENDIENTE
+
+        echo "Procesos HLS encontrados: ${pid_hls_count}"
+	echo "[${hls_pids}]"
+
+    else
+        echo "No se encontraron procesos HLS"
+    fi
     # Obtener los PIDs de los procesos FFmpeg con "osiristvscreen" en su comando
     ffmpeg_pids=$(get_osiristvscreen_pids)
     pid_count=$(echo "$ffmpeg_pids" | wc -w)
@@ -72,25 +99,27 @@ while true; do
 
     if [ "$pid_count" -eq 0 ]; then
         # No hay procesos osiristvscreen
-        echo "No se encontraron procesos FFmpeg con 'osiristvscreen'."
+        echo "No se encontraron procesos SCREEN."
 
         if [ -z "$pilot_pids" ]; then
             # No hay procesos osiris-pilot-tv, iniciar uno nuevo
-            echo "No se encontró un proceso osiris-pilot-tv en ejecución. Iniciando..."
+            echo "No se encontraron procesos de respaldo PILOT  en ejecución."
+	    echo "Iniciando..."
             start_ffmpeg
         else
-            echo "Proceso osiris-pilot-tv ya en ejecución."
+            echo "Proceso PILOT en ejecución."
         fi
     else
         # Hay procesos osiristvscreen
-        echo "Procesos FFmpeg con 'osiristvscreen' detectados: $ffmpeg_pids"
+        echo "Procesos SCREEN-TV detectados: $pid_count"
+	echo "[$ffmpeg_pids]"
 
         # Matar los procesos osiris-pilot-tv si existen
         if [ ! -z "$pilot_pids" ]; then
-            echo "PIDs de procesos osiris-pilot-tv encontrados: $pilot_pids"
+            echo "Proceso PILOT: $pilot_pids"
             for pid in $pilot_pids; do
                 if is_pid_active "$pid"; then
-                    echo "Matando proceso osiris-pilot-tv con PID: $pid..."
+                    echo "Matando proceso PILOT: $pid..."
                     kill_process "$pid"
                 fi
             done
@@ -98,17 +127,18 @@ while true; do
 
         # Verificar y manejar múltiples procesos osiristvscreen
         if [ "$pid_count" -gt 1 ]; then
-            echo "Se encontraron múltiples procesos FFmpeg con 'osiristvscreen'. PIDs detectados: $ffmpeg_pids"
+            echo "Se encontraron múltiples procesos SCREEN-TV:"
+	    echo "$ffmpeg_pids"
             latest_pid=$(echo "$ffmpeg_pids" | sort -n | tail -n 1)
 
             for pid in $ffmpeg_pids; do
                 if [ "$pid" -ne "$latest_pid" ]; then
-                    echo "Matando proceso FFmpeg con PID: $pid"
+                    echo "Matando duplicado SCREEN-TV: $pid"
                     kill_process "$pid"
                 fi
             done
         else
-            echo "Un solo proceso FFmpeg en ejecución con PID: $ffmpeg_pids"
+            echo "Proceso SCREEN-TV activo: $ffmpeg_pids"
         fi
     fi
 

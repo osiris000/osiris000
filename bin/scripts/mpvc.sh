@@ -32,25 +32,35 @@ list_files() {
     done
 }
 
-# Función para reproducir un archivo
-play_file() {
-    local index="$1"
-    local file="${item_map[$index]}"
 
-    if [[ -z "$file" ]]; then
-        echo "Número de archivo no válido."
+
+play_file() {
+    local input="$1"
+
+    if [[ "$input" =~ ^http ]]; then
+        # Si el argumento es una URL, usarlo directamente
+        file="$input"
+        echo "FILE:".$file
+    elif [[ -n "${item_map[$input]}" ]]; then
+        # Si el argumento es un número y corresponde a un archivo en item_map
+        file="${item_map[$input]}"
+    else
+        echo "Número de archivo no válido o URL no accesible."
         return
     fi
 
     # Si ya hay un proceso de mpv corriendo, lo cambia a otro archivo sin reiniciar
     if [[ -n "$mpv_pid" ]]; then
         echo "loadfile \"$file\" replace" | socat - "$mpv_socket"
-    else
+    else 
         # Ejecutar mpv en segundo plano y redirigir la salida
-        mpv --loop --fs --audio-device=pulse --input-ipc-server="$mpv_socket" "$file" > /dev/null 2>&1 &
+        mpv  --geometry=800x600 --no-keepaspect --fs --audio-device=pulse --input-ipc-server="$mpv_socket" "$file" > /dev/null 2>&1 &
         mpv_pid=$!
     fi
 }
+
+
+
 
 # Función para cambiar de directorio
 change_directory() {
@@ -98,6 +108,9 @@ while true; do
             else
                 echo "Debe especificar un número de archivo válido."
             fi
+            ;;
+        lasturl)
+            play_file "$(cat $OSIRIS000_BIN/com/datas/lasturl.txt)"
             ;;
         kill)
             kill_mpv
