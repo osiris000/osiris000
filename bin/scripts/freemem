@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Intervalo de tiempo entre cada ejecución en segundos
 INTERVALO=60
 
@@ -35,13 +34,6 @@ else
 fi
 
 
-
-
-
-
-
-
-
 # Función para comprobar el estado del servidor gráfico y reiniciarlo si es necesario
 comprobar_servidor_grafico() {
     if ! pgrep -x "Xorg" > /dev/null && ! pgrep -x "wayland" > /dev/null; then
@@ -56,6 +48,26 @@ comprobar_servidor_grafico() {
         fi
     fi
 }
+
+
+matar_zombies(){
+
+
+echo "Detectando procesos zombie..."
+
+# Buscar todos los procesos zombie (estado Z)
+zombie_pids=$(ps aux | awk '$8=="Z" {print $2}')
+
+if [ -z "$zombie_pids" ]; then
+    echo "No se encontraron procesos zombie."
+else
+echo "Se encontraron los siguientes procesos zombie: $zombie_pids"
+ps -p $zombie_pids -f 
+fi
+
+}
+
+
 
 # Función para reiniciar el servidor gráfico
 reiniciar_servidor_grafico() {
@@ -76,9 +88,6 @@ reiniciar_servidor_grafico() {
 
 while true; do
 
-   . $OSIRIS000_BIN/scripts/cleardep.sh
-
-
     echo "===================="
     echo "Comprobando la memoria..."
     echo "===================="
@@ -98,7 +107,6 @@ while true; do
 
     if [ "$MEM_LIBRE" -lt "$MEM_UMBRAL_FINAL" ]; then
         echo "Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..."
-        
         # Sincronizar el sistema de archivos
         sync
 
@@ -118,11 +126,13 @@ while true; do
     fi
 
     # Comprobar el estado del servidor gráfico después de liberar memoria
+    matar_zombies   
+    sleep 2
     comprobar_servidor_grafico
-
     echo "===================="
     echo "Esperando $INTERVALO segundos..."
     echo "===================="
+
 
     # Esperar el intervalo de tiempo especificado
     sleep $INTERVALO

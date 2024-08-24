@@ -45,7 +45,7 @@ bin/scripts/plaympv.sh
 bin/script/cleardep.sh
 bin/scripts/tmux1
 bin/scripts/freemem
-
+bin/scripts/performance.sh
 
 #inst folder
 bin/install
