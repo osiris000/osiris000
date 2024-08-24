@@ -96,19 +96,19 @@ while true; do
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Comprobando Procesos..." >> "$LOGFILE"
     echo "$(date) - ====================" >> "$LOGFILE"
-
-
-   # Comprobar el estado del servidor gráfico después de liberar memoria
     matar_zombies
  
 
+    # Comprobar el estado del servidor gráfico después de liberar memoria
+    comprobar_servidor_grafico
+
+
+    # comprobar memoria
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Comprobando la memoria..." >> "$LOGFILE"
     echo "$(date) - ====================" >> "$LOGFILE"
 
-    # Comprobar el estado del servidor gráfico antes de liberar memoria
-    comprobar_servidor_grafico
-
+ 
     # Obtener la memoria total y la memoria libre actual (en MB)
     MEM_TOTAL=$(free -m | awk '/^Mem:/{print $2}')
     MEM_LIBRE=$(free -m | awk '/^Mem:/{print $7}')
@@ -139,12 +139,9 @@ while true; do
         echo "$(date) - Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria." >> "$LOGFILE"
     fi
 
-    # Comprobar el estado del servidor gráfico
-    comprobar_servidor_grafico
+    # Esperar el intervalo de tiempo especificado
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Esperando $INTERVALO segundos..." >> "$LOGFILE"
     echo "$(date) - ====================" >> "$LOGFILE"
-
-    # Esperar el intervalo de tiempo especificado
     sleep $INTERVALO
 done

@@ -102,8 +102,8 @@ while true; do
         echo "$data" > "$PIPE1"
         if [ "$data" == "MEM" ]; then
             echo "Starting freemem:$data"
-            echo "Starting freemem..." >> "$PIPE1"
-            echo "PROGRAM LOG: $PROGRAM_LOG" >> "$PIPE1"            
+            echo "Starting freemem..." > "$PIPE1"
+            echo "PROGRAM LOG: $PROGRAM_LOG" > "$PIPE1"            
             # Ejecutar el programa 'freemem' en segundo plano y redirigir la salida a PIPE1
             run_program "$OSIRIS000_BIN/scripts/freemem" "$PIPE1" "$PROGRAM_LOG" & 
         elif [ "$data" == "OTRO" ]; then
