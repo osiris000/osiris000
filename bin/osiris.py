@@ -5,7 +5,7 @@ import auth
 import com
 
 # Ruta del archivo de log
-LOG_FILE = '/tmp/osiris_process_log.txt'
+LOG_FILE = "com/datas/osiris_process_log.txt"
 
 def handle_sigchld(signum, frame):
     """Manejador de señal SIGCHLD."""

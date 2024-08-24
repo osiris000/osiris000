@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Intervalo de tiempo entre cada ejecución en segundos
-INTERVALO=60
+INTERVALO=300
 
 # Porcentaje de memoria libre mínima requerida
 PORCENTAJE_UMBRAL=5
@@ -27,36 +27,37 @@ comprobar_servidor_grafico() {
     fi
 }
 
-
-
 send_alert_to_monitoring() {
     # Función que envía un mensaje al sistema de monitoreo
     local message="$1"
     # Comando de ejemplo, reemplaza con la integración real
     echo "LOGFILE:$LOGFILE"
-    echo "$message" 
+    echo "$(date) - $message" 
 }
 
 matar_zombies() {
     echo "$(date) - Detectando procesos zombie..." >> "$LOGFILE"
-    mapfile -t zombie_pids < <(ps aux | awk '$8=="Z" {print $2}')
+    mapfile -t zombie_pids < <(ps -eo pid,ppid,state | awk '$3=="Z" {print $1}')
 
     if [ ${#zombie_pids[@]} -eq 0 ]; then
-        echo "$(date) - No se encontraron procesos zombie." >> "$LOGFILE"
+        echo "No se encontraron procesos zombie." >> "$LOGFILE"
     else
         for zombie_pid in "${zombie_pids[@]}"; do
             ppid=$(ps -p "$zombie_pid" -o ppid=)
             if [ -n "$ppid" ]; then
-                message="$(date) - ALERT: Proceso padre $ppid ha generado un zombie $zombie_pid."
+                message="INFO[PS][0]: Proceso padre $ppid ha generado un zombie $zombie_pid."
                 echo "$message" >> "$LOGFILE"
-                send_alert_to_monitoring "$message"
+                send_alert_to_monitoring "$(date) - $message"
+                # Intentar notificar al proceso padre
+                if ! kill -SIGCHLD "$ppid" 2>> "$LOGFILE"; then
+                    error_message="WARM[PS][0]: No se pudo enviar SIGCHLD a $ppid. Es posible que se requieran permisos adicionales."
+                    handle_error "$error_message"
+                    continue
+                fi
             fi
         done
     fi
 }
-
-
-
 
 # Función para reiniciar el servidor gráfico
 reiniciar_servidor_grafico() {
@@ -75,6 +76,17 @@ reiniciar_servidor_grafico() {
 
     echo "$(date) - Servidor gráfico reiniciado." >> "$LOGFILE"
 }
+
+
+
+handle_error() {
+    local error_message="$1"
+    echo "$(date) - $error_message" >> "$LOGFILE"
+    send_alert_to_monitoring "$error_message"
+    # Aquí puedes agregar acciones de recuperación si es necesario
+}
+
+
 
 # Bucle principal
 while true; do
