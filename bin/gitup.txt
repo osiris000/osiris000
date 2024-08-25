@@ -93,6 +93,9 @@ bin/com/otvkill
 
 bin/com/play3/play4.py
 
+
+bin/com/OPS/ops.c
+bin/com/OPS/ops
 #bin/com/lib
 
 
