@@ -23,7 +23,7 @@ endif;
 
 */
 
-if(!$_SESSION["REGUSER"]) die("<h1 style='background:white;'>Inicie Sesión Para Comenzar</h1>");
+if(!isset($_SESSION["REGUSER"]) || !$_SESSION['REGUSER']) die("<h1 style='background:white;'>Inicie Sesión Para Comenzar</h1>");
 $mysqli = new mysqli($mysql_host, $mysql_usr, $mysql_psd, $mysql_bd);
 
 

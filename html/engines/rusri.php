@@ -252,7 +252,7 @@ if($usr && $pswd){
 break;
 
     default:
-        echo "<h2>ERROR void</h2>";
+        echo "<h2>ERROR void action</h2>";
 break;
 
 endswitch;

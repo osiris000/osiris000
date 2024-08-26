@@ -34,7 +34,7 @@ endif;
 if($_POST["edit"] == "article"):
 
 
-if(!$_SESSION["REGUSER"]) {
+if(!isset($_SESSION["REGUSER"]) || !$_SESSION['REGUSER']) {
 	die("
 
 {$divid}.innerHTML = `

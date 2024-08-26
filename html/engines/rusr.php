@@ -1,11 +1,10 @@
 <?php
 session_start();
 //session_unset();session_destroy();
-if($_POST["action"]=="closesession"):
+if(isset($_POST["action"]) && $_POST["action"]=="closesession"):
 session_unset();
 
-elseif($_SESSION["REGUSER"]):
-
+elseif(isset($_SESSION["REGUSER"]) && $_SESSION['REGUSER']!=""):
 
 //print_r($_SESSION);
 echo<<<LOGED
@@ -29,7 +28,7 @@ LOGED;
 
 exit;
 
-elseif($_POST["action"]):
+elseif(isset($_POST["action"]) && $_POST["action"]!=""):
 echo<<<REG
 action reg<!-- Action REg -->
 REG;
