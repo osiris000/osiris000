@@ -7,7 +7,7 @@ ERROR_LOG="${ERROR_LOG:-mpv_errors.log}"
 COMMAND_PANEL0="${COMMAND_PANEL0:-$OSIRIS000_BASEPATH/osiris}"
 COMMAND_PANEL1="${COMMAND_PANEL1:-$OSIRIS000_BIN/scripts/performance.sh}"  # Performance Panel
 COMMAND_PANEL2="${COMMAND_PANEL2:-$OSIRIS000_BIN/pilottv}"
-COMMAND_PANEL3="${COMMAND_PANEL3:-$HOME/otvs -screen -prompt}"
+COMMAND_PANEL3="${COMMAND_PANEL3:-/home/$USER/otvs -screen -prompt}"
 COMMAND_PANEL4="${COMMAND_PANEL4:-$OSIRIS000_BIN/scripts/mpvc.sh}"
 
 # Crear una nueva sesión de tmux con nombre único

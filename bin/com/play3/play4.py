@@ -97,9 +97,11 @@ def start_ffmpeg(url):
     '-ignore_unknown',
     '-strftime', '1',
     '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
+    '-f','hls',
     '-hls_time', '2', '-hls_list_size', '30',
     '-hls_flags', '+omit_endlist+delete_segments+append_list',
     '-master_pl_name', 'master_ultrafast.m3u8',
+    '-hls_playlist_type','event','-segment_list_flags','+live',
     '-hls_segment_filename', os.path.join(hls_path, '%Y%m%d%H%M%S.ts'),
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
     '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
@@ -117,7 +119,7 @@ def start_ffmpeg(url):
         print("Error starting process:", e)
 
     last_url = url
-    print(f'Process started for URL: {url}')
+    print(f"Process started for URL: {url}\n")
 
 # Inicializa variables globales
 last_process = None

@@ -7,58 +7,96 @@ INTERVALO=300
 PORCENTAJE_UMBRAL=5
 
 # Memoria libre mínima fija (en MB)
-MEMORIA_MINIMA_FIJA=256
+MEMORIA_MINIMA_FIJA=1024
+
+
+# Configuración de umbrales CPU
+CPU_THRESHOLD=80
+
 
 # Archivo de log
 LOGFILE="${OSIRIS000_BIN}/com/datas/freemem.log"
 
 echo "FREEMEM LOG: $LOGFILE"
 
-# Función para comprobar el estado del servidor gráfico y reiniciarlo si es necesario
-comprobar_servidor_grafico() {
-    if ! pgrep -x "Xorg" > /dev/null && ! pgrep -x "wayland" > /dev/null; then
-        echo "$(date) - Servidor gráfico no encontrado, intentando reiniciar..." >> "$LOGFILE"
-        reiniciar_servidor_grafico
+
+# Activar /swapfile (aumento para aumentar memoria de intercambio si es necesario)
+# Ruta del archivo de intercambio
+SWAPFILE="/swapfile"
+
+swap_activate(){
+
+# Verifica si el archivo de intercambio existe
+if [ -f "$SWAPFILE" ]; then
+    # Verifica si el archivo de intercambio está activado
+    if swapon --show=NAME | grep -q "$SWAPFILE"; then
+        echo "$(date) - El archivo de intercambio $SWAPFILE está activado." >> "$LOGFILE"
     else
-        if ! xdpyinfo > /dev/null 2>&1; then
-            echo "$(date) - Servidor gráfico no responde, intentando reiniciar..." >> "$LOGFILE"
-            reiniciar_servidor_grafico
+        echo "$(date) - El archivo de intercambio $SWAPFILE existe pero no está activado. Activando..." >> "$LOGFILE"
+        sudo swapon "$SWAPFILE"
+        echo "$(date) - Archivo de intercambio $SWAPFILE activado." >> "$LOGFILE"
+    fi
+else
+    echo "$(date) - El archivo de intercambio $SWAPFILE no existe." >> "$LOGFILE"
+fi
+
+}
+
+
+# Función para comprobar el estado del servidor gráfico y tratar de solucionar problemas comunes
+comprobar_servidor_grafico() {
+    # Lista de errores conocidos para comprobar
+    local errores_conocidos=("unable to open display" "X Error" "connection refused" "No protocol specified")
+
+    # Verificar si el servidor gráfico está corriendo
+    if ! pgrep -x "Xorg" > /dev/null && ! pgrep -x "wayland" > /dev/null; then
+        echo "$(date) - Servidor gráfico no encontrado. Verifique si Xorg o Wayland están instalados y funcionando." >> "$LOGFILE"
+        echo "$(date) - Puede que sea necesario reiniciar el servidor gráfico. Verifique los logs del sistema." >> "$LOGFILE"
+    else
+        # Captura la salida de xdpyinfo
+        xdpyinfo_output=$(xdpyinfo 2>&1)
+        
+        # Verifica si xdpyinfo tuvo salida de error
+        if [ $? -ne 0 ]; then
+            # Comprobar si la salida contiene alguno de los errores conocidos
+            for error in "${errores_conocidos[@]}"; do
+                if grep -q "$error" <<< "$xdpyinfo_output"; then
+                    case "$error" in
+                        "unable to open display")
+                            echo "$(date) - Error en xdpyinfo: no se puede abrir la pantalla. Verifique la configuración del servidor gráfico y los permisos de acceso." >> "$LOGFILE"
+                            echo "$(date) - Intentando restablecer la conexión al servidor gráfico..." >> "$LOGFILE"
+                            # Intentar restablecer la conexión sin reiniciar
+                            xset -q &> /dev/null
+                            if [ $? -ne 0 ]; then
+                                echo "$(date) - No se pudo restablecer la conexión al servidor gráfico. Puede ser necesario reiniciar el servidor gráfico." >> "$LOGFILE"
+                            else
+                                echo "$(date) - Conexión al servidor gráfico restablecida." >> "$LOGFILE"
+                            fi
+                            ;;
+                        "X Error")
+                            echo "$(date) - Error en xdpyinfo: X Error detected. Verifique los logs de Xorg para más detalles." >> "$LOGFILE"
+                            echo "$(date) - Verifique si hay problemas con la configuración de Xorg en /var/log/Xorg.0.log." >> "$LOGFILE"
+                            ;;
+                        "connection refused")
+                            echo "$(date) - Error en xdpyinfo: Conexión rechazada. Verifique el estado del servidor gráfico." >> "$LOGFILE"
+                            ;;
+                        "No protocol specified")
+                            echo "$(date) - Error en xdpyinfo: No se especificó el protocolo. Verifique los permisos de acceso a la pantalla." >> "$LOGFILE"
+                            ;;
+                        *)
+                            echo "$(date) - Error desconocido en xdpyinfo: $xdpyinfo_output" >> "$LOGFILE"
+                            echo "$(date) - Puede que sea necesario reiniciar el servidor gráfico. Verifique los logs del sistema." >> "$LOGFILE"
+                            ;;
+                    esac
+                    break
+                fi
+            done
         else
             echo "$(date) - Servidor gráfico funcionando correctamente." >> "$LOGFILE"
         fi
     fi
 }
 
-send_alert_to_monitoring() {
-    # Función que envía un mensaje al sistema de monitoreo
-    local message="$1"
-    # Comando de ejemplo, reemplaza con la integración real
-    echo "$message" >> "$LOGFILE"
-}
-
-matar_zombies() {
-    echo "$(date) - Detectando procesos zombie..." >> "$LOGFILE"
-    mapfile -t zombie_pids < <(ps -eo pid,ppid,state | awk '$3=="Z" {print $1}')
-
-    if [ ${#zombie_pids[@]} -eq 0 ]; then
-        echo "No se encontraron procesos zombie." >> "$LOGFILE"
-    else
-        for zombie_pid in "${zombie_pids[@]}"; do
-            ppid=$(ps -p "$zombie_pid" -o ppid=)
-            if [ -n "$ppid" ]; then
-                handle_error "INFO[PS][0]: Proceso padre $ppid ha generado un zombie $zombie_pid."
-                # Intentar notificar al proceso padre
-                error_message=$(kill -SIGCHLD "$ppid" 2>&1)   # Captura cualquier mensaje de error
-                if [ $? -ne 0 ]; then                        # Verifica si 'kill' falló
-                    handle_error "WARM[PS][1]: $error_message"  # Escribe el mensaje en el log
-                    error_message="WARM[PS][0]: No se pudo enviar SIGCHLD a $ppid. Es posible que se requieran permisos adicionales."
-                    handle_error "$error_message"            # Llama a la función 'handle_error' con el mensaje de error
-                    continue                                 # Continúa con la siguiente iteración del bucle
-                fi
-            fi
-        done
-    fi
-}
 
 # Función para reiniciar el servidor gráfico
 reiniciar_servidor_grafico() {
@@ -79,6 +117,62 @@ reiniciar_servidor_grafico() {
 }
 
 
+check_cpu_usage() {
+    echo "$(date) - Iniciando verificación de uso de CPU y memoria" >> "$LOGFILE"
+    # Identificar procesos que usan más del umbral de CPU
+    high_cpu_procs=$(ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | awk -v threshold=$CPU_THRESHOLD '$NF >= threshold {print $1}' | tr '\n' ' ')
+    if [ ! -z "$high_cpu_procs" ]; then
+        echo "$(date) - Procesos con alto uso de CPU: $high_cpu_procs" >> "$LOGFILE"
+        # Reducir la prioridad de los procesos intensivos
+        for pid in $high_cpu_procs; do
+            # Verificar que el PID es un proceso válido y no es del sistema
+            if ps -p $pid > /dev/null; then
+                echo "$(date) - Reduciendo prioridad del proceso $pid" >> "$LOGFILE"
+                echo "$(ps -p $pid -o pid,ppid,cmd,%mem,%cpu)" >> "$LOGFILE"
+                sudo renice +10 -p $pid
+            else
+                echo "$(date) - PID $pid no es un proceso válido o es del sistema" >> "$LOGFILE"
+            fi
+        done
+    else
+        echo "$(date) - No hay procesos de alto consumo de CPU." >> "$LOGFILE"
+    fi
+}
+
+
+send_alert_to_monitoring() {
+    # Función que envía un mensaje al sistema de monitoreo
+    local message="$1"
+    # Comando de ejemplo, reemplaza con la integración real
+    echo "$message" >> "$LOGFILE"
+}
+
+matar_zombies() {
+    echo "$(date) - Detectando procesos zombie..." >> "$LOGFILE"
+    mapfile -t zombie_pids < <(ps -eo pid,ppid,state | awk '$3=="Z" {print $1}')
+
+    if [ ${#zombie_pids[@]} -eq 0 ]; then
+        echo "$(date) - No se encontraron procesos zombie." >> "$LOGFILE"
+    else
+        for zombie_pid in "${zombie_pids[@]}"; do
+            ppid=$(ps -p "$zombie_pid" -o ppid=)
+            if [ -n "$ppid" ]; then
+                handle_error "INFO[PS][0]: Proceso padre $ppid $(ps -p $ppid -jfl) ha generado un zombie $zombie_pid."
+                # Intentar notificar al proceso padre
+                error_message=$(kill -SIGCHLD "$ppid" 2>&1)   # Captura cualquier mensaje de error
+                if [ $? -ne 0 ]; then                        # Verifica si 'kill' falló
+                    handle_error "WARM[PS][1]: $error_message"  # Escribe el mensaje en el log
+                    error_message="WARM[PS][0]: No se pudo enviar SIGCHLD a $ppid. Es posible que se requieran permisos adicionales."
+                    handle_error "$error_message"            # Llama a la función 'handle_error' con el mensaje de error
+                    continue                                 # Continúa con la siguiente iteración del bucle
+                fi
+            fi
+        done
+    fi
+}
+
+
+
 
 handle_error() {
     local error_message="$1"
@@ -89,24 +183,31 @@ handle_error() {
 
 
 
+echo -e "####### CLEAR LOG \n########################\n FREEMEM ################" > "$LOGFILE"
+
+echo "$(date) - ====================" >> "$LOGFILE"
+echo "$(date) - Comprobando Swap..." >> "$LOGFILE"
+swap_activate
+
 # Bucle principal
 while true; do
 
 
+    
+    echo "$(date) - ====================" >> "$LOGFILE"
+    echo "$(date) - Observando CPU..." >> "$LOGFILE"
+    check_cpu_usage
+
+
+    # comprobar procesos
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Comprobando Procesos..." >> "$LOGFILE"
-    echo "$(date) - ====================" >> "$LOGFILE"
     matar_zombies
  
-
-    # Comprobar el estado del servidor gráfico después de liberar memoria
-    comprobar_servidor_grafico
-
 
     # comprobar memoria
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Comprobando la memoria..." >> "$LOGFILE"
-    echo "$(date) - ====================" >> "$LOGFILE"
 
  
     # Obtener la memoria total y la memoria libre actual (en MB)
@@ -138,6 +239,13 @@ while true; do
     else
         echo "$(date) - Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria." >> "$LOGFILE"
     fi
+
+
+    # Comprobar el estado del servidor gráfico después de liberar memoria
+    echo "$(date) - ====================" >> "$LOGFILE"
+    echo "$(date) - Comprobando Servidor Gráfico..." >> "$LOGFILE"
+    comprobar_servidor_grafico
+
 
     # Esperar el intervalo de tiempo especificado
     echo "$(date) - ====================" >> "$LOGFILE"
