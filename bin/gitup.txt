@@ -54,12 +54,10 @@ bin/install
 #TV
 # cambia a /home/*user*/otvs   bin/osiristv
 bin/pilottv
-#...
-bin/server
-bin/server.rs
-bin/src
-bin/target
 
+#... servidores rust - esto es provisional
+bin/server/chat_server/src
+bin/server/chat_server/Cargo.toml
 
 #default password
 #bin/data/auth_pwd

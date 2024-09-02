@@ -66,7 +66,7 @@ def ejecutar_proceso(command, cwd):
     print("Process started with PID:", process.pid)
 
 
-def start_ffmpeg(url):
+def start_ffmpeg(url,com):
     """ Inicia el proceso ffmpeg con los parámetros especificados """
     global last_process
     global last_url
@@ -98,16 +98,19 @@ def start_ffmpeg(url):
     '-strftime', '1',
     '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
     '-f','hls',
-    '-hls_time', '2', '-hls_list_size', '30',
+    '-hls_time', '3', '-hls_list_size', '30',
+    '-segment_list_flags','+live',
     '-hls_flags', '+omit_endlist+delete_segments+append_list',
     '-master_pl_name', 'master_ultrafast.m3u8',
-    '-hls_playlist_type','event','-segment_list_flags','+live',
     '-hls_segment_filename', os.path.join(hls_path, '%Y%m%d%H%M%S.ts'),
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
     '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
     '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2', '-metadata', ffcom_metadata
 ]
 
+    # si se recibe el comando se sustituye command
+    if com:
+        command = com
 
 
     print("Executing command in background:", " ".join(command))
@@ -126,6 +129,7 @@ last_process = None
 last_url = ""
 command = []
 hls_progress_file = "/var/www/osiris000/bin/com/datas/ffmpeg/progress_hls.txt"
+hls_default_input = "/var/www/osiris000/bin/com/datas/ffmpeg/intro.mp4"
 hls_path = "/var/www/osiris000/html/app/mitv/channels/main/live-ts"
 ffcom_metadata = "text=osiristv-hls-main"
 

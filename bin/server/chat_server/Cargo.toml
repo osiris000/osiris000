@@ -4,3 +4,16 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = "0.17"
+futures-util = "0.3"
+chrono = "0.4"  # Añade esta línea para la biblioteca chrono
+
+
+[[bin]]
+name = "server"
+path = "src/bin/server.rs"
+
+[[bin]]
+name = "client"
+path = "src/bin/client.rs"

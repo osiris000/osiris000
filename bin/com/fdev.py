@@ -64,7 +64,7 @@ def_fout = "flv"
 #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"
 def_seek_start = None #"00:38:17"
-def_audio_filter = None #"volume=2.2"
+def_audio_filter = "aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
 def_preset = "ultrafast"
 def_screen = "1280x720"
 def_fps = "24"
@@ -183,7 +183,47 @@ profiles = {
 
     "perfil2": {
         "preset": "slow"
-    }
+    },
+
+    
+    "hls-original": {
+
+    'input':play3.hls_default_input,
+   
+    'com':[    
+    'ffmpeg',
+    '-y',
+    '-re',
+    '-loglevel', 'warning',
+    '-f', 'lavfi','color=c=black:s=854x480',
+    '-i',play3.hls_default_input,
+    '-stream_loop', '-1', 
+    '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
+    '-af', 'aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11',
+    '-filter_complex', '[1:v]scale=854:480[scaled];[0:v][scaled]overlay=shortest=1',
+    '-map', '0:v',
+    '-map', '1:a',
+    '-c:v', 'libx264', '-preset', 'ultrafast',
+    '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
+    '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
+    '-b:v', '2500k', '-s:v', '854x480', '-maxrate:v', '3000k', '-bufsize:v', '5000k',
+    '-g', '20', '-sc_threshold', '50',
+    '-ignore_unknown',
+    '-strftime', '1',
+    '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
+    '-f','hls',
+    '-hls_time', '3', '-hls_list_size', '30',
+    '-segment_list_flags','+live',
+    '-hls_flags', '+omit_endlist+delete_segments+append_list',
+    '-master_pl_name', 'master_ultrafast.m3u8',
+    '-hls_segment_filename', os.path.join(play3.hls_path, '%Y%m%d%H%M%S.ts'),
+    os.path.join(play3.hls_path, 'live.m3u8'), '-progress', play3.hls_progress_file,
+    '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
+    '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2', '-metadata', play3.ffcom_metadata]
+
+}
+
+
 }
 
 
