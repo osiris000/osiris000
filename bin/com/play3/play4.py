@@ -66,7 +66,7 @@ def ejecutar_proceso(command, cwd):
     print("Process started with PID:", process.pid)
 
 
-def start_ffmpeg(url,com):
+def start_ffmpeg(url,com=""):
     """ Inicia el proceso ffmpeg con los parámetros especificados """
     global last_process
     global last_url
@@ -111,7 +111,6 @@ def start_ffmpeg(url,com):
     # si se recibe el comando se sustituye command
     if com:
         command = com
-
 
     print("Executing command in background:", " ".join(command))
     try:
