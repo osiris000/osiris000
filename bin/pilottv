@@ -3,7 +3,7 @@
 echo "STARTING PILOTTV"
 # Variables de configuración
 SCRIPT_NAME="pilottv"
-OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
+OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"}
 INSPECTOR_TIME=${2:-3}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
 FFMPEG_CMD="ffmpeg -re -stream_loop -1 -i com/datas/ffmpeg/intro.mp4  \

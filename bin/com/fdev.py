@@ -59,7 +59,7 @@ yt_last_args = False
 
 lineInput = None
 def_re = True
-def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
+def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
 def_fout = "flv"
 #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"

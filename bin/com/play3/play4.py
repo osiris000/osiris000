@@ -17,7 +17,7 @@ def reap_children(signum, frame):
 signal.signal(signal.SIGCHLD, reap_children)
 
 def kill_last_process():
-    """ Mata el último proceso, intentando una terminación graciosa y forzada """
+    """ Mata el último proceso """
     global last_process
     if last_process:
         pid = last_process.pid

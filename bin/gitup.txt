@@ -51,6 +51,14 @@ bin/scripts/performance.sh
 bin/install
 
 
+#desktop
+bin/com/dsk
+bin/com/dsk/dsk1.py
+bin/com/dsk/dsk2.py
+bin/com/dsk/dsk3.py
+bin/com/dsk/dsk4.py
+
+
 #TV
 # cambia a /home/*user*/otvs   bin/osiristv
 bin/pilottv

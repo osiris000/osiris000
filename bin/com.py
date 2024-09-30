@@ -1,3 +1,4 @@
+import time
 import auth
 import importlib.util
 import fhelp
@@ -145,6 +146,7 @@ def command_line():
         readline.add_history(command)
 
     while True:
+        time.sleep(0.1)
         try:
             com = input(">>> " + use_command).strip()
             if not com:
