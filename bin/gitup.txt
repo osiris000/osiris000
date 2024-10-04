@@ -6,6 +6,9 @@ DEBIAN
 #Ignores
 .gitignore
 
+#DOC MD
+MDOC
+
 #README git
 README.md
 LICENSE.md
@@ -100,9 +103,8 @@ bin/com/blockchain.py
 bin/com/selecttv.py
 
 
-bin/com/gemini.py
+#bin/com/gemini.py
 bin/com/desktop.py
-bin/com/dsk
 
 
 #TV
