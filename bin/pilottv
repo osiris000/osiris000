@@ -3,12 +3,17 @@
 echo "STARTING PILOTTV"
 # Variables de configuración
 SCRIPT_NAME="pilottv"
+PREFIX_TV="osiris-pilot-tv"
+PREFIX_SCREEN="osiristvscreen"
+#youtube 1
 OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"}
+#youtube 2
+#OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
 INSPECTOR_TIME=${2:-3}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
 FFMPEG_CMD="ffmpeg -re -stream_loop -1 -i com/datas/ffmpeg/intro.mp4  \
     -c:v libx264 -preset ultrafast -crf 18 -b:v 5000k -maxrate 5000k \
-    -bufsize 10000k -pix_fmt yuv420p -g 2 -metadata text=osiris-pilot-tv \
+    -bufsize 10000k -pix_fmt yuv420p -g 2 -metadata text=$PREFIX_TV \
     -f flv $OUTPUT_URL"
 
 # Obtener la ruta completa del script
@@ -19,12 +24,12 @@ cd "$SCRIPT_DIR" || { echo "Failed to change directory to $SCRIPT_DIR"; exit 1; 
 
 # Función para obtener los PIDs de los procesos FFmpeg que contienen "osiristvscreen"
 get_osiristvscreen_pids() {
-    ps aux | grep '[f]fmpeg' | grep "osiristvscreen" | awk '{print $2}'
+    ps aux | grep '[f]fmpeg' | grep $PREFIX_SCREEN | awk '{print $2}'
 }
 
 # Función para obtener los PIDs de los procesos FFmpeg que contienen "osiris-pilot-tv"
 get_pilot_pids() {
-    ps aux | grep '[f]fmpeg' | grep "osiris-pilot-tv" | awk '{print $2}'
+    ps aux | grep '[f]fmpeg' | grep $PREFIX_TV | awk '{print $2}'
 }
 
 
