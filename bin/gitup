@@ -15,7 +15,7 @@ while read archivo; do
     continue
   fi
 
-   git add -f "../$archivo"
+   git add "../$archivo"
    echo "Add to git ../$archivo"
 done < gitup.txt
 
