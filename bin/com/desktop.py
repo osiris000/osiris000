@@ -13,7 +13,7 @@ usuario = os.getlogin()
 
 apps = ["dsk1","dsk2","dsk3",
 "dsk4","dsk5","dsk6","dsk7",
-"ipinfo","localnet"]
+"ipinfo","localnet","gemini"]
 
 
 def recargar_modulo(nombre_modulo):

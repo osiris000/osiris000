@@ -121,7 +121,7 @@ def start_ffmpeg(url,com=""):
         print("Error starting process:", e)
 
     last_url = url
-    print(f"Process started for URL: {url}\n")
+    print(f"\n Process started for URL: {url}\n")
 
 # Inicializa variables globales
 last_process = None

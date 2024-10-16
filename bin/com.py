@@ -15,6 +15,8 @@ import signal
 import lib.osiris.common as common
 import sys
 import subprocess
+import pty
+import select
 
 # Ruta del binario de osiris
 osiris_bin_path = os.path.abspath(__file__)
@@ -129,7 +131,9 @@ def load_module(module_name):
 def execute_module_command(module, args):
     if hasattr(module, "main") and is_valid_function(module.main):
         if has_single_argument(module.main):
-            module.main(args[1:])
+            # Ejecuta la función main del módulo y captura la salida
+            output = module.main(args[1:])
+            sys.stdout.flush()  # Forzar el vaciado del buffer de salida
         else:
             print(f"La función 'main' en {module.__name__}.py debe recibir exactamente un argumento.")
     else:
@@ -146,9 +150,13 @@ def command_line():
         readline.add_history(command)
 
     while True:
-        time.sleep(0.1)
+        #time.sleep(0.05)
         try:
-            com = input(">>> " + use_command).strip()
+            # Imprime el prompt con un color y un salto de línea
+            rx = common.print_color(">>> " + use_command, common.Color.GREEN,"\n → ")
+            #rx = ">>> " + use_command
+            # Imprime el prompt con un color y un salto de línea
+            com = input(rx)
             if not com:
                 continue
 
@@ -156,6 +164,7 @@ def command_line():
             save_command_history()
             args = shlex.split(com)
 
+            # Asegúrate de que el primer argumento sea el comando actual
             if set_com and args[0] != set_com:
                 args.insert(0, set_com)
 
@@ -224,12 +233,63 @@ def execute_command(args):
         module = loaded_modules.get(args[0]) or load_module(args[0])
         if module:
             execute_module_command(module, args)
+    else:
+        # Ejecuta comando externo
+        execute_external_command(args)
+
+# Ejecuta un comando externo utilizando pty
+def execute_external_command(args):
+    if args:
+        try:
+            # Crea un terminal pseudo-tty (pty)
+            master_fd, slave_fd = pty.openpty()
+            os.setsid(slave_fd)  # Crea una nueva sesión para el proceso
+
+            # Ejecuta el comando en el pty
+            process = subprocess.Popen(args, shell=True, stdin=slave_fd, stdout=slave_fd, stderr=slave_fd)
+
+            # Define conjuntos de archivos para select
+            read_fds = [sys.stdin, master_fd]
+
+            # Bucle principal para leer la salida del proceso externo y la entrada del usuario
+            while True:
+                # Utiliza select para esperar eventos de lectura
+                readable, _, _ = select.select(read_fds, [], [])
+
+                # Procesar la entrada del usuario
+                if sys.stdin in readable:
+                    try:
+                        com = input(common.print_color(">>> " + use_command, common.Color.RED))
+                        if com:
+                            # Escribe la entrada del usuario al proceso externo
+                            os.write(slave_fd, com.encode())
+                    except EOFError:
+                        # Si se presiona Ctrl+D, termina la lectura
+                        break
+
+                # Procesar la salida del proceso externo
+                if master_fd in readable:
+                    data = os.read(master_fd, 1024)
+                    if not data:
+                        # Si el proceso externo ha terminado, termina el bucle
+                        break
+                    print("\n" + data.decode(), end='\n')
+
+            # Espera a que el proceso termine
+            process.wait()
+
+            # Imprime el prompt nuevamente después de que el proceso externo termine
+            print(common.print_color(">>> " + use_command, common.Color.RED), end="")
+
+        except Exception as e:
+            print(f"Error al ejecutar comando externo: {e}")
 
 # Salir del programa
 def exit_program():
     exit_decision = input("\n¿Desea salir del programa? Escriba 'yes' o 'no': ")
     if exit_decision.lower() == "yes":
         print("\nEXIT PROGRAM\n")
+        import signal
         signal.signal(signal.SIGINT, signal.SIG_DFL)
         auth.access()
     elif exit_decision.lower() == "no":
@@ -241,3 +301,7 @@ def exit_program():
 def CTRL_C(signal, frame):
     print("\nEscriba 'exit' para salir")
     return
+
+# Ejecutar el CLI
+if __name__ == "__main__":
+    command_line()

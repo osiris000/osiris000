@@ -1,26 +1,49 @@
 #!/bin/bash
 # pilottv
 echo "STARTING PILOTTV"
+
 # Variables de configuración
 SCRIPT_NAME="pilottv"
 PREFIX_TV="osiris-pilot-tv"
 PREFIX_SCREEN="osiristvscreen"
-#youtube 1
+def_input="0.optimo.ts"
+ext="ts"
+exts=("mp4" "ts" "mkv")
+ffmpegDir="${OSIRIS000_BIN}/com/datas/ffmpeg"
+randomDir="${OSIRIS000_BIN}/com/datas/ffmpeg/random"
+profundidad=1
+INSPECTOR_TIME=${2:-1}
 OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"}
-#youtube 2
-#OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
-INSPECTOR_TIME=${2:-3}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
-FFMPEG_CMD="ffmpeg -re -stream_loop -1 -i com/datas/ffmpeg/intro.mp4  \
-    -c:v libx264 -preset ultrafast -crf 18 -b:v 5000k -maxrate 5000k \
-    -bufsize 10000k -pix_fmt yuv420p -g 2 -metadata text=$PREFIX_TV \
-    -f flv $OUTPUT_URL"
-
+progress_file="${ffmpegDir}/progress_process.txt"
 # Obtener la ruta completa del script
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # Cambiar al directorio del script
 cd "$SCRIPT_DIR" || { echo "Failed to change directory to $SCRIPT_DIR"; exit 1; }
+
+# Función para seleccionar un archivo aleatorio en el directorio "random"
+select_random_input() {
+    local directory="$randomDir"
+    local files
+
+    # Filtrar archivos según la extensión o usar todas las extensiones
+    if [ "$ext" != "false" ]; then
+        files=($(find "$directory" -maxdepth $profundidad -type f -name "*.$ext"))
+    else
+        files=()
+        for extension in "${exts[@]}"; do
+            files+=($(find "$directory" -maxdepth $profundidad -type f -name "*.$extension"))
+        done
+    fi
+
+    # Seleccionar un archivo aleatorio o usar el archivo predeterminado
+    if [ ${#files[@]} -gt 0 ]; then
+        echo "${files[RANDOM % ${#files[@]}]}"
+    else
+        echo "$def_input"
+    fi
+}
 
 # Función para obtener los PIDs de los procesos FFmpeg que contienen "osiristvscreen"
 get_osiristvscreen_pids() {
@@ -32,21 +55,57 @@ get_pilot_pids() {
     ps aux | grep '[f]fmpeg' | grep $PREFIX_TV | awk '{print $2}'
 }
 
-
 get_hls_pids(){
-
     ps aux | grep '[f]fmpeg' | grep "osiristv-hls-*" | awk '{print $2}'
-
-
 }
 
 
-# Función para iniciar FFmpeg con los parámetros iniciales
+
+# Función para iniciar FFmpeg con un archivo aleatorio
 start_ffmpeg() {
-    echo "Iniciando FFmpeg (osiris-pilot-tv) con parámetros por defecto..."
-    echo "$FFMPEG_CMD"
-    # Ejecutar el comando FFmpeg en segundo plano
-    $FFMPEG_CMD >/dev/null  2>&1 &
+#    local input_file
+#    binput=$(basename "$input_file")
+    input_file="$(select_random_input)"
+
+    echo $input_file
+    echo "Iniciando FFmpeg (osiris-pilot-tv) con archivo de entrada: $input_file"
+
+size="1280x720"
+size_p="1280:-2"
+screen="1280x720"
+#audiofilter="aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
+audiofilter="volume=1"
+#     "[0:v]scale=w='min(1280,iw*720/ih)':h='min(720,ih*1280/iw)',setsar=1[scaled];[1][scaled]overlay=(W-w)/2:(H-h)/2,format=yuv420p[outv]" \
+
+ffmpeg -y -re \
+    -fflags nobuffer \
+    -i "$input_file" \
+    -f lavfi -i color=c=black:s=1280x720 \
+    -f lavfi -i anullsrc=r=44100:cl=stereo \
+    -af $audiofilter \
+    -filter_complex "[0:v]scale='if(gt(iw/ih,1280/720),1280,-2)':'if(gt(iw/ih,1280/720),-2,720)',setsar=1[scaled]; \
+    [1:v][scaled]overlay=(W-w)/2:(H-h)/2[outv]" \
+    -map "[outv]" \
+    -map a:? \
+    -threads auto \
+    -vsync 1 \
+    -c:v libx264 -preset ultrafast -profile:v baseline -tune zerolatency \
+    -c:a aac \
+    -pix_fmt yuv420p -g 50 -metadata text="$PREFIX_TV" \
+    -minrate 5000k -maxrate 5000k -bufsize 10000k \
+    -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 1 \
+    -rw_timeout 5000000 \
+    -flags low_delay -max_delay 0 \
+    -shortest \
+    -progress "$progress_file" \
+    -f flv "$OUTPUT_URL" >/dev/null 2>&1 &
+
+
+
+
+
+
+
 }
 
 # Función para verificar si un PID aún está activo
@@ -59,12 +118,12 @@ kill_process() {
     local pid=$1
     echo "Intentando matar el proceso con PID: $pid de forma ordenada..."
     kill "$pid"
-    sleep 2
+    sleep 0.5
 
     if is_pid_active "$pid"; then
         echo "El proceso $pid sigue activo, intentándolo de nuevo..."
         kill -15 "$pid"
-        sleep 2
+        sleep 0.5
 
         if is_pid_active "$pid"; then
             echo "No se pudo matar el proceso $pid, forzando terminación con sudo..."
@@ -77,25 +136,18 @@ kill_process() {
 while true; do
     clear
     echo "PILOT TV START"
-    echo " ..."
-    echo "Comprobando procesos ..."
-
+    echo "Comprobando procesos..."
 
     # Obtener procesos HLS
     hls_pids=$(get_hls_pids)
     pid_hls_count=$(echo "$hls_pids" | wc -w)
     if [ "$pid_hls_count" -gt 0 ]; then
-
-    # A partir de aquí se comprueba que no haya canales hls duplicados osiristv-hls-* donde * es el canal
-    #PENDIENTE
-
-        echo "Procesos HLS encontrados: ${pid_hls_count}"
-	echo "[${hls_pids}]"
-
+        echo "Procesos HLS encontrados: ${pid_hls_count} [${hls_pids}]"
     else
-        echo "No se encontraron procesos HLS"
+        echo "No se encontraron procesos HLS."
     fi
-    # Obtener los PIDs de los procesos FFmpeg con "osiristvscreen" en su comando
+
+    # Obtener los PIDs de los procesos FFmpeg con "osiristvscreen"
     ffmpeg_pids=$(get_osiristvscreen_pids)
     pid_count=$(echo "$ffmpeg_pids" | wc -w)
 
@@ -103,23 +155,16 @@ while true; do
     pilot_pids=$(get_pilot_pids)
 
     if [ "$pid_count" -eq 0 ]; then
-        # No hay procesos osiristvscreen
         echo "No se encontraron procesos SCREEN."
-
         if [ -z "$pilot_pids" ]; then
-            # No hay procesos osiris-pilot-tv, iniciar uno nuevo
-            echo "No se encontraron procesos de respaldo PILOT  en ejecución."
-	    echo "Iniciando..."
+            echo "No hay procesos PILOT en ejecución. Iniciando..."
             start_ffmpeg
         else
             echo "Proceso PILOT en ejecución."
+            echo $(basename "$input_file")
         fi
     else
-        # Hay procesos osiristvscreen
-        echo "Procesos SCREEN-TV detectados: $pid_count"
-	echo "[$ffmpeg_pids]"
-
-        # Matar los procesos osiris-pilot-tv si existen
+        echo "Procesos SCREEN-TV detectados: $pid_count [$ffmpeg_pids]"
         if [ ! -z "$pilot_pids" ]; then
             echo "Proceso PILOT: $pilot_pids"
             for pid in $pilot_pids; do
@@ -130,12 +175,9 @@ while true; do
             done
         fi
 
-        # Verificar y manejar múltiples procesos osiristvscreen
         if [ "$pid_count" -gt 1 ]; then
-            echo "Se encontraron múltiples procesos SCREEN-TV:"
-	    echo "$ffmpeg_pids"
+            echo "Se encontraron múltiples procesos SCREEN-TV: $ffmpeg_pids"
             latest_pid=$(echo "$ffmpeg_pids" | sort -n | tail -n 1)
-
             for pid in $ffmpeg_pids; do
                 if [ "$pid" -ne "$latest_pid" ]; then
                     echo "Matando duplicado SCREEN-TV: $pid"
@@ -147,5 +189,6 @@ while true; do
         fi
     fi
 
-    sleep $INSPECTOR_TIME  # Esperar antes de la próxima verificación
+    sleep $INSPECTOR_TIME
 done
+

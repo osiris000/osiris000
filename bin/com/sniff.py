@@ -13,7 +13,7 @@ def stop_filter(packet):
 def main(args):
     global ctrl_c
     ctrl_c = False
-    signal.signal(signal.SIGINT,ch_sign)
+#    signal.signal(signal.SIGINT,ch_sign)
     print('Args dentro de sniff', args)
 
     # Verificar si hay argumentos
@@ -79,7 +79,7 @@ def packet_handler(packet):
 def ch_sign(signal,frame):
     global ctrl_c
     ctrl_c = True
-    signal.signal(signal.SIGINT,signal.SIG_DFL)
+#    signal.signal(signal.SIGINT,signal.SIG_DFL)
     return
 
 

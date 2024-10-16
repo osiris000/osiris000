@@ -93,7 +93,7 @@ profiles = {
         "vbr":"3000k",
         "abr":"128k",
         "bufsize":"7500k",
-        "stream_loop":"-1",
+        "stream_loop":None,
         "input":lineInput,
         "maxrate":"5000k",
         "minrate":None,
@@ -178,11 +178,6 @@ profiles = {
         "screen":def_screen,
         "fout":"mpegts",
         "audio_filter":def_audio_filter
-    },
-
-
-    "perfil2": {
-        "preset": "slow"
     },
 
     
@@ -400,9 +395,9 @@ def main(args):
                                         print("Play Lib Direct")
 
                             else:
-                                print(" Hls PLay FILE:"+str(intn))
+                                print("\n Hls PLay FILE:"+str(intn)+"\n")
                                 play3.start_ffmpeg(yt_default_list_dir +"/"+ play[int(intn) - 1])
-                            print(" → " ,play[int(intn) - 1] +"")  
+                            print("\n → " ,play[int(intn) - 1] +"\n ")  
                             return
                         elif len(args)>3:
                             if args[3] == "probe":
