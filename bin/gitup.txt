@@ -71,7 +71,7 @@ bin/com/dsk/dsk4.py
 #TV
 # cambia a /home/*user*/otvs   bin/osiristv
 bin/pilottv
-
+bin/mkpilot
 #... servidores rust - esto es provisional
 bin/server/chat_server/src
 bin/server/chat_server/Cargo.toml
@@ -93,6 +93,8 @@ bin/com/datas/ffmpeg/start.mkv
 bin/com/datas/ffmpeg/carta.mkv
 bin/com/datas/ffmpeg/intro.mp4
 bin/com/datas/ffmpeg/logo.png
+bin/com/datas/ffmpeg/random/info.txt
+bin/com/datas/ffmpeg/random/transition/info.txt
 
 bin/com/cert.py
 bin/com/fdev.py
