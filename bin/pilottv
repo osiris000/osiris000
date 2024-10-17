@@ -11,8 +11,8 @@ ext="ts"
 exts=("mp4" "ts" "mkv")
 ffmpegDir="${OSIRIS000_BIN}/com/datas/ffmpeg"
 randomDir="${OSIRIS000_BIN}/com/datas/ffmpeg/random"
-profundidad=1
-INSPECTOR_TIME=${2:-1}
+profundidad="1"
+INSPECTOR_TIME=${2:-0.1}
 OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
 progress_file="${ffmpegDir}/progress_process.txt"
@@ -68,7 +68,7 @@ start_ffmpeg() {
     input_file="$(select_random_input)"
 
     echo $input_file
-    echo "Iniciando FFmpeg (osiris-pilot-tv) con archivo de entrada: $input_file"
+    echo "Iniciando X Pilot: $input_file"
 
 size="1280x720"
 size_p="1280:-2"
@@ -83,7 +83,7 @@ ffmpeg -y -re \
     -f lavfi -i color=c=black:s=1280x720 \
     -f lavfi -i anullsrc=r=44100:cl=stereo \
     -af $audiofilter \
-    -filter_complex "[0:v]scale='if(gt(iw/ih,1280/720),1280,-2)':'if(gt(iw/ih,1280/720),-2,720)',setsar=1[scaled]; \
+    -filter_complex "[0:v]scale=-2:720[scaled]; \
     [1:v][scaled]overlay=(W-w)/2:(H-h)/2[outv]" \
     -map "[outv]" \
     -map a:? \
@@ -116,17 +116,17 @@ is_pid_active() {
 # Función para matar un proceso de forma ordenada y luego forzarlo si es necesario
 kill_process() {
     local pid=$1
-    echo "Intentando matar el proceso con PID: $pid de forma ordenada..."
+    echo "Killing PID: $pid ..."
     kill "$pid"
-    sleep 0.5
+    sleep 0.3
 
     if is_pid_active "$pid"; then
-        echo "El proceso $pid sigue activo, intentándolo de nuevo..."
+        echo " Proceso $pid  Rintentando..."
         kill -15 "$pid"
-        sleep 0.5
+        sleep 0.3
 
         if is_pid_active "$pid"; then
-            echo "No se pudo matar el proceso $pid, forzando terminación con sudo..."
+            echo "No se pudo matar $pid, forzando..."
             sudo kill -9 "$pid"
         fi
     fi
@@ -136,15 +136,15 @@ kill_process() {
 while true; do
     clear
     echo "PILOT TV START"
-    echo "Comprobando procesos..."
+    echo "##############"
 
     # Obtener procesos HLS
     hls_pids=$(get_hls_pids)
     pid_hls_count=$(echo "$hls_pids" | wc -w)
     if [ "$pid_hls_count" -gt 0 ]; then
-        echo "Procesos HLS encontrados: ${pid_hls_count} [${hls_pids}]"
+        echo "HLS: ${pid_hls_count} [${hls_pids}]"
     else
-        echo "No se encontraron procesos HLS."
+        echo "0 HLS 0"
     fi
 
     # Obtener los PIDs de los procesos FFmpeg con "osiristvscreen"
@@ -155,37 +155,38 @@ while true; do
     pilot_pids=$(get_pilot_pids)
 
     if [ "$pid_count" -eq 0 ]; then
-        echo "No se encontraron procesos SCREEN."
+        echo "0 SCREEN 0"
         if [ -z "$pilot_pids" ]; then
-            echo "No hay procesos PILOT en ejecución. Iniciando..."
+            echo "0 PILOT 0 - Iniciando..."
             start_ffmpeg
         else
-            echo "Proceso PILOT en ejecución."
+            echo "PILOT 1 "
             echo $(basename "$input_file")
+            sleep 0.1
         fi
     else
-        echo "Procesos SCREEN-TV detectados: $pid_count [$ffmpeg_pids]"
+        echo "SCREEN-TV: $pid_count [$ffmpeg_pids]"
         if [ ! -z "$pilot_pids" ]; then
-            echo "Proceso PILOT: $pilot_pids"
+            echo "PILOT: $pilot_pids"
             for pid in $pilot_pids; do
                 if is_pid_active "$pid"; then
-                    echo "Matando proceso PILOT: $pid..."
+                    echo "Matando PILOT: $pid..."
                     kill_process "$pid"
                 fi
             done
         fi
 
         if [ "$pid_count" -gt 1 ]; then
-            echo "Se encontraron múltiples procesos SCREEN-TV: $ffmpeg_pids"
+            echo "Múltiple SCREEN-TV: $ffmpeg_pids"
             latest_pid=$(echo "$ffmpeg_pids" | sort -n | tail -n 1)
             for pid in $ffmpeg_pids; do
                 if [ "$pid" -ne "$latest_pid" ]; then
-                    echo "Matando duplicado SCREEN-TV: $pid"
+                    echo "Matando SCREEN-TV: $pid"
                     kill_process "$pid"
                 fi
             done
         else
-            echo "Proceso SCREEN-TV activo: $ffmpeg_pids"
+            echo "SCREEN-TV: $ffmpeg_pids"
         fi
     fi
 
