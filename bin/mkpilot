@@ -8,7 +8,7 @@ output_dir="${OSIRIS000_BIN}/com/datas/ffmpeg/random"
 mkdir -p "$output_dir"
 
 # Configuración de FFmpeg para salida optimizada
-ffmpeg_options=" -af aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11   -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -ac 2 -bsf:v h264_mp4toannexb -f mpegts"
+ffmpeg_options=" -af aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11 -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -ac 2 -bsf:v h264_mp4toannexb -f mpegts"
 
 # Función para convertir archivo a formato optimizado
 convert_to_optimo() {

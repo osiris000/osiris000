@@ -11,13 +11,15 @@ ext="ts"
 exts=("mp4" "ts" "mkv")
 ffmpegDir="${OSIRIS000_BIN}/com/datas/ffmpeg"
 randomDir="${OSIRIS000_BIN}/com/datas/ffmpeg/random"
+datasDir="${OSIRIS000_BIN}/com/datas"
 profundidad="1"
 INSPECTOR_TIME=${2:-0.1}
-OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"}
+OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
 progress_file="${ffmpegDir}/progress_process.txt"
 # Obtener la ruta completa del script
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+logoTv="$ffmpegDir/logos/mtosierratv-m.png"
 
 # Cambiar al directorio del script
 cd "$SCRIPT_DIR" || { echo "Failed to change directory to $SCRIPT_DIR"; exit 1; }
@@ -76,35 +78,42 @@ screen="1280x720"
 #audiofilter="aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
 audiofilter="volume=1"
 #     "[0:v]scale=w='min(1280,iw*720/ih)':h='min(720,ih*1280/iw)',setsar=1[scaled];[1][scaled]overlay=(W-w)/2:(H-h)/2,format=yuv420p[outv]" \
+#    -f lavfi -i color=c=black:s=1280x720 \
 
-ffmpeg -y -re \
-    -fflags nobuffer \
-    -i "$input_file" \
-    -f lavfi -i color=c=black:s=1280x720 \
-    -f lavfi -i anullsrc=r=44100:cl=stereo \
-    -af $audiofilter \
-    -filter_complex "[0:v]scale=-2:720[scaled]; \
-    [1:v][scaled]overlay=(W-w)/2:(H-h)/2[outv]" \
-    -map "[outv]" \
-    -map a:? \
-    -threads auto \
-    -vsync 1 \
-    -c:v libx264 -preset ultrafast -profile:v baseline -tune zerolatency \
-    -c:a aac \
-    -pix_fmt yuv420p -g 50 -metadata text="$PREFIX_TV" \
-    -minrate 5000k -maxrate 5000k -bufsize 10000k \
-    -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 1 \
-    -rw_timeout 5000000 \
-    -flags low_delay -max_delay 0 \
-    -shortest \
-    -progress "$progress_file" \
-    -f flv "$OUTPUT_URL" >/dev/null 2>&1 &
+#/usr/bin/ffmpeg -y -re \
+#    -fflags nobuffer \
+#    -i "$input_file" \
+#    -filter_complex "[0:v]scale='if(gt(iw,1280),1280,iw)':-2[outv]" \
+#    -map "[outv]" \
+#    -map a:? \
+#    -s 1280x720 \
+#    -threads auto \
+#    -vsync 1 \
+#    -c:v h264 -preset ultrafast -tune zerolatency -c:a aac \
+#    -g 2 -r 30 \
+#    -b:v 3000k -b:a 128k \
+#    -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc \
+#    -maxrate 5000k -bufsize 10000k \
+#    -rw_timeout 5000000 \
+#    -flags low_delay -max_delay 0 \
+#    -progress "$progress_file" \
+#    -metadata "text='$PREFIX_TV'" \
+#    -f flv "$OUTPUT_URL" >/dev/null 2>&1 &
+    
 
+loglevel="info"
 
-
-
-
-
+/usr/bin/ffmpeg -y -re -i $input_file \
+  -i "$logoTv" \
+  -filter_complex "[0:v]scale=-2:ih*1.8[v];[1:v]scale=iw*0.3:-1[logo];[v][logo]overlay=W-w-15:20:enable='between(t,0,inf)'" \
+  -loglevel $loglevel -preset ultrafast -s 1280x720 -b:a 128k \
+  -b:v 3000k -bufsize 7500k -c:v h264 -c:a aac \
+  -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -movflags +faststart -af volume=1 \
+  -pix_fmt yuv420p -g 2 -r 30 -maxrate 5000k \
+  -progress "$progress_file" \
+  -metadata "text='$PREFIX_TV'" \
+  -f flv "$OUTPUT_URL" >$datasDir/pilottv.log 2>&1 &
+    
 
 }
 

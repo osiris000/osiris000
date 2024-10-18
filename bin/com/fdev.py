@@ -59,7 +59,7 @@ yt_last_args = False
 
 lineInput = None
 def_re = True
-def_output = "rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
 def_fout = "flv"
 #def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"
@@ -71,6 +71,7 @@ def_fps = "24"
 def_intro_file = "com/datas/ffmpeg/intro.mp4"
 def_profile = "youtube:2"
 def_logo_tv = "logo.png"
+def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
 
 profiles = {
     "youtube:1": {
@@ -105,7 +106,7 @@ profiles = {
         "-crf":"21",
         "screen":"1280x720",
         "audio_filter":def_audio_filter,
-        "logo":def_logo_tv
+        "logo": "logos/mtosierratv-p.png"
     },
 
         "rumble:860": {
@@ -232,7 +233,7 @@ iprot = tuple(input_protocols)
 intn = 0
 lib_url = False
 
-def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
+
 
 def main(args):
 
@@ -623,8 +624,6 @@ def main(args):
             yt_default_fps = ["-r",yt_default_fps]
     else:
         yt_default_fps = []
-
-
 
 # logo default (image)
 
