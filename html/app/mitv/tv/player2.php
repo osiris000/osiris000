@@ -586,6 +586,7 @@ video = document.getElementById("video");
 function xplayer(videoSrc){
 
 
+
 if (Hls.isSupported()) {
   
 var hls = new Hls(hlsConfig);

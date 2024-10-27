@@ -81,7 +81,7 @@ className:"suggestions" ,
 
 Canales:<br>
 
-<a href="javascript:void(0)" onclick="xvd('../channels/main/live-ts/master_ultrafast.m3u8','application/vnd.apple.mpegurl','../channels/main/logo.webp')">Play Main</a>
+<a href="javascript:void(0)" onclick="xvd('../channels/main/live-ts/master_ultrafast.m3u8?nocache=`+new Date().getTime()+`','application/vnd.apple.mpegurl','../channels/main/logo.webp')">Play Main</a>
 
 
 ` }

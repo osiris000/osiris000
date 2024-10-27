@@ -8,7 +8,8 @@ output_dir="${OSIRIS000_BIN}/com/datas/ffmpeg/random"
 mkdir -p "$output_dir"
 
 # Configuración de FFmpeg para salida optimizada
-ffmpeg_options=" -af aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11 -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -ac 2 -bsf:v h264_mp4toannexb -f mpegts"
+ffmpeg_options=" -af aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
+ffmpeg_options=" -vf scale=-2:580  -c:v h264 -preset ultrafast -c:a aac -ac 2 -bsf:v h264_mp4toannexb -b:v 3000k -b:a 128k -maxrate 5000k -f mpegts"
 
 # Función para convertir archivo a formato optimizado
 convert_to_optimo() {
@@ -23,7 +24,7 @@ convert_to_optimo() {
 for input_file in "$input_dir"/*; do
     # Obtener el nombre base del archivo y añadir la extensión .optimo.ts
     base_name=$(basename "$input_file")
-    output_file="$output_dir/${base_name%.*}.optimo.ts"
+    output_file="$output_dir/${base_name%.*}.580p.optimo.ts"
 
     # Convertir el archivo
     convert_to_optimo "$input_file" "$output_file"

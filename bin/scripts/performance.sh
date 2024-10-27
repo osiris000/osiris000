@@ -117,12 +117,14 @@ while true; do
         fi
       done
 
-    elif [ "$comando" == "2" ]; then
+    elif [ "$comando" == "tv" ]; then
         display_prompt ">>>${comando}>> "
         read data
         echo "$data" > "$PIPE2"
-        if [ "$data" == "XXXX" ]; then
-            echo "Starting XXXX..." > "$PIPE2"
+        if [ "$data" == "hls" ]; then
+             run_program "$OSIRIS000_BIN/scripts/tails" "$PIPE1" "$PROGRAM_LOG" "$info" & 
+
+#            echo "Starting XXXX..." > "$PIPE2"
         elif [ "$data" == "MENU" ]; then
             echo "Starting $data" > "$PIPE2"
             # Ejemplo de ejecución de otro programa

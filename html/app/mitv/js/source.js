@@ -40,8 +40,9 @@ SPLASH_CONTENT = {
 TAG:"div",
 
 innerHTML:`
-<button type="button" onclick="document.getElementById('iftvx2').src='tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8'">Canal Principal</button>
-<button type="button" onclick="document.getElementById('iftvx2').src='tv/app.php'">Ultrafast Tv</button>
+<button type="button" class='mbuton' onclick="document.getElementById('iftvx2').src='tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8'">Osiris TV</button>
+<button type="button" class='mbuton' onclick="document.getElementById('iftvx2').src='tv/app.php'">Canales Tv</button>
+<button type="button" class='mbuton' onclick="document.getElementById('iftvx2').src='../freedirectory/video/peliculas/cartelera.php'">Cartelera</button>
 `,
 style:"display:block;"
 
@@ -53,6 +54,6 @@ CLOSE_SPLASH = {
 
 TAG:"button",
 innerHTML: "Cerrar",
-click:`document.getElementById('splash-container').style.display = 'none';`
-
+click:`document.getElementById('splash-container').style.display = 'none';`,
+className:`mbuton`
 }

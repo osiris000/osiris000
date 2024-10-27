@@ -63,10 +63,11 @@ def ejecutar_proceso(command, cwd):
     # Abrir el proceso en segundo plano
     process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.PIPE, close_fds=True)
     last_process = process
-    print("Process started with PID:", process.pid)
+    print("\nProcess started with PID:", process.pid,"\n")
+    return
 
 
-def start_ffmpeg(url,com=""):
+def start_ffmpeg(url,com):
     """ Inicia el proceso ffmpeg con los parámetros especificados """
     global last_process
     global last_url
@@ -77,22 +78,38 @@ def start_ffmpeg(url,com=""):
     kill_last_process()  # Mata el proceso actual antes de iniciar uno nuevo
 
 
-    command = [
+
+
+
+
+
+    finput = [
     'ffmpeg',
     '-y',
     '-re',
     '-loglevel', 'warning',
-    '-f', 'lavfi', '-i', 'color=c=black:s=854x480',
-    '-stream_loop', '-1', '-i', url,  # Aplicar stream_loop aquí
+    '-f', 'lavfi', '-i', 'color=c=black:s=1280x720',
+    '-stream_loop', '-1','-i', url,  # Aplicar stream_loop aquí
     '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo',
     '-af', 'aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11',
-    '-filter_complex', '[1:v]scale=854:480[scaled];[0:v][scaled]overlay=shortest=1',
+    '-filter_complex', '[1:v]scale=-2:720[scaled];[0:v][scaled]overlay=(W-w)/2:(H-h)/2',
     '-map', '0:v',
-    '-map', '1:a',
-    '-c:v', 'libx264', '-preset', 'ultrafast',
+    '-map', '1:a']
+    
+    
+    _finput = [
+    'ffmpeg',
+    '-y',
+    '-re',
+    '-loglevel', 'warning',
+    '-f','v4l2',
+    '-i','/dev/video0']
+    
+    
+    foutput = ['-c:v', 'libx264', '-preset', 'ultrafast',
     '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
-    '-b:v', '2500k', '-s:v', '854x480', '-maxrate:v', '3000k', '-bufsize:v', '5000k',
+    '-b:v', '2500k', '-s:v', '1280x720', '-maxrate:v', '3000k', '-bufsize:v', '5000k',
     '-g', '20', '-sc_threshold', '50',
     '-ignore_unknown',
     '-strftime', '1',
@@ -108,9 +125,14 @@ def start_ffmpeg(url,com=""):
     '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2', '-metadata', ffcom_metadata
 ]
 
+    command = finput + foutput
+
+
     # si se recibe el comando se sustituye command
     if com:
-        command = com
+        com = com
+#        command = com
+        print("---------COMCOMCOMCMO-------------:",com)
 
     print("Executing command in background:", " ".join(command))
     try:
@@ -122,6 +144,15 @@ def start_ffmpeg(url,com=""):
 
     last_url = url
     print(f"\n Process started for URL: {url}\n")
+
+
+
+
+
+
+
+
+
 
 # Inicializa variables globales
 last_process = None

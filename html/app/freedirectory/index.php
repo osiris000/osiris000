@@ -96,7 +96,7 @@ if(!isset($_REQUEST["chdir"])) $chdir= ".";
 else $chdir = $_REQUEST["chdir"];
 
 
-if(preg_match("@((\.\.)| (\.\./) |(/\.\.)|(\.\./))@si",$chdir) || preg_match("@^/@si",trim($chdir)) || !is_dir($chdir)){
+if(preg_match("@( (\.\.)| (\.\./) |(/\.\.)|(\.\./))@si",$chdir) || preg_match("@^file:///@si",trim($chdir)) || preg_match("@^/@si",trim($chdir)) || !is_dir($chdir)){
 
 echo "<h1>dir error  
 <a href='?chdir=".$_SESSION["path"]."'>Volver</a>

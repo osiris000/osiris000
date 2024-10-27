@@ -61,7 +61,7 @@ lineInput = None
 def_re = True
 def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
 def_fout = "flv"
-#def_output = "rtmp://rtmp.rumble.com/live/r-3errs2-0lxe-yh55-d509ca"
+def_output = "rtmp://rtmp.rumble.com/live/r-3enppr-kk9w-l1xl-1abb59"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"
 def_seek_start = None #"00:38:17"
 def_audio_filter = "aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
@@ -182,7 +182,7 @@ profiles = {
     },
 
     
-    "hls-original": {
+    "hls": {
 
     'input':play3.hls_default_input,
    
@@ -366,8 +366,10 @@ def main(args):
                                 main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
                     except Exception as e:
                         print(" ERROR:",e)
+#### PLAY HLS
             elif args[1] == "hls":
                 print("play3 hls started")
+                hlscom = profiles["hls"]
 #                play3.gestor.hello("Albert")
                 if len(args)>2:
                     try:
@@ -392,12 +394,13 @@ def main(args):
                                     elif check_i == "Timeout":
                                         print("TIMEOUT INSPECT FOR:",lib_url)                                       
                                     else:
-                                        play3.start_ffmpeg(lib_url)
+                                        print("--->",profiles["hls"])
+                                        play3.start_ffmpeg(lib_url,hlscom)
                                         print("Play Lib Direct")
 
                             else:
                                 print("\n Hls PLay FILE:"+str(intn)+"\n")
-                                play3.start_ffmpeg(yt_default_list_dir +"/"+ play[int(intn) - 1])
+                                play3.start_ffmpeg(yt_default_list_dir +"/"+ play[int(intn) - 1],hlscom)
                             print("\n → " ,play[int(intn) - 1] +"\n ")  
                             return
                         elif len(args)>3:
@@ -426,7 +429,7 @@ def main(args):
                             print("\nLASTURL\n")
                             if last_url != "" and last_url != False:
                                 print("Playing Last_url:",last_url)
-                                play3.start_ffmpeg(last_url)
+                                play3.start_ffmpeg(last_url,hlscom)
                             else:
                                 print("NO EXISTE URL EN VARIABLE last_url")
                         return
@@ -852,19 +855,22 @@ def main(args):
 
 
         elif args[0] == "geturl" and len(args) > 1:
-            argse = ["sudo", "yt-dlp", "-f", "best[height<=720]/best", "--get-url", args[1]]
+            argse = ["yt-dlp", "-f", "[height<=720]", "--get-url", args[1]]
             try:
                 p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 output, _ = p.communicate()
                 output = output.decode('utf-8').strip()
-
+#                print(":::::::::::::::::::::",output)
                 if not output.startswith("http://") and not output.startswith("https://"):
+#                    print("cccccccccccc")
+#                    return
             # Retry without the -f option if the first attempt fails
-                    argse = ["sudo", "yt-dlp", "--get-url", args[1]]
+                    argse = ["yt-dlp", "--get-url", args[1]]
                     p = subprocess.Popen(argse, cwd="com/datas/ffmpeg", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                     output, _ = p.communicate()
                     output = output.decode('utf-8').strip()
-
+                    output = parse_lasturl(output)
+                    print("===================>",output)
                 if output.startswith("http://") or output.startswith("https://"):
                     try:
                         subprocess.call(["ffprobe", "-i", output])
@@ -1177,6 +1183,16 @@ def check_url_type(url, timeout=10):
     except requests.RequestException as e:
         print(f"Error checking URL: {e}")
         return 'Error'
+
+
+
+def parse_lasturl(lasturl):
+  """Divide lasturl en dos URLs si contiene un salto de línea, concatenándolas con '-i'."""
+  if '\n' in lasturl:
+    urls = lasturl.splitlines()
+    return urls[1] + ' -i ' + urls[0] + ' '  # Concatenando con '-i'
+  else:
+    return lasturl  # Dejando lasturl como está si es una sola URL
 
 
 

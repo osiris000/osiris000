@@ -15,6 +15,7 @@ datasDir="${OSIRIS000_BIN}/com/datas"
 profundidad="1"
 INSPECTOR_TIME=${2:-0.1}
 OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
+#OUTPUT_URL=${2:-"rtmp://rtmp.rumble.com/live/r-3enppr-kk9w-l1xl-1abb59"}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
 progress_file="${ffmpegDir}/progress_process.txt"
 # Obtener la ruta completa del script
