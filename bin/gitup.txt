@@ -43,7 +43,7 @@ bin/osiris.py
 bin/venv.sh
 
 #Virtual env
-bin/com/osiris_env/lib/python3.9/site-packages/osiris2
+bin/com/osiris_env/lib/python3.9/site-packages/osiris2/multiprocess.py
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/__init__.py
 
 
