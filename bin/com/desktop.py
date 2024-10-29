@@ -1,4 +1,4 @@
-#import osiris2
+import osiris2
 import datetime
 import subprocess
 import os
@@ -8,33 +8,47 @@ import time
 import signal
 
 usuario = os.getlogin()
+r_def_mode = def_exec_mode = "bg"
+apps = ["dsk1", "dsk2", "dsk3", "dsk4", "dsk5", "dsk6", "dsk7", "ipinfo", "localnet", "gemini"]
 
-
-
-apps = ["dsk1","dsk2","dsk3",
-"dsk4","dsk5","dsk6","dsk7",
-"ipinfo","localnet","gemini"]
-
+# Variable global para almacenar el PID del proceso en modo fixed
+fixed_process_pid = None
 
 def recargar_modulo(nombre_modulo):
-    # Si el módulo ya está cargado, lo eliminamos
     if nombre_modulo in sys.modules:
         print(f"Desmontando el módulo '{nombre_modulo}'...")
         del sys.modules[nombre_modulo]
-    
-    # Volvemos a importar el módulo y lo retornamos
     print(f"Montando el módulo '{nombre_modulo}'...")
     mod = importlib.import_module(nombre_modulo)
-    
-    # Asignamos el módulo importado al espacio de nombres global
     globals()[nombre_modulo] = mod
 
-# Ejemplo: Recargar el módulo 'osiris2'
 recargar_modulo('osiris2')
-# Ahora puedes usar 'osiris2' como antes
 
+def kill_fixed_process(sig, frame):
+    """Manejador de señal para matar el proceso en modo 'fixed' cuando se hace Control+C."""
+    global fixed_process_pid
+    if def_exec_mode == "fixed" and fixed_process_pid:
+        print(f"Control+C detectado. Matando el proceso con PID {fixed_process_pid}.")
+        try:
+            os.kill(fixed_process_pid, signal.SIGTERM)
+        except ProcessLookupError:
+            print(f"El proceso con PID {fixed_process_pid} ya no existe.")
+        except PermissionError:
+            print(f"No se tiene permiso para matar el proceso con PID {fixed_process_pid}.")
+        fixed_process_pid = None  # Limpiar el PID después de matar el proceso
 
-# desktop.py
+signal.signal(signal.SIGINT, kill_fixed_process)
+
+def iniciar_multiprocess(obj):
+    global fixed_process_pid
+    try:
+        osiris2.multiprocess(obj)
+        if def_exec_mode == "fixed":
+            fixed_process_pid = osiris2.fixed_pid  # Guardar el PID si estamos en modo 'fixed'
+            print("Fixed Pid:", fixed_process_pid)
+        print("Proceso iniciado con los siguientes datos:", obj)
+    except ValueError as e:
+        print(f"Error al iniciar el proceso: {e}")
 
 
 
@@ -46,14 +60,9 @@ def editar_script():
     """Edita el script actual usando nano."""
     subprocess.call(["nano", "-w", "-i", "com/" + os.path.basename(__file__)])
 
-def iniciar_multiprocess(obj):
-    """Inicia un proceso con los parámetros dados."""
-    try:
-        osiris2.multiprocess(obj)
-        print("Proceso iniciado con los siguientes datos:")
-        print(obj)
-    except ValueError as e:
-        print(f"Error al iniciar el proceso: {e}")
+
+
+
 
 def listar_procesos():
     """Lista todos los procesos y sus detalles."""
@@ -170,8 +179,44 @@ def kill_all():
             print(f"Error al intentar matar el proceso con PID {pid}: {e}")
 
 
+
+def get_mode_from_args(args):
+    # Buscar la opción --mode en los argumentos
+    if '--mode' in args:
+        mode_index = args.index('--mode')
+        # Verificar si hay un valor válido después de --mode
+        if mode_index + 1 < len(args) and args[mode_index + 1] in ["fixed", "bg"]:
+            mode = args[mode_index + 1]
+            # Eliminar ambos elementos de la lista de argumentos
+            del args[mode_index:mode_index + 2]
+            dx = (mode, args)  # Retorna mode y args restantes
+            return dx 
+        else:
+            # Si no hay valor o es inválido, eliminar solo '--mode'
+            del args[mode_index]
+    dx = (None, args)  # Retorna None si no se encuentra un modo válido
+    return dx
+
+
+
 def main(args):
-    global usuario
+    global usuario, def_exec_mode, r_def_mode
+    scom = None
+    
+    args_p = args[1:]
+    mode = get_mode_from_args(args_p)
+    print("---", mode)
+
+    if mode[0] is not None:
+        print(f"Modo seleccionado: {mode[0]}")
+        def_exec_mode = mode[0]
+        scom = mode[1]
+    else:
+        def_exec_mode = r_def_mode
+        print("---", mode[1])
+        print("No se especificó un modo válido con --mode. Utilizando modo predeterminado.")
+
+    
     timestamp = int(time.time())
     print('Args input {timestamp}:', args)
 
@@ -197,8 +242,10 @@ def main(args):
             args_0 = args[0]
             args.pop(0)
             lcom = " ".join(args)
+#            if scom != None:
+#                lcom = scom
             obj = {
-                "mode": "bg",  # Cambia a "fixed" si deseas el comportamiento por defecto
+                "mode": def_exec_mode,  # Cambia a "fixed" si deseas el comportamiento por defecto
                 "name": None,  # Se generará automáticamente si es None
                 "com": ["python3", "com/dsk/"+args_0+".py"] + args,  # Asegúrate de que este comando sea válido
                 "metadata": {"user": usuario,
@@ -209,18 +256,25 @@ def main(args):
             iniciar_multiprocess(obj)
         elif args[0] == "com":
             args.pop(0) 
+
+            if scom != None:
+                lcom = scom
+            else :
+                lcom = args
+
             obj = {
-                "mode": "bg",  # Cambia a "fixed" si deseas el comportamiento por defecto
+                "mode": def_exec_mode,  # Cambia a "fixed" si deseas el comportamiento por defecto
                 "name": None,  # Se generará automáticamente si es None
-                "com": args,  # Asegúrate de que este comando sea válido
+                "com": lcom,  # Asegúrate de que este comando sea válido
                 "metadata": {"user": usuario,
                             "time_start":timestamp,
-                            "command":args
+                            "command":lcom
                             }
             }
 
 
             print(obj)
+            def_exec_mode = r_def_mode
             iniciar_multiprocess(obj)
 
             #subprocess.call(["python3", "com/dsk/dsk2.py"])
