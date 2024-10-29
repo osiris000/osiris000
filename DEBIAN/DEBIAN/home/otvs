@@ -7,11 +7,18 @@ width=640
 height=380
 framerate=10
 threads=4
-output="rtmp://a.rtmp.youtube.com/live2/g8pm-sau2-va7c-tyg5-1ppy"
+youtube1="URL A YOUTBE"
+youtube2="rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
+prefix_screen="osiristvscreen"
+output=$youtube2
 quality="medium"
 screen_select=false
 prompt=false
 record=false
+
+
+ffmpegDir="${OSIRIS000_BIN}/com/datas/ffmpeg"
+progress_file="${ffmpegDir}/progress_process.txt"
 
 # Función para mostrar el uso del script
 function usage() {
@@ -154,7 +161,7 @@ function start_ffmpeg() {
     -f flv ${output} \
     -fflags nobuffer+genpts+igndts+discardcorrupt \
     -flags low_delay -max_delay 0 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2 \
-    -metadata "text=osiristvscreen" > ffmpeg.log 2>&1 &
+    -metadata "text=${prefix_screen}" -progress $progress_file >/dev/null 2>&1 &
     ffmpeg_pid=$!
     disown
     echo "ffmpeg PID: $ffmpeg_pid"
