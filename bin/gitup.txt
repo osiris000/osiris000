@@ -13,6 +13,10 @@ MDOC
 README.md
 LICENSE.md
 
+
+/home/osiris/dskvc
+
+
 #Archivos instalación
 osiris
 osiris.sh

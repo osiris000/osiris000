@@ -59,9 +59,9 @@ yt_last_args = False
 
 lineInput = None
 def_re = True
+def_output = "rtmp://rtmp.rumble.com/live/r-3enppr-kk9w-l1xl-1abb59"
 def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
 def_fout = "flv"
-def_output = "rtmp://rtmp.rumble.com/live/r-3enppr-kk9w-l1xl-1abb59"
 def_progress_file = "com/datas/ffmpeg/progress_process.txt"
 def_seek_start = None #"00:38:17"
 def_audio_filter = "aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
@@ -727,7 +727,7 @@ def main(args):
     logo_input = ["-i","com/datas/ffmpeg/"+yt_logo_tv]
     
     logo = logo_loop + logo_input + [
-    "-filter_complex", "[0:v]scale=-2:ih*1.8[v];[v]overlay=W-w-15:20:enable='between(t,0,inf)'",
+    "-filter_complex", "[0:v]scale=-2:ih*1.8[v];[v]overlay=15:20:enable='between(t,0,inf)'",
     ]
 
     fscroll = [
