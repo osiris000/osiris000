@@ -14,9 +14,6 @@ README.md
 LICENSE.md
 
 
-/home/osiris/dskvc
-
-
 #Archivos instalación
 osiris
 osiris.sh
@@ -64,7 +61,9 @@ bin/scripts/performance.sh
 bin/install
 
 
+
 #desktop
+bin/dsk
 bin/com/dsk
 bin/com/dsk/dsk1.py
 bin/com/dsk/dsk2.py

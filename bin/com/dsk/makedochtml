@@ -1,0 +1,73 @@
+#!/usr/bin/env python3.9
+
+import os
+import shutil
+
+def crear_html_from_file(archivo_entrada, directorio_salida):
+  """Crea un archivo HTML con el código fuente del archivo de entrada."""
+
+  nombre_archivo = os.path.basename(archivo_entrada)
+  nombre_archivo_html = os.path.splitext(nombre_archivo)[0] + ".html"
+  ruta_archivo_html = os.path.join(directorio_salida, nombre_archivo_html)
+
+  with open(archivo_entrada, 'r') as archivo_original, open(ruta_archivo_html, 'w') as archivo_html:
+    archivo_html.write("<!DOCTYPE html>\n")
+    archivo_html.write("<html>\n")
+    archivo_html.write("<head>\n")
+    archivo_html.write(f"<title>{nombre_archivo}</title>\n")
+    archivo_html.write("<style>\n")
+    archivo_html.write("pre {{ font-family: monospace; white-space: pre-wrap; }}\n")
+    archivo_html.write("</style>\n")
+    archivo_html.write("</head>\n")
+    archivo_html.write("<body>\n")
+    archivo_html.write(f"<h1>{nombre_archivo}</h1>\n")
+    archivo_html.write("<pre>")
+    archivo_html.write(shutil.copyfileobj(archivo_original, archivo_html).read())
+    archivo_html.write("</pre>\n")
+    archivo_html.write("</body>\n")
+    archivo_html.write("</html>")
+
+def crear_index_html(directorio_salida):
+  """Crea un archivo index.html con enlaces a los archivos HTML creados."""
+
+  ruta_index_html = os.path.join(directorio_salida, "index.html")
+
+  with open(ruta_index_html, 'w') as archivo_index:
+    archivo_index.write("<!DOCTYPE html>\n")
+    archivo_index.write("<html>\n")
+    archivo_index.write("<head>\n")
+    archivo_index.write("<title>Índice de archivos</title>\n")
+    archivo_index.write("</head>\n")
+    archivo_index.write("<body>\n")
+    archivo_index.write("<h1>Índice de archivos</h1>\n")
+    archivo_index.write("<ul>\n")
+
+    for archivo in os.listdir(directorio_salida):
+      if archivo.endswith(".html"):
+        nombre_archivo = os.path.splitext(archivo)[0]
+        archivo_index.write(f"<li><a href='{archivo}'>{nombre_archivo}</a></li>\n")
+
+    archivo_index.write("</ul>\n")
+    archivo_index.write("</body>\n")
+    archivo_index.write("</html>")
+
+def main():
+  """Función principal del programa."""
+
+  directorio_entrada = input("/var/www/osiris000/bin/dsk ")
+  directorio_salida = input("Introduce el directorio de salida: ","/var/www/osiris000/html/app/freedirectory/web/2")
+
+  if not os.path.exists(directorio_salida):
+    os.makedirs(directorio_salida)
+
+  for archivo in os.listdir(directorio_entrada):
+    ruta_archivo = os.path.join(directorio_entrada, archivo)
+    if os.path.isfile(ruta_archivo):
+      crear_html_from_file(ruta_archivo, directorio_salida)
+
+  crear_index_html(directorio_salida)
+
+  print(f"Archivos HTML creados en {directorio_salida}")
+
+if __name__ == "__main__":
+  main()

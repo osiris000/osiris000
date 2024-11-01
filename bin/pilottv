@@ -13,7 +13,7 @@ ffmpegDir="${OSIRIS000_BIN}/com/datas/ffmpeg"
 randomDir="${OSIRIS000_BIN}/com/datas/ffmpeg/random/youtube2"
 datasDir="${OSIRIS000_BIN}/com/datas"
 profundidad="1"
-INSPECTOR_TIME=${2:-0.1}
+INSPECTOR_TIME=${2:-0.3}
 OUTPUT_URL=${1:-"rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"}
 #OUTPUT_URL=${2:-"rtmp://rtmp.rumble.com/live/r-3enppr-kk9w-l1xl-1abb59"}
 FFMPEG_FILE_PILOT="${OSIRIS000_BIN}/com/datas/ffmpeg/intro.mp4"
@@ -107,10 +107,11 @@ loglevel="info"
 /usr/bin/ffmpeg -y -re -i $input_file \
   -i "$logoTv" \
   -filter_complex "[0:v]scale=-2:ih*1.8[v];[1:v]scale=iw*0.3:-1[logo];[v][logo]overlay=15:20:enable='between(t,0,inf)'" \
-  -loglevel $loglevel -preset ultrafast -s 1280x720 -b:a 128k \
-  -b:v 3000k -bufsize 7500k -c:v h264 -c:a aac \
+  -loglevel $loglevel -preset ultrafast -b:a 128k \
+  -b:v 1500k -bufsize 5000k -c:v h264 -c:a aac \
   -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -movflags +faststart -af volume=1 \
-  -pix_fmt yuv420p -g 2 -r 30 -maxrate 5000k \
+  -pix_fmt yuv420p -g 2 -r 24 -maxrate 2000k -minrate 1000k \
+     -s 1024x640    \
   -progress "$progress_file" \
   -metadata "text='$PREFIX_TV'" \
   -f flv "$OUTPUT_URL" >$datasDir/pilottv.log 2>&1 &

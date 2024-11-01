@@ -110,7 +110,7 @@ def start_ffmpeg(url,com):
     '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
     '-b:v', '2500k', '-s:v', '1280x720', '-maxrate:v', '3000k', '-bufsize:v', '5000k',
-    '-g', '20', '-sc_threshold', '50',
+    '-g', '4', '-sc_threshold', '50',
     '-ignore_unknown',
     '-strftime', '1',
     '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
