@@ -31,7 +31,7 @@ def_editor="subl"
 nombre_venv = "osiris_env"
 
 # Comandos válidos
-valid_commands = ["hls", "shell", "blockchain", "scanip", "sniff", "config", "fdev", "agenda", "install", "error", "chatgpt", "bard"]
+valid_commands = ["hls", "shell", "blockchain", "desktop", "gemini3", "scanip", "sniff", "config", "fdev", "agenda", "install", "error", "chatgpt"]
 
 # Diccionario para almacenar información sobre los módulos y sus funciones main
 module_info = {}
@@ -180,6 +180,9 @@ def command_line():
 # Manejo de comandos
 def handle_command(args):
     global use_command, set_com
+    
+    
+
 
     if args[0] == "mount" and len(args) > 1:
         if args[1] not in valid_commands:
@@ -188,6 +191,17 @@ def handle_command(args):
         else:
             print(f"El comando: {args[1]} ya está montado.")
         args[0] = "use"
+    else:
+        if args[0] == "reset":
+            execute_command(["desktop","com","reset"])
+            print("Prompt was reseted using desktop command")
+#            return
+
+        elif args[0] == "resetf":
+            execute_command(["desktop","com","reset","--mode","fixed"])
+            print("Prompt was reseted using desktop command with mode fixed")
+#            return
+
 
     if args[0] == "use" and len(args) == 2:
         use_command = args[1] + "> "
@@ -202,7 +216,7 @@ def handle_command(args):
     elif args[0] == "Reset_Password":
         auth.makeauth()
     elif args[0] not in valid_commands:
-        print(f"Comando: {args[0]} inválido")
+        print(f"Comando: {args[0]} ")
     elif len(args) > 1 and args[1] == "--reset":
         clear_command_data(args[0])
         loaded_modules.pop(args[0], None)

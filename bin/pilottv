@@ -76,40 +76,17 @@ start_ffmpeg() {
 size="1280x720"
 size_p="1280:-2"
 screen="1280x720"
-#audiofilter="aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
-audiofilter="volume=1"
-#     "[0:v]scale=w='min(1280,iw*720/ih)':h='min(720,ih*1280/iw)',setsar=1[scaled];[1][scaled]overlay=(W-w)/2:(H-h)/2,format=yuv420p[outv]" \
-#    -f lavfi -i color=c=black:s=1280x720 \
+audiofilter="aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11"
+#audiofilter="volume=1"
+loglevel="warning"
 
-#/usr/bin/ffmpeg -y -re \
-#    -fflags nobuffer \
-#    -i "$input_file" \
-#    -filter_complex "[0:v]scale='if(gt(iw,1280),1280,iw)':-2[outv]" \
-#    -map "[outv]" \
-#    -map a:? \
-#    -s 1280x720 \
-#    -threads auto \
-#    -vsync 1 \
-#    -c:v h264 -preset ultrafast -tune zerolatency -c:a aac \
-#    -g 2 -r 30 \
-#    -b:v 3000k -b:a 128k \
-#    -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc \
-#    -maxrate 5000k -bufsize 10000k \
-#    -rw_timeout 5000000 \
-#    -flags low_delay -max_delay 0 \
-#    -progress "$progress_file" \
-#    -metadata "text='$PREFIX_TV'" \
-#    -f flv "$OUTPUT_URL" >/dev/null 2>&1 &
-    
-
-loglevel="info"
 
 /usr/bin/ffmpeg -y -re -i $input_file \
   -i "$logoTv" \
   -filter_complex "[0:v]scale=-2:ih*1.8[v];[1:v]scale=iw*0.3:-1[logo];[v][logo]overlay=15:20:enable='between(t,0,inf)'" \
   -loglevel $loglevel -preset ultrafast -b:a 128k \
-  -b:v 1500k -bufsize 5000k -c:v h264 -c:a aac \
-  -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -movflags +faststart -af volume=1 \
+  -b:v 1500k -bufsize 3000k -c:v h264 -c:a aac \
+  -bsf:v h264_mp4toannexb -bsf:a aac_adtstoasc -movflags +faststart -af $audiofilter \
   -pix_fmt yuv420p -g 2 -r 24 -maxrate 2000k -minrate 1000k \
      -s 1024x640    \
   -progress "$progress_file" \

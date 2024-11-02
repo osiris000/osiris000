@@ -9,7 +9,8 @@ import signal
 
 usuario = os.getlogin()
 r_def_mode = def_exec_mode = "bg"
-apps = ["dsk1", "dsk2", "dsk3", "dsk4", "dsk5", "dsk6", "dsk7", "ipinfo", "localnet", "gemini"]
+apps = ["dsk1", "dsk2", "dsk3", "dsk4", "dsk5", 
+        "dsk6", "dsk7", "makedochtml", "ipinfo", "localnet", "gemini"]
 
 # Variable global para almacenar el PID del proceso en modo fixed
 fixed_process_pid = None
