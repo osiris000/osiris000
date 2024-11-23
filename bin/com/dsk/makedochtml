@@ -1,17 +1,41 @@
 #!/usr/bin/env python3.9
-
+#Utilidad para crear documentación de osiris
+#Hay dos directorios base, de entrada y de salida
+#Lee los archivos dados en el directorio de entrada (directorio base + directorio del array) + archivo
+#crea archivos json en el directorio de salida  (directorio de salida base + directorio del array) + archivo .json
+#crea en el directorio de salida los index.html,script.js y styles.css correspondientes
 import os
 import json
+import numpy as np
+
+
+
+
+directorio_entrada_base = "/var/www"
+directorio_salida_base = "/var/www/osiris000/html/app/freedirectory"
+
+  # Definir los directorios y archivos a procesar
+directorios_archivos = [
+      # Formato: (directorio, [lista de archivos])
+      ("osiris000", ["prueba.md","osiris.sh","share.sh", "install.com","install.sh","osiris","LICENSE.md","README.md"]),
+      ("osiris000/bin/", ["auth.py"])
+  ]
+
+
+
+
 
 def crear_json_from_file(archivo_entrada, directorio_salida, nombre_archivo):
   """Crea un archivo JSON con el código fuente del archivo de entrada."""
 
   ruta_archivo_json = os.path.join(directorio_salida, nombre_archivo + ".json")
 
-  with open(archivo_entrada, 'r') as archivo_original, open(ruta_archivo_json, 'w') as archivo_json:
-    contenido = archivo_original.read()
-    data = {"nombre": nombre_archivo, "codigo": contenido}
-    json.dump(data, archivo_json, indent=4)
+  # Sobreescribir el archivo si ya existe
+  with open(ruta_archivo_json, 'w') as archivo_json:
+    with open(archivo_entrada, 'r') as archivo_original:
+      contenido = archivo_original.read()
+      data = [{"nombre": nombre_archivo, "codigo": contenido}]
+      json.dump(data, archivo_json, indent=4)
 
 def crear_index_html(directorio_salida, archivos):
   """Crea un archivo index.html con enlaces a los archivos JSON creados."""
@@ -33,15 +57,14 @@ def crear_index_html(directorio_salida, archivos):
     archivo_index.write("<h1>Índice de archivos</h1>\n")
     archivo_index.write("<ul class='lista-archivos'>\n")
 
-    for archivo in archivos:
-      nombre_archivo = os.path.splitext(archivo)[0]
+    # Se utiliza la variable 'nombre_archivo' para generar los enlaces correctamente
+    for nombre_archivo in archivos: 
       archivo_index.write(f"<li><a href='#' data-archivo='{nombre_archivo}'>{nombre_archivo}</a></li>\n")
 
     archivo_index.write("</ul>\n")
     archivo_index.write("</div>\n")
     archivo_index.write("<div class='visor'>\n")
     archivo_index.write("<h4 id='nombre-archivo'></h4>\n")
-#    archivo_index.write("<input type='text' id='buscador' placeholder='Buscar en el código...' style='display: none;' />\n")
     archivo_index.write("<div class='opciones-resaltado' style='display:none;'>\n")  # Botones ocultos inicialmente
     archivo_index.write("</div>\n")
     archivo_index.write("<p id='texto-inicial'>Selecciona un archivo del índice para verlo.</p>\n")
@@ -53,6 +76,7 @@ def crear_index_html(directorio_salida, archivos):
     archivo_index.write("</html>")
 
 def crear_css(directorio_salida):
+#  return
   """Crea el archivo style.css con un diseño artístico."""
 
   ruta_css = os.path.join(directorio_salida, "style.css")
@@ -183,13 +207,7 @@ h1 {
   width: 30px;
 }
 
-/* Estilos para el buscador */
-#buscador {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 200px;
-}
+
 
 /* Estilos para el texto resaltado */
 .highlight {
@@ -205,6 +223,7 @@ h1 {
     """)
 
 def crear_js(directorio_salida):
+#  return
   """Crea el archivo script.js con funcionalidad de carga dinámica de archivos JSON."""
 
   ruta_js = os.path.join(directorio_salida, "script.js")
@@ -219,7 +238,7 @@ const nombreArchivo = document.getElementById('nombre-archivo');
 const resaltarTodoBtn = document.getElementById('resaltar-todo');
 const quitarResaltadoBtn = document.getElementById('quitar-resaltado');
 const opcionesResaltado = document.querySelector('.opciones-resaltado');
-const buscador = document.getElementById('buscador');
+
 
 function resaltarCodigo(codigo, tipo) {
   let partes = codigo.split('\\n'); // Corrección para el split: '\\n'
@@ -247,12 +266,12 @@ function cargarArchivo(archivo) {
   fetch(`${archivo}.json`)
     .then(response => response.json())
     .then(data => {
-      nombreArchivo.textContent = ` ${data.nombre} `;
-      codigoFuente.textContent = data.codigo;
+      nombreArchivo.textContent = ` ${data[0].nombre} `;
+      codigoFuente.textContent = data[0].codigo;
       textoInicial.style.display = 'none';
       opcionesResaltado.style.display = 'block';  // Mostrar botones de resaltado
-      resaltarCodigo(data.codigo, 'resaltar'); // Resaltar al cargar (por defecto)
-      buscador.style.display = 'block'; // Mostrar el textbox de busqueda
+      resaltarCodigo(data[0].codigo, 'resaltar'); // Resaltar al cargar (por defecto)
+
     })
     .catch(error => console.error('Error al cargar el archivo:', error));
 }
@@ -264,45 +283,40 @@ listaArchivos.addEventListener('click', (event) => {
   }
 });
 
-
-/*
-buscador.addEventListener('keyup', () => {
-  const textoBuscado = buscador.value.toLowerCase();
-  const partes = codigoFuente.textContent.split('\\n'); // Corrección para el split: '\\n'
-  let resultado = '';
-  for (let i = 0; i < partes.length; i++) {
-    let parte = partes[i];
-    // Envolver solo las coincidencias con la etiqueta <span>
-    parte = parte.replace(new RegExp(textoBuscado, 'gi'), '<span class="highlight">$&</span>\\n'); 
-    resultado += `<span class="numero-linea">${i + 1}</span><span class="codigo-fuente">${parte}</span><br>\\n`; 
-  }
-  codigoFuente.innerHTML = resultado;
-});
-*/
     """)
 
 def main():
   """Función principal del programa."""
 
-  makefiles = "bin/dsk"
-  directorio_entrada = "/var/www/osiris000/"+makefiles
-  directorio_salida = "/var/www/osiris000/html/app/freedirectory/web/"+makefiles
+  global directorio_entrada_base, directorio_salida_base, directorios_archivos
 
-  if not os.path.exists(directorio_salida):
-    os.makedirs(directorio_salida)
 
-  archivos = [archivo for archivo in os.listdir(directorio_entrada) if os.path.isfile(os.path.join(directorio_entrada, archivo))]
+  for directorio, archivos in directorios_archivos:
+    # Crear la ruta completa al directorio de salida
+    directorio_salida = os.path.join(directorio_salida_base, directorio)
+    # Crear el directorio si no existe
+    if not os.path.exists(directorio_salida):
+      os.makedirs(directorio_salida)
 
-  for archivo in archivos:
-    ruta_archivo = os.path.join(directorio_entrada, archivo)
-    nombre_archivo = os.path.splitext(archivo)[0]
-    crear_json_from_file(ruta_archivo, directorio_salida, nombre_archivo)
+    # Procesar cada archivo
+    archivos_procesados = []
+    print(f"JSON y HTML crear en {directorio_salida}")
+    for archivo in archivos:
+      ruta_archivo = os.path.join(directorio_entrada_base, directorio, archivo)
+      if os.path.isfile(ruta_archivo):
+        # Obtener el nombre del archivo relativo al directorio base de entrada
+        nombre_archivo = os.path.relpath(ruta_archivo, directorio_entrada_base)
+        crear_json_from_file(ruta_archivo, directorio_salida, archivo) 
+        archivos_procesados.append(archivo) 
+        print(archivo)
 
-  crear_index_html(directorio_salida, archivos)
-  crear_css(directorio_salida)
-  crear_js(directorio_salida)
+    #Crear index.html y los archivos CSS y JS
+    crear_index_html(directorio_salida, archivos_procesados)
+    crear_css(directorio_salida)
+    crear_js(directorio_salida)
 
-  print(f"Archivos JSON y HTML creados en {directorio_salida}")
+
 
 if __name__ == "__main__":
   main()
+

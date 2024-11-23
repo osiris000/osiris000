@@ -150,11 +150,9 @@ def command_line():
         readline.add_history(command)
 
     while True:
-        #time.sleep(0.05)
         try:
             # Imprime el prompt con un color y un salto de línea
             rx = common.print_color(">>> " + use_command, common.Color.GREEN,"\n → ")
-            #rx = ">>> " + use_command
             # Imprime el prompt con un color y un salto de línea
             com = input(rx)
             if not com:
@@ -173,35 +171,26 @@ def command_line():
                 continue
 
             handle_command(args)
-
         except Exception as e:
             print("ERROR:", e)
+        time.sleep(0.1)
 
 # Manejo de comandos
 def handle_command(args):
     global use_command, set_com
     
-    
-
-
-    if args[0] == "mount" and len(args) > 1:
+    if args[0] == "mount" and len(args) > 1:   #mount para cargar (montar) comandos fuera de la lista
         if args[1] not in valid_commands:
             valid_commands.append(args[1])
             print(f"Montado: {args[1]}")
         else:
-            print(f"El comando: {args[1]} ya está montado.")
-        args[0] = "use"
+            print(f"El comando: {args[1]} ya está montado.") #existe en la lista
+        args[0] = "use" #se establede use como primer argumento, contiñúa y establece el comando
     else:
-        if args[0] == "reset":
-            execute_command(["desktop","com","reset"])
-            print("Prompt was reseted using desktop command")
-#            return
-
-        elif args[0] == "resetf":
+        if args[0] == "reset":  #comando reset para solucionar problemas de cursor en dos pasos 1º use+enter 2º reset+enter
             execute_command(["desktop","com","reset","--mode","fixed"])
             print("Prompt was reseted using desktop command with mode fixed")
-#            return
-
+            return
 
     if args[0] == "use" and len(args) == 2:
         use_command = args[1] + "> "

@@ -1,14 +1,15 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 
 echo "otvkill inspector"
 
 # Detectar todos los procesos de ffmpeg que contienen "osiristv"
-PIDS=$(ps aux | grep ffmpeg | grep "osiristv" | grep -v grep | awk '{print $2}')
+PIDS=$(ps aux | grep ffmpeg | grep "osiristvscreen" | grep -v grep | awk '{print $2}')
+echo "->${PIDS}"
 
 # Verificar si hay algún proceso de ffmpeg corriendo con "osiristv"
 if [ -n "$PIDS" ]; then
-  echo "Se encontraron los siguientes procesos de ffmpeg con 'osiristv' corriendo:"
+  echo "Se encontraron los siguientes procesos de ffmpeg con 'osiristvscreen' corriendo:"
   echo "$PIDS"
   
   # Iterar sobre cada PID y preguntar si deseas matarlo
@@ -28,5 +29,5 @@ fi
     fi
   done
 else
-  echo "No hay procesos 'osiristv' activos."
+  echo "No hay procesos 'osiristvscreen' activos."
 fi

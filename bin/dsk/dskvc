@@ -71,15 +71,22 @@ class ConverterApp:
         self.extensions_entry.insert(0, "mp4,avi")
         self.extensions_entry.grid(row=0, column=1, padx=5)
 
-        tk.Label(options_frame, text="Calidad de salida (ej. 3000k):").grid(row=1, column=0)
+        tk.Label(options_frame, text="Calidad de salida (ej. 2000k):").grid(row=1, column=0)
         self.quality_entry = tk.Entry(options_frame, width=15)
-        self.quality_entry.insert(0, "3000k")
+        self.quality_entry.insert(0, "2000k")
         self.quality_entry.grid(row=1, column=1, padx=5)
 
         tk.Label(options_frame, text="Formato de salida (ej. mp4, ts):").grid(row=2, column=0)
         self.format_entry = tk.Entry(options_frame, width=15)
         self.format_entry.insert(0, "mp4")
         self.format_entry.grid(row=2, column=1, padx=5)
+
+
+        tk.Label(options_frame, text="Framerate:").grid(row=3, column=0)
+        self.framerate_entry = tk.Entry(options_frame, width=15)
+        self.framerate_entry.insert(0, "24")
+        self.framerate_entry.grid(row=3, column=1, padx=5)
+
 
         tk.Label(options_frame, text="Codec de video (ej. h264):").grid(row=0, column=2)
         self.video_codec_entry = tk.Entry(options_frame, width=15)
@@ -95,6 +102,13 @@ class ConverterApp:
         self.preset_entry = tk.Entry(options_frame, width=15)
         self.preset_entry.insert(0, "ultrafast")
         self.preset_entry.grid(row=2, column=3, padx=5)
+
+        tk.Label(options_frame, text="crf (ej. 21):").grid(row=3, column=2)
+        self.crf_entry = tk.Entry(options_frame, width=15)
+        self.crf_entry.insert(0, "21")
+        self.crf_entry.grid(row=3, column=3, padx=5)
+
+
 
     def toggle_parallel_options(self):
         if self.parallel_var.get():
@@ -134,11 +148,13 @@ class ConverterApp:
 
     def run_conversion(self):
         allowed_extensions = self.extensions_entry.get().split(',')
-        quality = self.quality_entry.get() or "3000k"
+        quality = self.quality_entry.get() or "2000k"
         output_format = self.format_entry.get() or "mp4"
         video_codec = self.video_codec_entry.get() or "h264"
         audio_codec = self.audio_codec_entry.get() or "aac"
         preset = self.preset_entry.get() or "ultrafast"
+        framerate = self.framerate_entry.get() or "24"
+        crf = self.crf_entry.get() or "2500k"
         num_threads = int(self.thread_count_entry.get()) if self.parallel_var.get() else 1
 
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
@@ -151,7 +167,7 @@ class ConverterApp:
                 if any(input_file.endswith(ext.strip()) for ext in allowed_extensions):
                     input_path = os.path.join(self.input_dir, input_file)
                     if os.path.isfile(input_path):
-                        future = executor.submit(self.convert_file, input_path, output_format, video_codec, audio_codec, quality, preset)
+                        future = executor.submit(self.convert_file, input_path, output_format, video_codec, audio_codec, quality, preset, framerate, crf)
                         futures.append(future)
 
             try:
@@ -164,7 +180,7 @@ class ConverterApp:
                 self.allow_new_tasks = True
                 self.reset_ui()
 
-    def convert_file(self, input_path, output_format, video_codec, audio_codec, quality, preset):
+    def convert_file(self, input_path, output_format, video_codec, audio_codec, quality, preset, framerate, crf):
         if self.stop_event.is_set():  # Verifica si se ha solicitado detener
             return
 
@@ -175,7 +191,7 @@ class ConverterApp:
         self.output_text.insert(tk.END, f"Convirtiendo {input_path} a {output_path}...\n")
         self.output_text.yview(tk.END)
 
-        ffmpeg_options = self.build_ffmpeg_options(output_format, video_codec, audio_codec, quality, preset)
+        ffmpeg_options = self.build_ffmpeg_options(output_format, video_codec, audio_codec, quality, preset, framerate, crf)
         command = f"ffmpeg -y -i \"{input_path}\" {ffmpeg_options} \"{output_path}\""
         
         # Ejecución del proceso ffmpeg
@@ -194,8 +210,8 @@ class ConverterApp:
             self.ffmpeg_processes.remove(process)  # Remover el proceso de la lista
         self.output_text.insert(tk.END, "Conversión completada.\n")
 
-    def build_ffmpeg_options(self, output_format, video_codec, audio_codec, quality, preset):
-        ffmpeg_options = f" -vf scale=856:-2 -c:v {video_codec} -preset {preset} -c:a {audio_codec} -pix_fmt yuv420p -ac 2 -b:v {quality} -b:a 128k -maxrate 2000k -bufsize 2500k "
+    def build_ffmpeg_options(self, output_format, video_codec, audio_codec, quality, preset, framerate, crf):
+        ffmpeg_options = f" -vf scale=-2:580 -preset {preset}  -r {framerate}  -c:v {video_codec}  -c:a {audio_codec} -pix_fmt yuv420p -ac 2 -b:v {quality} -crf {crf} -b:a 128k "
         format_options = {
             "ts": "  -bsf:v h264_mp4toannexb  -f mpegts ",
             "mp3": " -f mp3 ",
@@ -206,6 +222,7 @@ class ConverterApp:
         }
         if output_format in format_options:
             ffmpeg_options += f" {format_options[output_format]}"
+            print(ffmpeg_options)
         return ffmpeg_options
         
         

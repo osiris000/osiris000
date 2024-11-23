@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.9
 import sys
 import signal
 import os
@@ -158,7 +157,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_sigint)
 
     # URL para cargar en el QWebEngineView
-    url = "https://studio.youtube.com/channel/UCa-hxeG4XQHd7RXn_DKivuw/livestreaming"  # Cambia esto por la URL que desees cargar
+    url = "https://osiris000.duckdns.org"  # Cambia esto por la URL que desees cargar
 
     # Agregar el argumento --no-sandbox si se está ejecutando como root
     if os.geteuid() == 0:

@@ -1,20 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 button0.onmouseover = function(){
 
 	menuApp.style.display = "block"
@@ -132,28 +116,17 @@ dmenu('datasInfo','dispApp')
 
 
 a7.innerHTML = "JsAnimator"
-
 a7.className = "lmenu"
-
-
 a7.onclick = function(){
-
 if(JSA.src=="about:blank"){
 	JSA.src="https://"+window.location.hostname+"/app/jsa"
 }
-
 dmenu('JSA','dispApp')
-
-
 }
 
 
 a8.innerHTML = "C21 Editor"
-
 a8.className = "lmenu"
-
-
-EDITORc21.sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-iframes"
 
 
 a8.onclick = function(){
@@ -161,7 +134,7 @@ a8.onclick = function(){
 if(EDITORc21.src=="about:blank"){
 	EDITORc21.src="https://compostela21.com/varios/datas/adm/"
 }
-
+EDITORc21.sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-iframes"
 dmenu('EDITORc21','dispApp')
 
 
@@ -169,7 +142,14 @@ dmenu('EDITORc21','dispApp')
 
 
 
-
+a9.innerHTML = "Documentación"
+a9.className = "lmenu"
+a9.onclick = function(){
+if(DOC.src=="about:blank"){
+	DOC.src="https://"+window.location.hostname+"/app/freedirectory/web/2"
+}
+dmenu('DOC','dispApp')
+}
 
 
 /* Estilos*/

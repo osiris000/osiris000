@@ -110,7 +110,7 @@ def start_ffmpeg(url,com):
     '-tune', 'zerolatency', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-ar', '44100', '-b:a', '128k',
     '-b:v', '2500k', '-s:v', '1280x720', '-maxrate:v', '3000k', '-bufsize:v', '5000k',
-    '-g', '4', '-sc_threshold', '50',
+    '-g', '3', '-sc_threshold', '50',
     '-ignore_unknown',
     '-strftime', '1',
     '-bsf:v', 'h264_mp4toannexb', '-bsf:a', 'aac_adtstoasc',
@@ -122,7 +122,7 @@ def start_ffmpeg(url,com):
     '-hls_segment_filename', os.path.join(hls_path, '%Y%m%d%H%M%S.ts'),
     os.path.join(hls_path, 'live.m3u8'), '-progress', hls_progress_file,
     '-fflags', '+genpts+igndts+discardcorrupt', '-flags', 'low_delay', '-max_delay', '0',
-    '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '2', '-metadata', ffcom_metadata
+    '-reconnect', '1', '-reconnect_streamed', '1', '-reconnect_delay_max', '1', '-metadata', ffcom_metadata
 ]
 
     command = finput + foutput
