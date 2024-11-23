@@ -1,27 +1,138 @@
+import sys
 import os
 import json
 import google.generativeai as genai
-from PIL import Image
+from PIL import Image, ImageTk
 import tkinter as tk
-from tkinter import scrolledtext, messagebox
+from tkinter import scrolledtext, messagebox, filedialog
 from datetime import datetime
-#import genai
 from io import BytesIO
 import requests
+import subprocess
+import base64
+from cryptography.fernet import Fernet 
+import webbrowser
+import pyperclip
+import io
+#AIzaSyA_uHSVYv7hmAua65gGbue0wlPZ1pSes-4
+# Ruta del archivo para guardar la clave cifrada
+ruta_archivo_key = "com/datas/gemini_key.enc"
 
-# Configuración del API
-API_KEY = os.getenv("GOOGLE_API_KEY", "PON TU KEY DE LA API DE GEMINI AQUI")
-genai.configure(api_key=API_KEY)
+# Genera la clave de cifrado una sola vez
+#clave_cifrado = Fernet.generate_key()
+clave_cifrado = b'N9t9dYNn2fjc8CRT0_eChnH5xDETGSvMOM5qxqyvSUs='
 
+def obtener_key_gemini(nkey=""):
+    """
+    Guía al usuario para obtener una key gratuita de la API de Gemini,
+    la cifra y la guarda en un archivo, o la recupera si ya está almacenada.
+    """
+    global clave_cifrado, ruta_archivo_key
+    if nkey=='resetkey':
+        if os.path.isfile(ruta_archivo_key):
+            os.remove(ruta_archivo_key)
+            print("Clave del archivo eliminada.")
+    while True:
+        # Verifica si la key ya está guardada
+        if os.path.isfile(ruta_archivo_key):
+            # Descifra la key
+            try:
+                with open(ruta_archivo_key, "rb") as archivo_key:
+                    key_cifrada = archivo_key.read()
+                fernet = Fernet(clave_cifrado) 
+                key_descifrada = fernet.decrypt(key_cifrada).decode()
+                print("Key gratuita encontrada y descifrada.")
+                return key_descifrada
+            except Exception as e:
+                print(f"Error descifrando la clave: {e}")
+                print("Se pedirá una nueva clave.")
+
+        # Abrir la página de configuración de las claves de la API de Gemini en el navegador
+        webbrowser.open_new_tab("https://cloud.google.com/docs/authentication/getting-started")
+
+        # Esperar a que el usuario configure su clave gratuita
+
+        # Obtener la clave gratuita del usuario
+        key = input("Pega tu key gratuita aquí (o escribe '--reset' para borrar la clave): ") 
+
+        # Manejar el comando --reset
+        if key == "--reset":
+            if os.path.isfile(ruta_archivo_key):
+                os.remove(ruta_archivo_key)
+                print("Clave del archivo eliminada.")
+                if nkey == "new":
+                    API_KEY = obtener_key_gemini()
+            else:
+                print("No hay clave para borrar.")
+            continue  # Volver a pedir la clave
+
+        # Cifrar la key
+        fernet = Fernet(clave_cifrado)
+        key_cifrada = fernet.encrypt(key.encode())
+
+        # Guardar la key cifrada en un archivo
+        with open(ruta_archivo_key, "wb") as archivo_key:
+            archivo_key.write(key_cifrada)
+        print("Key gratuita cifrada y guardada.")
+
+        # Copiar la key al portapapeles
+        pyperclip.copy(key)
+        print("Key copiada al portapapeles.")
+
+        return key
+
+
+
+# Define la clave API (si ya existe)
+API_KEY = os.getenv("GOOGLE_API_KEY")
+
+# Si la clave no está disponible, la obtenemos
+if not API_KEY:
+    try:
+        API_KEY = obtener_key_gemini()
+    except Exception as e:
+        print("ERROR API KEY:",e)
+
+if API_KEY:
+# Configura la API de Gemini
+    try:
+        genai.configure(api_key=API_KEY)
+        model = genai.GenerativeModel("gemini-1.5-flash")
+    except Exception as e:
+        print("ERROR API KEY:",e)
 # Inicialización del modelo generativo
-model = genai.GenerativeModel("gemini-1.5-flash")
 
-# Variables globales
-conversation_context = ""
+
+
+current_path = os.path.abspath(__file__)
+# Extrae el nombre del archivo sin extensión
+version_file = os.path.splitext(os.path.basename(current_path))[0]
+
+#Variables globales
+#Contexto inicial
+conversation_context = f"""
+<Gemini Osiris Header>
+<eres>
+#Interfaz de comunicación con Gemini AI de Google
+#Interfaz Name: Osiris
+#Version: {version_file}
+</eres>
+<instrucciones de inicio>
+Contesta siempre en ESPAÑOL aunque se te pregunte en otro idioma y no se te explicite otro a usar.
+Usa emojis para dinamizar las conversaciones.
+</instrucciones de inicio>
+</Gemini Osiris Header>
+Gracias BRO.
+COMIENZA LA CONVERSACIÓN.
+"""
+
 load = ""
 last_response = ""
 topic = ""  # Tema de conversación
 autosave_enabled = True  # Estado del autosave
+
+def_image_editor = "lazpaint"
+
 
 def is_file(filepath):
     """Verifica si el archivo existe."""
@@ -48,9 +159,19 @@ def save_file(filepath, content):
         messagebox.showerror("Error", f"Error guardando el archivo {filepath}: {e}")
 
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+def decode_img(base64_data):
+    # Decode the base64 data
+    decoded_data = base64_data
+# Load the image
+    image = Image.open(io.BytesIO(decoded_data))
+
+# Display or save the image (uncomment as needed)
+    image.show() 
+    image.save('com/datas/ffmpeg/my_image.png')
+
 
 def load_image(file_path):
+    global def_image_editor
     """Carga y muestra una imagen desde un archivo local o una URL usando PIL."""
     try:
         # Verifica si el file_path es una URL
@@ -60,68 +181,173 @@ def load_image(file_path):
             img = Image.open(BytesIO(response.content))  # Carga la imagen desde el contenido de la respuesta
         else:
             img = Image.open(file_path)  # Carga la imagen desde la ruta local
-        
-        img.show()  # Muestra la imagen
+            process = subprocess.Popen(
+                    [def_image_editor, file_path],
+                    stdin=subprocess.PIPE, # Puedes usar esto para enviar entradas si es necesario
+                    stdout=subprocess.DEVNULL,    
+                    stderr=subprocess.DEVNULL,       # Redirige la salida de error
+                    preexec_fn=os.setpgrp,  # Ejecuta en segundo plano
+                )
+
+
+#        img.show()  # Muestra la imagen
         return img
     except Exception as e:
         messagebox.showerror("Error", f"Error cargando la imagen {file_path}: {e}")
         return None
 
 def show_text_window(text):
-    """Muestra el texto en una ventana de tkinter con soporte para selección y copia."""
-    root = tk.Tk()
-    root.title("Contenido de la conversación")
-    text_widget = scrolledtext.ScrolledText(root, wrap="word")
+    def save_text_to_file(text_widget):
+        filename = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")]
+        )
+        if filename:
+            try:
+                with open(filename, "w", encoding='utf-8') as f:
+                    f.write(text_widget.get("1.0", tk.END))
+                print(f"Contenido guardado en {filename}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error guardando el archivo: {e}")
+    # Asociar el menú contextual al clic derecho en el widget de texto
+    def mostrar_menu_contextual(event):
+        global save_text_to_file
+        menu_contextual.post(event.x_root, event.y_root)
+
+    # Crear una ventana secundaria independiente
+    ventana_secundaria = tk.Toplevel()
+    ventana_secundaria.title("Contenido de la conversación")
+    # Crear el widget de texto con scroll en la ventana secundaria
+    text_widget = scrolledtext.ScrolledText(ventana_secundaria, wrap="word")
     text_widget.insert(tk.END, text)
     text_widget.pack(expand=True, fill="both")
     text_widget.config(state=tk.NORMAL)  # Permite selección de texto
-    root.mainloop()
+    #boton guardar como
+    save_button = tk.Button(ventana_secundaria, text="Guardar como...", command=lambda: save_text_to_file(text_widget))
+    save_button.pack(side="bottom")  # El botón se coloca en la parte inferior
 
-def generate_with_image(image_path):
+
+    # Crear el menú contextual (clic derecho)
+    menu_contextual = tk.Menu(ventana_secundaria, tearoff=0)
+    menu_contextual.add_command(label="Copiar", command=lambda: text_widget.event_generate("<<Copy>>"))
+    menu_contextual.add_command(label="Pegar", command=lambda: text_widget.event_generate("<<Paste>>"))
+    menu_contextual.add_command(label="Cortar", command=lambda: text_widget.event_generate("<<Cut>>"))
+    text_widget.bind("<Button-3>", mostrar_menu_contextual)
+
+
+
+
+
+def screen_shot():
+    process = subprocess.run(["python3", "com/screenshot.py"], capture_output=True, text=True)
+    output = process.stdout.strip().splitlines()  # Limpiar y dividir en líneas
+
+    # Comprobación del formato de salida
+    if len(output) < 3:
+        print("Fallo: la salida no tiene suficientes líneas.")
+        return
+    
+    # Filtrar la salida
+    coordinates_line = output[0]  # Primera línea
+    image_path_line = output[1]  # Segunda línea
+    text_lines = output[2:]  # Resto de líneas
+
+    # Verificar que las líneas cumplen con el formato esperado
+    if not coordinates_line.startswith("Coordinates:") or not image_path_line.startswith("ImagePath:"):
+        print("Fallo: el formato de salida es incorrecto.")
+        return
+
+    # Imprimir los valores después de "Coordinates:" y "ImagePath:"
+    coordinates_value = coordinates_line.split(":", 1)[1].strip()  # Obtener el valor después de "Coordinates:"
+    image_path_value = image_path_line.split(":", 1)[1].strip()  # Obtener el valor después de "ImagePath:"
+
+    print(f"Coordinates: {coordinates_value}")
+    print(f"ImagePath: {image_path_value}")
+
+    # Imprimir las líneas que comienzan con "Text:" y todas las siguientes
+    text_started = False  # Bandera para controlar cuando comenzamos a imprimir el texto
+    text_output = []  # Para almacenar todo el texto a imprimir
+
+    for line in text_lines:
+        if line.startswith("Text:"):
+            if not text_started:
+                # Obtener el valor después de "Text:"
+                text_value = line.split(":", 1)[1].strip()  
+                text_output.append(text_value)  # Guardar el primer texto
+                text_started = True  # Activar la bandera
+            else:
+                # Guardar las líneas adicionales que pertenecen al texto
+                text_output.append(line.strip())  # Almacenar las siguientes líneas de texto
+        elif text_started:
+            # Si ya empezamos a imprimir texto y encontramos una línea que no comienza con "Text:"
+            text_output.append(line.strip())  # Almacenar las siguientes líneas de texto
+
+    # Imprimir todo el texto almacenado, solo si se encontró texto
+    if text_output:
+        print("Text:", " ".join(text_output))  # Imprimir todo junto en una sola línea
+    
+    generate_with_image(image_path_value,"\n".join(text_output))
+# Asegúrate de que esta función se ejecute donde corresponda
+
+
+
+    
+def generate_with_image(image_path,ask):
+    global last_response
     """Genera texto a partir de una imagen usando la API de Gemini."""
 
     image = load_image(image_path)
     if image:
-        # Generar contenido con la imagen usando la API
-        global conversation_context
-        response = model.generate_content([conversation_context, image], stream=True)
+         # Generar contenido con la imagen usando la API
+#        global conversation_context
+        try:
+            response = model.generate_content([ask+"\nResponde en Español." , image], stream=True)
+        except Exception as e:
+            print("Error realizando consulta de imagen:",e)
+            return
+        last_response = response
         # Recolectar y mostrar los trozos de respuesta
-        generated_text = ""
+        generated_text = "\nResponse Image.\n\n"
+        xresponse = "Envié una imagen con path: "+image_path+", a gemini AI, haciéndole esta pregunta:\n"+ask+"\n E interpretó lo siguiente:\n"
+
         if response:
-            xresponse = "Viste la imagen y respondiste:"
             for chunk in response:
-                generated_text += chunk.text + "\n"  # Agrega el texto al string
-                print(chunk.text)
-                print("_" * 80)
-                xresponse += chunk.text
-            main(xresponse)
+                generated_text += chunk.text
+            print(generated_text)
+            show_text_window(generated_text)
+            main(f"{xresponse} {generated_text}")
         # Muestra el texto en una ventana
-        show_text_window(generated_text)
+        
     return None
 
 
 def generate_response(user_input):
     """Genera una respuesta del modelo basada en la entrada del usuario."""
     global conversation_context, last_response
-    conversation_context += f"User: {user_input}\n"
+    conversation_context += "User: "+user_input+"\n"
     try:
         response = model.generate_content(conversation_context)
         response_text = response.text
-        conversation_context += f"AI: {response_text}\n"
+        conversation_context += "AI: "+ response_text+"\n"
         last_response = response_text  # Guarda la última respuesta
         return response_text
     except Exception as e:
-        messagebox.showerror("Error", f"Error generando contenido con el modelo: {e}")
+        if e.code == 400:
+            print("ERROR 400")
+        #messagebox.showerror("Error", f"Error generando contenido con el modelo: {e}")
+        print("Error", f"Error generando contenido con el modelo: {e}")
         return None
 
 def save_request(user_input):
     """Guarda la solicitud del usuario en un archivo."""
     save_file("com/datas/lastrequest.gemini", user_input)
 
-def save_answer():
+def save_answer(save=""):
     """Guarda la última respuesta generada en un archivo."""
     global last_response
-    save_file("com/datas/lastanswer.gemini", last_response)
+    if save == "":
+        save = "com/datas/lastanswer.gemini"
+    save_file(save, last_response)
 
 def save_context():
     """Guarda el contexto de la conversación en un archivo."""
@@ -146,7 +372,7 @@ def generate_new_questions(base_question):
 def export_context(filename):
     """Exporta el contexto de la conversación a un archivo JSON."""
     try:
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open("com/datas/" +filename, 'w', encoding='utf-8') as f:
             json.dump({"context": conversation_context}, f)
         print(f"Contexto exportado a {filename}")
     except Exception as e:
@@ -156,17 +382,30 @@ def import_context(filename):
     """Importa el contexto de una conversación desde un archivo JSON."""
     global conversation_context
     try:
-        with open(filename, 'r', encoding='utf-8') as f:
+        with open("com/datas/" +filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
             conversation_context = data.get("context", "")
         print(f"Contexto importado desde {filename}")
     except Exception as e:
         messagebox.showerror("Error", f"Error importando contexto: {e}")
 
-def search_context(term):
-    """Busca un término en el contexto de la conversación."""
+def search_context(term, load_context=False):
+    """Busca un término en el contexto de la conversación y opcionalmente carga el contexto."""
+    global load
+    global conversation_context
     results = [line for line in conversation_context.splitlines() if term in line]
-    return results if results else ["No se encontraron coincidencias."]
+    if results:
+        print("Resultados de búsqueda:")
+        for line in results:
+            print(" -", line)
+        if load_context:
+            load = "\n".join(results)
+            print("Contexto cargado.")
+    else:
+        print("No se encontraron coincidencias.")
+    return results
+
+
 
 # Nuevo: Cargar archivo de configuración JSON
 def load_config(config_file):
@@ -215,7 +454,8 @@ def toggle_autosave(enable=True):
 # Función para manejar los argumentos
 def main(args):
     """Función principal que maneja los argumentos de entrada para generar respuestas del modelo."""
-    global model, conversation_context, load, last_response, topic
+    global model, conversation_context, load, last_response, topic, API_KEY
+
 
     # Si no se envían comandos, se asume que se envía una pregunta de texto.
     if not args[0].startswith("--"):
@@ -318,17 +558,35 @@ def main(args):
 
 
         elif command == "--li" or command == "--loadimage":
-            if len(args) > 1:
+            textWithImage = "Interpretar imagen"
+            if len(args) > 2:
+                textWithImage = " ".join(args[2:])
+            if len(args) > 1 and args[1] == "fd": # Si el segundo argumento es "fd" 
+                # Abrir File Dialog para seleccionar la imagen
+                image_path = filedialog.askopenfilename(
+                    initialdir=".",
+                    title="Seleccionar imagen",
+                    filetypes=(("Imágenes", "*.jpg *.jpeg *.png *.gif"), ("Todos los archivos", "*.*"))
+                )
+                if image_path: # Si se seleccionó una imagen
+                    generated_text = generate_with_image(image_path,textWithImage)
+                    if generated_text:
+                        conversation_context += f"{textWithImage} : {generated_text}\n"
+                        print(" \n→", generated_text)
+                else:
+                    messagebox.showinfo("Información", "No se seleccionó ninguna imagen.")
+            elif len(args) > 1:
+                textWithImage += ""
                 image_path = args[1]
                 if is_file(image_path):
-                    generated_text = generate_with_image(image_path)
+                    generated_text = generate_with_image(image_path,textWithImage)
                     if generated_text:
-                        conversation_context += f"AI: {generated_text}\n"
+                        conversation_context += f"{textWithImage} : {generated_text}\n"
                         print(" \n→", generated_text)
                 elif image_path.startswith(('http://', 'https://')):
-                    generated_text = generate_with_image(image_path)
+                    generated_text = generate_with_image(image_path,textWithImage)
                     if generated_text:
-                        conversation_context += f"AI: {generated_text}\n"
+                        conversation_context += f"{textWithImage} : {generated_text}\n"
                         print(" \n→", generated_text)
                 else:
                     messagebox.showerror("Error", "Imagen no encontrada o no especificada.")
@@ -343,6 +601,26 @@ def main(args):
             else:
                 messagebox.showinfo("Información", "No hay texto para mostrar.")
             return
+            
+        elif command == "--ss" or command == "--screenshot":
+            screen_shot()
+            return            
+            
+            
+        elif command == "--sla" or command == "--showlastanswer":
+            if conversation_context:
+                show_text_window(last_response)
+            else:
+                messagebox.showinfo("Información", "No hay texto para mostrar.")
+            return
+            
+        elif command == "--la" or command == "--loadanswer":
+            if conversation_context:
+                load = last_response
+                print("Cargada última respuesta")
+            else:
+                messagebox.showinfo("Información", "No hay información (L 486) para mostrar.")
+            return            
 
         elif command == "--sav" or command == "--saveload":
             filename = "com/datas/saveload.gemini"  # Nombre por defecto
@@ -360,7 +638,11 @@ def main(args):
             return
 
         elif command == "--sa" or command == "--saveanswer":
-            save_answer()
+            if len(args) > 1:
+                filename = f"{args[1]}"  # Nombre personalizado
+            else:
+                filename=""
+            save_answer(filename)
             return
 
         elif command == "--sc" or command == "--savecontext":
@@ -441,14 +723,22 @@ def main(args):
             return
 
         elif command == "--s" or command == "--search":
-            if len(args) > 1:
-                results = search_context(" ".join(args[1:]))
-                print("Resultados de búsqueda:")
-                for line in results:
-                    print(" -", line)
+            load_context = False
+            term = ""
+            # Eliminamos el --search de los argumentos
+            args.pop(0) 
+            for arg in args:
+                if arg == "--load":
+                    load_context = True
+                else:
+                    term += arg + " "
+            term = term.strip()
+            if term:
+                results = search_context(term, load_context)
             else:
                 messagebox.showerror("Error", "No se especificó término de búsqueda.")
             return
+
 
         elif command == "--st" or command == "--settopic":
             if len(args) > 1:
@@ -458,18 +748,37 @@ def main(args):
                 messagebox.showerror("Error", "No se especificó tema a establecer.")
             return
 
+        elif command == "--di" or command == "--decodeimage":
+            if len(args) > 0:
+                dim = args[1]
+                decode_img(b"{dim}")
+                print("DECODE")
+            return
+
         elif command == "--r" or command == "--reset":
             conversation_context = ""
             load = ""
             last_response = ""
             topic = ""
             print("Todos los valores han sido reseteados.")
-            return            
-
+            return  
+        elif command == "--resetkey":
+            print("keycom")
+            API_KEY = obtener_key_gemini('resetkey')
+            genai.configure(api_key=API_KEY)
+            model = genai.GenerativeModel("gemini-1.5-flash") 
+            return
     except Exception as e:
-        messagebox.showerror("Error", f"Ocurrió un error: {e}")
+        print(f"Error al conectarse a la API: {e}")
+        print("Se pedirá una nueva clave.")
+        if not API_KEY:
+            try:
+                API_KEY = obtener_key_gemini()  # Obtiene una nueva clave
+                genai.configure(api_key=API_KEY)
+                model = genai.GenerativeModel("gemini-1.5-flash")  # Reinicializa el modelo
+            except Exception as e:
+                print("Error API_KEY:",e)
 # Ejecutar el programa
 if __name__ == "__main__":
-    import sys
     main(sys.argv[1:])
 
