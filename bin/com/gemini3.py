@@ -14,7 +14,6 @@ from cryptography.fernet import Fernet
 import webbrowser
 import pyperclip
 import io
-#AIzaSyA_uHSVYv7hmAua65gGbue0wlPZ1pSes-4
 # Ruta del archivo para guardar la clave cifrada
 ruta_archivo_key = "com/datas/gemini_key.enc"
 

@@ -1,5 +1,7 @@
 #!/bin/bash
-
+clear
+reset
+source '/etc/environment'
 # Intervalo de tiempo entre cada ejecución en segundos
 INTERVALO=300
 
@@ -8,7 +10,6 @@ PORCENTAJE_UMBRAL=5
 
 # Memoria libre mínima fija (en MB)
 MEMORIA_MINIMA_FIJA=1024
-
 
 # Configuración de umbrales CPU
 CPU_THRESHOLD=80
@@ -172,8 +173,6 @@ matar_zombies() {
 }
 
 
-
-
 handle_error() {
     local error_message="$1"
     local message="$(date) - $error_message"
@@ -193,7 +192,6 @@ swap_activate
 while true; do
 
 
-    
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Observando CPU..." >> "$LOGFILE"
     check_cpu_usage
@@ -203,13 +201,13 @@ while true; do
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Comprobando Procesos..." >> "$LOGFILE"
     matar_zombies
- 
+
 
     # comprobar memoria
     echo "$(date) - ====================" >> "$LOGFILE"
     echo "$(date) - Comprobando la memoria..." >> "$LOGFILE"
 
- 
+
     # Obtener la memoria total y la memoria libre actual (en MB)
     MEM_TOTAL=$(free -m | awk '/^Mem:/{print $2}')
     MEM_LIBRE=$(free -m | awk '/^Mem:/{print $7}')
@@ -252,4 +250,7 @@ while true; do
     echo "$(date) - Esperando $INTERVALO segundos..." >> "$LOGFILE"
     echo "$(date) - ====================" >> "$LOGFILE"
     sleep $INTERVALO
-done
+done &
+
+tail -f "$LOGFILE"
+

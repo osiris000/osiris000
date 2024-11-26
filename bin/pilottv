@@ -1,7 +1,8 @@
 #!/bin/bash
 # pilottv
+clear
+source '/etc/environment'
 echo "STARTING PILOTTV"
-
 # Variables de configuración
 SCRIPT_NAME="pilottv"
 PREFIX_TV="osiris-pilot-tv"
@@ -127,6 +128,7 @@ kill_process() {
         if is_pid_active "$pid"; then
             echo "No se pudo matar $pid, forzando..."
             sudo kill -9 "$pid"
+            sleep 0.1
         fi
     fi
 }
