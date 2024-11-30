@@ -230,8 +230,10 @@ def video_translate(video_file_name="",prompt=""):
 
     # Create the prompt.
     prompti = "Tu eres gemini-video Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
-    prompti +="\nUsa en formato srt style con fuentes entre 18 y 24."
+    prompti +="\nUsa el formato que permita .srt usando html y styles permitidos con fuentes con rango entre 18 y 24, que el vídeo va a ser procesado por ffmpeg entonces son válidas."
     prompti += "\nUsa emojis para dinamizar la transcripción."
+    prompti +="\ncolorea los emojis y hazlos en tamaños variables dentro del rango." 
+
     if prompt == "":
         prompt = prompti + "\nInstrucciones: Traduce el vídeo al ESPAÑOL"
     else:
@@ -250,26 +252,43 @@ def video_translate(video_file_name="",prompt=""):
     matches = re.findall(pattern, response.text, re.DOTALL)
     if len(matches) == 1:
         subtitulado_out =  code_video_file+".subtitulado.mp4"
-        vtranslate= subtitulado_out + "_translate.srt"
+        vtranslate= subtitulado_out + ".translate.srt"
         with open(vtranslate,"w",encoding='utf-8') as f:
             f.write(matches[0])
 
 
         force_style_sub = "Fontsize=20,Fontcolor=blue@0.2,BackColour=black@0.5,BorderStyle=5"
         force_style_sub = "BackColour=&H50000000,BorderStyle=4,Fontsize=18,FontName=Arial,PrimaryColour=&H00FFFFFF"
+        mode = "fixed" # bg / fixed
+        if mode == "bg":
+            print("""
+            	
+            	#################################################
+                → Se está procesando el vídeo en segundo plano ←
+                #################################################
+            	
+            	""")
+        elif mode == "fixed":
+            print("""
+            	
+            	#################################################
+                → Se está procesando el vídeo. Espere........  ←
+                #################################################
+            	
+            	""")
         obj = {
-        "mode":"fixed",
+        "mode":mode,
         "name":None,
         "com":["/usr/bin/ffmpeg","-y","-loglevel","quiet","-i",video_file_name,
         "-filter_complex","subtitles="+vtranslate+":force_style='"+force_style_sub+"'",
         "-preset","ultrafast",
         "-c:v","libx264","-c:a","aac",
-        subtitulado_out]
+        subtitulado_out] 
         }
         print("Traduciendo Vídeo...",obj)
-        response_return = generate_response("Tu eres genini-text. Realiza instrucciones solicitadas anteriromente a gemini-text. Acabo de enviar un video a gemini-video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response.text)
+        response_return = generate_response("Tu eres genini-text. Realiza instrucciones solicitadas anteriromente a gemini-text. Acabo de enviar un video a gemini-video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response.text+"\nComando a procesar:\n"+str(obj["com"]))
         print("\n\n",response_return)
-#       print(obj["com"])
+        print(obj["com"])
         osiris2.multiprocess(obj)
         obj = {
         "mode":"bg",
