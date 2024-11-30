@@ -265,7 +265,7 @@ def video_translate(video_file_name="",prompt=""):
         }
         print("Traduciendo Vídeo...",obj)
 #        print(obj["com"])
-        generate_response("Acabo de enviar un video a gemini video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response_text)
+        generate_response("Acabo de enviar un video a gemini video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response.text)
         osiris2.multiprocess(obj)
         obj = {
         "mode":"bg",
