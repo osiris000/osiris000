@@ -229,11 +229,14 @@ def video_translate(video_file_name="",prompt=""):
         raise ValueError(video_file.state.name)
 
     # Create the prompt.
-    prompti = " Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
+    prompti = "Tu eres gemini-video Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
+    prompti +="\nUsa en formato srt style con fuentes entre 18 y 24."
+    prompti += "\nUsa emojis para dinamizar la transcripción."
     if prompt == "":
         prompt = prompti + "\nInstrucciones: Traduce el vídeo al ESPAÑOL"
     else:
         prompt = prompti + "\nIntrucciones complementarias: "+ prompt 
+    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
     # Make the LLM request.
 #   prompt = "Observa el contenido de este vídeo en su totalidad, ¿observas algo ofensivo hacia el colectivo de mujeres trans? expláyate"
     print("Making LLM inference request...\n",prompt)
@@ -264,8 +267,9 @@ def video_translate(video_file_name="",prompt=""):
         subtitulado_out]
         }
         print("Traduciendo Vídeo...",obj)
-#        print(obj["com"])
-        generate_response("Acabo de enviar un video a gemini video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response.text)
+        response_return = generate_response("Tu eres genini-text. Realiza instrucciones solicitadas anteriromente a gemini-text. Acabo de enviar un video a gemini-video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response.text)
+        print("\n\n",response_return)
+#       print(obj["com"])
         osiris2.multiprocess(obj)
         obj = {
         "mode":"bg",
