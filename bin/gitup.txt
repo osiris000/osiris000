@@ -57,6 +57,7 @@ bin/scripts/tmux1
 bin/scripts/freemem
 bin/scripts/performance.sh
 
+
 #inst folder
 bin/install
 
@@ -108,7 +109,7 @@ bin/com/blockchain.py
 bin/com/selecttv.py
 
 
-#bin/com/gemini.py
+bin/com/gemini.py
 bin/com/gemini3.py
 bin/com/desktop.py
 

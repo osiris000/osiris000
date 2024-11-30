@@ -9,14 +9,14 @@ INTERVALO=300
 PORCENTAJE_UMBRAL=5
 
 # Memoria libre mínima fija (en MB)
-MEMORIA_MINIMA_FIJA=1024
+MEMORIA_MINIMA_FIJA=512
 
 # Configuración de umbrales CPU
 CPU_THRESHOLD=80
 
 
 # Archivo de log
-LOGFILE="${OSIRIS000_BIN}/com/datas/freemem.log"
+LOGFILE="${OSIRIS000_BIN}/com/datas/fr33m3m.log"
 
 echo "FREEMEM LOG: $LOGFILE"
 
