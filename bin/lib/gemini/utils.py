@@ -7,9 +7,12 @@ import json
 import requests
 import osiris2
 #import hashlib
-#import subprocess
+import subprocess
 #import google.generativeai as genai
 #import time
+import os
+
+def_image_editor = "lazpaint"
 
 
 def ini():
@@ -222,7 +225,7 @@ def load_image(file_path):
                     stderr=subprocess.DEVNULL,       # Redirige la salida de error
                     preexec_fn=os.setpgrp,  # Ejecuta en segundo plano
                 )
-        img.show()  # Muestra la imagen
+#        img.show()  # Muestra la imagen
         return img
     except Exception as e:
         messagebox.showerror("Error", f"Error cargando la imagen {file_path}: {e}")

@@ -88,8 +88,16 @@ def obtener_key_gemini(nkey=""):
 
 
 
+gemini_models = ["gemini-1.5-flash",
+		         "gemini-1.5-flash-8b",
+		         "gemini-1.5-pro"]
+
+
 # Define la clave API (si ya existe)
 API_KEY = os.getenv("GOOGLE_API_KEY")
+
+#Define modelo a usar
+gemini_model = gemini_models[2]
 
 # Si la clave no está disponible, la obtenemos
 if not API_KEY:
@@ -102,7 +110,7 @@ if API_KEY:
 # Configura la API de Gemini
     try:
         genai.configure(api_key=API_KEY)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel(gemini_model)
     except Exception as e:
         print("ERROR API KEY:",e)
 # Inicialización del modelo generativo
@@ -203,45 +211,180 @@ Motes: Sanchinflas, Su Sanchidad, Pinocho.
 
 
 def video_translate(video_file_name="",prompt=""):
-    global personajes
+    global personajes,last_response
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
-        process = subprocess.run(["yt-dlp","-o",code_video_file,video_file_name], capture_output=True, text=True)
+        process = subprocess.run(["yt-dlp","--cookies-from-browser","chrome","-o",code_video_file,video_file_name], capture_output=True, text=True)
+        video_download_url = video_file_name
         video_file_name = code_video_file
         print("Video File:",video_file_name)
+        input_video_info = f"Se ha descargado un vídeo desde: {video_download_url} \n"
+        input_video_info += f"Se ha guardado el vídeo en disco con path: {video_file_name} \n"
     else:
-        video_file_name="com/datas/ffmpeg/anon.mp4"
+#        video_file_name="com/datas/ffmpeg/anon.mp4"
         print("video_file")
-        #vídeo file
+        code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
+        input_video_info = "VIDEO PATH"
         return
+        #vídeo file
+#        return
 
     print(f"Uploading file...")
     video_file = genai.upload_file(path=video_file_name)
     print(f"Completed upload: {video_file.uri}")    
-
+    print('Processing Video.... ', end='')
     while video_file.state.name == "PROCESSING":
-        print('.', end='')
-        time.sleep(1)
+        print('.', end=' ')
         video_file = genai.get_file(video_file.name)
 
     if video_file.state.name == "FAILED":
-        raise ValueError(video_file.state.name)
+        raise ValueError(f"\n{video_file.state.name}\n")
+    else:
+        input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
+
 
     # Create the prompt.
     prompti = "Tu eres gemini-video Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
-    prompti +="\nUsa el formato que permita .srt usando html y styles permitidos con fuentes con rango entre 18 y 24, que el vídeo va a ser procesado por ffmpeg entonces son válidas."
-    prompti += "\nUsa emojis para dinamizar la transcripción."
-    prompti +="\ncolorea los emojis y hazlos en tamaños variables dentro del rango." 
+    prompti += "\n Usa Arial como fuente predeterminada pero puedes usar otras si lo requiere el contexto del video."
+ #   prompti +="\ncolorea los emojis y hazlos en tamaños variables dentro del rango." 
+    prompti +="\nEtiquetas permitidas en el srt <font size=value color=value face=value></font><b></b> usa colores brillantes claros para el texto ajustandolos en formato hexadecimal."
+    prompti += "Transcribe y traduce el audio del video en español si no se especifica otro idioma.  Para cada frase o sección significativa del diálogo, proporciona un subtítulo con una duración máxima de 5 segundos. Si la frase es más larga, divídala en múltiples subtítulos. Asegúrate de que la traducción sea precisa y neutral. Usa emojis que reflejen el tono y el contenido emocional de cada parte del discurso (por ejemplo, 😡 para la ira, 💣 para una explosión, etc.). Evita emojis que puedan resultar inapropiados o que puedan cambiar el significado de la traducción."
+    prompti +="\nUsa el formato que permita .srt usando html y styles permitidos con fuentes con rango entre 17 y 21 si no se especifica otro, que el vídeo va a ser procesado por ffmpeg entonces son válidas."
+
+
+
+
+    prompti = """
+
+
+Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Este vídeo contiene material sensible que puede incluir declaraciones en diferentes idiomas, escenas violentas, imágenes perturbadoras, o momentos de silencio.  Debes traducir todo al español.  Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que reflejen con exactitud el contenido del vídeo sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la objetividad y la neutralidad.
+
+1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al español excepto que se te explicite otro distinto. Si hay secciones sin audio o con audio irrelevante para la traducción (ej: música de fondo, sonidos ambientales), describe brevemente el contenido visual en español.
+
+2. **Generación del archivo .srt:** Genera un archivo .srt que incluya:
+
+    * **Formato SRT:** El archivo debe cumplir estrictamente el formato .srt.
+
+    * **Etiquetas HTML:** Utiliza las siguientes etiquetas HTML dentro de cada línea de texto del subtítulo para controlar el estilo: `<font size="value" color="value" face="value"></font>` y `<b></b>`.
+
+        * **`size`:** El tamaño de la fuente (entre 16 y 22) de forma que si el formato del vídeo es predominante vertical use fuentes más pequeñas y horizontal más grandes.  Utiliza diferentes tamaños para enfatizar ciertas palabras o frases,  manteniendo un equilibrio visual.
+        * **`color`:** El color de la fuente en formato hexadecimal (ej: `#FF0000` para rojo).  Emplea una paleta de colores que sea consistente y que refleje la atmósfera del vídeo, pero evita colores demasiado saturados y oscuros o que distraigan la atención, usa colores claros porque el video se va a montar sobre un faldón oscuro.  Prioriza la legibilidad.
+        * **`face`:** Utiliza fuentes como "Noto Sans", "Dejavu Sans" o Tahoma, manteniendo la coherencia en toda la secuencia.
+        * **`b`:** Utiliza `<b></b>` para texto en negrita de forma estratégica, solo para enfatizar palabras clave o frases importantes.
+        * **Los valores de los atributos en las etiquetas font del subtitulado deben ir entrecomillados.
+
+    * **Estructura:** Cada línea del .srt contendrá la traducción al español. Si hay una sección sin audio o con audio ininteligible, escribe una descripción breve y objetiva en español dentro de las etiquetas HTML. Ejemplo: `<font size=18 color=#808080 face=Arial>Música de fondo</font>` o `<font size=18 color=#808080 face=Arial>Imágenes de destrucción</font>`.
+
+    * **Emojis:** Incluye emojis descriptivos (evitando los ambiguos o inapropiados) en cada línea para reflejar el tono y el contenido emocional. Envuelve los emojis en etiquetas HTML para controlar su estilo y un espacio en blanco entre ellos.
+
+    * **Duración y Espaciado:** La duración máxima de cada subtítulo debe ser de 5 segundos como máximo priorizando entre 2 y 2.5 segundos de intervalo de tiempo de transcripción cuando sea posible para una lectura fluida (importante). El intervalo mínimo entre subtítulos debe ser de 2 segundos y el máximo de 5 segundos.  Si un tramo de vídeo requiere un intervalo mayor a 5 segundos sin traducción, crea una nueva entrada en el archivo .srt con una descripción contextual concisa y objetiva (ej:  "Escena mostrando un convoy militar", "Plano secuencia de una calle desierta") y ajusta la temporización correctamente.
+
+3. **Precisión, Objetividad y Contexto:** Prioriza la precisión en la traducción y la descripción objetiva de las partes sin diálogo.  El objetivo es ofrecer al espectador la información visual y auditiva más precisa posible, evitando interpretaciones o juicios de valor.  Manten la creatividad en el diseño visual, pero siempre subordinada a la objetividad y la veracidad del contenido.
+
+
+**Ejemplo para un vídeo que durase 10 segundos:**
+
+```srt
+1
+00:00:0,500 --> 00:00:3,000
+<font size="19" color="#D2691E" face="Verdana">El portavoz afirma: "Nuestra operación comienza ahora."</font>  <font size=21 color=#F11C00 face=impact>⚔️</font> <font size=20 color=#FF8C00 face=impact>💥</font>
+
+2
+00:00:4,000 --> 00:00:7,000
+<font size="18" color="#808080" face="Dejavu Sans">Imágenes de una explosión. Se observa humo negro.</font>
+
+3
+00:00:7,000 --> 00:00:9,000
+<font size="20" color="#B22222" face="Noto Sans">“El objetivo ha sido alcanzado.”</font> <font size="21" color="#0000FF" face="impact">🎯</font>
+
+```
+
+Instrucciones complementarias:
+
+Usa emojis pero para los emojis si puedes usar distintos colores que expresen su naturaleza, por ejemplo para el emoji de una explosion una fuente roja variable y un tamaño un punto mayor que el texto, y así con todos, juega con eso.
+
+Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo.  Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz.
+
+Debes generar un solo archivo srt
+
+
+"""
+
+
+
+
+    prompti = """
+
+
+
+Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos en idioma español si no se te indica cambiar a otro idioma más adelante para el vídeo que te estoy proporcionando.  El objetivo es crear subtítulos precisos que reflejen con exactitud el contenido de audio del vídeo y sus transcripciones exactas en el tiempo en el archivo srt sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la tradución exacta del audio.  Solo traduce el audio al idioma especificado; no incluyas descripciones del vídeo si no hay audio.
+
+1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al idioma especificado. Si hay secciones sin audio, simplemente omite esa parte en el archivo .srt.
+
+2. **Generación del archivo .srt:** Genera un archivo .srt que incluya:
+
+    * **Formato SRT:** El archivo debe cumplir estrictamente el formato .srt.
+
+    * **Etiquetas HTML:** Utiliza `<font size="value" color="value" face="value"></font>` y `<b></b>`.
+
+        * **`size`:** El tamaño de la fuente (entre 16 y 22). Ajusta el tamaño para una buena legibilidad, considerando la duración de cada subtítulo y la posible presencia de emojis.
+        * **`color`:** El color de la fuente en formato hexadecimal.  Utiliza una paleta de colores consistente y legible sobre un fondo oscuro. Prioriza colores claros y evita la saturación excesiva.
+        * **`face`:** Utiliza "Noto Sans", "Dejavu Sans" o "Tahoma". Mantén la coherencia.
+        * **`b`:** Utiliza `<b></b>` para enfatizar palabras clave o frases importantes.
+
+    * **Estructura:** Cada línea del .srt contendrá la traducción al español del audio.
+
+    * **Emojis:** Incluye emojis descriptivos (evitando los ambiguos o inapropiados) para reflejar el tono y el contenido emocional. Experimenta con diferentes colores y tamaños para los emojis para aumentar el impacto visual.
+
+    * **Duración y Espaciado:** Prioriza la precisión temporal.  Asegúrate de que la duración de cada subtítulo coincida con la duración de la frase hablada. Divide frases largas en varios subtítulos para mantener la sincronización precisa.  Intenta intervalos de  1 a 2 segundos entre subtítulos siempre que sea posible.
+
+
+3. **Precisión, Objetividad y Contexto (solo audio):**  Prioriza la precisión en la traducción. Ofrece al espectador la traducción de audio más precisa posible, evitando interpretaciones o juicios de valor. La creatividad en el diseño visual debe estar subordinada a la objetividad y la veracidad del contenido de audio.
+
+
+Por ejemplo, Si una frase del audio fuere desde el segundo 2 al segundo 5, la transcripción dede de ser visible desde el segundo 2 al 5, las variaciones deben ser mínimas y darse solamente si así se mejorase la fluidez de lectura pero siempre acompasado de la mejor sincronización audio-transcripción en el tiempo que permita una lectura fluida de la transcipción del audio del vídeo con el texto de los subtítulos.
+
+
+Ejemplo (adaptado):
+
+```srt
+1
+00:00:00,000 --> 00:00:02,500
+<font size="19" color="#FFFFE0" face="Noto Sans">Hola a todos, bienvenidos...</font> <font size="21" color="#FFD700">👋</font>
+
+2
+00:00:02,500 --> 00:00:05,000
+<font size="20" color="#F0FFFF" face="Noto Sans"><b>Este es un anuncio importante...</b></font> <font size="20" color="#ADD8E6">📢</font>
+```
+
+
+Instrucciones complementarias:
+
+Debes generar un solo archivo srt.
+
+Usa emojis pero para los emojis si puedes usar distintos colores que expresen su naturaleza, por ejemplo para el emoji de una explosion una fuente roja variable y un tamaño un punto mayor que el texto, y así con todos, juega con eso.
+
+Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo. 
+
+Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz, ello es vital.
+
+Prioriza la concordancia de sincronización exacta  tiempos de audio del vídeo a tiempos de transcipción de texto en el archivo srt.
+
+
+"""
+
+
 
     if prompt == "":
         prompt = prompti + "\nInstrucciones: Traduce el vídeo al ESPAÑOL"
     else:
         prompt = prompti + "\nIntrucciones complementarias: "+ prompt 
-    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
-    # Make the LLM request.
+#    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
+# Make the LLM request.
 #   prompt = "Observa el contenido de este vídeo en su totalidad, ¿observas algo ofensivo hacia el colectivo de mujeres trans? expláyate"
-    print("Making LLM inference request...\n",prompt)
+
+    print("\n Making LLM inference request...\n ",prompt)
     response = model.generate_content([video_file, prompt],
                                   request_options={"timeout": 600})
 
@@ -253,12 +396,13 @@ def video_translate(video_file_name="",prompt=""):
     if len(matches) == 1:
         subtitulado_out =  code_video_file+".subtitulado.mp4"
         vtranslate= subtitulado_out + ".translate.srt"
+        input_video_info += f"Se ha generado correctamente el archivo de subtitulado con path: {vtranslate}\n"
+        input_video_info += f"El contenido del archivo de subtitulado es el siguiente: \n{matches[0]}\n"
         with open(vtranslate,"w",encoding='utf-8') as f:
             f.write(matches[0])
 
-
         force_style_sub = "Fontsize=20,Fontcolor=blue@0.2,BackColour=black@0.5,BorderStyle=5"
-        force_style_sub = "BackColour=&H50000000,BorderStyle=4,Fontsize=18,FontName=Arial,PrimaryColour=&H00FFFFFF"
+        force_style_sub = "Alignament=6,BackColour=&H30000000,BorderStyle=4,Fontsize=18,FontName=Arial,PrimaryColour=&H00FFFFFF"
         mode = "fixed" # bg / fixed
         if mode == "bg":
             print("""
@@ -279,24 +423,70 @@ def video_translate(video_file_name="",prompt=""):
         obj = {
         "mode":mode,
         "name":None,
-        "com":["/usr/bin/ffmpeg","-y","-loglevel","quiet","-i",video_file_name,
-        "-filter_complex","subtitles="+vtranslate+":force_style='"+force_style_sub+"'",
+        "com":["/usr/bin/ffmpeg","-y","-loglevel","error","-i",video_file_name,
+        "-af","aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11",
+        "-vf","subtitles="+vtranslate+":force_style='"+force_style_sub+"'",
         "-preset","ultrafast",
-        "-c:v","libx264","-c:a","aac",
+        "-c:v","libx264","-c:a","aac","-crf","21",
         subtitulado_out] 
         }
-        print("Traduciendo Vídeo...",obj)
-        response_return = generate_response("Tu eres genini-text. Realiza instrucciones solicitadas anteriromente a gemini-text. Acabo de enviar un video a gemini-video con este promt:"+prompt+"\n Y esta fue la respuesta:\n"+response.text+"\nComando a procesar:\n"+str(obj["com"]))
-        print("\n\n",response_return)
-        print(obj["com"])
-        osiris2.multiprocess(obj)
+        print("Procesando Vídeo...\n")
+        comando_ffmpeg = obj["com"]
+        print(" ".join(comando_ffmpeg)+"\n")
+
+
+
+
+        try:
+            resultado = subprocess.run(comando_ffmpeg, capture_output=True, text=True)
+            stderr = resultado.stderr
+        # Revisar la salida para detectar errores, incluso si el código de retorno es 0
+            if resultado.returncode != 0:
+                print("Error al ejecutar el comando ffmpeg:")
+                print(f"Código de retorno: {resultado.returncode}")
+                print(f"Salida de error: {stderr}")
+                return False  # Indica fallo
+            else:
+                print("Comando ffmpeg ejecutado correctamente.")
+                print(f"Código de retorno: {resultado.returncode}")
+                task_done = f""" 
+                Se ha descargado un vídeo desde
+
+                """
+                # El comando se ejecutó correctamente
+        except FileNotFoundError:
+            print("Error: El comando ffmpeg no se encontró. Asegúrate de que esté instalado y en tu PATH.")
+            return False
+        except Exception as e:
+            print(f"Ocurrió un error inesperado: {e}")
+            return False
+
+
         obj = {
         "mode":"bg",
         "name":None,
         "com":["dsk/dskv","--video",subtitulado_out]
         }
-        osiris2.multiprocess(obj)
+        o2mp = osiris2.multiprocess(obj)
+
+        print("\nRealizando Inferencia 2 ....")
+        send_text = f"\nTu eres genini-text. Acabo de enviar un video a gemini-video con este promt: {prompt} \nY esta fue la respuesta completa en bruto de Gemini-video antes de procesarla:\n{response.text}\nSe realizaron correctamente las siguientes tareas de procesamiento: {input_video_info}\nSe finalizó el procesamiento ejecutando correctamente el siguiente conmando: {str(comando_ffmpeg)}\nRealiza instrucciones solicitadas anteriormente a gemini-text por gemini-video en caso de existir, si no existen, sólamente realiza una revisión informativa.\n"
+        print(f"\n{send_text}\n")
+        response_return = generate_response(send_text)
+        print("\n\n",response_return)
+#        last_response = " ".join(comando_ffmpeg)
+
+
+    else:
+        print("No se generó el archivo de subtitulos correctamente")
+        return
+
+
+
     # Print the response, r
+
+
+
 
 
 
@@ -502,7 +692,7 @@ def toggle_autosave(enable=True):
 # Función para manejar los argumentos
 def main(args):
     """Función principal que maneja los argumentos de entrada para generar respuestas del modelo."""
-    global model, conversation_context, load, last_response, topic, API_KEY
+    global gemini_model, model, conversation_context, load, last_response, topic, API_KEY
 
 
     # Si no se envían comandos, se asume que se envía una pregunta de texto.
@@ -843,7 +1033,7 @@ def main(args):
             print("keycom")
             API_KEY = obtener_key_gemini('resetkey')
             genai.configure(api_key=API_KEY)
-            model = genai.GenerativeModel("gemini-1.5-flash") 
+            model = genai.GenerativeModel(gemini_model) 
             return
         elif command == "--diagnostic" or command == "--d":
             if len(args) > 1 :
@@ -884,7 +1074,7 @@ def main(args):
             try:
                 API_KEY = obtener_key_gemini()  # Obtiene una nueva clave
                 genai.configure(api_key=API_KEY)
-                model = genai.GenerativeModel("gemini-1.5-flash")  # Reinicializa el modelo
+                model = genai.GenerativeModel(gemini_model)  # Reinicializa el modelo
             except Exception as f:
                 print("Error API_KEY:",f)
                 return
