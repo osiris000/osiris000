@@ -107,7 +107,63 @@ La combinación de Osiris y Gemini crea una experiencia de usuario mucho más co
 * **Control de flujo:** Osiris facilita el control del flujo de la conversación y la gestión de la información, lo que permite crear interacciones más complejas y eficientes con Gemini.
 
 
-En resumen, Osiris actúa como una interfaz avanzada y robusta que aprovecha la potencia de la API de Gemini.  La sinergia entre ambos componentes crea una experiencia de usuario mejorada que facilita la interacción con la IA, facilita la realización de tareas complejas y permite la integración con otras herramientas para una funcionalidad más amplia y eficiente.
+En resumen, Osiris actúa como una interfaz avanzada y robusta que aprovecha la potencia de la API de Gemini.  La sinergia entre ambos componentes crea una experiencia de usuario mejorada que facilita la interacción con la IA, facilita la realización de tareas complejas y permite la integración con otras herramientas para una funcionalidad más amplia y eficiente.   
 
 
 
+AI: He generado el manual que solicitaste.  Aquí está:
+
+
+## Manual de Uso de Osiris para la Generación de Subtítulos (gemini_vide_use_man)
+
+Este manual te guiará, paso a paso, en el uso de Osiris para generar subtítulos para tus vídeos. Está escrito de forma sencilla y no requiere conocimientos técnicos avanzados.
+
+**1. Lo que Necesitas:**
+
+* Osiris instalado en tu computadora.  Asegúrate de tener instaladas las dependencias necesarias.
+* Un vídeo al que quieras añadir subtítulos. Puede ser un archivo local o una URL de un vídeo online.
+* Un poco de tiempo:  La generación de subtítulos puede tardar dependiendo de la longitud del vídeo.
+
+**2. Iniciar Osiris:**
+
+Abre tu terminal y navega hasta el directorio donde se encuentra `com.py` (normalmente `osiris/bin/com`). Ejecuta el comando: `python3 com.py`. Se te pedirá que inicies sesión con una contraseña. Si es tu primera vez, se te solicitará crear una.
+
+**3. Preparar el Vídeo:**
+
+Asegúrate de tener la ruta o la URL del vídeo lista.
+
+**4. Iniciar la Generación de Subtítulos:**
+
+Para comenzar, utiliza el comando `gemini3` en tu terminal. Esto carga la interfaz de Gemini. Luego, introduce el comando: `--tvl "[ruta_o_url_del_video]" "[tu_prompt]"`, remplazando `[ruta_o_url_del_video]` con la ruta al archivo de video o la URL, y `[tu_prompt]` con tus instrucciones para la generación de subtítulos.
+
+**5. Instrucciones (Prompt):**
+
+Un buen *prompt* (instrucciones) mejorará la calidad de los subtítulos.  Aquí tienes algunos ejemplos:
+
+* `"Genera subtítulos en español"`
+* `"Subtítulos en inglés con emojis"`
+* `"Subtítulos con fuentes grandes y colores claros"`
+* `"Subtítulos precisos y concisos"`
+* `"Subtítulos para niños"`
+
+Puedes combinar varias instrucciones en tu *prompt*. Sé lo más específico posible.
+
+**6. El Proceso:**
+
+Verás un mensaje "Uploading file..." seguido de puntos (`.`) que indican el progreso de la subida y el procesamiento del vídeo. Esto puede tardar un tiempo, dependiendo del tamaño del archivo.  Una vez completado, Osiris generará los subtítulos y creará un nuevo vídeo con los subtítulos incorporados, además de un archivo SRT separado.
+
+**7. El Resultado:**
+
+Se crearán dos archivos:
+
+* Un vídeo con subtítulos:  La ubicación dependerá de tu configuración.  Revisa la terminal para ver donde se guardó.
+* Un archivo SRT:  Un archivo de texto con los subtítulos en formato SRT.  También en la ubicación especificada en tu terminal.
+
+**8. Consejos:**
+
+* Sé paciente: El proceso puede tardar, especialmente para vídeos largos.
+* Cuanto más específico sea tu *prompt*, mejores serán los resultados.
+* Experimenta con diferentes *prompts* para encontrar lo que mejor funciona para ti.
+
+
+Este manual proporciona una guía simple para usar la funcionalidad de generación de subtítulos. Para obtener más información y detalles sobre otros comandos de Osiris, consulta el manual técnico completo.
