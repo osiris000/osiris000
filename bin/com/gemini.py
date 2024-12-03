@@ -261,12 +261,13 @@ def video_translate(video_file_name="",prompt=""):
     while video_file.state.name == "PROCESSING":
         conversation_context += " . "
         print('.', end=' ')
+        vfm = video_file.state.name
         video_file = genai.get_file(video_file.name)
-        conversation_context += video_file
+        conversation_context += str(video_file) + "\n" + vfm + "\n"
     if video_file.state.name == "FAILED":
         vfm = video_file.state.name
-        conversation_context += f"\n{str(vfm)}\n"
-        raise ValueError(f"\n{str(vfm)}\n")
+        conversation_context += str(vfm)
+        raise ValueError("ERR IN VIDEO SEND FAILED:\n"+str(vfm)+"\n")
     else:
         input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
 
