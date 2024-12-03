@@ -7,7 +7,7 @@ DEBIAN
 .gitignore
 
 #DOC MD
-MDOC
+DOCS
 
 #README git
 README.md
