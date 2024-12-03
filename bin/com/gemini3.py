@@ -15,9 +15,10 @@ import webbrowser
 import pyperclip
 import io
 import re
-import osiris2
-import lib.widgets as win
-
+import lib.multiprocess as osiris2
+import lib.gemini.utils as win
+import time
+import hashlib
 
 # Ruta del archivo para guardar la clave cifrada
 ruta_archivo_key = "com/datas/gemini_key.enc"
@@ -52,7 +53,7 @@ def obtener_key_gemini(nkey=""):
                 print("Se pedirá una nueva clave.")
 
         # Abrir la página de configuración de las claves de la API de Gemini en el navegador
-        webbrowser.open_new_tab("https://cloud.google.com/docs/authentication/getting-started")
+        webbrowser.open_new_tab("https://ai.google.dev/gemini-api/docs/api-key")
 
         # Esperar a que el usuario configure su clave gratuita
 
@@ -86,9 +87,37 @@ def obtener_key_gemini(nkey=""):
         return key
 
 
+current_path = os.path.abspath(__file__)
+# Extrae el nombre del archivo sin extensión
+version_file = os.path.splitext(os.path.basename(current_path))[0]
+
+
+#Variables globales
+#Contexto inicial
+conversation_context = f"""
+#Interfaz de comunicación con Gemini AI de Google
+#Interfaz Name: Osiris
+#Version: {version_file}
+#Idioma: Español
+Intrucciones:
+Gracias BRO.
+COMIENZA LA CONVERSACIÓN.
+"""
+
+
+gemini_models = ["gemini-1.5-flash",
+		         "gemini-1.5-flash-8b",
+		         "gemini-1.5-pro",
+                 "gemini-1.0-pro",
+                 "text-embedding-004",
+                 "aqa"]
+
 
 # Define la clave API (si ya existe)
 API_KEY = os.getenv("GOOGLE_API_KEY")
+
+#Define modelo a usar
+gemini_model = gemini_models[0]
 
 # Si la clave no está disponible, la obtenemos
 if not API_KEY:
@@ -101,30 +130,37 @@ if API_KEY:
 # Configura la API de Gemini
     try:
         genai.configure(api_key=API_KEY)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel(gemini_model)
     except Exception as e:
         print("ERROR API KEY:",e)
 # Inicialización del modelo generativo
 
 
 
-current_path = os.path.abspath(__file__)
-# Extrae el nombre del archivo sin extensión
-version_file = os.path.splitext(os.path.basename(current_path))[0]
 
-#Variables globales
-#Contexto inicial
-conversation_context = f"""
-#Interfaz de comunicación con Gemini AI de Google
-#Interfaz Name: Osiris
-#Version: {version_file}
-#Idioma: Español
-Intrucciones:
+def select_model():
+    global gemini_models,conversation_context
+    seleccione_modelo = f" Selecciones un modelo a usar:\n"
+    for index, x in enumerate(gemini_models):
+        seleccione_modelo += f"\n ({index}) {x}  "
+    print("\n")
+    sel = f"\n{seleccione_modelo} \n Seleccione Uno: >>> "
+    conversation_context += sel
+    inp = input(sel)
+    conversation_context += inp + "\n"
+
+
+select_model()
+
+
+
+"""
 Contesta siempre en ESPAÑOL aunque se te pregunte en otro idioma y no se te explicite otro a usar.
 Usa emojis para dinamizar las conversaciones.
-Gracias BRO.
-COMIENZA LA CONVERSACIÓN.
+
 """
+
+
 
 load = ""
 last_response = ""
@@ -170,39 +206,290 @@ def decode_img(base64_data):
     image.save('com/datas/ffmpeg/my_image.png')
 
 
-def load_image(file_path):
-    global def_image_editor
-    """Carga y muestra una imagen desde un archivo local o una URL usando PIL."""
-    try:
-        # Verifica si el file_path es una URL
-        if file_path.startswith('http://') or file_path.startswith('https://'):
-            response = requests.get(file_path)
-            response.raise_for_status()  # Lanza un error si la respuesta no es exitosa
-            img = Image.open(BytesIO(response.content))  # Carga la imagen desde el contenido de la respuesta
-        else:
-            img = Image.open(file_path)  # Carga la imagen desde la ruta local
-            process = subprocess.Popen(
-                    [def_image_editor, file_path],
-                    stdin=subprocess.PIPE, # Puedes usar esto para enviar entradas si es necesario
-                    stdout=subprocess.DEVNULL,    
-                    stderr=subprocess.DEVNULL,       # Redirige la salida de error
-                    preexec_fn=os.setpgrp,  # Ejecuta en segundo plano
-                )
-
-
-#        img.show()  # Muestra la imagen
-        return img
-    except Exception as e:
-        messagebox.showerror("Error", f"Error cargando la imagen {file_path}: {e}")
-        return None
-
-
-
 
 
 
 def show_text_window(text):
     win.show_text_window(text)
+
+
+
+personajes = {}
+modos = {}
+
+
+modos["critica"] = """
+Modo de expresión: Crítica ácida.
+Por lo tanto tienes que criticar al personaje señalado.
+"""
+
+personajes["sanchez"] = """
+Personaje a usar: Pedro Sánchez.
+Características del personaje:
+Presidente del gobierno de España.
+Motes: Sanchinflas, Su Sanchidad, Pinocho.
+"""
+
+
+def video_translate(video_file_name="",prompt=""):
+    global personajes,last_response,conversation_context
+    if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
+        print("Descargando video temporal")
+        code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
+        process = subprocess.run(["yt-dlp","--cookies-from-browser","chrome","-o",code_video_file,video_file_name], capture_output=True, text=True)
+        video_download_url = video_file_name
+        video_file_name = code_video_file
+        print("Video File:",video_file_name)
+        input_video_info = f"Se ha descargado un vídeo desde: {video_download_url} \n"
+        input_video_info += f"Se ha guardado el vídeo en disco con path: {video_file_name} \n"
+    else:
+#        video_file_name="com/datas/ffmpeg/anon.mp4"
+        print("video_file")
+        code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
+        input_video_info = "VIDEO PATH"
+        return
+        #vídeo file
+#        return
+    ct = f"Uploading file..."
+    conversation_context += ct
+    print(ct)
+    video_file = genai.upload_file(path=video_file_name)
+    con = video_file.uri
+    ct = f"Completed upload: {con}"
+    print(ct)    
+    print('Processing Video.... ', end='')
+    while video_file.state.name == "PROCESSING":
+        conversation_context += " . "
+        print('.', end=' ')
+        vfm = video_file.state.name
+        video_file = genai.get_file(video_file.name)
+        conversation_context += str(video_file) + "\n" + vfm + "\n"
+    if video_file.state.name == "FAILED":
+        vfm = video_file.state.name
+        conversation_context += str(vfm)
+        raise ValueError("ERR IN VIDEO SEND FAILED:\n"+str(vfm)+"\n")
+    else:
+        input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
+
+
+    # Create the prompt.
+    prompti = "Tu eres gemini-video Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
+    prompti += "\n Usa Arial como fuente predeterminada pero puedes usar otras si lo requiere el contexto del video."
+ #   prompti +="\ncolorea los emojis y hazlos en tamaños variables dentro del rango." 
+    prompti +="\nEtiquetas permitidas en el srt <font size=value color=value face=value></font><b></b> usa colores brillantes claros para el texto ajustandolos en formato hexadecimal."
+    prompti += "Transcribe y traduce el audio del video en español si no se especifica otro idioma.  Para cada frase o sección significativa del diálogo, proporciona un subtítulo con una duración máxima de 5 segundos. Si la frase es más larga, divídala en múltiples subtítulos. Asegúrate de que la traducción sea precisa y neutral. Usa emojis que reflejen el tono y el contenido emocional de cada parte del discurso (por ejemplo, 😡 para la ira, 💣 para una explosión, etc.). Evita emojis que puedan resultar inapropiados o que puedan cambiar el significado de la traducción."
+    prompti +="\nUsa el formato que permita .srt usando html y styles permitidos con fuentes con rango entre 17 y 21 si no se especifica otro, que el vídeo va a ser procesado por ffmpeg entonces son válidas."
+
+
+
+
+    prompt_creative = """
+
+
+Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Debes traducir todo al español si no se te indica otro idioma más adelante.  
+
+Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que reflejen con exactitud el contenido del vídeo sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la objetividad y la neutralidad.
+
+1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al español excepto que se te explicite otro distinto. Si hay secciones sin audio o con audio irrelevante para la traducción (ej: música de fondo, sonidos ambientales), describe brevemente el contenido visual en español.
+
+2. **Generación del archivo .srt:** Genera un archivo .srt que incluya:
+
+    * **Formato SRT:** El archivo debe cumplir estrictamente el formato .srt.
+
+    * **Etiquetas HTML:** Utiliza las siguientes etiquetas HTML dentro de cada línea de texto del subtítulo para controlar el estilo: `<font size="value" color="value" face="value"></font>` y `<b></b>`.
+
+        * **`size`:** El tamaño de la fuente (entre 16 y 22) de forma que si el formato del vídeo es predominante vertical use fuentes más pequeñas y horizontal más grandes.  Utiliza diferentes tamaños para enfatizar ciertas palabras o frases,  manteniendo un equilibrio visual.
+        * **`color`:** El color de la fuente en formato hexadecimal (ej: `#FF0000` para rojo).  Emplea una paleta de colores que sea consistente y que refleje la atmósfera del vídeo, pero evita colores demasiado saturados y oscuros o que distraigan la atención, usa colores claros porque el video se va a montar sobre un faldón oscuro.  Prioriza la legibilidad.
+        * **`face`:** Utiliza fuentes como "Noto Sans", "Dejavu Sans" o Tahoma, manteniendo la coherencia en toda la secuencia.
+        * **`b`:** Utiliza `<b></b>` para texto en negrita de forma estratégica, solo para enfatizar palabras clave o frases importantes.
+        * **Los valores de los atributos en las etiquetas font del subtitulado deben ir entrecomillados.
+
+    * **Estructura:** Cada línea del .srt contendrá la traducción al español. Si hay una sección sin audio o con audio ininteligible, escribe una descripción breve y objetiva en español dentro de las etiquetas HTML. Ejemplo: `<font size=18 color=#808080 face=Arial>Música de fondo</font>` o `<font size=18 color=#808080 face=Arial>Imágenes de destrucción</font>`.
+
+    * **Emojis:** Incluye emojis descriptivos (evitando los ambiguos o inapropiados) en cada línea para reflejar el tono y el contenido emocional. Envuelve los emojis en etiquetas HTML para controlar su estilo y un espacio en blanco entre ellos.
+
+    * **Duración y Espaciado:** La duración máxima de cada subtítulo debe ser de 5 segundos como máximo priorizando entre 2 y 2.5 segundos de intervalo de tiempo de transcripción cuando sea posible para una lectura fluida (importante). El intervalo mínimo entre subtítulos debe ser de 2 segundos y el máximo de 5 segundos.  Si un tramo de vídeo requiere un intervalo mayor a 5 segundos sin traducción, crea una nueva entrada en el archivo .srt con una descripción contextual concisa y objetiva (ej:  "Escena mostrando un convoy militar", "Plano secuencia de una calle desierta") y ajusta la temporización correctamente.
+
+3. **Precisión, Objetividad y Contexto:** Prioriza la precisión en la traducción y la descripción objetiva de las partes sin diálogo.  El objetivo es ofrecer al espectador la información visual y auditiva más precisa posible, evitando interpretaciones o juicios de valor.  Manten la creatividad en el diseño visual, pero siempre subordinada a la objetividad y la veracidad del contenido.
+
+
+**Ejemplo para un vídeo que durase 10 segundos:**
+
+```srt
+1
+00:00:0,500 --> 00:00:3,000
+<font size="19" color="#D2691E" face="Verdana">El portavoz afirma: "Nuestra operación comienza ahora."</font>  <font size=21 color=#F11C00 face=impact>⚔️</font> <font size=20 color=#FF8C00 face=impact>💥</font>
+
+2
+00:00:4,000 --> 00:00:7,000
+<font size="18" color="#808080" face="Dejavu Sans">Imágenes de una explosión. Se observa humo negro.</font>
+
+3
+00:00:7,000 --> 00:00:9,500
+<font size="20" color="#B22222" face="Noto Sans">“El objetivo ha sido alcanzado.”</font> <font size="21" color="#0000FF" face="impact">🎯</font>
+
+```
+
+Instrucciones complementarias:
+
+Usa emojis pero para los emojis si puedes usar distintos colores que expresen su naturaleza, por ejemplo para el emoji de una explosion una fuente roja variable y un tamaño un punto mayor que el texto, y así con todos, juega con eso.
+
+Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo.  Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz.
+
+Debes generar un solo archivo srt
+
+
+"""
+
+
+
+
+    prompti = """
+
+
+Eres Gemini-video. Genera un archivo SRT con subtítulos en el idioma especificado (por defecto, español si no se te indica otro distinto más adelante).
+
+Prioridades:
+
+1. Precisión en la transcripción y traducción.
+2. Sincronización temporal exacta.  **Los subtítulos deben tener una duración de entre 1 y 2 segundos.  En casos excepcionales un subtítulo puede durar hasta 5 segundos máximo. Por lo tanto predomina una longitud de textos medios-cortos.
+
+
+Formato:
+
+* Cumple estrictamente el formato SRT.
+* Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`.  Prioriza colores claros y legibles.  **Utiliza una variedad de colores para hacer los subtítulos más atractivos.**
+* Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual.**  **Proporciona emojis con tamaños entre 1 y 3 unidades mayores al tamaño de fuentes utilizados y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
+* Usa Fuentes de tamaño 18-22 si no se te indican otras más adelante.
+Ejemplo:
+
+```srt
+1
+00:00:00,500 --> 00:00:02,000
+<font size="19" color="#D2691E" face="Noto Sans">El portavoz afirma:</font>
+2
+00:00:02,000 --> 00:00:03,500
+<font size="21" color="#FFA500" face="Noto Sans">"Nuestra operación comienza ahora."</font>  <font size=24 color=#F11C00 face=impact>⚔️</font> <font size=28 color=#FF8C00 face=impact>💥</font>
+```
+
+Debes generar solamente 1 archivo SRT. SÓLO UNO.
+
+
+"""
+
+
+
+    prompti = prompt_creative
+
+
+    if prompt == "":
+        prompt = prompti 
+    else:
+        prompt = prompti + prompt 
+#    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
+# Make the LLM request.
+#   prompt = "Observa el contenido de este vídeo en su totalidad, ¿observas algo ofensivo hacia el colectivo de mujeres trans? expláyate"
+
+    print("\n Making LLM inference request...\n ",prompt)
+    response = model.generate_content([video_file, prompt],
+                                  request_options={"timeout": 600})
+
+#
+    print(response.text)
+#    return
+    pattern = r"```srt\n(.*?)\n```"
+    matches = re.findall(pattern, response.text, re.DOTALL)
+    if len(matches) == 1:
+        subtitulado_out =  code_video_file+".subtitulado.mp4"
+        vtranslate= subtitulado_out + ".translate.srt"
+        input_video_info += f"Se ha generado correctamente el archivo de subtitulado con path: {vtranslate}\n"
+        input_video_info += f"El contenido del archivo de subtitulado es el siguiente: \n{matches[0]}\n"
+        with open(vtranslate,"w",encoding='utf-8') as f:
+            f.write(matches[0])
+
+        force_style_sub = "Fontsize=20,Fontcolor=blue@0.2,BackColour=black@0.5,BorderStyle=5"
+        force_style_sub = "Alignament=6,BackColour=&H30000000,BorderStyle=4,Fontsize=18,FontName=Arial,PrimaryColour=&H00FFFFFF"
+        mode = "fixed" # bg / fixed
+        if mode == "bg":
+            print("""
+            	
+            	#################################################
+                → Se está procesando el vídeo en segundo plano ←
+                #################################################
+            	
+            	""")
+        elif mode == "fixed":
+            print("""
+            	
+            	#################################################
+                → Se está procesando el vídeo. Espere........  ←
+                #################################################
+            	
+            	""")
+        obj = {
+        "mode":mode,
+        "name":None,
+        "com":["/usr/bin/ffmpeg","-y","-loglevel","error","-i",video_file_name,
+        "-af","aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11",
+        "-vf","subtitles="+vtranslate+":force_style='"+force_style_sub+"'",
+        "-preset","ultrafast",
+        "-c:v","libx264","-c:a","aac","-crf","21",
+        subtitulado_out] 
+        }
+        print("Procesando Vídeo...\n")
+        comando_ffmpeg = obj["com"]
+        print(" ".join(comando_ffmpeg)+"\n")
+
+
+
+
+        try:
+            resultado = subprocess.run(comando_ffmpeg, capture_output=True, text=True)
+            stderr = resultado.stderr
+        # Revisar la salida para detectar errores, incluso si el código de retorno es 0
+            if resultado.returncode != 0:
+                print("Error al ejecutar el comando ffmpeg:")
+                print(f"Código de retorno: {resultado.returncode}")
+                print(f"Salida de error: {stderr}")
+                return False  # Indica fallo
+            else:
+                print("Comando ffmpeg ejecutado correctamente.")
+                print(f"Código de retorno: {resultado.returncode}")
+                task_done = f""" 
+                Se ha descargado un vídeo desde
+
+                """
+                # El comando se ejecutó correctamente
+        except FileNotFoundError:
+            print("Error: El comando ffmpeg no se encontró. Asegúrate de que esté instalado y en tu PATH.")
+            return False
+        except Exception as e:
+            print(f"Ocurrió un error inesperado: {e}")
+            return False
+
+
+        obj = {
+        "mode":"bg",
+        "name":None,
+        "com":["dsk/dskv","--video",subtitulado_out]
+        }
+        o2mp = osiris2.multiprocess(obj)
+
+        print("\nRealizando Inferencia 2 ....")
+        send_text = f"\nTu eres genini-text. Acabo de enviar un video a gemini-video con este promt: {prompt} \nY esta fue la respuesta completa en bruto de Gemini-video antes de procesarla:\n{response.text}\nSe realizaron correctamente las siguientes tareas de procesamiento: {input_video_info}\nSe finalizó el procesamiento ejecutando correctamente el siguiente conmando: {str(comando_ffmpeg)}\nRealiza instrucciones solicitadas anteriormente a gemini-text por gemini-video en caso de existir, si no existen, sólamente realiza una revisión informativa.\n"
+        print(f"\n{send_text}\n")
+        response_return = generate_response(send_text)
+        print("\n\n",response_return)
+#        last_response = " ".join(comando_ffmpeg)
+
+
+    else:
+        print("No se generó el archivo de subtitulos correctamente")
+        return
+
+
+
+    # Print the response, r
 
 
 
@@ -268,7 +555,7 @@ def generate_with_image(image_path,ask):
     global last_response
     """Genera texto a partir de una imagen usando la API de Gemini."""
 
-    image = load_image(image_path)
+    image = win.load_image(image_path)
     if image:
          # Generar contenido con la imagen usando la API
 #        global conversation_context
@@ -341,25 +628,10 @@ def generate_new_questions(base_question):
         f"¿Cuáles son las implicaciones de {base_question}?"
     ]
 
-def export_context(filename):
-    """Exporta el contexto de la conversación a un archivo JSON."""
-    try:
-        with open("com/datas/" +filename, 'w', encoding='utf-8') as f:
-            json.dump({"context": conversation_context}, f)
-        print(f"Contexto exportado a {filename}")
-    except Exception as e:
-        messagebox.showerror("Error", f"Error exportando contexto: {e}")
 
-def import_context(filename):
-    """Importa el contexto de una conversación desde un archivo JSON."""
-    global conversation_context
-    try:
-        with open("com/datas/" +filename, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            conversation_context = data.get("context", "")
-        print(f"Contexto importado desde {filename}")
-    except Exception as e:
-        messagebox.showerror("Error", f"Error importando contexto: {e}")
+
+
+
 
 def search_context(term, load_context=False):
     """Busca un término en el contexto de la conversación y opcionalmente carga el contexto."""
@@ -426,7 +698,7 @@ def toggle_autosave(enable=True):
 # Función para manejar los argumentos
 def main(args):
     """Función principal que maneja los argumentos de entrada para generar respuestas del modelo."""
-    global model, conversation_context, load, last_response, topic, API_KEY
+    global gemini_model, model, conversation_context, load, last_response, topic, API_KEY
 
 
     # Si no se envían comandos, se asume que se envía una pregunta de texto.
@@ -470,7 +742,14 @@ def main(args):
 
         # Verificar el primer argumento
         command = args[0]
-        
+        if command == "--nmodel":
+            sm = "\nseleccione modelo nuevo\n"
+            conversation_context += sm
+            select_model()
+            ns = "\n NEW MODEL WAS SELECTED \n "
+            main(ns)
+            print(sm + ns)
+            return
         # Usar el comando corto si está disponible
         if command in commands_map:
             command = commands_map[command]
@@ -682,14 +961,14 @@ def main(args):
 
         elif command == "--exp" or command == "--export":
             if len(args) > 1:
-                export_context(args[1])
+                win.export_context(args[1],conversation_context)
             else:
                 messagebox.showerror("Error", "No se especificó nombre para exportar.")
             return
 
         elif command == "--imp" or command == "--import":
             if len(args) > 1:
-                import_context(args[1])
+               conversation_context = win.import_context(args[1])
             else:
                 messagebox.showerror("Error", "No se especificó nombre para importar.")
             return
@@ -723,6 +1002,7 @@ def main(args):
         elif command == "--dialog":
             dtext = win.dialog_window()
             if dtext != "":
+                print(" → ",dtext)
                 response_text = generate_response(dtext)
                 print(" → ",response_text)
             else:
@@ -736,6 +1016,25 @@ def main(args):
                 print("DECODE")
             return
 
+
+        elif command == "--tvl" or command == "--tvideol":
+            if len(args) > 2:
+                prompt = " ".join(args[2:])
+            else:
+                prompt = ""
+            if len(args) > 1:
+                print("Procesando....")
+#                return
+
+                video_translate(args[1],prompt)
+
+            else:
+                print("Es necesario parametro de video")
+#            send_video()
+            print("---FIN VIDEO ----")
+            return  
+
+
         elif command == "--r" or command == "--reset":
             conversation_context = ""
             load = ""
@@ -747,7 +1046,7 @@ def main(args):
             print("keycom")
             API_KEY = obtener_key_gemini('resetkey')
             genai.configure(api_key=API_KEY)
-            model = genai.GenerativeModel("gemini-1.5-flash") 
+            model = genai.GenerativeModel(gemini_model) 
             return
         elif command == "--diagnostic" or command == "--d":
             if len(args) > 1 :
@@ -788,12 +1087,19 @@ def main(args):
             try:
                 API_KEY = obtener_key_gemini()  # Obtiene una nueva clave
                 genai.configure(api_key=API_KEY)
-                model = genai.GenerativeModel("gemini-1.5-flash")  # Reinicializa el modelo
+                model = genai.GenerativeModel(gemini_model)  # Reinicializa el modelo
             except Exception as f:
                 print("Error API_KEY:",f)
                 return
         print("Error:",e)
 # Ejecutar el programa
+init = 0
+HELO = "HELO START"
+main(HELO)
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    init = init + 1
+    if init > 1:
+        HELO = ""
+
+    main(sys.argv[1:] + HELO )
 
