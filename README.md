@@ -6,7 +6,7 @@ Osiris es una herramienta poderosa que te permite interactuar con una inteligenc
 
 * **Instalación (Si es necesario):**  Sigue las instrucciones de instalación que vienen con Osiris.  Necesitarás una conexión a internet para que funcione correctamente.
 * **Inicio de Sesión:** Al iniciar Osiris, se te pedirá una contraseña.  Si es tu primera vez, crea una.  Esta contraseña protege tu acceso a Osiris y tus datos.  Si olvidas tu contraseña, ¡no te preocupes! Osiris tiene un sistema de recuperación de contraseña.
-* **La Interfaz Principal:**  Verás un símbolo `>` en tu pantalla.  Aquí es donde escribirás tus instrucciones para Osiris.
+* **La Interfaz Principal:**  Verás un símbolo `>>>` en tu pantalla.  Aquí es donde escribirás tus instrucciones para Osiris.
 
 **2. Interactuando con la IA (Gemini):**
 
