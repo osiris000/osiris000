@@ -213,8 +213,11 @@ def handle_command(args):
     elif len(args) > 1 and args[1] == "--edit":
         edit_command(args[0])
     else:
-        if len(args) > 1 and args[1] == "--help" and args[0] in valid_commands:
-            print(fhelp.fhelp(args[0]))
+        if len(args) > 1 and args[1] == "--help":
+            try:
+                print(fhelp.fhelp(args[0]))
+            except Exception as e:
+                print("No existe HELP para el comando: "+ args[0])
         else:
             execute_command(args)
 
