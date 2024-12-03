@@ -1,151 +1,46 @@
-## Manual de Osiris: Interfaz de Línea de Comandos para la Gestión de Módulos y Gemini AI
+## Manual de Osiris: Tu Asistente Personal Inteligente (Versión Explicativa)
 
-Osiris es una interfaz de línea de comandos (CLI) que facilita la interacción con diferentes módulos y la API de Gemini de Google.  Su arquitectura modular permite la carga y ejecución dinámica de comandos, la gestión eficiente de recursos y una experiencia de usuario simplificada.
+Osiris es una herramienta poderosa que te permite interactuar con una inteligencia artificial avanzada (IA) llamada Gemini y realizar otras tareas en tu computadora.  Imagina que Osiris es tu asistente personal, siempre listo para ayudarte con tus tareas, desde traducir textos hasta crear subtítulos para videos.  Este manual te guiará a través de su uso de forma sencilla y amigable.
 
-**I. Requisitos Previos:**
+**1. Primeros Pasos:**
 
-* Python 3.x instalado con las siguientes dependencias: `google-generativeai`, `Pillow`, `tkinter`, `requests`, `cryptography`, `yt-dlp`, `ffmpeg`, `pickle`, `readline`.  Puedes instalarlas con `pip install -r requirements.txt` (asumiendo que existe un archivo `requirements.txt` con las dependencias).
-* Una clave API válida para Google Gemini AI.  El script te guiará para configurarla de forma segura.
-* Los módulos de comandos deben estar ubicados en la carpeta `osiris/bin/com`. Cada módulo debe contener una función `main` que recibe una lista de argumentos como parámetro único.
-* (Opcional) El programa `dsk/dskv` para la previsualización de vídeos (si se utiliza la opción `--tvl`).
+* **Instalación (Si es necesario):**  Sigue las instrucciones de instalación que vienen con Osiris.  Necesitarás una conexión a internet para que funcione correctamente.
+* **Inicio de Sesión:** Al iniciar Osiris, se te pedirá una contraseña.  Si es tu primera vez, crea una.  Esta contraseña protege tu acceso a Osiris y tus datos.  Si olvidas tu contraseña, ¡no te preocupes! Osiris tiene un sistema de recuperación de contraseña.
+* **La Interfaz Principal:**  Verás un símbolo `>` en tu pantalla.  Aquí es donde escribirás tus instrucciones para Osiris.
 
+**2. Interactuando con la IA (Gemini):**
 
-**II. Ejecución e Inicialización:**
+Osiris te permite hablar con Gemini, la IA, de varias maneras:
 
-Para ejecutar Osiris, ejecuta `python3 osiris/bin/com/com.py` desde la línea de comandos. La aplicación iniciará un proceso de autenticación.
+* **Preguntando:** Simplemente escribe tus preguntas o peticiones.  Por ejemplo:  "¿Cuál es la capital de Francia?",  "Traduce este texto al inglés", "¿Qué tiempo hará mañana en Madrid?".
+* **Dando Contexto:** Puedes proporcionar información adicional a Gemini para que sus respuestas sean más precisas y relevantes.
+* **Cargando Información:** Puedes cargar archivos de texto para que Gemini los tenga en cuenta.  Imagina que le das a Gemini un documento para que lo lea antes de hacerle una pregunta.
+* **Usando Imágenes:** Puedes dar instrucciones a Gemini usando imágenes.  Por ejemplo: "Describe esta imagen".
+* **Seleccionando el Modelo:** Gemini tiene varios "modelos" para diferentes tipos de tareas.  Osiris te permite elegir el modelo más adecuado para tu necesidad.  Es como elegir la herramienta correcta para un trabajo: un martillo para clavar clavos y un destornillador para tornillos.
 
 
-**III. Autenticación:**
+**3. Otras Tareas que Osiris Puede Realizar:**
 
-Osiris utiliza un sistema de autenticación simple basado en contraseña.
+Además de hablar con Gemini, Osiris puede:
 
-* **Primer Inicio:** Si no existe un archivo de autenticación (`osiris/bin/data/auth_pwd`), se te solicitará crear una contraseña.
-* **Inicio de Sesión:**  Se te pedirá introducir la contraseña.  La contraseña se almacena de forma segura como un hash SHA512.
-* **Restablecimiento de Contraseña:** Si introduces `"Reset Password Key " + <hash_almacenado> + ".SECRET_RECOVER"`, se te permitirá restablecer la contraseña.  `<hash_almacenado>` es el hash de la contraseña que puedes ver en el archivo `osiris/bin/data/auth_pwd`  **Por razones de seguridad, no debes tener la clave secreta ("SECRET_RECOVER") almacenada directamente en el código.**  Considera la posibilidad de usar una variable de entorno.
+* **Generar Subtítulos para Videos:**  Osiris puede ayudarte a crear subtítulos para tus videos, traduciéndolos incluso a diferentes idiomas. Es como tener un traductor y subtitulador automático.
+* **Capturar Capturas de Pantalla:** Puedes pedirle a Osiris que tome una captura de pantalla y se la pase a Gemini para que la analice e interprete.
+* **Gestionar Archivos:** Osiris puede guardar y cargar información para que puedas reanudar una conversación donde la dejaste o almacenar las respuestas importantes.
+* **Ejecutar Comandos de Tu Computadora:** Osiris también puede ejecutar otros comandos de tu computadora.
 
-**IV. Comandos Principales:**
 
-Osiris ofrece comandos para interactuar con la API de Gemini y ejecutar comandos del sistema.
+**4. Consejos Útiles:**
 
+* **Experimenta:** Osiris es una herramienta flexible.  Prueba diferentes comandos y opciones para descubrir todas sus capacidades.
+* **Lee los Mensajes de Error:** Si algo va mal, Osiris te mostrará un mensaje de error.  Lee atentamente el mensaje para entender el problema.
+* **Utiliza la Ayuda:** Si necesitas ayuda, Osiris ofrece opciones de ayuda para cada comando.
 
-**A. Comandos para la Gestión de Módulos:**
+**5. Resumen de Comandos Clave (Simplificado):**
 
-* **`use [comando]`:** Selecciona un comando para facilitar el uso subsecuente. Luego, solo necesitas escribir los argumentos para el comando. El comando actual se muestra en el prompt (ej: `gemini3> `).  Para cancelar la selección de un comando, simplemente escribe `use`.
+* **Preguntar:**  Escribe tu pregunta o solicitud directamente.
+* **Cargar Archivo:**  Usa "Cargar Archivo" para dar contexto adicional a Gemini.
+* **Usar Imagen:**  Usa "Usar Imagen" para pedirle a Gemini que analice una imagen.
+* **Guardar Información:** Guarda tu conversación o respuestas importantes para usarlas más tarde.
+* **Obtener Ayuda:**  Osiris te ayudará si necesitas ayuda con un comando específico.
 
-* **`mount [comando]`:**  Añade un nuevo comando a la lista de comandos disponibles. El archivo del comando (ej: `mi_comando.py`) debe existir en la carpeta `osiris/bin/com` y contener una función `main` que reciba una lista como parámetro.
-
-* **`[comando] --reset`:** Elimina un comando de la memoria.  Libera los recursos asociados con el comando previamente montado.
-
-* **`[comando] --edit`:** Abre el archivo del comando especificado en el editor de texto configurado (por defecto, `subl`).
-
-* **`reset`:**  Reinicia el prompt. Utilízalo si el cursor se comporta de forma inesperada.
-
-* **`--reload`:** Recarga el entorno de comandos.  Utilízalo después de instalar o actualizar un módulo.
-
-
-**B. Comandos para Gemini AI:**
-
-* **`--nmodel`:** Permite seleccionar un modelo Gemini.  Tras ejecutar este comando, la interfaz te pedirá que selecciones un modelo de una lista predefinida.
-
-* **`--load [ruta_archivo]` (-l):** Carga el contenido de un archivo de texto para usarlo como contexto en las interacciones con Gemini.
-
-* **`--addload [texto]` (-al):** Agrega el contenido de un archivo cargado con `--load` a la entrada del usuario.
-
-* **`--showload` (-sl):** Muestra el contenido del archivo cargado con `--load`.
-
-* **`--loadimage [ruta_imagen]` (-li):** Envía una imagen al modelo de Gemini para generar una respuesta. Puedes usar `--li --fd` para abrir un diálogo de selección de archivos.
-
-* **`--showwin` (-sw):** Muestra el contexto de la conversación en una ventana.
-
-* **`--saveload [nombre_archivo]` (-sav):** Guarda el contexto de la conversación en un archivo.
-
-* **`--saverequest [texto]` (-sr):** Guarda la solicitud actual en un archivo.
-
-* **`--saveanswer [nombre_archivo]` (-sa):** Guarda la última respuesta generada en un archivo.
-
-* **`--savecontext` (-sc):** Guarda el contexto actual de la conversación.
-
-* **`--autosave` (-as):** Activa o desactiva el guardado automático del contexto y las respuestas.
-
-* **`--newquestions [pregunta]` (-nq):** Genera preguntas relacionadas con una pregunta base.
-
-* **`--send [texto]` (-s):** Envía una solicitud de texto a Gemini.
-
-* **`--listfiles` (-ls):** Lista los archivos en el directorio `osiris/bin/data`.
-
-* **`--clearcontext` (-cc):** Limpia el contexto actual de la conversación.
-
-* **`--loadselect [ruta_archivo]` (-lsel):** Carga un contexto seleccionado desde un archivo.
-
-* **`--loadmultiple [archivo1] [archivo2] ...` (-lm):** Carga múltiples contextos desde archivos.
-
-* **`--info` (-i):** Muestra información sobre el modelo Gemini y el contexto actual.
-
-* **`--export [nombre_archivo]` (-exp):** Exporta el contexto actual o genera un manual de uso.  Ej: `--exp man` genera un manual de usuario.
-
-* **`--import [nombre_archivo]` (-imp):** Importa un contexto de un archivo.
-
-* **`--search [término]` (-s):** Busca un término en el contexto actual. Usa `--search --load [término]` para cargar el contexto encontrado.
-
-* **`--settopic [tema]` (-st):** Establece un tema para la conversación.
-
-* **`--resetkey`:**  Reinicia la clave API de Gemini.
-
-* **`--loadconfig [ruta_archivo]` (-lc):** Carga la configuración desde un archivo JSON.
-
-* **`--log [texto]`:** Registra interacciones en un archivo de log.
-
-* **`--setparams [param1=valor1] [param2=valor2] ...` (-sp):** Configura parámetros del modelo Gemini (ej: `--setparams temperature=0.5 max_tokens=150`).
-
-* **`--toggleautosave [on/off]` (-ta):** Activa o desactiva el guardado automático.
-
-
-**C. Comandos para Procesamiento de Medios:**
-
-* **`--screenshot` (-ss):** Captura una captura de pantalla y la envía a Gemini para su interpretación.
-
-* **`--showlastanswer` (-sla):** Muestra la última respuesta generada por Gemini.
-
-* **`--loadanswer` (-la):** Carga la última respuesta generada por Gemini en el contexto actual.
-
-* **`--tvideol [ruta_o_url_video] [prompt]` (-tvl):** Procesa un vídeo, generando subtítulos SRT y un vídeo con subtítulos.
-
-
-**D. Comandos de Diagnóstico:**
-
-* **`--diagnostic [server/system/memory]` (-d):** Ejecuta comandos de diagnostico del sistema.
-
-
-**E. Comandos de Salida:**
-
-* **`exit`:** Sale del programa.  Se pedirá confirmación antes de salir.
-
-**V. Manejo de Comandos Externos:**
-
-Osiris puede ejecutar comandos externos del sistema operativo.  Para esto, simplemente escribe el comando como lo harías en tu terminal.  El comando se ejecutará en un pseudoterminal (`pty`), lo que permite la interacción interactiva.
-
-**VI.  Manejo de Errores:**
-
-Osiris incluye un sistema básico para detectar y mostrar errores.  Los mensajes de error se mostrarán en la consola.
-
-**VII.  Generación de Manual ( `--exp man` ):**
-
-El comando `--exp man` genera un archivo de texto llamado `man.txt` (o el nombre que especifiques) que contiene un manual de usuario actualizado dinámicamente.  Este manual se genera analizando el código fuente de los módulos, la configuración y la documentación.  Asegúrate de tener permisos de escritura en la carpeta donde se genera el archivo.
-
-
-**VIII.  Consideraciones:**
-
-* La funcionalidad de Osiris depende de la existencia y correcta configuración de los módulos en la carpeta `osiris/bin/com`.
-* Se recomienda revisar y asegurar la seguridad de la configuración del sistema de autenticación.
-
-
-Este manual proporciona una visión general de la interfaz Osiris. Para más detalles y ejemplos de uso, consulta el código fuente.  Puedes obtener ayuda sobre comandos individuales usando el argumento `--help` (ej: `gemini3 --help`).
-
-
-
-
- ☕️ https://www.buymeacoffee.com/osiris000   
-
-<img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=40 height=40>&nbsp;&nbsp;<b>bc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
-
-<b>AMM 2024</b> [LICENCIA](LICENSE.md)  
+Este manual simplificado proporciona una visión general amigable para el usuario de la interfaz Osiris.  Para funciones y comandos más avanzados, consulta el manual técnico.
