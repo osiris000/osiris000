@@ -87,17 +87,37 @@ def obtener_key_gemini(nkey=""):
         return key
 
 
+current_path = os.path.abspath(__file__)
+# Extrae el nombre del archivo sin extensión
+version_file = os.path.splitext(os.path.basename(current_path))[0]
+
+
+#Variables globales
+#Contexto inicial
+conversation_context = f"""
+#Interfaz de comunicación con Gemini AI de Google
+#Interfaz Name: Osiris
+#Version: {version_file}
+#Idioma: Español
+Intrucciones:
+Gracias BRO.
+COMIENZA LA CONVERSACIÓN.
+"""
+
 
 gemini_models = ["gemini-1.5-flash",
 		         "gemini-1.5-flash-8b",
-		         "gemini-1.5-pro"]
+		         "gemini-1.5-pro",
+                 "gemini-1.0-pro",
+                 "text-embedding-004",
+                 "aqa"]
 
 
 # Define la clave API (si ya existe)
 API_KEY = os.getenv("GOOGLE_API_KEY")
 
 #Define modelo a usar
-gemini_model = gemini_models[2]
+gemini_model = gemini_models[0]
 
 # Si la clave no está disponible, la obtenemos
 if not API_KEY:
@@ -117,9 +137,20 @@ if API_KEY:
 
 
 
-current_path = os.path.abspath(__file__)
-# Extrae el nombre del archivo sin extensión
-version_file = os.path.splitext(os.path.basename(current_path))[0]
+
+def select_model():
+    global gemini_models,conversation_context
+    seleccione_modelo = f" Selecciones un modelo a usar:\n"
+    for index, x in enumerate(gemini_models):
+        seleccione_modelo += f"\n ({index}) {x}  "
+    print("\n")
+    sel = f"\n{seleccione_modelo} \n Seleccione Uno: >>> "
+    conversation_context += sel
+    inp = input(sel)
+    conversation_context += inp + "\n"
+
+
+select_model()
 
 
 
@@ -129,17 +160,7 @@ Usa emojis para dinamizar las conversaciones.
 
 """
 
-#Variables globales
-#Contexto inicial
-conversation_context = f"""
-#Interfaz de comunicación con Gemini AI de Google
-#Interfaz Name: Osiris
-#Version: {version_file}
-#Idioma: Español
-Intrucciones:
-Gracias BRO.
-COMIENZA LA CONVERSACIÓN.
-"""
+
 
 load = ""
 last_response = ""
@@ -211,7 +232,7 @@ Motes: Sanchinflas, Su Sanchidad, Pinocho.
 
 
 def video_translate(video_file_name="",prompt=""):
-    global personajes,last_response
+    global personajes,last_response,conversation_context
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
@@ -229,17 +250,23 @@ def video_translate(video_file_name="",prompt=""):
         return
         #vídeo file
 #        return
-
-    print(f"Uploading file...")
+    ct = f"Uploading file..."
+    conversation_context += ct
+    print(ct)
     video_file = genai.upload_file(path=video_file_name)
-    print(f"Completed upload: {video_file.uri}")    
+    con = video_file.uri
+    ct = f"Completed upload: {con}"
+    print(ct)    
     print('Processing Video.... ', end='')
     while video_file.state.name == "PROCESSING":
+        conversation_context += " . "
         print('.', end=' ')
         video_file = genai.get_file(video_file.name)
-
+        conversation_context += video_file
     if video_file.state.name == "FAILED":
-        raise ValueError(f"\n{video_file.state.name}\n")
+        vfm = video_file.state.name
+        conversation_context += f"\n{vfm}\n"
+        raise ValueError(f"\n{vfm}\n")
     else:
         input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
 
@@ -255,10 +282,12 @@ def video_translate(video_file_name="",prompt=""):
 
 
 
-    prompti = """
+    prompti_creative = """
 
 
-Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Este vídeo contiene material sensible que puede incluir declaraciones en diferentes idiomas, escenas violentas, imágenes perturbadoras, o momentos de silencio.  Debes traducir todo al español.  Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que reflejen con exactitud el contenido del vídeo sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la objetividad y la neutralidad.
+Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Debes traducir todo al español si no se te indica otro idioma más adelante.  
+
+Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que reflejen con exactitud el contenido del vídeo sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la objetividad y la neutralidad.
 
 1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al español excepto que se te explicite otro distinto. Si hay secciones sin audio o con audio irrelevante para la traducción (ej: música de fondo, sonidos ambientales), describe brevemente el contenido visual en español.
 
@@ -295,7 +324,7 @@ Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para e
 <font size="18" color="#808080" face="Dejavu Sans">Imágenes de una explosión. Se observa humo negro.</font>
 
 3
-00:00:7,000 --> 00:00:9,000
+00:00:7,000 --> 00:00:9,500
 <font size="20" color="#B22222" face="Noto Sans">“El objetivo ha sido alcanzado.”</font> <font size="21" color="#0000FF" face="impact">🎯</font>
 
 ```
@@ -317,59 +346,32 @@ Debes generar un solo archivo srt
     prompti = """
 
 
+Eres Gemini-video. Genera un archivo SRT con subtítulos en el idioma especificado (por defecto, español si no se te indica otro distinto más adelante).
 
-Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos en idioma español si no se te indica cambiar a otro idioma más adelante para el vídeo que te estoy proporcionando.  El objetivo es crear subtítulos precisos que reflejen con exactitud el contenido de audio del vídeo y sus transcripciones exactas en el tiempo en el archivo srt sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la tradución exacta del audio.  Solo traduce el audio al idioma especificado; no incluyas descripciones del vídeo si no hay audio.
+Prioridades:
 
-1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al idioma especificado. Si hay secciones sin audio, simplemente omite esa parte en el archivo .srt.
-
-2. **Generación del archivo .srt:** Genera un archivo .srt que incluya:
-
-    * **Formato SRT:** El archivo debe cumplir estrictamente el formato .srt.
-
-    * **Etiquetas HTML:** Utiliza `<font size="value" color="value" face="value"></font>` y `<b></b>`.
-
-        * **`size`:** El tamaño de la fuente (entre 16 y 22). Ajusta el tamaño para una buena legibilidad, considerando la duración de cada subtítulo y la posible presencia de emojis.
-        * **`color`:** El color de la fuente en formato hexadecimal.  Utiliza una paleta de colores consistente y legible sobre un fondo oscuro. Prioriza colores claros y evita la saturación excesiva.
-        * **`face`:** Utiliza "Noto Sans", "Dejavu Sans" o "Tahoma". Mantén la coherencia.
-        * **`b`:** Utiliza `<b></b>` para enfatizar palabras clave o frases importantes.
-
-    * **Estructura:** Cada línea del .srt contendrá la traducción al español del audio.
-
-    * **Emojis:** Incluye emojis descriptivos (evitando los ambiguos o inapropiados) para reflejar el tono y el contenido emocional. Experimenta con diferentes colores y tamaños para los emojis para aumentar el impacto visual.
-
-    * **Duración y Espaciado:** Prioriza la precisión temporal.  Asegúrate de que la duración de cada subtítulo coincida con la duración de la frase hablada. Divide frases largas en varios subtítulos para mantener la sincronización precisa.  Intenta intervalos de  1 a 2 segundos entre subtítulos siempre que sea posible.
+1. Precisión en la transcripción y traducción.
+2. Sincronización temporal exacta.  **Los subtítulos deben tener una duración de entre 1 y 2 segundos.  En casos excepcionales un subtítulo puede durar hasta 5 segundos máximo. Por lo tanto predomina una longitud de textos medios-cortos.
 
 
-3. **Precisión, Objetividad y Contexto (solo audio):**  Prioriza la precisión en la traducción. Ofrece al espectador la traducción de audio más precisa posible, evitando interpretaciones o juicios de valor. La creatividad en el diseño visual debe estar subordinada a la objetividad y la veracidad del contenido de audio.
+Formato:
 
-
-Por ejemplo, Si una frase del audio fuere desde el segundo 2 al segundo 5, la transcripción dede de ser visible desde el segundo 2 al 5, las variaciones deben ser mínimas y darse solamente si así se mejorase la fluidez de lectura pero siempre acompasado de la mejor sincronización audio-transcripción en el tiempo que permita una lectura fluida de la transcipción del audio del vídeo con el texto de los subtítulos.
-
-
-Ejemplo (adaptado):
+* Cumple estrictamente el formato SRT.
+* Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`.  Prioriza colores claros y legibles.  **Utiliza una variedad de colores para hacer los subtítulos más atractivos.**
+* Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual.**  **Proporciona emojis con tamaños entre 1 y 3 unidades mayores al tamaño de fuentes utilizados y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
+* Usa Fuentes de tamaño 18-22 si no se te indican otras más adelante.
+Ejemplo:
 
 ```srt
 1
-00:00:00,000 --> 00:00:02,500
-<font size="19" color="#FFFFE0" face="Noto Sans">Hola a todos, bienvenidos...</font> <font size="21" color="#FFD700">👋</font>
-
+00:00:00,500 --> 00:00:02,000
+<font size="19" color="#D2691E" face="Noto Sans">El portavoz afirma:</font>
 2
-00:00:02,500 --> 00:00:05,000
-<font size="20" color="#F0FFFF" face="Noto Sans"><b>Este es un anuncio importante...</b></font> <font size="20" color="#ADD8E6">📢</font>
+00:00:02,000 --> 00:00:03,500
+<font size="21" color="#FFA500" face="Noto Sans">"Nuestra operación comienza ahora."</font>  <font size=24 color=#F11C00 face=impact>⚔️</font> <font size=28 color=#FF8C00 face=impact>💥</font>
 ```
 
-
-Instrucciones complementarias:
-
-Debes generar un solo archivo srt.
-
-Usa emojis pero para los emojis si puedes usar distintos colores que expresen su naturaleza, por ejemplo para el emoji de una explosion una fuente roja variable y un tamaño un punto mayor que el texto, y así con todos, juega con eso.
-
-Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo. 
-
-Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz, ello es vital.
-
-Prioriza la concordancia de sincronización exacta  tiempos de audio del vídeo a tiempos de transcipción de texto en el archivo srt.
+Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 
 """
@@ -377,9 +379,9 @@ Prioriza la concordancia de sincronización exacta  tiempos de audio del vídeo 
 
 
     if prompt == "":
-        prompt = prompti + "\nInstrucciones: Traduce el vídeo al ESPAÑOL"
+        prompt = prompti 
     else:
-        prompt = prompti + "\nIntrucciones complementarias: "+ prompt 
+        prompt = prompti + prompt 
 #    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
 # Make the LLM request.
 #   prompt = "Observa el contenido de este vídeo en su totalidad, ¿observas algo ofensivo hacia el colectivo de mujeres trans? expláyate"
@@ -736,7 +738,14 @@ def main(args):
 
         # Verificar el primer argumento
         command = args[0]
-        
+        if command == "--nmodel":
+            sm = "\nseleccione modelo nuevo\n"
+            conversation_context += sm
+            select_model()
+            ns = "\n NEW MODEL WAS SELECTED \n "
+            main(ns)
+            print(sm + ns)
+            return
         # Usar el comando corto si está disponible
         if command in commands_map:
             command = commands_map[command]
@@ -1080,6 +1089,13 @@ def main(args):
                 return
         print("Error:",e)
 # Ejecutar el programa
+init = 0
+HELO = "HELO START"
+main(HELO)
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    init = init + 1
+    if init > 1:
+        HELO = ""
+
+    main(sys.argv[1:] + HELO )
 
