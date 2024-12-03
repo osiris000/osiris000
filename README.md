@@ -53,7 +53,7 @@ Este manual simplificado proporciona una visión general amigable para el usuari
 
  ☕️ https://www.buymeacoffee.com/osiris000   
 
-<img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=40 height=40>&nbsp;&nbsp;<b>bc1qjqerw3u9eamrvnq9edympcnevceveeaxt86zx7</b>  
+<img src="https://www.gifss.com/economia/bitcoin/images/bitcoin-05.gif"  width=40 height=40>&nbsp;&nbsp;<b>(unexpected BTC))</b>  
 
 <b>AMM 2024</b> [LICENCIA](LICENSE.md)  
 
