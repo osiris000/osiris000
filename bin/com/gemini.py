@@ -265,8 +265,8 @@ def video_translate(video_file_name="",prompt=""):
         conversation_context += video_file
     if video_file.state.name == "FAILED":
         vfm = video_file.state.name
-        conversation_context += f"\n{vfm}\n"
-        raise ValueError(f"\n{vfm}\n")
+        conversation_context += f"\n{str(vfm)}\n"
+        raise ValueError(f"\n{str(vfm)}\n")
     else:
         input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
 
@@ -282,7 +282,7 @@ def video_translate(video_file_name="",prompt=""):
 
 
 
-    prompti_creative = """
+    prompt_creative = """
 
 
 Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Debes traducir todo al español si no se te indica otro idioma más adelante.  
@@ -376,6 +376,9 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 """
 
+
+
+    prompti = prompt_creative
 
 
     if prompt == "":
