@@ -266,7 +266,7 @@ def video_translate(video_file_name="",prompt=""):
         conversation_context += str(video_file) + "\n" + vfm + "\n"
     if video_file.state.name == "FAILED":
         vfm = video_file.state.name
-        conversation_context += str(vfm)
+        conversation_context += "ERR IN VIDEO SEND FAILED:\n"+str(vfm)+"\n"
         raise ValueError("ERR IN VIDEO SEND FAILED:\n"+str(vfm)+"\n")
     else:
         input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
@@ -448,13 +448,17 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
             stderr = resultado.stderr
         # Revisar la salida para detectar errores, incluso si el código de retorno es 0
             if resultado.returncode != 0:
-                print("Error al ejecutar el comando ffmpeg:")
-                print(f"Código de retorno: {resultado.returncode}")
-                print(f"Salida de error: {stderr}")
+                e1 = "Error al ejecutar el comando ffmpeg:"
+                e1 += f"Código de retorno: {resultado.returncode}"
+                e1 += f"Salida de error: {stderr}"
+                print(e1)
+                conversation_context += e1
                 return False  # Indica fallo
             else:
-                print("Comando ffmpeg ejecutado correctamente.")
-                print(f"Código de retorno: {resultado.returncode}")
+                e1 = "Comando ffmpeg ejecutado correctamente."
+                e1 += f"Código de retorno: {resultado.returncode}"
+                print(e1)
+                conversation_context += e1
                 task_done = f""" 
                 Se ha descargado un vídeo desde
 
