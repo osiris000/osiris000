@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Este script activa el directorio vrtual"
+echo "Este script activa el directorio virtual"
 
 
 # Asegurarse de que las variables de entorno están definidas

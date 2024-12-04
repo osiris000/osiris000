@@ -11,7 +11,12 @@ check_command_installed osiris-env-sys-vars
 eval . bin/venv.sh
 
 
-check_command_installed /usr/bin/pip-requeriments
+
+echo "Esta opción instala los paquetes pip necesarios para el sistema"
+check_command_installed /usr/bin/pip.requeriments.install
+
+echo "Esta opción actualiza los paquetes pip instalados en el sistema"
+check_command_installed /usr/bin/pip.requeriments.upgrade
 
 check_command_installed /usr/bin/python-pack
 #check_command_installed node-Opack --version

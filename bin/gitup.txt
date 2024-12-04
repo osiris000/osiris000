@@ -47,6 +47,8 @@ bin/venv.sh
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/multiprocess.py
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/__init__.py
 
+#modulos pip inicial
+bin/com/osiris_env/pip.requeriments.txt
 
 
 #scripts obin

@@ -48,7 +48,9 @@ depend apt install whois
 
 #Osiris packs
 
-pip-requeriments pip freeze > bin/bin.requeriments.txt
+pip.requeriments.install . bin/install/installpip.sh 
+
+pip.requeriments.upgrade . bin/install/upgradepip.sh 
 
 
 node-Opack eval . bin/install/node_install.sh
