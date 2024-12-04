@@ -36,4 +36,11 @@ add_env_variables() {
 }
 
 # Ejemplo de uso de la función
-add_env_variables  "OSIRIS000_VENV_PYTHONPATH=/var/www/osiris000/bin/com/osiris_env/lib/python3.9/site-packages" "OSIRIS000_BIN=/var/www/osiris000/bin" "OSIRIS000_BASEPATH=/var/www/osiris000" "OSIRIS000_VENV_NAME=${VENV_NAME}" "OSIRIS000_VENV_PATH=/var/www/osiris000/bin/com/osiris_env" "VENV_ACTIVATE_PATH=/var/www/osiris000/bin/com/osiris_env/bin/activate" "AME_VENV=${VENV_NAME}"
+add_env_variables  "OSIRIS000_VENV_PYTHONPATH=/var/www/osiris000/bin/com/osiris_env/lib/python3.9/site-packages" \
+"OSIRIS000_BIN=/var/www/osiris000/bin" \
+"OSIRIS000_BASEPATH=/var/www/osiris000" \
+"OSIRIS000_VENV_NAME=${VENV_NAME}" \
+"OSIRIS000_VENV_PATH=/var/www/osiris000/bin/com/osiris_env" \
+"VENV_ACTIVATE_PATH=/var/www/osiris000/bin/com/osiris_env/bin/activate" \
+"AME_VENV=${VENV_NAME}" \
+"OSIRIS_PUBLIC_WWW_DIR=/var/www/osiris000/html/app/freedirectory/osiris" 
