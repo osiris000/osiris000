@@ -19,6 +19,9 @@ import lib.multiprocess as osiris2
 import lib.gemini.utils as win
 import time
 import hashlib
+#import datetime
+
+
 
 # Ruta del archivo para guardar la clave cifrada
 ruta_archivo_key = "com/datas/gemini_key.enc"
@@ -99,9 +102,9 @@ conversation_context = f"""
 #Interfaz Name: Osiris
 #Version: {version_file}
 #Idioma: Español
-Intrucciones:
-Gracias BRO.
-COMIENZA LA CONVERSACIÓN.
+Instrucciones: ¡Bienvenido a Osiris!  Usa emojis para dinamizar la conversación.  Escribe /help para ver comandos disponibles.
+\
+
 """
 
 
@@ -140,7 +143,7 @@ if API_KEY:
 
 def select_model():
     global gemini_models,conversation_context
-    seleccione_modelo = f" Selecciones un modelo a usar:\n"
+    seleccione_modelo = f" Seleccione un modelo a usar:\n"
     for index, x in enumerate(gemini_models):
         seleccione_modelo += f"\n ({index}) {x}  "
     print("\n")
@@ -231,6 +234,10 @@ Motes: Sanchinflas, Su Sanchidad, Pinocho.
 """
 
 
+
+
+
+
 def video_translate(video_file_name="",prompt=""):
     global personajes,last_response,conversation_context
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
@@ -246,8 +253,8 @@ def video_translate(video_file_name="",prompt=""):
 #        video_file_name="com/datas/ffmpeg/anon.mp4"
         print("video_file")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
-        input_video_info = "VIDEO PATH"
-        return
+        input_video_info = "VIDEO PATH: "+ code_video_file + "\n"
+#        return
         #vídeo file
 #        return
     ct = f"Uploading file..."
@@ -500,6 +507,26 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 
 
+def gen_com():
+
+    pr = """
+
+
+Aplicación Gen Prompt - (función interna de osiris.com.gemini (gemini.py))
+
+
+El cometido de esta función es generar comandos en base a un propmt posterior por retroalimentación.
+
+
+
+
+
+"""
+
+
+
+
+
 
 def screen_shot():
     process = subprocess.run(["python3", "com/screenshot.py"], capture_output=True, text=True)
@@ -747,12 +774,16 @@ def main(args):
         # Verificar el primer argumento
         command = args[0]
         if command == "--nmodel":
-            sm = "\nseleccione modelo nuevo\n"
+            sm = "\nSelección de modelos de API\n"
             conversation_context += sm
             select_model()
             ns = "\n NEW MODEL WAS SELECTED \n "
+            try:
+                conversation_context += ns + "AT TIME: " + fecha_hora_g() + "\n"
+            except Exception as e:
+                conversation_context + f". !!! Se prujo un error: {e}"
             main(ns)
-            print(sm + ns)
+            print(ns)
             return
         # Usar el comando corto si está disponible
         if command in commands_map:
@@ -1097,9 +1128,25 @@ def main(args):
                 return
         print("Error:",e)
 # Ejecutar el programa
+
+
+
+fecha_hora = ""
+
+
+def fecha_hora_g():
+    global fecha_hora
+    timestamp_unix = int(time.time()) 
+    fecha_hora  = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp_unix))
+    return fecha_hora
+#fecha_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+fecha_hora = fecha_hora_g()
+
 init = 0
-HELO = "HELO START"
+HELO = "HELO START - Se Ha inciado el SISTEMA OSIRIS a las: " + fecha_hora
 main(HELO)
+conversation_context += HELO+"\n"
 if __name__ == "__main__":
     init = init + 1
     if init > 1:

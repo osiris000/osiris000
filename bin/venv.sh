@@ -11,7 +11,7 @@ if [ -z "$OSIRIS000_VENV_PATH" ] || [ -z "$OSIRIS000_VENV_NAME" ]; then
 fi
 
 
-echo "Activando en directorio virtual"
+echo "Activando directorio virtual en: ${OSIRIS000_VENV_PATH} "
 python3 -m venv $OSIRIS000_VENV_PATH
 echo  $VENV_ACTIVATE_PATH
 eval source $VENV_ACTIVATE_PATH

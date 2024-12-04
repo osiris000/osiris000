@@ -11,6 +11,8 @@ check_command_installed osiris-env-sys-vars
 eval . bin/venv.sh
 
 
+check_command_installed /usr/bin/pip-requeriments
+
 check_command_installed /usr/bin/python-pack
 #check_command_installed node-Opack --version
 #check_command_installed terminator-Opack 
