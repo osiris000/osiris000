@@ -68,10 +68,12 @@ bin/install
 #desktop
 bin/dsk
 bin/com/dsk
-bin/com/dsk/dsk1.py
-bin/com/dsk/dsk2.py
-bin/com/dsk/dsk3.py
-bin/com/dsk/dsk4.py
+
+
+#bin/com/dsk/dsk1.py
+#bin/com/dsk/dsk2.py
+#bin/com/dsk/dsk3.py
+#bin/com/dsk/dsk4.py
 
 
 #TV

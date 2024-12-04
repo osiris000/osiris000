@@ -102,8 +102,8 @@ conversation_context = f"""
 #Interfaz Name: Osiris
 #Version: {version_file}
 #Idioma: Español
-Instrucciones: ¡Bienvenido a Osiris!  Usa emojis para dinamizar la conversación.  Escribe /help para ver comandos disponibles.
-\
+Instrucciones: ¡Bienvenido a Osiris!  Usa emojis para dinamizar la conversación.  Escribe --help para ver comandos disponibles.
+\...
 
 """
 
@@ -142,16 +142,21 @@ if API_KEY:
 
 
 def select_model():
-    global gemini_models,conversation_context
+    global gemini_models, model, conversation_context
     seleccione_modelo = f" Seleccione un modelo a usar:\n"
     for index, x in enumerate(gemini_models):
-        seleccione_modelo += f"\n ({index}) {x}  "
+        seleccione_modelo += f"\n ({index+1}) {x}  "
     print("\n")
     sel = f"\n{seleccione_modelo} \n Seleccione Uno: >>> "
     conversation_context += sel
     inp = input(sel)
-    conversation_context += inp + "\n"
+    genai.configure(api_key=API_KEY)
+    model = genai.GenerativeModel(gemini_models[int(inp) - 1])
+    change_model_to = gemini_models[int(inp) - 1]
+    print("\n Cambiando a modelo: "+change_model_to+"\n")
+    conversation_context += inp + "\nCambiando a modelo: " + change_model_to + "\n"
 
+   
 
 select_model()
 
@@ -219,7 +224,7 @@ def show_text_window(text):
 
 personajes = {}
 modos = {}
-
+desing_mode = {}
 
 modos["critica"] = """
 Modo de expresión: Crítica ácida.
@@ -236,10 +241,23 @@ Motes: Sanchinflas, Su Sanchidad, Pinocho.
 
 
 
+desing_mode["emoji"] = """
+
+Usa Solo Emojis.
+
+
+"""
+
+
+
+text_replace = {
+    
+    "",""
+}
 
 
 def video_translate(video_file_name="",prompt=""):
-    global personajes,last_response,conversation_context
+    global personajes, modos, desing_mode, last_response,conversation_context
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
@@ -415,7 +433,7 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
             f.write(matches[0])
 
         force_style_sub = "Fontsize=20,Fontcolor=blue@0.2,BackColour=black@0.5,BorderStyle=5"
-        force_style_sub = "Alignament=6,BackColour=&H30000000,BorderStyle=4,Fontsize=18,FontName=Arial,PrimaryColour=&H00FFFFFF"
+        force_style_sub = "Alignament=1,BackColour=&H30000000,BorderStyle=4,PrimaryColour=&H00FFFFFF"
         mode = "fixed" # bg / fixed
         if mode == "bg":
             print("""
