@@ -11,18 +11,50 @@ import subprocess
 #import google.generativeai as genai
 #import time
 import os
+import random
+import string
+import lib.core  as core
+
+
 
 def_image_editor = "lazpaint"
+
+
+
+
+
+def dynmodule(nombre_modulo):
+    core.dynmodule(nombre_modulo)
+
+
+dynmodule("PRUEBA")
+
+
+def generar_nombre_imagen(longitud=10, tipo_caracteres='alfanumerico', extension=".jpg"):
+    """Genera un nombre de archivo aleatorio con opciones de personalización"""
+    if tipo_caracteres == 'alfanumerico':
+        caracteres = string.ascii_letters + string.digits
+    elif tipo_caracteres == 'letras':
+        caracteres = string.ascii_letters
+    elif tipo_caracteres == 'numeros':
+        caracteres = string.digits
+    else:
+        raise ValueError("tipo_caracteres debe ser 'alfanumerico', 'letras' o 'numeros'")
+
+    return ''.join(random.choice(caracteres) for i in range(longitud)) + extension
+
+
+
 
 
 def ini():
     print("widgets modules to gemini")
 
 
-def dialog_window():
+def dialog_window(text=""):
     ventana_dialogo = tk.Toplevel()
     ventana_dialogo.title("Ventana de Diálogo")
-    ventana_dialogo.geometry("400x200")
+    ventana_dialogo.geometry("400x560")
     ventana_dialogo.wm_attributes("-topmost", True) # Siempre encima
 
     text_area = scrolledtext.ScrolledText(ventana_dialogo, wrap=tk.WORD, undo=True)
@@ -51,6 +83,8 @@ def dialog_window():
 
     ventana_dialogo.wait_window()  # Espera a que se cierre la ventana antes de continuar
     return texto_obtenido # Retorna el texto obtenido
+
+
 
 
 
