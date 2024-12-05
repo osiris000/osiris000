@@ -19,6 +19,8 @@ pip				    apt install pip
 php					apt install php php-fpm php-mysqli php-all-dev
 apache2 			apt install apache2 libapache2-mod-php libapache2-mod-fcgid 
 
+#rustc-update        rustup update
+
 mariadb 			apt install mariadb 
 ffmpeg				apt install ffmpeg 
 transmission-cli	apt install transmission-cli 
@@ -52,6 +54,7 @@ pip.requeriments.install . bin/install/installpip.sh
 
 pip.requeriments.upgrade . bin/install/upgradepip.sh 
 
+install.rust . bin/install/rust.sh
 
 node-Opack eval . bin/install/node_install.sh
 terminator-Opack  . bin/install/terminator_install.sh

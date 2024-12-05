@@ -149,7 +149,7 @@ def start_ffmpeg(url,com):
 
 
 
-
+#print("FUNC")
 
 
 

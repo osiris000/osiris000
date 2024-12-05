@@ -10,7 +10,7 @@ import lib.ffmpeg
 import random
 import requests
 import re
-
+import lib.core as core
 
 
 # Determinar la ruta completa del script en ejecución
@@ -18,6 +18,7 @@ ruta_script = os.path.abspath(__file__)
 
 # Determinar el directorio del script en ejecución
 directorio_script = os.path.dirname(ruta_script)
+
 
 # Determinar la ruta del directorio que deseas agregar a PYTHONPATH
 directorio_a_agregar = os.path.join(directorio_script, 'play3')
@@ -40,11 +41,14 @@ print("sys.path:", sys.path)
 
 # Ahora puedes importar módulos desde el directorio 'play3'
 try:
-    import play4 as play3 # Suponiendo que arch.py está en el directorio 'play3'
+    core.dynmodule("play4","play3")
+    play3 = core.play3
+#    import play4 as play3 # Suponiendo que arch.py está en el directorio 'play3'
     print("Play3.4 hls Imported")
     #play3.detect_memory_leak()  # Llamar a alguna función en arch.py
 except ImportError as e:
     print("No se pudo importar el módulo:", e)
+
 
 
 

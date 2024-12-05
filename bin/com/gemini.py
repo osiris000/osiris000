@@ -225,6 +225,7 @@ def show_text_window(text):
 personajes = {}
 modos = {}
 desing_mode = {}
+prompts = {}
 
 modos["critica"] = """
 Modo de expresión: Crítica ácida.
@@ -267,14 +268,67 @@ De tamaño Gigante.
 
 
 
+
+
+
+
 text_replace = {
     
     "",""
 }
 
 
+
+prompts["sesgos"] = """
+
+
+Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para un vídeo de [duración del vídeo] segundos sobre [tema del vídeo].  En lugar de transcribir el audio, tu tarea es crear texto que refuerce el mensaje del vídeo y explore diferentes tonos y sesgos.  El vídeo tiene un fondo oscuro.
+
+1. **Concepto del vídeo:** El vídeo trata sobre [describe el tema del vídeo con detalle].
+
+2. **Tonos y Sesgos:** Explora los siguientes tonos y sesgos en diferentes segmentos del vídeo:
+
+    * **[Tono 1]:** [Descripción del tono, por ejemplo, optimista, pesimista, sarcástico, etc.].
+    * **[Tono 2]:** [Descripción del tono].
+    * **[Sesgo 1]:** [Descripción del sesgo, por ejemplo, a favor de la tecnología, en contra del consumismo, etc.].
+    * **[Sesgo 2]:** [Descripción del sesgo].
+
+3. **Subtítulos:** Crea subtítulos concisos y fáciles de leer, con una duración máxima de 5 segundos, preferiblemente entre 2 y 2.5 segundos.  El intervalo mínimo entre subtítulos debe ser de 2 segundos.
+
+4. **Formato .srt básico:**  Genera un archivo .srt con el formato estándar.  Utiliza etiquetas `<font>` para controlar el tamaño (16-24), color (colores claros y vibrantes) y fuente ("Impact" o "Noto Sans"). Usa `<b>` para negrita.
+
+5. **Emojis descriptivos:** En cada línea del .srt, incluye de 1 a 3 emojis relevantes al texto y al tono/sesgo que se está explorando.  Indica el color deseado para cada emoji. Añade  `<font color="#FFFFFF"> </font>` justo antes del primer emoji.
+
+
+**Ejemplo (para un vídeo de 30 segundos sobre el impacto de la inteligencia artificial):**
+
+**Concepto:** El vídeo muestra imágenes de robots, algoritmos y personas interactuando con la tecnología.
+
+**Tonos y Sesgos:**
+    * Optimista:  La IA como herramienta para el progreso y la solución de problemas globales.
+    * Preocupado: El potencial de la IA para el desempleo y el control social.
+
+```srt
+1
+00:00:00,000 --> 00:00:02,500
+<font size="20" color="#00FF00" face="Noto Sans">La IA puede resolver los problemas del mundo.</font><font color="#FFFFFF"> </font> <font size=24 color=#00BFFF face=impact>🌍</font>  <font size=24 color=#32CD32 face=impact>✅</font>
+
+
+2
+00:00:03,000 --> 00:00:05,500
+<font size="18" color="#FF0000" face="Impact">¿O nos controlará a todos?</font><font color="#FFFFFF"> </font> <font size=24 color=#FF8C00 face=impact>🤖</font> <font size=24 color=#DC143C face=impact>⚠️</font>
+```
+
+**Instrucciones adicionales:**
+*  Concéntrate en la  creatividad y la  exploración de diferentes perspectivas.
+*  El .srt se usará como guía para añadir texto y emojis en la  edición del vídeo.
+
+
+"""
+
+
 def video_translate(video_file_name="",prompt=""):
-    global personajes, modos, desing_mode, last_response,conversation_context
+    global personajes, modos, sesgos, desing_mode, last_response,conversation_context
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
@@ -421,7 +475,7 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 
 
-    prompti = prompt_creative
+    prompti = prompts['sesgos']
 
 
     if prompt == "":

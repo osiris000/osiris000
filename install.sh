@@ -22,7 +22,8 @@ check_command_installed /usr/bin/python-pack
 #check_command_installed node-Opack --version
 #check_command_installed terminator-Opack 
 check_command_installed ffmpeg-pack
-#check_command_installed tmux-pack
+
+check_command_installed install.rust
 
 
 
