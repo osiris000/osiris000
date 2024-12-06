@@ -50,14 +50,14 @@ swap_activate(){
 if [ -f "$SWAPFILE" ]; then
     # Verifica si el archivo de intercambio está activado
     if swapon --show=NAME | grep -q "$SWAPFILE"; then
-        echo "$(date) - El archivo de intercambio $SWAPFILE está activado." >> "$LOGFILE"
+        echo "El archivo de intercambio $SWAPFILE está activado." >> "$LOGFILE"
     else
-        echo "$(date) - El archivo de intercambio $SWAPFILE existe pero no está activado. Activando..." >> "$LOGFILE"
+        echo " El archivo de intercambio $SWAPFILE existe pero no está activado. Activando..." >> "$LOGFILE"
         sudo swapon "$SWAPFILE"
-        echo "$(date) - Archivo de intercambio $SWAPFILE activado." >> "$LOGFILE"
+        echo "Archivo de intercambio $SWAPFILE activado." >> "$LOGFILE"
     fi
 else
-    echo "$(date) - El archivo de intercambio $SWAPFILE no existe." >> "$LOGFILE"
+    echo "El archivo de intercambio $SWAPFILE no existe." >> "$LOGFILE"
 fi
 
 }
@@ -70,8 +70,8 @@ comprobar_servidor_grafico() {
 
     # Verificar si el servidor gráfico está corriendo
     if ! pgrep -x "Xorg" > /dev/null && ! pgrep -x "wayland" > /dev/null; then
-        echo "$(date) - Servidor gráfico no encontrado. Verifique si Xorg o Wayland están instalados y funcionando." >> "$LOGFILE"
-        echo "$(date) - Puede que sea necesario reiniciar el servidor gráfico. Verifique los logs del sistema." >> "$LOGFILE"
+        echo "Servidor gráfico no encontrado. Verifique si Xorg o Wayland están instalados y funcionando." >> "$LOGFILE"
+        echo "Puede que sea necesario reiniciar el servidor gráfico. Verifique los logs del sistema." >> "$LOGFILE"
     else
         # Captura la salida de xdpyinfo
         xdpyinfo_output=$(xdpyinfo 2>&1)
@@ -83,36 +83,36 @@ comprobar_servidor_grafico() {
                 if grep -q "$error" <<< "$xdpyinfo_output"; then
                     case "$error" in
                         "unable to open display")
-                            echo "$(date) - Error en xdpyinfo: no se puede abrir la pantalla. Verifique la configuración del servidor gráfico y los permisos de acceso." >> "$LOGFILE"
-                            echo "$(date) - Intentando restablecer la conexión al servidor gráfico..." >> "$LOGFILE"
+                            echo "Error en xdpyinfo: no se puede abrir la pantalla. Verifique la configuración del servidor gráfico y los permisos de acceso." >> "$LOGFILE"
+                            echo "Intentando restablecer la conexión al servidor gráfico..." >> "$LOGFILE"
                             # Intentar restablecer la conexión sin reiniciar
                             xset -q &> /dev/null
                             if [ $? -ne 0 ]; then
-                                echo "$(date) - No se pudo restablecer la conexión al servidor gráfico. Puede ser necesario reiniciar el servidor gráfico." >> "$LOGFILE"
+                                echo "No se pudo restablecer la conexión al servidor gráfico. Puede ser necesario reiniciar el servidor gráfico." >> "$LOGFILE"
                             else
-                                echo "$(date) - Conexión al servidor gráfico restablecida." >> "$LOGFILE"
+                                echo "Conexión al servidor gráfico restablecida." >> "$LOGFILE"
                             fi
                             ;;
                         "X Error")
-                            echo "$(date) - Error en xdpyinfo: X Error detected. Verifique los logs de Xorg para más detalles." >> "$LOGFILE"
-                            echo "$(date) - Verifique si hay problemas con la configuración de Xorg en /var/log/Xorg.0.log." >> "$LOGFILE"
+                            echo "Error en xdpyinfo: X Error detected. Verifique los logs de Xorg para más detalles." >> "$LOGFILE"
+                            echo "Verifique si hay problemas con la configuración de Xorg en /var/log/Xorg.0.log." >> "$LOGFILE"
                             ;;
                         "connection refused")
-                            echo "$(date) - Error en xdpyinfo: Conexión rechazada. Verifique el estado del servidor gráfico." >> "$LOGFILE"
+                            echo "Error en xdpyinfo: Conexión rechazada. Verifique el estado del servidor gráfico." >> "$LOGFILE"
                             ;;
                         "No protocol specified")
-                            echo "$(date) - Error en xdpyinfo: No se especificó el protocolo. Verifique los permisos de acceso a la pantalla." >> "$LOGFILE"
+                            echo "Error en xdpyinfo: No se especificó el protocolo. Verifique los permisos de acceso a la pantalla." >> "$LOGFILE"
                             ;;
                         *)
-                            echo "$(date) - Error desconocido en xdpyinfo: $xdpyinfo_output" >> "$LOGFILE"
-                            echo "$(date) - Puede que sea necesario reiniciar el servidor gráfico. Verifique los logs del sistema." >> "$LOGFILE"
+                            echo "Error desconocido en xdpyinfo: $xdpyinfo_output" >> "$LOGFILE"
+                            echo "Puede que sea necesario reiniciar el servidor gráfico. Verifique los logs del sistema." >> "$LOGFILE"
                             ;;
                     esac
                     break
                 fi
             done
         else
-            echo "$(date) - Servidor gráfico funcionando correctamente." >> "$LOGFILE"
+            echo "Servidor gráfico funcionando correctamente." >> "$LOGFILE"
         fi
     fi
 }
@@ -121,7 +121,7 @@ comprobar_servidor_grafico() {
 # Función para reiniciar el servidor gráfico
 reiniciar_servidor_grafico() {
     DISPLAY_MANAGER=$(cat /etc/X11/default-display-manager)
-    echo "$(date) - Reiniciando el servidor gráfico..." >> "$LOGFILE"
+    echo "Reiniciando el servidor gráfico..." >> "$LOGFILE"
 
     if [[ "$DISPLAY_MANAGER" == *"/lightdm" ]]; then
         sudo systemctl restart lightdm
@@ -130,10 +130,10 @@ reiniciar_servidor_grafico() {
     elif [[ "$DISPLAY_MANAGER" == *"/sddm" ]]; then
         sudo systemctl restart sddm
     else
-        echo "$(date) - Gestor de display no soportado o no encontrado: $DISPLAY_MANAGER" >> "$LOGFILE"
+        echo "Gestor de display no soportado o no encontrado: $DISPLAY_MANAGER" >> "$LOGFILE"
     fi
 
-    echo "$(date) - Servidor gráfico reiniciado." >> "$LOGFILE"
+    echo "Servidor gráfico reiniciado." >> "$LOGFILE"
 }
 
 
@@ -147,15 +147,15 @@ check_cpu_usage() {
         for pid in $high_cpu_procs; do
             # Verificar que el PID es un proceso válido y no es del sistema
             if ps -p $pid > /dev/null; then
-                echo "$(date) - Reduciendo prioridad del proceso $pid" >> "$LOGFILE"
+                echo "Reduciendo prioridad del proceso $pid" >> "$LOGFILE"
                 echo "$(ps -p $pid -o pid,ppid,cmd,%mem,%cpu)" >> "$LOGFILE"
                 sudo renice +10 -p $pid
             else
-                echo "$(date) - PID $pid no es un proceso válido o es del sistema" >> "$LOGFILE"
+                echo "PID $pid no es un proceso válido o es del sistema" >> "$LOGFILE"
             fi
         done
     else
-        echo "$(date) - No hay procesos de alto consumo de CPU." >> "$LOGFILE"
+        echo "No hay procesos de alto consumo de CPU." >> "$LOGFILE"
     fi
 }
 
@@ -172,7 +172,7 @@ matar_zombies() {
     mapfile -t zombie_pids < <(ps -eo pid,ppid,state | awk '$3=="Z" {print $1}')
 
     if [ ${#zombie_pids[@]} -eq 0 ]; then
-        echo "$(date) - No se encontraron procesos zombie." >> "$LOGFILE"
+        echo "No se encontraron procesos zombie." >> "$LOGFILE"
     else
         for zombie_pid in "${zombie_pids[@]}"; do
             ppid=$(ps -p "$zombie_pid" -o ppid=)
@@ -194,37 +194,37 @@ matar_zombies() {
 
 handle_error() {
     local error_message="$1"
-    local message="$(date) - $error_message"
+    local message="$error_message"
     send_alert_to_monitoring "$message"
     # Aquí puedes agregar acciones de recuperación si es necesario
 }
 
 
 
-echo -e "####### CLEAR LOG \n########################\n FREEMEM ################" > "$LOGFILE"
+echo -e "####### CLEAR LOG \n########################\n FREEMEM \n    $(date)       \n ################" > "$LOGFILE"
 
-echo "$(date) - ====================" >> "$LOGFILE"
-echo "$(date) - Comprobando Swap..." >> "$LOGFILE"
+echo "====================" >> "$LOGFILE"
+echo "Comprobando Swap..." >> "$LOGFILE"
 swap_activate
 
 # Bucle principal
 while true; do
 
 
-    echo "$(date) - ====================" >> "$LOGFILE"
-    echo "$(date) - Observando CPU..." >> "$LOGFILE"
+    echo "====================" >> "$LOGFILE"
+    echo "Observando CPU..." >> "$LOGFILE"
     check_cpu_usage
 
 
     # comprobar procesos
-    echo "$(date) - ====================" >> "$LOGFILE"
-    echo "$(date) - Comprobando Procesos..." >> "$LOGFILE"
+    echo "====================" >> "$LOGFILE"
+    echo "Comprobando Procesos..." >> "$LOGFILE"
     matar_zombies
 
 
     # comprobar memoria
-    echo "$(date) - ====================" >> "$LOGFILE"
-    echo "$(date) - Comprobando la memoria..." >> "$LOGFILE"
+    echo "====================" >> "$LOGFILE"
+    echo "Comprobando la memoria..." >> "$LOGFILE"
 
 
     # Obtener la memoria total y la memoria libre actual (en MB)
@@ -238,7 +238,7 @@ while true; do
     MEM_UMBRAL_FINAL=$(( UMBRAL_MEMORIA > MEMORIA_MINIMA_FIJA ? UMBRAL_MEMORIA : MEMORIA_MINIMA_FIJA ))
 
     if [ "$MEM_LIBRE" -lt "$MEM_UMBRAL_FINAL" ]; then
-        echo "$(date) - Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..." >> "$LOGFILE"
+        echo "Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..." >> "$LOGFILE"
         # Sincronizar el sistema de archivos
         sync
 
@@ -251,23 +251,23 @@ while true; do
         sysctl vm.swappiness=10
 
         # Mostrar estado de la memoria después de liberar
-        echo "$(date) - Memoria después de liberar:" >> "$LOGFILE"
+        echo "Memoria después de liberar:" >> "$LOGFILE"
         free -m >> "$LOGFILE"
     else
-        echo "$(date) - Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria." >> "$LOGFILE"
+        echo "Memoria libre ($MEM_LIBRE MB) es suficiente. No se requiere liberación de memoria." >> "$LOGFILE"
     fi
 
 
     # Comprobar el estado del servidor gráfico después de liberar memoria
-    echo "$(date) - ====================" >> "$LOGFILE"
-    echo "$(date) - Comprobando Servidor Gráfico..." >> "$LOGFILE"
+    echo "====================" >> "$LOGFILE"
+    echo "Comprobando Servidor Gráfico..." >> "$LOGFILE"
     comprobar_servidor_grafico
 
 
     # Esperar el intervalo de tiempo especificado
-    echo "$(date) - ====================" >> "$LOGFILE"
-    echo "$(date) - Esperando $INTERVALO segundos..." >> "$LOGFILE"
-    echo "$(date) - ====================" >> "$LOGFILE"
+    echo "====================" >> "$LOGFILE"
+    echo "Esperando $INTERVALO segundos..." >> "$LOGFILE"
+    echo "====================" >> "$LOGFILE"
     sleep $INTERVALO
 done &
 

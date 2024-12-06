@@ -475,8 +475,12 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 
 
-    prompti = prompts['sesgos']
 
+
+
+
+    prompti = prompts['sesgos']
+    #prompti = prompt_creative
 
     if prompt == "":
         prompt = prompti 
@@ -504,7 +508,7 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
             f.write(matches[0])
 
         force_style_sub = "Fontsize=20,Fontcolor=blue@0.2,BackColour=black@0.5,BorderStyle=5"
-        force_style_sub = "FontSize=18,Alignament=8,BackColour=&H30000000,BorderStyle=4,PrimaryColour=&H00FFFFFF"
+        force_style_sub = "FontSize=18,Alignament=8,BackColour=&HFF000000,BorderStyle=4,PrimaryColour=&H00FFFFFF"
         mode = "fixed" # bg / fixed
         if mode == "bg":
             print("""

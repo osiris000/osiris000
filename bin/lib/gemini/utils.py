@@ -17,6 +17,8 @@ import lib.core  as core
 
 
 
+#print("UTILS")
+
 def_image_editor = "lazpaint"
 
 
@@ -58,6 +60,7 @@ def dialog_window(text=""):
     ventana_dialogo.wm_attributes("-topmost", True) # Siempre encima
 
     text_area = scrolledtext.ScrolledText(ventana_dialogo, wrap=tk.WORD, undo=True)
+    text_area.insert(tk.END, text)
     text_area.pack(expand=True, fill="both")
     text_area.config(font=("Consolas", 12), background="#f0f0f0", foreground="#333333")
     text_area.focus()
@@ -93,6 +96,8 @@ def show_text_window(text):
     ventana_secundaria.title("Contenido de la conversación")
     ventana_secundaria.geometry("800x600")
     ventana_secundaria.minsize(800, 400)  # Establece un tamaño mínimo
+    ventana_secundaria.wm_attributes("-topmost", True) # Siempre encima
+
 
     text_widget = scrolledtext.ScrolledText(ventana_secundaria, wrap="word", undo=True)
     text_widget.insert(tk.END, text)
