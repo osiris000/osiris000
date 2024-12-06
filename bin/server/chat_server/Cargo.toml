@@ -8,6 +8,8 @@ tokio = { version = "1", features = ["full"] }
 tokio-tungstenite = "0.17"
 futures-util = "0.3"
 chrono = "0.4"  # Añade esta línea para la biblioteca chrono
+log = "0.4"
+env_logger = "0.10"
 
 
 [[bin]]

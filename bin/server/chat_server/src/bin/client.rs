@@ -5,7 +5,7 @@ use std::io::Write; // Importa Write para flush síncrono
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "ws://127.0.0.1:8080";
+    let addr = "ws://127.0.0.1:8180"; // <--- Port changed here
     let (ws_stream, _) = connect_async(addr).await?;
     println!("Conectado al servidor WebSocket en {}", addr);
 
@@ -19,24 +19,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         print!("Introduce un mensaje: ");
         std::io::stdout().flush().unwrap(); // Uso de flush síncrono
 
-        // Leer línea de entrada estándar
         if let Err(e) = stdin_reader.read_line(&mut input).await {
             eprintln!("Error al leer la entrada estándar: {}", e);
             break;
         }
 
-        let input = input.trim(); // Remover salto de línea al final
+        let input = input.trim();
         if input.is_empty() {
             continue;
         }
 
-        // Enviar el mensaje al servidor
         if let Err(e) = write.send(Message::Text(input.to_string())).await {
             eprintln!("Error al enviar el mensaje: {}", e);
             break;
         }
 
-        // Recibir la respuesta del servidor
         if let Some(message) = read.next().await {
             match message {
                 Ok(Message::Text(text)) => println!("Respuesta del servidor: {}", text),

@@ -1,13 +1,9 @@
 use tokio::net::TcpListener;
-use tokio_tungstenite::accept_async;
+use tokio_tungstenite::{accept_async, tungstenite::Message};
 use futures_util::{StreamExt, SinkExt};
-use tokio_tungstenite::tungstenite::Message;
-use chrono::DateTime;
-use chrono::Local;
 use std::error::Error;
+use log::{info, error, warn}; // Importar la librería de logs
 
-
-// Estructura para manejar mejor el error
 #[derive(Debug)]
 struct OsirisError {
     message: String,
@@ -21,32 +17,26 @@ impl std::fmt::Display for OsirisError {
 
 impl Error for OsirisError {}
 
-
-
-// Función para obtener la fecha y hora actual
-fn get_current_date() -> String {
-    let now: DateTime<Local> = Local::now();
-    format!("Fecha y hora actual: {}", now.to_rfc3339()).to_string()
-}
-
-// Función para manejar comandos específicos
 fn handle_command(command: &str) -> Result<String, OsirisError> {
     match command {
-        "/date" => Ok(get_current_date()),
+        "/date" => Ok(chrono::Local::now().to_rfc3339()),
         "/hello" => Ok("Hola, cliente! 👋".to_string()),
         "/help" => Ok(
             "/date - Obtiene la fecha y hora actual.\n/hello - Saludo de bienvenida.\n/help - Muestra esta ayuda.".to_string()
         ),
-        "" => Ok("".to_string()), // Comando vacío
+        "" => Ok("".to_string()),
         _ => Err(OsirisError { message: format!("Comando no reconocido: {} 🤔", command) }),
     }
 }
 
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    env_logger::init(); // Inicializar la librería de logs
+
     let addr = "127.0.0.1:8180";
     let listener = TcpListener::bind(addr).await?;
-    println!("Servidor WebSocket escuchando en {}", addr);
+    info!("Servidor WebSocket escuchando en {}", addr);
 
     while let Ok((stream, _)) = listener.accept().await {
         tokio::spawn(handle_connection(stream));
@@ -55,37 +45,46 @@ async fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-async fn handle_connection(stream: tokio::net::TcpStream) -> Result<(), Box<dyn Error>> {
-    let ws_stream = accept_async(stream).await?;
-    println!("Nuevo cliente WebSocket conectado.");
+async fn handle_connection(stream: tokio::net::TcpStream) {
+    match accept_async(stream).await {
+        Ok(ws_stream) => {
+            info!("Nuevo cliente WebSocket conectado.");
+            let (mut write, mut read) = ws_stream.split();
 
-    let (mut write, mut read) = ws_stream.split();
-
-    while let Some(Ok(msg)) = read.next().await {
-        let response = match msg {
-            Message::Text(text) => handle_command(&text)?,
-            Message::Binary(_) => "Mensaje binario recibido".to_string(),
-            _ => "Tipo de mensaje no soportado".to_string(),
-        };
-
-        if write.send(Message::Text(response)).await.is_err() {
-            println!("Error al enviar mensaje al cliente");
-            break;
+            while let Some(result) = read.next().await {
+                match result {
+                    Ok(msg) => match msg {
+                        Message::Text(text) => {
+                            info!("Mensaje recibido: {}", text);
+                            match handle_command(&text) {
+                                Ok(response) => {
+                                    if write.send(Message::Text(response)).await.is_err() {
+                                        error!("Error al enviar la respuesta al cliente");
+                                    }
+                                }
+                                Err(e) => {
+                                    error!("Error al procesar el comando: {}", e);
+                                    let _ = write.send(Message::Text(format!("Error del servidor: {}", e))).await; // Ignore send errors here
+                                }
+                            }
+                        }
+                        Message::Binary(_) => {
+                            warn!("Mensaje binario recibido (no soportado)");
+                            let _ = write.send(Message::Text("Mensaje binario no soportado".to_string())).await; // Ignore send errors
+                        }
+                        _ => {
+                            warn!("Tipo de mensaje no soportado");
+                            let _ = write.send(Message::Text("Tipo de mensaje no soportado".to_string())).await; // Ignore send errors
+                        }
+                    },
+                    Err(e) => {
+                        error!("Error al leer del WebSocket: {}", e);
+                        break;
+                    }
+                }
+            }
+            info!("Cliente WebSocket desconectado.");
         }
-    }
-    println!("Cliente WebSocket desconectado.");
-    Ok(())
-}
-
-fn main() {
-    // Este main se usa solo para verificar la funcion handle_command
-    // El main del servidor webSocket está arriba
-    let commands = vec!["/date", "/hello", "/help", "/unknown", ""];
-
-    for command in commands {
-        match handle_command(command) {
-            Ok(response) => println!("Respuesta: {}", response),
-            Err(error) => println!("Error: {}", error),
-        }
+        Err(e) => error!("Error al aceptar la conexión WebSocket: {}", e),
     }
 }
