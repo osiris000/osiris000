@@ -17,7 +17,7 @@ import sys
 import subprocess
 import pty
 import select
-
+import lib.core as core
 # Ruta del binario de osiris
 osiris_bin_path = os.path.abspath(__file__)
 osiris_bin_dir = os.path.dirname(osiris_bin_path)
@@ -202,6 +202,12 @@ def handle_command(args):
         set_com = "" if len(args) == 2 else args[2]
     elif args[0] == "--venv":
         habilitar_y_exportar_venv(nombre_venv)
+    elif args[0] == "--ods":
+        print("Using ODS")
+        core.ps.funcion_proceso(            
+            ["./OPS/ops"],True
+            )
+        print("Exit ODS")
     elif args[0] == "exit":
         exit_program()
     elif args[0] == "Reset_Password":
