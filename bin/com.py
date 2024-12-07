@@ -173,8 +173,7 @@ def command_line():
             handle_command(args)
         except Exception as e:
             print(f"Exception ERROR 175:\n {e}  \nEscriba o pulse Enter para reentrar\n")
-  
-            return
+      
         time.sleep(0.1)
 
 # Manejo de comandos
