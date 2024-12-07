@@ -207,6 +207,15 @@ def handle_command(args):
             ["./OPS/ops"],True
             )
         print("Exit ODS")
+    elif args[0] == "--lp":
+        print("Multiprocess Used in core:")
+        try:
+            pc_ = core.mp.process_manager.list_processes()
+        except Exception as e:
+            print("Error Listando Procesos.")
+            return
+        print("Lista de Procesos:")
+        print(pc_)
     elif args[0] == "exit":
         exit_program()
     elif args[0] == "Reset_Password":
