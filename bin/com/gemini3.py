@@ -231,8 +231,23 @@ Motes: Sanchinflas, Su Sanchidad, Pinocho.
 """
 
 
+srt_c = {}
+
+
+srt_c["fuente_weight"] = """
+
+Usa para esta segmentacion:
+Usa fuente tipo:
+Tamaño rango 36 - 90
+Colores: Claros Brillantes 
+Emojis:
+Tamaño rango 90 - 165
+Colores: Brillantes medios
+
+"""
+
 def video_translate(video_file_name="",prompt=""):
-    global personajes,last_response,conversation_context
+    global personajes,last_response,conversation_context,srt_c,modos
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
@@ -339,7 +354,10 @@ Asegúrate de que la duración de cada subtítulo coincida exactamente con la du
 Debes generar un solo archivo srt
 
 
-"""
+
+
+
+""" + srt_c["fuente_weight"] + "\n"
 
 
 

@@ -27,9 +27,83 @@ def_image_editor = "lazpaint"
 
 def dynmodule(nombre_modulo):
     core.dynmodule(nombre_modulo)
+#dynmodule("PRUEBA")
+
+def obtener_datos_multimedia(ruta_archivo):
+    """
+    Obtiene datos relevantes de un archivo multimedia usando ffprobe y los devuelve en un objeto.
+
+    Args:
+        ruta_archivo: La ruta completa al archivo multimedia.
+
+    Returns:
+        Un diccionario con los datos relevantes del archivo multimedia, o None si ocurre un error.
+    """
+
+    try:
+        # Ejecuta ffprobe y captura la salida
+        comando = ['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_format', '-show_streams', ruta_archivo]
+        resultado = subprocess.run(comando, capture_output=True, text=True, check=True)
+        datos_json = json.loads(resultado.stdout)
+
+        # Extrae información relevante (puedes personalizar esto según tus necesidades)
+        datos_multimedia = {
+            "formato": datos_json['format']['format_name'],
+            "duracion": datos_json['format']['duration'],
+            "tamano": datos_json['format']['size'],
+            "aspecto": None, #Se calcula más abajo
+            "codecs": {},
+            "dimensiones": None, #Se calcula más abajo
+
+        }
+
+        # Extraer codecs de cada stream (vídeo y audio)
+        for stream in datos_json['streams']:
+            codec_type = stream['codec_type']
+            codec_name = stream['codec_name']
+            datos_multimedia["codecs"][codec_type] = codec_name
+            if codec_type == 'video':
+                datos_multimedia["dimensiones"] = f"{stream['width']}x{stream['height']}"
+                # Calcular el aspect ratio (relación de aspecto)
+                try:
+                  aspect_ratio = float(stream['width']) / float(stream['height'])
+                  datos_multimedia["aspecto"] = f"{aspect_ratio:.2f}"
+                except (KeyError, ZeroDivisionError):
+                  datos_multimedia["aspecto"] = "N/A"
 
 
-dynmodule("PRUEBA")
+        return datos_multimedia
+
+    except FileNotFoundError:
+        print(f"Error: ffprobe no encontrado. Asegúrate de que esté instalado y en tu PATH.")
+        return None
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar ffprobe: {e}")
+        print(f"Salida de error: {e.stderr}")
+        return None
+    except json.JSONDecodeError:
+        print("Error al decodificar la salida JSON de ffprobe.")
+        return None
+    except KeyError as e:
+        print(f"Error: Clave no encontrada en la respuesta JSON de ffprobe: {e}")
+        return None
+
+
+# Ejemplo de uso
+#ruta = "/ruta/a/tu/archivo.mp4"  # Reemplaza con la ruta de tu archivo
+#datos = obtener_datos_multimedia(ruta)
+
+#if datos:
+#    print(json.dumps(datos, indent=4)) # Imprime el diccionario en formato JSON legible.
+
+
+
+
+
+
+
+
+
 
 
 def generar_nombre_imagen(longitud=10, tipo_caracteres='alfanumerico', extension=".jpg"):

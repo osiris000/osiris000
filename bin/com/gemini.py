@@ -15,12 +15,15 @@ import webbrowser
 import pyperclip
 import io
 import re
+import lib.core as core
 import lib.multiprocess as osiris2
-import lib.gemini.utils as win
 import time
 import hashlib
 #import datetime
 
+
+core.dynmodule("lib.gemini.utils","win")
+win = core.win
 
 
 # Ruta del archivo para guardar la clave cifrada
@@ -297,7 +300,7 @@ Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para u
 
 4. **Formato .srt básico:**  Genera un archivo .srt con el formato estándar.  Utiliza etiquetas `<font>` para controlar el tamaño (16-24), color (colores claros y vibrantes) y fuente ("Impact" o "Noto Sans"). Usa `<b>` para negrita.
 
-5. **Emojis descriptivos:** En cada línea del .srt, incluye de 1 a 3 emojis relevantes al texto y al tono/sesgo que se está explorando.  Indica el color deseado para cada emoji. Añade  `<font color="#FFFFFF"> </font>` justo antes del primer emoji.
+5. **Emojis descriptivos:** En cada línea del .srt, incluye de 1 a 3 emojis relevantes al texto y al tono/sesgo que se está explorando.  Indica el color deseado para cada emoji. Añade  `<font color="#FFFFFF"> </font>` justo antes del primer emoji.NUNCA  uses Emojis de banderas de países.
 
 
 **Ejemplo (para un vídeo de 30 segundos sobre el impacto de la inteligencia artificial):**
@@ -316,7 +319,7 @@ Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para u
 
 2
 00:00:03,000 --> 00:00:05,500
-<font size="18" color="#FF0000" face="Impact">¿O nos controlará a todos?</font><font color="#FFFFFF"> </font> <font size=24 color=#FF8C00 face=impact>🤖</font> <font size=24 color=#DC143C face=impact>⚠️</font>
+<font size="18" color="#FF0000" face="Impact">¿O nos controlará a todos?</font><font color="#FFFFFF"> </font> <font size=24 color=#FF8C00 face=impact>🤖</font> <font size=24 color=#DC143C face="NotoColorEmoji">⚠️</font>
 ```
 
 **Instrucciones adicionales:**
@@ -326,9 +329,23 @@ Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para u
 
 """
 
+srt_c = {}
+
+
+srt_c["fuente_weight"] = """
+
+Usa para esta segmentacion:
+Usa fuente tipo:
+Tamaño rango 30 - 50
+Colores: Claros Brillantes 
+Emojis:
+Tamaño rango 80 - 105
+Colores: Brillantes medios
+
+"""
 
 def video_translate(video_file_name="",prompt=""):
-    global personajes, modos, sesgos, desing_mode, last_response,conversation_context
+    global personajes, modos, sesgos, desing_mode, last_response,conversation_context,srt_c
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
@@ -346,6 +363,13 @@ def video_translate(video_file_name="",prompt=""):
 #        return
         #vídeo file
 #        return
+
+
+
+
+
+
+
     ct = f"Uploading file..."
     conversation_context += ct
     print(ct)
@@ -367,6 +391,12 @@ def video_translate(video_file_name="",prompt=""):
     else:
         input_video_info += f"Se ha subido el vídeo a Gemini-video a la url: {video_file.uri} \n"
 
+
+    try:
+        Datos_video = win.obtener_datos_multimedia(code_video_file)
+        print("DATOS VIDEO:\n",Datos_video)
+    except Exception as e:
+        print("Error obteniendo datos multimedia de:",code_video_file)
 
     # Create the prompt.
     prompti = "Tu eres gemini-video Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
@@ -435,7 +465,7 @@ Asegúrate de que la duración de cada subtítulo coincida exactamente con la du
 Debes generar un solo archivo srt
 
 
-"""
+""" + srt_c["fuente_weight"] + "\n"
 
 
 
@@ -471,6 +501,9 @@ Ejemplo:
 Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 
+Obvia mensaje para Gemini-text [(mensaje)] si existe.
+
+
 """
 
 
@@ -479,8 +512,8 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 
 
 
-    prompti = prompts['sesgos']
-    #prompti = prompt_creative
+    #prompti = prompts['sesgos']
+    prompti = prompt_creative
 
     if prompt == "":
         prompt = prompti 
@@ -507,12 +540,10 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
         with open(vtranslate,"w",encoding='utf-8') as f:
             f.write(matches[0])
 
-        force_style_sub = "Fontsize=20,Fontcolor=blue@0.2,BackColour=black@0.5,BorderStyle=5"
-        force_style_sub = "FontSize=18,Alignament=8,BackColour=&HFF000000,BorderStyle=4,PrimaryColour=&H00FFFFFF"
+        force_style_sub = "BackColour=&HB0000000,BorderStyle=4,FontName=NotoColorEmoji,Alignament=6"
         mode = "fixed" # bg / fixed
         if mode == "bg":
             print("""
-            	
             	#################################################
                 → Se está procesando el vídeo en segundo plano ←
                 #################################################
@@ -529,9 +560,10 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
         obj = {
         "mode":mode,
         "name":None,
-        "com":["/usr/bin/ffmpeg","-y","-loglevel","error","-i",video_file_name,
+        "com":["ffmpeg","-y","-loglevel","error","-i",video_file_name,
         "-af","aresample=async=1,loudnorm=I=-16:TP=-1.5:LRA=11",
-        "-vf","subtitles="+vtranslate+":force_style='"+force_style_sub+"'",
+        "-vf","scale=-2:720,subtitles="+vtranslate+":force_style='"+force_style_sub+"'",
+	"-pix_fmt","yuv420p",
         "-preset","ultrafast",
         "-c:v","libx264","-c:a","aac","-crf","21",
         subtitulado_out] 
@@ -559,10 +591,8 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
                 e1 += f"Código de retorno: {resultado.returncode}"
                 print(e1)
                 conversation_context += e1
-                task_done = f""" 
-                Se ha descargado un vídeo desde
 
-                """
+
                 # El comando se ejecutó correctamente
         except FileNotFoundError:
             print("Error: El comando ffmpeg no se encontró. Asegúrate de que esté instalado y en tu PATH.")
@@ -580,7 +610,7 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
         o2mp = osiris2.multiprocess(obj)
 
         print("\nRealizando Inferencia 2 ....")
-        send_text = f"\nTu eres genini-text. Acabo de enviar un video a gemini-video con este promt: {prompt} \nY esta fue la respuesta completa en bruto de Gemini-video antes de procesarla:\n{response.text}\nSe realizaron correctamente las siguientes tareas de procesamiento: {input_video_info}\nSe finalizó el procesamiento ejecutando correctamente el siguiente conmando: {str(comando_ffmpeg)}\nRealiza instrucciones solicitadas anteriormente a gemini-text por gemini-video en caso de existir, si no existen, sólamente realiza una revisión informativa.\n"
+        send_text = f"\nTu eres genini-text. Acabo de enviar un video a gemini-video con este promt: {prompt} \nY esta fue la respuesta completa en bruto de Gemini-video antes de procesarla:\n{response.text}\nSe realizaron correctamente las siguientes tareas de procesamiento: {input_video_info}\nSe finalizó el procesamiento ejecutando correctamente el siguiente conmando: {str(comando_ffmpeg)}\n Fin Gemini-video.\nDebes realizas instrucciones solicitadas a Gemini-text, si no existen realiza una revisión informativa solamente.\n"
         print(f"\n{send_text}\n")
         response_return = generate_response(send_text)
         print("\n\n",response_return)

@@ -59,7 +59,7 @@ def habilitar_y_exportar_venv(nombre_venv):
         env_vars = subprocess.Popen(["printenv | grep -i osiris"], stdout=subprocess.PIPE, text=True, shell=True).communicate()[0]
         print(env_vars)
     except Exception as e:
-        print("Error:", e)
+        print("Error 62:", e)
     print("PYTHONPATH:", " | ".join(sys.path))
 
 # Función para verificar la declaración de una función en un módulo
@@ -172,7 +172,9 @@ def command_line():
 
             handle_command(args)
         except Exception as e:
-            print("ERROR:", e)
+            print(f"Exception ERROR 175:\n {e}  \nEscriba o pulse Enter para reentrar\n")
+  
+            return
         time.sleep(0.1)
 
 # Manejo de comandos
@@ -290,12 +292,14 @@ def execute_external_command(args):
         except Exception as e:
             print(f"Error al ejecutar comando externo: {e}")
 
+
+import signal
 # Salir del programa
-def exit_program():
-    exit_decision = input("\n¿Desea salir del programa? Escriba 'yes' o 'no': ")
+def exit_program(onoff):
+#    return
+    exit_decision =  onoff  #"yes" #input("\n¿Desea salir del programa? Escriba 'yes' o 'no': ")
     if exit_decision.lower() == "yes":
         print("\nEXIT PROGRAM\n")
-        import signal
         signal.signal(signal.SIGINT, signal.SIG_DFL)
         auth.access()
     elif exit_decision.lower() == "no":
@@ -305,7 +309,9 @@ def exit_program():
 
 # Manejo de señal Ctrl+C
 def CTRL_C(signal, frame):
-    print("\nEscriba 'exit' para salir")
+    exit_program("yes")
+#    print("EXCPT")
+#    print("\nEscriba 'exit' para salir")
     return
 
 # Ejecutar el CLI
