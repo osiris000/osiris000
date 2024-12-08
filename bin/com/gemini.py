@@ -26,6 +26,9 @@ core.dynmodule("lib.gemini.utils","win")
 win = core.win
 
 
+core.log_event("gemini.py", "Inicio", "No hay mas detalles" , error="None")
+
+
 # Ruta del archivo para guardar la clave cifrada
 ruta_archivo_key = "com/datas/gemini_key.enc"
 
@@ -654,7 +657,7 @@ El cometido de esta función es generar comandos en base a un propmt posterior p
 def screen_shot():
     process = subprocess.run(["python3", "com/screenshot.py"], capture_output=True, text=True)
     output = process.stdout.strip().splitlines()  # Limpiar y dividir en líneas
-
+    #print(output)
     # Comprobación del formato de salida
     if len(output) < 3:
         print("Fallo: la salida no tiene suficientes líneas.")

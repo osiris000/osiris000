@@ -4,31 +4,6 @@ use futures_util::{StreamExt, SinkExt};
 use std::error::Error;
 use log::{info, error, warn}; // Importar la librería de logs
 
-#[derive(Debug)]
-struct OsirisError {
-    message: String,
-}
-
-impl std::fmt::Display for OsirisError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message)
-    }
-}
-
-impl Error for OsirisError {}
-
-fn handle_command(command: &str) -> Result<String, OsirisError> {
-    match command {
-        "/date" => Ok(chrono::Local::now().to_rfc3339()),
-        "/hello" => Ok("Hola, cliente! 👋".to_string()),
-        "/help" => Ok(
-            "/date - Obtiene la fecha y hora actual.\n/hello - Saludo de bienvenida.\n/help - Muestra esta ayuda.".to_string()
-        ),
-        "" => Ok("".to_string()),
-        _ => Err(OsirisError { message: format!("Comando no reconocido: {} 🤔", command) }),
-    }
-}
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -58,12 +33,15 @@ async fn handle_connection(stream: tokio::net::TcpStream) {
                             info!("Mensaje recibido: {}", text);
                             match handle_command(&text) {
                                 Ok(response) => {
-                                    if write.send(Message::Text(response)).await.is_err() {
-                                        error!("Error al enviar la respuesta al cliente");
+                                    if response.is_empty() {
+                                        continue; // Ignora las respuestas vacías
                                     }
-                                }
-                                Err(e) => {
-                                    error!("Error al procesar el comando: {}", e);
+                                    if let Err(e) = write.send(Message::Text(response)).await {
+                                        error!("Error al enviar respuesta: {}", e);
+                                    }
+                                },
+                                Err(e) => { // Manejo de errores reales (si handle_command retorna Err)
+                                   error!("Error al procesar el comando: {}", e);
                                     let _ = write.send(Message::Text(format!("Error del servidor: {}", e))).await; // Ignore send errors here
                                 }
                             }
@@ -86,5 +64,18 @@ async fn handle_connection(stream: tokio::net::TcpStream) {
             info!("Cliente WebSocket desconectado.");
         }
         Err(e) => error!("Error al aceptar la conexión WebSocket: {}", e),
+    }
+}
+
+
+fn handle_command(command: &str) -> Result<String, String> {
+    match command {
+        "/date" => Ok(chrono::Local::now().to_rfc3339()),
+        "/hello" => Ok("Hola, cliente! 👋".to_string()),
+        "/help" => Ok(
+            "/date - Obtiene la fecha y hora actual.\n/hello - Saludo de bienvenida.\n/help - Muestra esta ayuda.".to_string()
+        ),
+        "" => Ok("".to_string()),
+        _ => Err(format!("Comando no reconocido: {} 🤔", command)), // El error se devuelve como un Err
     }
 }

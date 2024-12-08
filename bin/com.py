@@ -23,6 +23,8 @@ osiris_bin_path = os.path.abspath(__file__)
 osiris_bin_dir = os.path.dirname(osiris_bin_path)
 
 
+core.signal.signal(signal.SIGINT, core.ctrl_signal)
+
 use_command = ""
 set_com=""
 def_editor="subl"
@@ -150,6 +152,7 @@ def command_line():
         readline.add_history(command)
 
     while True:
+        core.signal.signal(signal.SIGINT, core.ctrl_signal)
         try:
             # Imprime el prompt con un color y un salto de línea
             rx = common.print_color(">>> " + use_command, common.Color.GREEN,"\n → ")
@@ -172,7 +175,7 @@ def command_line():
 
             handle_command(args)
         except Exception as e:
-            print(f"Exception ERROR 175:\n {e}  \nEscriba o pulse Enter para reentrar\n")
+            print(f"Exception ERROR 175:\n {e}  \nEscriba o pulse Enter para reentrar\n")            
       
         time.sleep(0.1)
 
@@ -286,6 +289,8 @@ def execute_external_command(args):
                             # Escribe la entrada del usuario al proceso externo
                             os.write(slave_fd, com.encode())
                     except EOFError:
+                        print("Ctrl+d Signal")
+                        auth.access()
                         # Si se presiona Ctrl+D, termina la lectura
                         break
 
@@ -307,7 +312,6 @@ def execute_external_command(args):
             print(f"Error al ejecutar comando externo: {e}")
 
 
-import signal
 # Salir del programa
 def exit_program(onoff):
 #    return
@@ -326,7 +330,7 @@ def CTRL_C(signal, frame):
     exit_program("yes")
 #    print("EXCPT")
 #    print("\nEscriba 'exit' para salir")
-    return
+#    return
 
 # Ejecutar el CLI
 if __name__ == "__main__":

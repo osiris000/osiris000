@@ -4,14 +4,32 @@ source $OSIRIS000_VENV_PATH/bin/activate
 
 SESSION_NAME="${SESSION_NAME:-my_tmux_session_$(date +%s)}"
 COMMAND_PANEL0="${COMMAND_PANEL0:-$OSIRIS000_BASEPATH/osiris}"
-COMMAND_PANEL1="${COMMAND_PANEL1:-$OSIRIS000_BIN/scripts/server}"
+COMMAND_PANEL1="${COMMAND_PANEL1:-$OSIRIS000_BIN/scripts/server.run}"
 COMMAND_PANEL2="${COMMAND_PANEL2:-$OSIRIS000_BIN/scripts/client}"
 COMMAND_PANEL3="${COMMAND_PANEL3:-cd $OSIRIS000_BIN && ./osiris_run}"
-COMMAND_PANEL4="${COMMAND_PANEL4:-$OSIRIS000_BIN/scripts/freemem}"
+COMMAND_PANEL4="${COMMAND_PANEL4:-sudo bash $OSIRIS000_BIN/scripts/freemem2}"
 COMMAND_PANEL5="${COMMAND_PANEL5:-$OSIRIS000_BIN/pilottv}"
 COMMAND_PANEL6="${COMMAND_PANEL6:-/home/$USER/otvs -screen -prompt}"
 COMMAND_PANEL7="${COMMAND_PANEL7:-$OSIRIS000_BIN/scripts/progress_tv}"
 COMMAND_PANEL8="${COMMAND_PANEL8:-$OSIRIS000_BIN/scripts/progress_hls}"
+
+
+# Función para limpiar la sesión tmux al finalizar
+limpiar_tmux() {
+  if tmux has-session -t "$SESSION_NAME" > /dev/null 2>&1; then
+    echo "Limpiando sesión tmux '$SESSION_NAME'..."
+    tmux kill-session -t "$SESSION_NAME" || \
+      handle_error "Error al matar la sesión tmux: $?"
+  fi
+}
+
+# Manejo de errores centralizado
+handle_error() {
+  local message="$1"
+  echo "$(date) - ERROR: $message" >> "/var/log/tmux_session.log"
+  # Aquí puedes agregar acciones adicionales de manejo de errores, como enviar notificaciones por correo electrónico
+}
+
 
 # Crear una nueva sesión de tmux
 tmux new-session -d -s "$SESSION_NAME" -n osiris_tmux
@@ -52,3 +70,12 @@ tmux send-keys -t "$SESSION_NAME:0.8" "$COMMAND_PANEL8" C-m  # progress_hls
 # Habilitar el modo ratón y adjuntar la sesión
 tmux set-option -t "$SESSION_NAME" mouse on
 tmux attach-session -t "$SESSION_NAME"
+
+
+# Capturar las señales SIGINT (Ctrl+C) y SIGTERM (kill) para ejecutar la limpieza
+
+trap 'limpiar_tmux; exit 0' INT TERM
+
+# Mantener el script ejecutandose (esto es importante para que la trampa funcione)
+wait
+
