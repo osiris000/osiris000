@@ -77,7 +77,7 @@ def_logo_tv = "logo.png"
 def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
 def_crf = "23"
 def_re = True
-
+def_ar = "44100"
 profiles = {
     "youtube:1": {
         "profileType":"Youtube Live Streaming 480p",
@@ -98,7 +98,7 @@ profiles = {
         "preset": def_preset,
         "vbr":"0",
         "abr":"128k",
-        "-ar":"44k",
+        "ar":def_ar,
         "bufsize":"6000k",
         "stream_loop":None,
         "input":lineInput,
@@ -255,7 +255,7 @@ def main(args):
     #global yt_default_progress_file, MAX_LPF
     global cookies
 
-    global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps,def_crf
+    global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps,def_crf,def_ar
     global profiles
     global yt_default_list_dir,def_fdir
 
@@ -549,6 +549,13 @@ def main(args):
     else:
         yt_default_abr = []
 
+#Audio Rate (crf)
+    yt_default_ar = profiles[profile_name].get("ar") if "ar" in profiles[profile_name] else def_ar
+    if yt_default_ar != None and yt_default_ar != "None":
+        yt_default_ar = ["-ar",yt_default_ar]
+    else:
+        yt_default_crf = []
+
 #crf factor (crf)
     yt_default_crf = profiles[profile_name].get("crf") if "crf" in profiles[profile_name] else "22"
     if yt_default_crf != None and yt_default_crf != "None":
@@ -664,13 +671,12 @@ def main(args):
     ]
 
     yt_default_av_codecs = [
-    "-c:v","h264",
-    "-c:a","aac",
+    "-c:a","aac" ] + yt_default_ar  + ["-c:v","h264",   
 	"-bsf:v","h264_mp4toannexb",
 	"-bsf:a","aac_adtstoasc",
     "-movflags",
     "+faststart"
-    ]
+ ]
 
     yt_start = [
     "ffmpeg",

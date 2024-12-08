@@ -6,7 +6,7 @@ source '/etc/environment'
 # --- Configuraciones ---
 INTERVALO_SEGUNDOS=300          # Intervalo de tiempo entre cada ejecución (en segundos)
 PORCENTAJE_MEMORIA_UMBRAL=5    # Porcentaje de memoria libre mínima requerida
-MEMORIA_MINIMA_FIJA_MB=1024    # Memoria libre mínima fija (en MB)
+MEMORIA_MINIMA_FIJA_MB=890    # Memoria libre mínima fija (en MB)
 CPU_UMBRAL_PORCENTAJE=80       # Umbral de uso de CPU (%) para alertas
 MAX_TAMANO_LOG_BYTES=$((5242880 / 1000))  # Tamaño máximo del archivo de log (500 KB)
 LOGFILE="${OSIRIS000_BIN}/com/datas/freemem.log" # Ubicación del archivo de log (cambia si es necesario)
