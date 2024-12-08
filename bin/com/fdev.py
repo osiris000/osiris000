@@ -62,7 +62,6 @@ yt_last_args = False
 
 
 lineInput = None
-def_re = True
 def_output = "rtmp://rtmp.rumble.com/live/r-3enppr-kk9w-l1xl-1abb59"
 def_output = "rtmp://a.rtmp.youtube.com/live2/svvb-yk73-asfv-0krs-5v57"
 def_fout = "flv"
@@ -76,6 +75,8 @@ def_intro_file = "com/datas/ffmpeg/intro.mp4"
 def_profile = "youtube:2"
 def_logo_tv = "logo.png"
 def_fdir = yt_default_list_dir = "com/datas/ffmpeg"
+def_crf = "23"
+def_re = True
 
 profiles = {
     "youtube:1": {
@@ -95,19 +96,20 @@ profiles = {
         "youtube:2": {
         "profileType":"Youtube Live Streaming 720p",
         "preset": def_preset,
-        "vbr":"3000k",
+        "vbr":"0",
         "abr":"128k",
-        "bufsize":"7500k",
+        "-ar":"44k",
+        "bufsize":"6000k",
         "stream_loop":None,
         "input":lineInput,
-        "maxrate":"5000k",
+        "maxrate":"3000k",
         "minrate":None,
         "fout":"flv",
         "output":def_output,
         "progress":def_progress_file,
         "ss":def_seek_start,
         "fps":"30",
-        "-crf":"21",
+        "crf":def_crf,
         "screen":"1280x720",
         "audio_filter":def_audio_filter,
         "logo": "logos/mtosierratv-p.png"
@@ -146,7 +148,6 @@ profiles = {
         "screen":def_screen,
         "audio_filter":def_audio_filter
     },
-
 
         "rumble:480": {
         "profileType":"Rumble 480",
@@ -254,11 +255,10 @@ def main(args):
     #global yt_default_progress_file, MAX_LPF
     global cookies
 
-    global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps
+    global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps,def_crf
     global profiles
     global yt_default_list_dir,def_fdir
 
-    
 
     profile_name = def_profile
 
@@ -549,6 +549,13 @@ def main(args):
     else:
         yt_default_abr = []
 
+#crf factor (crf)
+    yt_default_crf = profiles[profile_name].get("crf") if "crf" in profiles[profile_name] else "22"
+    if yt_default_crf != None and yt_default_crf != "None":
+        yt_default_crf = ["-crf",yt_default_crf]
+    else:
+        yt_default_crf = []
+
 
 #minrate
     yt_default_minrate = profiles[profile_name].get("minrate") if "minrate" in profiles[profile_name] else "256k"
@@ -745,12 +752,12 @@ def main(args):
     "-pix_fmt",
     "yuv420p",
     "-g",
-    "2"
+    "15"
     ] + yt_default_fps + yt_default_maxrate + yt_default_minrate
 
     yt_codecs_start =  logo +  yt_codecs_start
     yt_metadata = ["-metadata","'text=osiristvscreen'"]
-    yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_codecs_rates + yt_metadata
+    yt_codecs = yt_codecs_start + yt_default_av_codecs + yt_default_crf + yt_codecs_rates + yt_metadata
 
     yt_output = yt_default_fout + yt_default_output_url + yt_default_progress_file 
 
