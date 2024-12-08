@@ -52,13 +52,13 @@ bin/com/osiris_env/pip.requeriments.txt
 
 
 #scripts obin
-bin/scripts/mpvc.sh
-bin/scripts/plaympv.sh
-bin/script/cleardep.sh
-bin/scripts/tmux1
-bin/scripts/freemem
-bin/scripts/performance.sh
-
+#bin/scripts/mpvc.sh
+#bin/scripts/plaympv.sh
+#bin/script/cleardep.sh
+#bin/scripts/tmux1
+#bin/scripts/freemem
+#bin/scripts/performance.sh
+bin/scripts
 
 #inst folder
 bin/install
