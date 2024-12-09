@@ -238,6 +238,7 @@ iprot = tuple(input_protocols)
 intn = 0
 lib_url = False
 
+user_agent = []
 
 
 def main(args):
@@ -253,7 +254,7 @@ def main(args):
     #global yt_start, yt_input_concat, yt_codecs, yt_output
     #global yt_input_start, yt_screen_input, yt_screen_input2, yt_v4l2_screen
     #global yt_default_progress_file, MAX_LPF
-    global cookies
+    global cookies, user_agent
 
     global lineInput, def_re, def_intro_file, def_output,def_progress_file,def_seek_start,def_audio_filter,def_preset,def_screen,def_fps,def_crf,def_ar
     global profiles
@@ -266,6 +267,14 @@ def main(args):
         yt_default_list_dir = os.path.abspath(yt_default_list_dir)
     except Exception as e:
         print("Error (Path) : ",e)
+
+    if args[0] == "probe":
+        if len(args) > 1:
+            subprocess.call(["ffprobe",args[1]])
+            print("\nEnd Probe\n")
+        else:
+            print("Probe + Input")
+        return
 
     if args[0] == "view":
         print("\n---- view ---------------------------\n")
@@ -367,6 +376,7 @@ def main(args):
                                 main([ play[int(intn) - 1]]) 
                                 main(["yt","lasturl"])
                             else:
+                                parse_input(yt_default_list_dir + "/" + play[int(intn) - 1])
                                 main(["yt","-i",yt_default_list_dir + "/" + play[int(intn) - 1],"-c"])
                     except Exception as e:
                         print(" ERROR:",e)
@@ -678,10 +688,7 @@ def main(args):
     "+faststart"
  ]
 
-    yt_start = [
-    "ffmpeg",
-    "-y"] + yt_default_stream_loop +  yt_default_re  + yt_default_seek_start 
-
+    yt_start = ["ffmpeg"] + user_agent + ["-y"] + yt_default_stream_loop +  yt_default_re  + yt_default_seek_start
 
     yt_start_intro = [
     "ffmpeg",
@@ -784,6 +791,7 @@ def main(args):
             if args[1] == "lasturl":
                 if last_url:
                     print("MAIN:",last_url)
+                    parse_input(last_url)
                     main(["yt","-i",last_url,"-c","-M","Lasturl mode change stream"])
                     return
                 else:
@@ -922,11 +930,15 @@ def main(args):
             subprocess.call(["sudo"]+args,cwd="com/datas/ffmpeg")
         elif args[0] == "mklist":
             print("Mklist")
+            if len(args) > 1:
+                directorio_origen = args[1]
+            else:
+                directorio_origen = 'com/datas/ffmpeg/playlist'
+            print("Concat-dir:",args[1])
+            directorio_destino = "com/datas/ffmpeg"
 # Uso de la clase ConcatenadorFFmpeg
-            extension = '.mp4'
+            extension = '.ts'
             archivo_concat = 'concat_list.txt'
-            directorio_destino = 'com/datas/ffmpeg/playlist'
-            directorio_origen = yt_default_list_dir
             concatenador = ConcatenadorFFmpeg(extension, archivo_concat, directorio_origen, directorio_destino)
             concatenador.concatenar_archivos()
         else:
@@ -992,9 +1004,12 @@ def interchange2(yt_args,kill_l):
 #    "scale=iw*min(1920/iw\,1080/ih):ih*min(1920/iw\,1080/ih),pad=1920:1080:(1920-iw*min(1920/iw\,1080/ih))/2:(1080-ih*min(1920/iw\,1080/ih))/2",
 
 def parse_input(parametro):
+    global user_agent
     if parametro.startswith("http://") or parametro.startswith("https://"):
+        user_agent = ["-headers","user-agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'"]
         return "http"
     elif os.path.exists(parametro):
+        user_agent = []
         return "file"
     else:
         return False
@@ -1030,7 +1045,7 @@ class ConcatenadorFFmpeg:
         archivos = self.encontrar_archivos()
         if archivos:
             self.escribir_archivo_concat(archivos)
-            print("Se ha creado el archivo de concatenación:", self.archivo_concat)
+            print(f"Se ha creado el archivo de concatenación: {self.archivo_concat}")
         else:
             print("No se encontraron archivos con la extensión especificada.")
 
@@ -1213,68 +1228,6 @@ def parse_lasturl(lasturl):
 
 
 
-
-# Función que será ejecutada por el temporizador
-def temporizador():
-    print("Temporizador activado")
-    while True:
-        #print("Temporizador activado")
-        time.sleep(15)  # Espera 5 segundos entre cada activación
-# Función principal que simula el flujo principal del script
-def flujo_principal():
-    for i in range(10):
-        print(f"Flujo principal en ejecución: {i}")
-        time.sleep(1)  # Espera 1 segundo entre cada iteración
-
-# Crear un hilo para el temporizador
-#hilo_temporizador = threading.Thread(target=temporizador, close_fds=True)
-#hilo_temporizador.start()
-
-
-import subprocess
-
-class ProcessHandler:
-    def __init__(self, name, process, metadata=None):
-        self.name = name
-        self.process = process
-        self.metadata = metadata or {}
-
-    def send_input(self, data):
-        self.process.stdin.write(data.encode())
-        self.process.stdin.flush()
-
-    def read_output(self, data):
-        self.process.stdout.read()
-        self.process.stdout.flush()
-
-    def read_err(self, data):
-        self.process.stderr.read()
-        self.process.stderr.flush()
-
-
-# Global dictionary to store process handlers
-process_handlers = {}
-my_process = {}
-global lastpid
-def start_process(name, command, cwd=".", metadata=None):
-    process_handlers[name] = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    process_handlers[name] = ProcessHandler(name, process_handlers[name], metadata)
-    return process_handlers[name]
-
-def get_process_handler(name):
-    return process_handlers.get(name)
-
-def multiprocess(d,v):
-    global my_process
-# Example usage:
-    start_process(d, v, metadata={"user": "john_doe"})
-    #print(handler1.__dict__)
-# Accessing the process through the handler
-    my_process[d] = get_process_handler(d)
-    print(my_process[d].__dict__)
-    print(my_process[d].process)
-    print(my_process[d].name,lastpid)
-    my_process[d].read_output(my_process[d].date)
 
 
 

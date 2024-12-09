@@ -336,7 +336,6 @@ srt_c = {}
 
 
 srt_c["fuente_weight"] = """
-
 Usa para esta segmentacion:
 Usa fuente tipo:
 Tamaño rango 30 - 50
@@ -344,6 +343,17 @@ Colores: Claros Brillantes
 Emojis:
 Tamaño rango 80 - 105
 Colores: Brillantes medios
+"""
+srt_c["fuente_normal"] = """
+Usa para esta segmentacion:
+Usa fuente tipo:
+Tamaño rango 28 - 33
+Colores: Claros Brillantes 
+Para los emojis:
+Tamaño rango 30 - 35
+Colores: Brillantes medios
+
+Cada segmento de subtitulado debe tener un máximo de 12 palabras.
 
 """
 
@@ -427,7 +437,7 @@ Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que ref
 
     * **Etiquetas HTML:** Utiliza las siguientes etiquetas HTML dentro de cada línea de texto del subtítulo para controlar el estilo: `<font size="value" color="value" face="value"></font>` y `<b></b>`.
 
-        * **`size`:** El tamaño de la fuente (entre 16 y 22) de forma que si el formato del vídeo es predominante vertical use fuentes más pequeñas y horizontal más grandes.  Utiliza diferentes tamaños para enfatizar ciertas palabras o frases,  manteniendo un equilibrio visual.
+        * **`size`:** El tamaño de la fuente  de forma que si el formato del vídeo es predominante vertical use fuentes más pequeñas y horizontal más grandes.  Utiliza diferentes tamaños para enfatizar ciertas palabras o frases,  manteniendo un equilibrio visual.
         * **`color`:** El color de la fuente en formato hexadecimal (ej: `#FF0000` para rojo).  Emplea una paleta de colores que sea consistente y que refleje la atmósfera del vídeo, pero evita colores demasiado saturados y oscuros o que distraigan la atención, usa colores claros porque el video se va a montar sobre un faldón oscuro.  Prioriza la legibilidad.
         * **`face`:** Utiliza fuentes como "Noto Sans", "Dejavu Sans" o Tahoma, manteniendo la coherencia en toda la secuencia.
         * **`b`:** Utiliza `<b></b>` para texto en negrita de forma estratégica, solo para enfatizar palabras clave o frases importantes.
@@ -473,7 +483,7 @@ Debes generar un solo archivo srt
 
 
 
-    prompti = """
+    prompt_normal = """
 
 
 Eres Gemini-video. Genera un archivo SRT con subtítulos en el idioma especificado (por defecto, español si no se te indica otro distinto más adelante).
@@ -507,7 +517,7 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 Obvia mensaje para Gemini-text [(mensaje)] si existe.
 
 
-"""
+"""  + srt_c["fuente_normal"] + "\n"
 
 
 
@@ -516,7 +526,7 @@ Obvia mensaje para Gemini-text [(mensaje)] si existe.
 
 
     #prompti = prompts['sesgos']
-    prompti = prompt_creative
+    prompti = prompt_normal
 
     if prompt == "":
         prompt = prompti 
