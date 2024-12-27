@@ -1,5 +1,7 @@
 #!/bin/bash
 # pilottv
+echo "Pulsa enter para iniciar Pilot TV"
+read ENTER
 clear
 source '/etc/environment'
 echo "STARTING PILOTTV"

@@ -181,7 +181,7 @@ last_response = ""
 topic = ""  # Tema de conversación
 autosave_enabled = True  # Estado del autosave
 
-def_image_editor = "lazpaint"
+def_image_editor = "mtpaint"
 
 
 def is_file(filepath):
@@ -245,6 +245,27 @@ Presidente del gobierno de España.
 Motes: Sanchinflas, Su Sanchidad, Pinocho.
 """
 
+
+
+personajes["milei"] = """
+
+Para este vídeo emula al personaje.
+Video Personaje: a usar: Javier Milei.
+Para este vídeo emula al personaje.
+Características del personaje.-
+Idioma que habla el personaje: Argentino
+Presidente de Argentina.
+Motes: Cogehermanas.
+Peyorativos: Chorros, Ladrones, Mandriles, Pelotudos, pelotudos de mierda, zurdos, boludos, inferiores, inferiores en todo, inferior, aberración, kukas, comunistas.
+Personalidad: Variable - Border
+Ego: Superior en todo.
+Enemigos: Casta, Ñoquis.
+Modo: Insultante, tiemblen. 
+Enemigos: El Estado, el intervencionismo, los jubilados, los impuestos.
+Expresiones comunes: No hay plata, no hay guita.
+Latiguillos: Digamos osea.
+
+"""
 
 
 desing_mode["sub_segmentos"] = """
@@ -335,6 +356,394 @@ Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para u
 srt_c = {}
 
 
+srt_c["fuentes"] = """
+
+Lista de fuentes disponibles:
+
+Standard Symbols PS:style=Regular
+Bitstream Vera Sans:style=Bold
+Verve:style=Regular
+TypoUpright BT:style=Regular
+CloneWars:style=Regular
+Neverwinter:style=Normal
+Lucida Console:style=Regular,Normal,obyčejné,Standard,Κανονικά,Normaali,Normál,Normale,Standaard,Normalny,Обычный,Navadno,Arrunta
+SansSerifFLF:style=Demibold
+ Blade 2:style=Regular
+ Underground:style=Normal
+ Army Thin:style=Regular
+ One Flew Over The Cuckoo's Nest:style=Regular
+ Anglo Text:style=Regular
+ FarCry:style=ExtraBold
+ Scream alternative:style=Regular
+ P052:style=Italic
+ Telegraphic:style=Regular
+ Alba Super:style=Regular
+ Famous Logos:style=Regular
+ C059:style=Bold Italic
+ Video Star:style=Regular
+ kallot:style=Regular,Standaard
+ BTSE + PS2 FONT:style=Regular
+ Microsoft Sans Serif:style=Regular,Normal,obyčejné,Standard,Κανονικά,Normaali,Normál,Normale,Standaard,Normalny,Обычный,Normálne,Navadno,Arrunta
+ URW Gothic:style=Demi Oblique
+ Hellraiser SC:style=Regular
+ Bitstream Vera Sans:style=Bold Oblique
+ Raiders:style=Extra Bold
+ Pointedly Mad:style=SmallCaps
+ Back to the future 2002:style=Regular
+ SF Intellivised:style=Bold Italic
+ Lost Highway:style=Regular
+ SF Atarian System:style=Bold
+ DejaVu Sans:style=Bold Oblique
+ Tasteless Candy:style=Regular
+ Running shoe:style=Regular
+ AlphaFitness:style=Regular
+ Wingdings:style=Regular,normal,Standard,Normaali,Normale,Standaard,Normálne,Navadno
+ Kinkee:style=Regular
+ Anklepants:style=Regular
+ SansSerifFLF:style=Italic
+ FreeSans:style=Cursiva,Oblique,наклонен,negreta cursiva,kurzíva,kursiv,Πλάγια,Kursivoitu,Italique,Dőlt,Corsivo,Cursief,kursywa,Itálico,oblic,Курсив,İtalik,huruf miring,похилий,Ležeče,slīpraksts,pasvirasis,nghiêng,Etzana,तिरछा
+ Mobile Infantry,Continuum Bold:style=Regular
+ Tintin Majuscules:style=Bold
+ Nimbus Sans Narrow:style=Regular
+ Hirosh:style=Normal
+ SF Distant Galaxy Alternate:style=Regular
+ Gotham Nights:style=Normal
+ Nasalization:style=Medium
+ DV TTSurekh:style=Italic
+ Lobster 1.4:style=Regular
+ DejaVu Sans:style=Book
+ Nimbus Mono PS:style=Bold
+ Trebuchet MS:style=Regular,Normal,obyčejné,Standard,Κανονικά,Normaali,Normál,Normale,Standaard,Normalny,Обычный,Normálne,Navadno,Arrunta
+ WP MultinationalA Courier:style=Normal
+ Army Hollow Expanded:style=Regular
+ InvisibleKiller:style=Regular
+ Care Bear Family:style=Regular
+ Interdimensional:style=Regular
+ Bitstream Vera Sans:style=Roman
+ BankGothic:style=Regular
+ CrayonL:style=Regular
+ Fatboy Slim BLTC (BRK):style=Regular
+ XFiles:style=Regular
+ Ringbearer:style=Medium
+ BatmanForeverAlternate:style=Regular
+ 007 GoldenEye:style=Regular
+ barcode font:style=Regular
+ Adventure:style=Normal
+ SF Atarian System Extended:style=Regular
+ SF Intellivised Extended:style=Italic
+ Sci Fied:style=BoldItalic
+ VTCBelialsBlade3d:style=regular
+ Beast Wars:style=Regular
+ SI Font,Impact:style=Regular
+ Final Fantasy,New:style=Classical,Regular
+ Shadow of Xizor:style=Regular
+ Beckett:style=Regular
+ SF Intellivised:style=Italic
+ Kruti Dev 010:style=Bold
+ 2006 Team:style=Regular
+ Mars Attacks:style=Regular
+ C059:style=Bold
+ Old English:style=Regular
+ Morpheus:style=Regular
+ Phorfeit Slant (BRK):style=Regular
+ 28 Days Later:style=Regular
+ Quatl Italic:style=Italic
+ Weltron Special Power:style=Regular
+ BernhardFashion BT:style=Regular
+ Alison:style=Regular
+ GAMECUBEN:style=DualSet
+ URW Gothic:style=Book Oblique
+ CrayonE:style=Regular
+ Gremlins:style=Regular
+ GoudyOlSt BT:style=Bold Italic
+ Candide Dingbats:style=Regular
+ Adam's Font,Captain Podd:style=Regular
+ DejaVu Sans Mono:style=Book
+ EuroseWide Heavy:style=Regular
+ Star Jedi:style=Regular
+ SF Distant Galaxy Outline:style=Italic
+ SF Fortune Wheel Condensed:style=Italic
+ BatmanForeverOutline:style=Regular
+ 04b03:style=Regular
+ Parseltongue:style=Regular
+ InvisibleKiller:style=Regular
+ Facelift:style=Regular
+ signs zeichen 2.0:style=Regular
+ DV_Divyae:style=Bold Italic
+ FreeMono:style=Negrita,Bold,получерен,negreta,tučné,fed,Fett,Έντονα,Lihavoitu,Gras,Félkövér,Grassetto,Vet,Halvfet,Pogrubiony,Negrito,gros,Полужирный,Fet,Kalın,huruf tebal,жирний,polkrepko,treknraksts,pusjuodis,đậm,Lodia,धृष्ट
+ 007 GoldenEye:style=Regular
+ Georgia:style=Regular,Normal,obyčejné,Standard,Κανονικά,Normaali,Normál,Normale,Standaard,Normalny,Обычный,Normálne,Navadno,Arrunta
+ DV_Divya:style=Normal
+ Tafelschrift:style=Regular
+ FakeReceipt:style=Regular
+ Interdimensional:style=Regular
+ SF Fortune Wheel:style=Italic
+ Ballpark:style=Weiner
+ Old Republic:style=Italic
+ Viking Normal:style=Regular
+ Proclamate Ribbon:style=Heavy
+ Futura Md BT:style=Bold
+ BlackJack:style=Regular
+ Proclamate Outline:style=Heavy
+ OldEgyptGlyphs:style=Regular
+ Tribeca:style=Regular
+ HalfLife:style=Regular
+ A Charming Font:style=Regular
+ WP MultinationalA Roman:style=Normal
+ URW Bookman:style=Light
+ Nosegrind Demo:style=Regular
+ BankGothic Md BT:style=Medium
+ Nosegrind Demo:style=Regular
+ DejaVu Serif:style=Book
+ Standard Symbols PS:style=Regular
+ Bremen Bd BT:style=Bold
+ FreeSans:style=Cursiva,Oblique,наклонен,negreta cursiva,kurzíva,kursiv,Πλάγια,Kursivoitu,Italique,Dőlt,Corsivo,Cursief,kursywa,Itálico,oblic,Курсив,İtalik,huruf miring,похилий,Ležeče,slīpraksts,pasvirasis,nghiêng,Etzana,तिरछा
+ FreeMono:style=Negrita,Bold,получерен,negreta,tučné,fed,Fett,Έντονα,Lihavoitu,Gras,Félkövér,Grassetto,Vet,Halvfet,Pogrubiony,Negrito,gros,Полужирный,Fet,Kalın,huruf tebal,жирний,polkrepko,treknraksts,pusjuodis,đậm,Lodia,धृष्ट
+ P052:style=Roman
+ Turtles:style=Normal
+ Raiders:style=Extra Bold
+ Palatino Linotype:style=Italic,Cursiva,kurzíva,kursiv,Πλάγια,Kursivoitu,Italique,Dőlt,Corsivo,Cursief,Kursywa,Itálico,Курсив,İtalik,Poševno,nghiêng,Etzana
+ 1942 report:style=1942 report
+ Liberation Sans Narrow:style=Bold Italic
+ SF Fortune Wheel Condensed:style=Regular
+ Africain:style=Regular
+ SeyesBDL:style=Regular
+ AltamonteNF:style=Regular
+ Beynkales Demo:style=Regular
+ DuvallOutline:style=Normal
+ Firestarter:style=Regular
+ C059:style=Bold
+ Legothick,LEGothic:style=Regular,Type
+ Nimbus Roman:style=Bold
+ Liberation Serif:style=Bold Italic
+ BankGothic:style=Regular
+ Feast of Flesh BB:style=Regular
+ Buffied:style=Regular
+ Liberation Sans Narrow:style=Regular
+ Alba:style=Regular
+ Love Letters:style=Regular
+ P052:style=Bold
+ Rafika:style=Regular
+ Allencon Demo:style=Regular
+ Exocet:style=Light
+ Karloff:style=Regular
+ Georgia:style=Italic,Cursiva,kurzíva,kursiv,Πλάγια,Kursivoitu,Italique,Dőlt,Corsivo,Cursief,Kursywa,Itálico,Курсив,İtalik,Poševno,Etzana
+ Nirvana,Onyx:style=Regular
+ Orgy:style=Regular
+ Quatl Italic:style=Italic
+ SansSerifExbFLFCond:style=Italic
+ Beckett:style=Regular
+ Gauze Strips:style=Gauze Strips
+ ESP:style=Regular
+ Dummies:style=Regular
+ Sickness:style=Regular
+ Fatboy Slim BLTC (BRK):style=Regular
+ Bjork:style=Regular
+ Army Expanded:style=Regular
+ C39HrP24DhTt:style=Normal
+ Adorable:style=Regular
+ SF Atarian System Extended:style=Bold
+ Ribbon131 Bd BT:style=Bold
+ URW Gothic:style=Demi Oblique
+ a Theme for murder:style=Regular,Normal,obyčejné,Standard,Κανονικά,Normaali,Normál,Normale,Standaard,Normalny,Обычный,Normálne,Navadno,Arrunta
+ BankGothic:style=Regular
+ SansSerifBookFLF:style=Medium
+ Gayane StO:style=Regular
+ SF Fortune Wheel:style=Italic
+ Star Jedi Hollow:style=Regular
+ Anywhere:style=Regular,Normal,obyčejné,Standard,Κανονικά,Normaali,Normál,Normale,Standaard,Normalny,Обычный,Normálne,Navadno,Arrunta
+ SeyesBDE:style=Regular
+ Nimbus Sans:style=Bold
+ Nimbus Roman:style=Bold Italic
+ Swatch it:style=Regular
+ WP MathB:style=Normal
+ namco regular:style=Regular
+ Whatafont:style=Regular
+ Nimbus Sans:style=Bold Italic
+ Space Cruiser:style=Regular
+ Old Republic:style=Bold
+ Asenine Super Thin:style=Regular
+ Nimbus Roman:style=Italic
+ ACCELERATOR:style=Normal
+ Humanst521 BT:style=Bold
+ Border Corners:style=Regular
+ OzHandicraft BT:style=Roman
+ Paradise's Fruits:style=Regular
+ Blade Runner Movie Font:style=Regular
+ DejaVu Sans:style=Bold Oblique
+ Bitstream Vera Sans Mono:style=Roman
+ FreeSans:style=Regular,нормален,Normal,obyčejné,Mittel,µεσαία,Normaali,Normál,Medio,Gemiddeld,Odmiana Zwykła,Обычный,Normálne,menengah,прямій,Navadno,vidējs,normalusis,vừa,Arrunta,सामान्य
+ Swiss Cheesed:style=Regular
+ Groovalicious Tweak:style=Regular
+ KInifed:style=Regular
+ Spawned:style=Regular
+ Will:style=Robinson
+ Futurama Alien Alphabet One:style=Regular
+ ZapfEllipt BT:style=Italic
+ Tribal:style=Regular
+Humanst521 BT:style=Bold
+Border Corners:style=Regular
+OzHandicraft BT:style=Roman
+Paradises Fruits:style=Regular
+Blade Runner Movie Font:style=Regular
+DejaVu Sans:style=Bold Oblique
+Bitstream Vera Sans Mono:style=Roman
+FreeSans:style=Regular,нормален,Normal,obyčejné,Mittel,µεσαία,Normaali,Normál,Medio,Gemiddeld,Odmiana Zwykła,Обычный,Normálne,menengah,прямій,Navadno,vidējs,normalusis,vừa,Arrunta,सामान्य
+SWC_____.TTF: Swiss Cheesed:style=Regular
+Groovalicious Tweak:style=Regular
+KInifed:style=Regular
+Spawned:style=Regular
+WillRobinson.ttf: Will:style=Robinson
+Futurama Alien Alphabet One:style=Regular
+ZapfEllipt BT:style=Italic
+Tribal:style=Regular
+
+
+
+Características de diseño para las fuentes - rango de valores predeterminados:
+
+Rango de tamaño de fuente.
+Pequeña: 10 - 16
+Pequeña-Media: 14-20
+Media: 19 - 28
+Grande: 26 - 42
+Grande-Gigante: 40 - 56
+Gigante: 60 - 86
+
+"""
+
+srt_c["fuente_dynamic"] = """
+Dynamic mode-.
+Usa para esta segmentacion:
+Fuente tamaño rango: Grande
+Emojis tamaño rango: Grande-Gigante
+Los colores deben dar una sensación de claridad e intensidad.  Para ello, utiliza una gama de colores con códigos hexadecimales que se encuentren e de la rueda de color, pero con una saturación moderada.
+
+Rangos de colores por defecto:
+
+Colores Claros:
+
+* `#FAF0E6` (AntiqueWhite)
+* `#FFF8DC` (Cornsilk)
+* `#FDEFE0` (LightYellow)
+* `#FAFAF9` (FloralWhite)
+* `#FFFFE0` (LightYellow)
+* `#FFFFF0` (Snow)
+* `#F0FFF0` (Honeydew)
+* `#F5FFFA` (MintCream)
+* `#F0FFFF` (Azure)
+* `#F5F5DC` (Beige)
+* `#FFFFFA` (WhiteSmoke)
+* `#FFF5EE` (Seashell)
+* `#FFE4E1` (MistyRose)
+* `#FFE4C4` (Bisque)
+* `#FFF0F5` (LavenderBlush)
+* `#FFFAF0` (FloralWhite)
+* `#FDF5E6` (OldLace)
+* `#F5F5F5` (Gainsboro)
+* `#FFEBCD` (BlanchedAlmond)
+
+
+Colores Oscuros:
+
+* `#A0522D` (Sienna)
+* `#8B4513` (SaddleBrown)
+* `#A52A2A` (Brown)
+* `#800000` (Maroon)
+* `#800080` (Purple)
+* `#4B0082` (Indigo)
+* `#8A2BE2` (BlueViolet)
+* `#9400D3` (DarkViolet)
+* `#9932CC` (DarkOrchid)
+* `#800080` (Purple)
+* `#FF0000` (Red)
+* `#008000` (Green)
+* `#FFFF00` (Yellow)
+* `#00FFFF` (Cyan)
+* `#FF00FF` (Magenta)
+* `#FF69B4` (HotPink)
+* `#FF6347` (Tomato)
+* `#FF4500` (OrangeRed)
+* `#FFA07A` (LightSalmon)
+* `#FFFAFA` (Snow)
+* `#FFDAB9` (PeachPuff)
+* `#FA8072` (Salmon)
+* `#FFB6C1` (LightPink)
+* `#FFDEAD` (NavajoWhite)
+* `#DEB887` (BurlyWood)
+* `#D2691E` (Chocolate)
+* `#BC8F8F` (RosyBrown)
+* `#CD853F` (Peru)
+
+
+Colores Medios:
+
+`#E67E22` (Carrot Orange):** Un naranja cálido y vibrante.
+`#27AE60` (Emerald Green):** Un verde intenso y natural.
+`#3498DB` (Peter River Blue):** Un azul claro y fresco.
+`#8E44AD` (Wisteria Purple):** Un morado elegante y sutil.
+`#F39C12` (Orange):** Un naranja más brillante que el Carrot Orange.
+`#1ABC9C` (Emerald):** Un verde un poco más claro que el Emerald Green.
+`#2980B9` (Belize Hole Blue):** Un azul más oscuro que el Peter River Blue.
+`#9B59B6` (Amethyst Purple):** Un morado más intenso que el Wisteria Purple.
+`#D35400` (Pumpkin Orange):** Naranja más oscuro y terroso.
+`#2ECC71` (Nephritis Green):** Verde más claro y pastel.
+
+
+Utiliza los colores de la lista anterior dentro de sus rangos creativamente a tu libre albedrío para el texto cuando el fondo del video sea oscuro, y los colores oscuros cuando el fondo sea claro.  Determina la luminosidad del fondo en tiempo real, a nivel de milisegundo, para la selección del color correcto.  Si no se puede determinar la luminosidad del fondo con precisión al milisegundo, utiliza una aproximación lo más precisa posible. Prioriza la legibilidad en todas las condiciones de luminosidad de fondo. Esto aplica a textos y emojis.
+
+
+Usa saltos <br> para crear una segmentación dinámica.
+Juega con los tiempos del video y de la segmentación.
+usa dos tipos de segmentación en dos tiempos distintos.
+uno con segmentación entre 2 y 4 segundos.
+y otro con segmentaciones rápidas con duraciones máximas de 0.999 y mínimas de 0.100 segunos.
+Separados por saltos de línea cuando coincidan.
+Usar segun requiera el guión de video/audio observado.
+Juega con las fuentes usando distinto tipo entre textos y segmentos acorde con su tipo a nivel medio+ randomizándolas.
+Usa distintas fuentes de la lista de fuentes disponibles tanto para textos como para emojis.
+Usa fuentes legibles para textos y simbólicas para los emojis.
+
+
+Usa para esta segmentación:
+
+Segmentación Temporal:
+
+Segmentos Rápidos (0.100 - 0.999 segundos):  Máximo 4 palabras por segmento.  Estas secciones cortas deben coincidir con cambios bruscos de tono o ritmo en el audio del vídeo.  Para identificar estos momentos, analiza la energía del audio (amplitud de la onda sonora):  si la energía sube significativamente, genera un segmento rápido.  Utiliza fuentes con un estilo más informal (Ej:  `Impact`, `Comic Sans MS`).
+Segmentos Lentos (1.250 - 2.900 segundos):  Máximo 5 palabras por segmento. Estas secciones más largas deben abarcar partes del vídeo con una narrativa más continua.  Utiliza fuentes más formales y legibles (Ej: `Georgia`, `Times New Roman`, `Arial`).
+
+**Selección de Fuentes:**
+
+Para cada segmento, elige una fuente aleatoriamente de la siguiente lista: 
+
+Fuentes para Textos (Segmentos Rápidos y Lentos): `Arial`, `Georgia`, `Times New Roman`, `Verdana`, `Impact`, `Comic Sans MS`, puedes usar otras de entre la lista que sean haituales como fuentes de texto tipo latino.
+Fuentes para Emojis (Segmentos Rápidos y Lentos): Para los emojis puedes usar todo tipo de fuentes disponibles por ejmeplo: `Impact`, `Wingdings`, `Webdings`, `Zapf Dingbats`, entre otras. 
+
+Alternancia de Fuentes:  No debe haber dos segmentos consecutivos con la misma fuente para textos ni para emojis.
+
+
+Usar también fuentes de la lista completa de fuentes si hay.
+
+Saltos de Línea: Usa `<br>` para separar distintos segmentos que ocupen un mismo espacio de tiempo.
+
+Como regla General: Maximo palabras por cada segmento: 5.
+
+"""
+
+
+
+srt_c["fuente_bold"] = """
+
+Fuente Seleccionada Bold.
+Usa fuente tamaño rango: Grande
+Emojis tamaño rango: Grande-Gigante
+Usar negritas para todos los emojis siempre y colores fuertes brillantes.
+User negrita para los textos.
+
+
+"""
+
+
 srt_c["fuente_weight"] = """
 Usa para esta segmentacion:
 Usa fuente tipo:
@@ -357,6 +766,7 @@ Cada segmento de subtitulado debe tener un máximo de 12 palabras.
 
 """
 
+
 def video_translate(video_file_name="",prompt=""):
     global personajes, modos, sesgos, desing_mode, last_response,conversation_context,srt_c
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
@@ -376,12 +786,6 @@ def video_translate(video_file_name="",prompt=""):
 #        return
         #vídeo file
 #        return
-
-
-
-
-
-
 
     ct = f"Uploading file..."
     conversation_context += ct
@@ -497,8 +901,8 @@ Prioridades:
 Formato:
 
 * Cumple estrictamente el formato SRT.
-* Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`.  Prioriza colores claros y legibles.  **Utiliza una variedad de colores para hacer los subtítulos más atractivos.**
-* Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual.**  **Proporciona emojis con tamaños entre 1 y 3 unidades mayores al tamaño de fuentes utilizados y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
+* Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`. 
+* Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
 * Usa Fuentes de tamaño 18-22 si no se te indican otras más adelante.
 Ejemplo:
 
@@ -517,7 +921,7 @@ Debes generar solamente 1 archivo SRT. SÓLO UNO.
 Obvia mensaje para Gemini-text [(mensaje)] si existe.
 
 
-"""  + srt_c["fuente_normal"] + "\n"
+"""   + personajes["milei"] + srt_c["fuente_bold"] + srt_c["fuente_dynamic"] + "\n"
 
 
 
@@ -531,7 +935,7 @@ Obvia mensaje para Gemini-text [(mensaje)] si existe.
     if prompt == "":
         prompt = prompti 
     else:
-        prompt = prompti + prompt 
+        prompt = srt_c["fuentes"] + prompti + prompt 
 #    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
 # Make the LLM request.
 #   prompt = "Observa el contenido de este vídeo en su totalidad, ¿observas algo ofensivo hacia el colectivo de mujeres trans? expláyate"
@@ -1170,7 +1574,8 @@ def main(args):
                 messagebox.showerror("Error", "No se especificó tema a establecer.")
             return
 
-        elif command == "--dialog":
+        elif command == "--dialog" or command == "--ask"  :
+            #Abre una ventana de dialogo para enviar una pregunta al modelo de IA seleccionado
             dtext = win.dialog_window()
             if dtext != "":
                 print(" → ",dtext)
@@ -1245,7 +1650,7 @@ def main(args):
              "com":com_d,
              "metadata":{"from":"gemini3.py"}
             }
-            osiris2.multiprocess(obj)
+            core.ps.ps(com_d)
             print("\n Intentando Reporte... cargando... \n ")
             main(["--l",fileload,text])
             print("\n Enviando reporte .....\n ")

@@ -404,11 +404,6 @@ autoplay></video>
 
 
 
-
-
-
-
-
 <div style="justify-content:center;align-items:center;display:flex;overflow:hidden;margin:25.8px 30px auto auto;float:right;">
 
 <div id="buffer-container"><div id="buffer-bar"></div></div>
@@ -418,7 +413,9 @@ autoplay></video>
   <img src="img/reload.png" style="width:201x;height:20px;"></a>
 &nbsp;&nbsp;&nbsp;
 
-  <a href="javascript:void(0);" onclick="document.getElementById('video').style.height='70%';document.getElementById('m').style.display='block';" style="padding:0px 3px;color: #333; text-decoration: none; border: 1px solid #333; margin:0;; border-radius: 10px; animation:fadeIn 0.5s ease-in-out; -webkit-animation-fill-mode: forwards;background:rgba(222,222,222,0.6)">Consola</a>
+  <a href="javascript:void(0);" onclick="document.getElementById('video').style.height='70%';document.getElementById('m').style.display='block'; document.getElementById('webirc').style.display='none';"   style="padding:0px 3px;color: #333; text-decoration: none; border: 1px solid #333; margin:0;; border-radius: 10px; animation:fadeIn 0.5s ease-in-out; -webkit-animation-fill-mode: forwards;background:rgba(222,222,222,0.6)"> Consola </a>
+
+
 </div>
 
 
@@ -442,6 +439,7 @@ autoplay></video>
 
 
 </div>
+
 
 
 

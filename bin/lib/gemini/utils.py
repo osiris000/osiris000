@@ -19,7 +19,7 @@ import lib.core  as core
 
 #print("UTILS")
 
-def_image_editor = "lazpaint"
+def_image_editor = "mtpaint"
 
 
 

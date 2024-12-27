@@ -1,16 +1,16 @@
 #!/bin/bash
 #Habilita la salida al encontrar errores, pero con excepciones para comandos no críticos.
 #set -e  #Comentado para un manejo de errores más granular.
-
+source '/etc/environment'
 # Recibe OSIRIS000_BIN como argumento
-OSIRIS000_BIN="$1"
+#OSIRIS000_BIN="$1"
 
 # --- Configuraciones ---
 INTERVALO_SEGUNDOS=300          # Intervalo de tiempo entre cada ejecución (en segundos)
 PORCENTAJE_MEMORIA_UMBRAL=5    # Porcentaje de memoria libre mínima requerida
-MEMORIA_MINIMA_FIJA_MB=1024    # Memoria libre mínima fija (en MB)
+MEMORIA_MINIMA_FIJA_MB=256    # Memoria libre mínima fija (en MB)
 CPU_UMBRAL_PORCENTAJE=80       # Umbral de uso de CPU (%) para alertas
-MAX_TAMANO_LOG_BYTES=$((5 * 1024 * 1024))  # Tamaño máximo del archivo de log (5 MB)
+MAX_TAMANO_LOG_BYTES=$((1024 * 8))    # Tamaño máximo del archivo de log (5 MB)
 LOGFILE="${OSIRIS000_BIN}/com/datas/freemem.log" # Ubicación del archivo de log
 SWAPFILE="/swapfile"          # Ubicación del archivo de intercambio
 
@@ -103,7 +103,7 @@ limitar_tamano_log() {
     local FILE_SIZE=$(stat -c%s "$LOGFILE")
     if (( FILE_SIZE > MAX_TAMANO_LOG_BYTES )); then
       local BYTES_TO_KEEP=$((MAX_TAMANO_LOG_BYTES / 2))
-      head -c "$BYTES_TO_KEEP" "$LOGFILE" > "$LOGFILE.tmp" && mv "$LOGFILE.tmp" "$LOGFILE" 2>/dev/null || handle_error "Error al recortar el log: mv falló"
+      tail -c "$BYTES_TO_KEEP" "$LOGFILE" > "$LOGFILE.tmp" && mv "$LOGFILE.tmp" "$LOGFILE" 2>/dev/null || handle_error "Error al recortar el log: mv falló"
       echo "$(date) - Archivo de log recortado. Tamaño actual: $(stat -c%s "$LOGFILE") bytes" >> "$LOGFILE"
     fi
   fi

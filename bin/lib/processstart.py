@@ -16,6 +16,10 @@ pid_queue = multiprocessing.Queue()  # Cola compartida para almacenar el PID del
 pid_proceso = None
 yt_last_args = False
 
+
+def ps(Xargs, foreground_d="False"): 
+    funcion_proceso(Xargs, foreground=foreground_d)
+
 def funcion_proceso(args, foreground=False): # Añadido argumento foreground
     global estado_proceso
     global pid_proceso

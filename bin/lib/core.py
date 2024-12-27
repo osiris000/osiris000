@@ -32,11 +32,9 @@ def dynmodule(nombre_modulo, as_=""):
 
 
 dynmodule('lib.multiprocess',"mp")
-def multiprocess(obj):
-	mp.multiprocess(obj)
-
-
 dynmodule('lib.processstart',"ps")
+
+
 def multiprocess(obj):
 	mp.multiprocess(obj)
 
