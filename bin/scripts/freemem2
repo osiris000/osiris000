@@ -131,7 +131,8 @@ fi
 
 echo "====================" >> "$LOGFILE"
 echo "Comprobando Swap..." >> "$LOGFILE"
-swap_activate
+echo "Activación de swap desactivada por innecesario" >> "$LOGFILE"
+#swap_activate
 
 # Bucle principal
 while true; do

@@ -23,12 +23,15 @@ moveTag(SplashContainer,MainPanel)
 
 
 
+moveTag(CloseSplash, SplashContent)
 
 
 moveTag(SplashContent,SplashContainer)
 
 
-moveTag(CloseSplash, SplashContent)
+
+
+
 
 
 
@@ -40,12 +43,12 @@ onload = function(){
     const content = document.getElementById(elementId);
 
     // Estilos iniciales
-    container.style.width = "70vw";
+    container.style.width = "40vw";
     container.style.position = "absolute";
     container.style.padding = "10px";
     container.style.boxSizing = "border-box";
     container.style.visibility = "hidden"; 
-    container.style.height = "460px";
+    container.style.height = "40vh";
     container.style.fontSize = "18px";
     container.style.fontWeight = "bold";
     container.style.overflow = "hidden"; // Evita que el contenido sobresalga
@@ -69,30 +72,45 @@ onload = function(){
 
 
 
-randnick  = Math.floor(Math.random() * 9000000) + 1000000;
+function randnick(){
+randnick  = "Web3" + "_" + Math.floor(Math.random() * 19019) + 99;
+return randnick
+}
 
+randnick = randnick()
+
+//urlc = "https://chathispano.com/webchat/?theme=embeb&style=orange&title=Osiris-Irc-Chat&autojoin=true&autoload=true&nick=osiris_"+randnick+"&chan=#OsirisWeb3&logo=https://cdn.chathispano.com/news/esquina.jpg"
+
+urlc="https://kiwiirc.hybridirc.com/?nick=Osiris"+randnick+"&theme=Sky#osirisWeb3,#help"
+urlcr = "https://osiris000.duckdns.org/app/widgets/webirc.html"
+
+//alert(urlc)
 
 IntroApp.innerHTML = `
-<div id="webirc-container">
-  <b style="background:rgba(120,180,195,.4);padding:2px;"> IRC - CHAT </b>   <a href="javascript:void(0);" onclick="document.getElementById('webirc-container').style.visibility='hidden';" style="float:right;cursor:pointer;color:#c4edea;font-weight:bold;"> [ocultar] </a>  <!-- <a href="javascript:void(0);" onclick="document.getElementById('webirc-container').style.display='none';" style="cursor:pointer"> [X] </a> --> <br>
-<div id='webirc'>  <iframe 
-  loading="lazy"  frameborder="0" scrolling="no" 
-  src="https://chathispano.com/webchat/?theme=embebed&style=orange&title=Osiris-Irc-Chat&logo=https://cdn.chathispano.com/news/esquina.jpg&autojoin=true&autoload=false&tema=CLI&nick=osiris_`+randnick+`&chan=#OsirisWeb"
- style="width: 100%;height:100%;"
-  ></iframe></div></div>
+<div id="webirc-container" style="z-index:3">
+
+<div>
+ 
+  <b style="background:rgba(120,180,195,.4);padding:2px;"> IRC - CHAT </b> 
+<!--reload chat-->
+   <button type="button" class='mbuton' onclick="document.getElementById('ifchat').src='`+urlcr+`'"> RELOAD </button>
+<!--ocultar chat-->
+   <a href="javascript:void(0);" onclick="document.getElementById('webirc-container').style.visibility='hidden';" style="background:rgba(3,3,3,.5);float:right;cursor:pointer;color:#c4edea;font-weight:bold;"> [ocultar] </a>  
+</div>
+
+<div id='webirc'> 
+<iframe id="ifchat" 
+allow="camera; microphone; display-capture; fullscreen"
+frameborder="0" src="`+urlc+`"  style="width: 100%;height:100%;overflow:auto;"></iframe>
+</div>
+
+</div>
 
 `
-
 makeResizable("webirc");
-
 IntroApp.innerHTML += `
 <iframe id='iftvx2' class="rumble" layout="responsive" style="width:95vw;height:90vh;display:flex" src="tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8" frameborder="0" allowfullscreen></iframe>
 `
-
-
-
-
-
 
 /*
 
