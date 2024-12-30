@@ -57,12 +57,12 @@ onload = function(){
 
 
 	content.style.resize = "both";
-    content.style.width = "100%";
+    content.style.width = "98%";
     content.style.height = "calc(100% - 20px)"; 
     content.style.fontSize = "22px";
     content.style.color = "#feedde";
     content.style.background = "rgba(122, 2, 255, 0.7)";
-    content.style.padding = "10px";
+    content.style.padding = "1%";
     content.style.boxSizing = "border-box";
 
 
@@ -73,7 +73,7 @@ onload = function(){
 
 
 function randnick(){
-randnick  = "Web3" + "_" + Math.floor(Math.random() * 19019) + 99;
+randnick  = "Web3" + "_" + Math.floor(Math.random() * 9999999);
 return randnick
 }
 
@@ -81,7 +81,7 @@ randnick = randnick()
 
 //urlc = "https://chathispano.com/webchat/?theme=embeb&style=orange&title=Osiris-Irc-Chat&autojoin=true&autoload=true&nick=osiris_"+randnick+"&chan=#OsirisWeb3&logo=https://cdn.chathispano.com/news/esquina.jpg"
 
-urlc="https://kiwiirc.hybridirc.com/?nick=Osiris"+randnick+"&theme=Sky#osirisWeb3,#help"
+urlc="https://kiwiirc.hybridirc.com/?nick=Osiris"+randnick+"&theme=Dark#osirisWeb3,#help"
 urlcr = "https://osiris000.duckdns.org/app/widgets/webirc.html"
 
 //alert(urlc)

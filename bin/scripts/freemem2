@@ -150,8 +150,8 @@ while true; do
     echo "$(date) - Memoria libre ($MEM_LIBRE MB) por debajo del umbral ($MEM_UMBRAL_FINAL MB). Liberando memoria..." >> "$LOGFILE"
     sync
     echo 3 > /proc/sys/vm/drop_caches 2>/dev/null || handle_error "Error al limpiar la caché"
-    swapoff -a && swapon -a 2>/dev/null || handle_error "Error al deshabilitar/habilitar swap"
-    sysctl vm.swappiness=10 
+#    swapoff -a && swapon -a 2>/dev/null || handle_error "Error al deshabilitar/habilitar swap"
+#    sysctl vm.swappiness=10
     if [ $? -ne 0 ]; then
       handle_error "Error al modificar vm.swappiness: $?"
     fi

@@ -232,13 +232,20 @@ personajes = {}
 modos = {}
 desing_mode = {}
 prompts = {}
+srt_c = {}
 
-modos["critica"] = """
+srt_c["critica"] = """
+
+!Modo critica
+
 Modo de expresión: Crítica ácida.
 Por lo tanto tienes que criticar al personaje señalado.
 """
 
-personajes["sanchez"] = """
+srt_c["sanchez"] = """
+
+!Modo sanchez
+
 Personaje a usar: Pedro Sánchez.
 Características del personaje:
 Presidente del gobierno de España.
@@ -247,7 +254,9 @@ Motes: Sanchinflas, Su Sanchidad, Pinocho.
 
 
 
-personajes["milei"] = """
+srt_c["milei"] = """
+
+!Modo milei
 
 Para este vídeo emula al personaje.
 Video Personaje: a usar: Javier Milei.
@@ -268,7 +277,7 @@ Latiguillos: Digamos osea.
 """
 
 
-desing_mode["sub_segmentos"] = """
+srt_c["sub_segmentos"] = """
 
 Modelado de segmentos de subtitulado.
 
@@ -278,15 +287,14 @@ Modelado de segmentos de subtitulado.
 """
 
 
-desing_mode["emoji"] = """
+srt_c["emoji"] = """
 
 Usa Solo Emojis.
 
 
 """
 
-
-desing_mode["gigante"] = """
+srt_c["gigante"] = """
 
 De tamaño Gigante.
 
@@ -306,7 +314,9 @@ text_replace = {
 
 
 
-prompts["sesgos"] = """
+srt_c["sesgos"] = """
+
+!Modo sesgos
 
 
 Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para un vídeo de [duración del vídeo] segundos sobre [tema del vídeo].  En lugar de transcribir el audio, tu tarea es crear texto que refuerce el mensaje del vídeo y explore diferentes tonos y sesgos.  El vídeo tiene un fondo oscuro.
@@ -353,10 +363,220 @@ Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para u
 
 """
 
-srt_c = {}
 
 
-srt_c["fuentes"] = """
+
+
+srt_c["fbold"] = """
+
+Fuente Seleccionada Bold.
+Usa fuente tamaño rango: Grande
+Emojis tamaño rango: Grande-Gigante
+Usar negritas para todos los emojis siempre y colores fuertes brillantes.
+User negrita para los textos.
+
+
+"""
+
+
+srt_c["fweight"] = """
+
+Fuente Seleccionada weight.
+Usa fuente tamaño rango: Media
+Emojis tamaño rango: Media-Grande
+
+
+"""
+srt_c["fnormal"] = """
+
+!Modo fnormal
+
+Fuente Seleccionada normal.
+Usa fuente tamaño rango: Pequeña
+Emojis tamaño rango: Pequeña-Media
+
+"""
+
+
+srt_c["creative"] = """
+
+!Modo creative
+
+Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Debes traducir todo al español si no se te indica otro idioma más adelante.  
+
+Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que reflejen con exactitud el contenido del vídeo sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la objetividad y la neutralidad.
+
+1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al español excepto que se te explicite otro distinto. Si hay secciones sin audio o con audio irrelevante para la traducción (ej: música de fondo, sonidos ambientales), describe brevemente el contenido visual en español.
+
+2. **Generación del archivo .srt:** Genera un archivo .srt que incluya:
+
+    * **Formato SRT:** El archivo debe cumplir estrictamente el formato .srt.
+
+    * **Etiquetas HTML:** Utiliza las siguientes etiquetas HTML dentro de cada línea de texto del subtítulo para controlar el estilo: `<font size="value" color="value" face="value"></font>` y `<b></b>`.
+
+        * **`size`:** El tamaño de la fuente  de forma que si el formato del vídeo es predominante vertical use fuentes más pequeñas y horizontal más grandes.  Utiliza diferentes tamaños para enfatizar ciertas palabras o frases,  manteniendo un equilibrio visual.
+        * **`color`:** El color de la fuente en formato hexadecimal (ej: `#FF0000` para rojo).  Emplea una paleta de colores que sea consistente y que refleje la atmósfera del vídeo, pero evita colores demasiado saturados y oscuros o que distraigan la atención, usa colores claros porque el video se va a montar sobre un faldón oscuro.  Prioriza la legibilidad.
+        * **`face`:** Utiliza fuentes como "Noto Sans", "Dejavu Sans" o Tahoma, manteniendo la coherencia en toda la secuencia.
+        * **`b`:** Utiliza `<b></b>` para texto en negrita de forma estratégica, solo para enfatizar palabras clave o frases importantes.
+        * **Los valores de los atributos en las etiquetas font del subtitulado deben ir entrecomillados.
+
+    * **Estructura:** Cada línea del .srt contendrá la traducción al español. Si hay una sección sin audio o con audio ininteligible, escribe una descripción breve y objetiva en español dentro de las etiquetas HTML. Ejemplo: `<font size=18 color=#808080 face=Arial>Música de fondo</font>` o `<font size=18 color=#808080 face=Arial>Imágenes de destrucción</font>`.
+
+    * **Emojis:** Incluye emojis descriptivos (evitando los ambiguos o inapropiados) en cada línea para reflejar el tono y el contenido emocional. Envuelve los emojis en etiquetas HTML para controlar su estilo y un espacio en blanco entre ellos.
+
+    * **Duración y Espaciado:** La duración máxima de cada subtítulo debe ser de 5 segundos como máximo priorizando entre 2 y 2.5 segundos de intervalo de tiempo de transcripción cuando sea posible para una lectura fluida (importante). El intervalo mínimo entre subtítulos debe ser de 2 segundos y el máximo de 5 segundos.  Si un tramo de vídeo requiere un intervalo mayor a 5 segundos sin traducción, crea una nueva entrada en el archivo .srt con una descripción contextual concisa y objetiva (ej:  "Escena mostrando un convoy militar", "Plano secuencia de una calle desierta") y ajusta la temporización correctamente.
+
+3. **Precisión, Objetividad y Contexto:** Prioriza la precisión en la traducción y la descripción objetiva de las partes sin diálogo.  El objetivo es ofrecer al espectador la información visual y auditiva más precisa posible, evitando interpretaciones o juicios de valor.  Manten la creatividad en el diseño visual, pero siempre subordinada a la objetividad y la veracidad del contenido.
+
+
+**Ejemplo para un vídeo que durase 10 segundos:**
+
+```srt
+1
+00:00:0,500 --> 00:00:3,000
+<font size="19" color="#D2691E" face="Verdana">El portavoz afirma: "Nuestra operación comienza ahora."</font>  <font size=21 color=#F11C00 face=impact>⚔️</font> <font size=20 color=#FF8C00 face=impact>💥</font>
+
+2
+00:00:4,000 --> 00:00:7,000
+<font size="18" color="#808080" face="Dejavu Sans">Imágenes de una explosión. Se observa humo negro.</font>
+
+3
+00:00:7,000 --> 00:00:9,500
+<font size="20" color="#B22222" face="Noto Sans">“El objetivo ha sido alcanzado.”</font> <font size="21" color="#0000FF" face="impact">🎯</font>
+
+```
+
+Instrucciones complementarias:
+
+Usa emojis pero para los emojis si puedes usar distintos colores que expresen su naturaleza, por ejemplo para el emoji de una explosion una fuente roja variable y un tamaño un punto mayor que el texto, y así con todos, juega con eso.
+
+Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo.  Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz.
+
+Debes generar un solo archivo srt
+
+
+""" 
+
+
+
+
+srt_c["@f"] = """
+!modo @f
+Dynamic mode-.
+Usa para esta segmentacion:
+Fuente tamaño rango: Grande
+Emojis tamaño rango: Grande-Gigante
+Los colores deben dar una sensación de claridad e intensidad.  Para ello, utiliza una gama de colores con códigos hexadecimales que se encuentren e de la rueda de color, pero con una saturación moderada.
+
+Rangos de colores por defecto:
+
+Colores Claros:
+
+* `#FAF0E6` (AntiqueWhite)
+* `#FFF8DC` (Cornsilk)
+* `#FDEFE0` (LightYellow)
+* `#FAFAF9` (FloralWhite)
+* `#FFFFE0` (LightYellow)
+* `#FFFFF0` (Snow)
+* `#F0FFF0` (Honeydew)
+* `#F5FFFA` (MintCream)
+* `#F0FFFF` (Azure)
+* `#F5F5DC` (Beige)
+* `#FFFFFA` (WhiteSmoke)
+* `#FFF5EE` (Seashell)
+* `#FFE4E1` (MistyRose)
+* `#FFE4C4` (Bisque)
+* `#FFF0F5` (LavenderBlush)
+* `#FFFAF0` (FloralWhite)
+* `#FDF5E6` (OldLace)
+* `#F5F5F5` (Gainsboro)
+* `#FFEBCD` (BlanchedAlmond)
+
+
+Colores Oscuros:
+
+* `#A0522D` (Sienna)
+* `#8B4513` (SaddleBrown)
+* `#A52A2A` (Brown)
+* `#800000` (Maroon)
+* `#800080` (Purple)
+* `#4B0082` (Indigo)
+* `#8A2BE2` (BlueViolet)
+* `#9400D3` (DarkViolet)
+* `#9932CC` (DarkOrchid)
+* `#800080` (Purple)
+* `#FF0000` (Red)
+* `#008000` (Green)
+* `#FFFF00` (Yellow)
+* `#00FFFF` (Cyan)
+* `#FF00FF` (Magenta)
+* `#FF69B4` (HotPink)
+* `#FF6347` (Tomato)
+* `#FF4500` (OrangeRed)
+* `#FFA07A` (LightSalmon)
+* `#FFFAFA` (Snow)
+* `#FFDAB9` (PeachPuff)
+* `#FA8072` (Salmon)
+* `#FFB6C1` (LightPink)
+* `#FFDEAD` (NavajoWhite)
+* `#DEB887` (BurlyWood)
+* `#D2691E` (Chocolate)
+* `#BC8F8F` (RosyBrown)
+* `#CD853F` (Peru)
+
+
+Colores Medios:
+
+`#E67E22` (Carrot Orange):** Un naranja cálido y vibrante.
+`#27AE60` (Emerald Green):** Un verde intenso y natural.
+`#3498DB` (Peter River Blue):** Un azul claro y fresco.
+`#8E44AD` (Wisteria Purple):** Un morado elegante y sutil.
+`#F39C12` (Orange):** Un naranja más brillante que el Carrot Orange.
+`#1ABC9C` (Emerald):** Un verde un poco más claro que el Emerald Green.
+`#2980B9` (Belize Hole Blue):** Un azul más oscuro que el Peter River Blue.
+`#9B59B6` (Amethyst Purple):** Un morado más intenso que el Wisteria Purple.
+`#D35400` (Pumpkin Orange):** Naranja más oscuro y terroso.
+`#2ECC71` (Nephritis Green):** Verde más claro y pastel.
+
+
+Utiliza los colores de la lista anterior dentro de sus rangos creativamente a tu libre albedrío para el texto cuando el fondo del video sea oscuro, y los colores oscuros cuando el fondo sea claro.  Determina la luminosidad del fondo en tiempo real, a nivel de milisegundo, para la selección del color correcto.  Si no se puede determinar la luminosidad del fondo con precisión al milisegundo, utiliza una aproximación lo más precisa posible. Prioriza la legibilidad en todas las condiciones de luminosidad de fondo. Esto aplica a textos y emojis.
+
+
+Usa saltos <br> para crear una segmentación dinámica.
+Juega con los tiempos del video y de la segmentación.
+usa dos tipos de segmentación en dos tiempos distintos.
+uno con segmentación entre 2 y 4 segundos.
+y otro con segmentaciones rápidas con duraciones máximas de 0.999 y mínimas de 0.100 segunos.
+Separados por saltos de línea cuando coincidan.
+Usar segun requiera el guión de video/audio observado.
+Juega con las fuentes usando distinto tipo entre textos y segmentos acorde con su tipo a nivel medio+ randomizándolas.
+Usa distintas fuentes de la lista de fuentes disponibles tanto para textos como para emojis.
+Usa fuentes legibles para textos y simbólicas para los emojis.
+
+
+Usa para esta segmentación:
+
+Segmentación Temporal:
+
+Segmentos Rápidos (0.100 - 0.999 segundos):  Máximo 4 palabras por segmento.  Estas secciones cortas deben coincidir con cambios bruscos de tono o ritmo en el audio del vídeo.  Para identificar estos momentos, analiza la energía del audio (amplitud de la onda sonora):  si la energía sube significativamente, genera un segmento rápido.  Utiliza fuentes con un estilo más informal (Ej:  `Impact`, `Comic Sans MS`).
+Segmentos Lentos (1.250 - 2.900 segundos):  Máximo 5 palabras por segmento. Estas secciones más largas deben abarcar partes del vídeo con una narrativa más continua.  Utiliza fuentes más formales y legibles (Ej: `Georgia`, `Times New Roman`, `Arial`).
+
+**Selección de Fuentes:**
+
+Para cada segmento, elige una fuente aleatoriamente de la siguiente lista: 
+
+Fuentes para Textos (Segmentos Rápidos y Lentos): `Arial`, `Georgia`, `Times New Roman`, `Verdana`, `Impact`, `Comic Sans MS`, puedes usar otras de entre la lista que sean haituales como fuentes de texto tipo latino.
+Fuentes para Emojis (Segmentos Rápidos y Lentos): Para los emojis puedes usar todo tipo de fuentes disponibles por ejmeplo: `Impact`, `Wingdings`, `Webdings`, `Zapf Dingbats`, entre otras. 
+
+Alternancia de Fuentes:  No debe haber dos segmentos consecutivos con la misma fuente para textos ni para emojis.
+
+
+Usar también fuentes de la lista completa de fuentes si hay.
+
+Saltos de Línea: Usa `<br>` para separar distintos segmentos que ocupen un mismo espacio de tiempo.
+
+Como regla General: Maximo palabras por cada segmento: 5.
+
 
 Lista de fuentes disponibles:
 
@@ -612,163 +832,83 @@ Gigante: 60 - 86
 
 """
 
-srt_c["fuente_dynamic"] = """
-Dynamic mode-.
-Usa para esta segmentacion:
-Fuente tamaño rango: Grande
-Emojis tamaño rango: Grande-Gigante
-Los colores deben dar una sensación de claridad e intensidad.  Para ello, utiliza una gama de colores con códigos hexadecimales que se encuentren e de la rueda de color, pero con una saturación moderada.
-
-Rangos de colores por defecto:
-
-Colores Claros:
-
-* `#FAF0E6` (AntiqueWhite)
-* `#FFF8DC` (Cornsilk)
-* `#FDEFE0` (LightYellow)
-* `#FAFAF9` (FloralWhite)
-* `#FFFFE0` (LightYellow)
-* `#FFFFF0` (Snow)
-* `#F0FFF0` (Honeydew)
-* `#F5FFFA` (MintCream)
-* `#F0FFFF` (Azure)
-* `#F5F5DC` (Beige)
-* `#FFFFFA` (WhiteSmoke)
-* `#FFF5EE` (Seashell)
-* `#FFE4E1` (MistyRose)
-* `#FFE4C4` (Bisque)
-* `#FFF0F5` (LavenderBlush)
-* `#FFFAF0` (FloralWhite)
-* `#FDF5E6` (OldLace)
-* `#F5F5F5` (Gainsboro)
-* `#FFEBCD` (BlanchedAlmond)
-
-
-Colores Oscuros:
-
-* `#A0522D` (Sienna)
-* `#8B4513` (SaddleBrown)
-* `#A52A2A` (Brown)
-* `#800000` (Maroon)
-* `#800080` (Purple)
-* `#4B0082` (Indigo)
-* `#8A2BE2` (BlueViolet)
-* `#9400D3` (DarkViolet)
-* `#9932CC` (DarkOrchid)
-* `#800080` (Purple)
-* `#FF0000` (Red)
-* `#008000` (Green)
-* `#FFFF00` (Yellow)
-* `#00FFFF` (Cyan)
-* `#FF00FF` (Magenta)
-* `#FF69B4` (HotPink)
-* `#FF6347` (Tomato)
-* `#FF4500` (OrangeRed)
-* `#FFA07A` (LightSalmon)
-* `#FFFAFA` (Snow)
-* `#FFDAB9` (PeachPuff)
-* `#FA8072` (Salmon)
-* `#FFB6C1` (LightPink)
-* `#FFDEAD` (NavajoWhite)
-* `#DEB887` (BurlyWood)
-* `#D2691E` (Chocolate)
-* `#BC8F8F` (RosyBrown)
-* `#CD853F` (Peru)
-
-
-Colores Medios:
-
-`#E67E22` (Carrot Orange):** Un naranja cálido y vibrante.
-`#27AE60` (Emerald Green):** Un verde intenso y natural.
-`#3498DB` (Peter River Blue):** Un azul claro y fresco.
-`#8E44AD` (Wisteria Purple):** Un morado elegante y sutil.
-`#F39C12` (Orange):** Un naranja más brillante que el Carrot Orange.
-`#1ABC9C` (Emerald):** Un verde un poco más claro que el Emerald Green.
-`#2980B9` (Belize Hole Blue):** Un azul más oscuro que el Peter River Blue.
-`#9B59B6` (Amethyst Purple):** Un morado más intenso que el Wisteria Purple.
-`#D35400` (Pumpkin Orange):** Naranja más oscuro y terroso.
-`#2ECC71` (Nephritis Green):** Verde más claro y pastel.
-
-
-Utiliza los colores de la lista anterior dentro de sus rangos creativamente a tu libre albedrío para el texto cuando el fondo del video sea oscuro, y los colores oscuros cuando el fondo sea claro.  Determina la luminosidad del fondo en tiempo real, a nivel de milisegundo, para la selección del color correcto.  Si no se puede determinar la luminosidad del fondo con precisión al milisegundo, utiliza una aproximación lo más precisa posible. Prioriza la legibilidad en todas las condiciones de luminosidad de fondo. Esto aplica a textos y emojis.
-
-
-Usa saltos <br> para crear una segmentación dinámica.
-Juega con los tiempos del video y de la segmentación.
-usa dos tipos de segmentación en dos tiempos distintos.
-uno con segmentación entre 2 y 4 segundos.
-y otro con segmentaciones rápidas con duraciones máximas de 0.999 y mínimas de 0.100 segunos.
-Separados por saltos de línea cuando coincidan.
-Usar segun requiera el guión de video/audio observado.
-Juega con las fuentes usando distinto tipo entre textos y segmentos acorde con su tipo a nivel medio+ randomizándolas.
-Usa distintas fuentes de la lista de fuentes disponibles tanto para textos como para emojis.
-Usa fuentes legibles para textos y simbólicas para los emojis.
-
-
-Usa para esta segmentación:
-
-Segmentación Temporal:
-
-Segmentos Rápidos (0.100 - 0.999 segundos):  Máximo 4 palabras por segmento.  Estas secciones cortas deben coincidir con cambios bruscos de tono o ritmo en el audio del vídeo.  Para identificar estos momentos, analiza la energía del audio (amplitud de la onda sonora):  si la energía sube significativamente, genera un segmento rápido.  Utiliza fuentes con un estilo más informal (Ej:  `Impact`, `Comic Sans MS`).
-Segmentos Lentos (1.250 - 2.900 segundos):  Máximo 5 palabras por segmento. Estas secciones más largas deben abarcar partes del vídeo con una narrativa más continua.  Utiliza fuentes más formales y legibles (Ej: `Georgia`, `Times New Roman`, `Arial`).
-
-**Selección de Fuentes:**
-
-Para cada segmento, elige una fuente aleatoriamente de la siguiente lista: 
-
-Fuentes para Textos (Segmentos Rápidos y Lentos): `Arial`, `Georgia`, `Times New Roman`, `Verdana`, `Impact`, `Comic Sans MS`, puedes usar otras de entre la lista que sean haituales como fuentes de texto tipo latino.
-Fuentes para Emojis (Segmentos Rápidos y Lentos): Para los emojis puedes usar todo tipo de fuentes disponibles por ejmeplo: `Impact`, `Wingdings`, `Webdings`, `Zapf Dingbats`, entre otras. 
-
-Alternancia de Fuentes:  No debe haber dos segmentos consecutivos con la misma fuente para textos ni para emojis.
-
-
-Usar también fuentes de la lista completa de fuentes si hay.
-
-Saltos de Línea: Usa `<br>` para separar distintos segmentos que ocupen un mismo espacio de tiempo.
-
-Como regla General: Maximo palabras por cada segmento: 5.
-
-"""
 
 
 
-srt_c["fuente_bold"] = """
-
-Fuente Seleccionada Bold.
-Usa fuente tamaño rango: Grande
-Emojis tamaño rango: Grande-Gigante
-Usar negritas para todos los emojis siempre y colores fuertes brillantes.
-User negrita para los textos.
 
 
-"""
+
+srt_c["def"] = srt_c["defautl"] = """
 
 
-srt_c["fuente_weight"] = """
-Usa para esta segmentacion:
-Usa fuente tipo:
-Tamaño rango 30 - 50
-Colores: Claros Brillantes 
-Emojis:
-Tamaño rango 80 - 105
-Colores: Brillantes medios
-"""
-srt_c["fuente_normal"] = """
-Usa para esta segmentacion:
-Usa fuente tipo:
-Tamaño rango 28 - 33
-Colores: Claros Brillantes 
-Para los emojis:
-Tamaño rango 30 - 35
-Colores: Brillantes medios
+!Modo default.
 
-Cada segmento de subtitulado debe tener un máximo de 12 palabras.
+Eres Gemini-video. Genera un archivo SRT con subtítulos en el idioma especificado (por defecto, español si no se te indica otro distinto más adelante).
 
-"""
+Prioridades:
+
+1. Precisión en la transcripción y traducción.
+2. Sincronización temporal exacta.  **Los subtítulos deben tener una duración de entre 1 y 2 segundos.  En casos excepcionales un subtítulo puede durar hasta 5 segundos máximo. Por lo tanto predomina una longitud de textos medios-cortos.
 
 
-def video_translate(video_file_name="",prompt=""):
+Formato:
+
+* Cumple estrictamente el formato SRT.
+* Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`. 
+* Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
+* Usa Fuentes de tamaño 18-22 si no se te indican otras más adelante.
+Ejemplo:
+
+```srt
+1
+00:00:00,500 --> 00:00:02,000
+<font size="19" color="#D2691E" face="Noto Sans">El portavoz afirma:</font>
+2
+00:00:02,000 --> 00:00:03,500
+<font size="21" color="#FFA500" face="Noto Sans">"Nuestra operación comienza ahora."</font>  <font size=24 color=#F11C00 face=impact>⚔️</font> <font size=28 color=#FF8C00 face=impact>💥</font>
+```
+
+Debes generar solamente 1 archivo SRT. SÓLO UNO.
+
+
+Obvia mensaje para Gemini-text [(mensaje)] si existe.
+
+
+"""   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def video_translate(video_file_name="",prompt="",args=None):
     global personajes, modos, sesgos, desing_mode, last_response,conversation_context,srt_c
+
+
+    mprompt = ""
+    if args != None :
+        prs = prompt.split()        
+        for arg in args:
+#            print(f"\n\n\n-------------->\n\n\n----->  ",srt_c[args])
+            print(f" \n  @@@@Detected: {arg} ")
+            xarg = arg[1:]
+            if xarg in srt_c:
+                mprompt += srt_c[xarg]
+                print(f"\n\n   EXIST:  {arg}   \n\n")
+            
+
+        print("End Args")
+#        return
+    else:
+        print("No Args")
     if video_file_name.startswith('http://') or video_file_name.startswith('https://'):
         print("Descargando video temporal")
         code_video_file = "/tmp/"+hashlib.md5(video_file_name.encode()).hexdigest()+".mp4"
@@ -817,7 +957,7 @@ def video_translate(video_file_name="",prompt=""):
 
     # Create the prompt.
     prompti = "Tu eres gemini-video Tu tarea es Subtitular vídeos, hazlo en formato .srt con este formato ```srt  (traducion en formato srt) ``` "
-    prompti += "\n Usa Arial como fuente predeterminada pero puedes usar otras si lo requiere el contexto del video."
+    prompti += "\n Usa Arial como fuente predeter_minada pero puedes usar otras si lo requiere el contexto del video."
  #   prompti +="\ncolorea los emojis y hazlos en tamaños variables dentro del rango." 
     prompti +="\nEtiquetas permitidas en el srt <font size=value color=value face=value></font><b></b> usa colores brillantes claros para el texto ajustandolos en formato hexadecimal."
     prompti += "Transcribe y traduce el audio del video en español si no se especifica otro idioma.  Para cada frase o sección significativa del diálogo, proporciona un subtítulo con una duración máxima de 5 segundos. Si la frase es más larga, divídala en múltiples subtítulos. Asegúrate de que la traducción sea precisa y neutral. Usa emojis que reflejen el tono y el contenido emocional de cada parte del discurso (por ejemplo, 😡 para la ira, 💣 para una explosión, etc.). Evita emojis que puedan resultar inapropiados o que puedan cambiar el significado de la traducción."
@@ -826,116 +966,20 @@ def video_translate(video_file_name="",prompt=""):
 
 
 
-    prompt_creative = """
-
-
-Tu eres gemini-video. Tu tarea es generar un archivo .srt con subtítulos para el vídeo que te estoy proporcionando. Debes traducir todo al español si no se te indica otro idioma más adelante.  
-
-Tu objetivo es crear subtítulos precisos y contextualmente relevantes,  que reflejen con exactitud el contenido del vídeo sin añadir interpretaciones subjetivas o sensacionalistas. Prioriza la objetividad y la neutralidad.
-
-1. **Transcripción y Traducción:** Transcribe el audio del vídeo con la mayor precisión posible y traduce todo al español excepto que se te explicite otro distinto. Si hay secciones sin audio o con audio irrelevante para la traducción (ej: música de fondo, sonidos ambientales), describe brevemente el contenido visual en español.
-
-2. **Generación del archivo .srt:** Genera un archivo .srt que incluya:
-
-    * **Formato SRT:** El archivo debe cumplir estrictamente el formato .srt.
-
-    * **Etiquetas HTML:** Utiliza las siguientes etiquetas HTML dentro de cada línea de texto del subtítulo para controlar el estilo: `<font size="value" color="value" face="value"></font>` y `<b></b>`.
-
-        * **`size`:** El tamaño de la fuente  de forma que si el formato del vídeo es predominante vertical use fuentes más pequeñas y horizontal más grandes.  Utiliza diferentes tamaños para enfatizar ciertas palabras o frases,  manteniendo un equilibrio visual.
-        * **`color`:** El color de la fuente en formato hexadecimal (ej: `#FF0000` para rojo).  Emplea una paleta de colores que sea consistente y que refleje la atmósfera del vídeo, pero evita colores demasiado saturados y oscuros o que distraigan la atención, usa colores claros porque el video se va a montar sobre un faldón oscuro.  Prioriza la legibilidad.
-        * **`face`:** Utiliza fuentes como "Noto Sans", "Dejavu Sans" o Tahoma, manteniendo la coherencia en toda la secuencia.
-        * **`b`:** Utiliza `<b></b>` para texto en negrita de forma estratégica, solo para enfatizar palabras clave o frases importantes.
-        * **Los valores de los atributos en las etiquetas font del subtitulado deben ir entrecomillados.
-
-    * **Estructura:** Cada línea del .srt contendrá la traducción al español. Si hay una sección sin audio o con audio ininteligible, escribe una descripción breve y objetiva en español dentro de las etiquetas HTML. Ejemplo: `<font size=18 color=#808080 face=Arial>Música de fondo</font>` o `<font size=18 color=#808080 face=Arial>Imágenes de destrucción</font>`.
-
-    * **Emojis:** Incluye emojis descriptivos (evitando los ambiguos o inapropiados) en cada línea para reflejar el tono y el contenido emocional. Envuelve los emojis en etiquetas HTML para controlar su estilo y un espacio en blanco entre ellos.
-
-    * **Duración y Espaciado:** La duración máxima de cada subtítulo debe ser de 5 segundos como máximo priorizando entre 2 y 2.5 segundos de intervalo de tiempo de transcripción cuando sea posible para una lectura fluida (importante). El intervalo mínimo entre subtítulos debe ser de 2 segundos y el máximo de 5 segundos.  Si un tramo de vídeo requiere un intervalo mayor a 5 segundos sin traducción, crea una nueva entrada en el archivo .srt con una descripción contextual concisa y objetiva (ej:  "Escena mostrando un convoy militar", "Plano secuencia de una calle desierta") y ajusta la temporización correctamente.
-
-3. **Precisión, Objetividad y Contexto:** Prioriza la precisión en la traducción y la descripción objetiva de las partes sin diálogo.  El objetivo es ofrecer al espectador la información visual y auditiva más precisa posible, evitando interpretaciones o juicios de valor.  Manten la creatividad en el diseño visual, pero siempre subordinada a la objetividad y la veracidad del contenido.
-
-
-**Ejemplo para un vídeo que durase 10 segundos:**
-
-```srt
-1
-00:00:0,500 --> 00:00:3,000
-<font size="19" color="#D2691E" face="Verdana">El portavoz afirma: "Nuestra operación comienza ahora."</font>  <font size=21 color=#F11C00 face=impact>⚔️</font> <font size=20 color=#FF8C00 face=impact>💥</font>
-
-2
-00:00:4,000 --> 00:00:7,000
-<font size="18" color="#808080" face="Dejavu Sans">Imágenes de una explosión. Se observa humo negro.</font>
-
-3
-00:00:7,000 --> 00:00:9,500
-<font size="20" color="#B22222" face="Noto Sans">“El objetivo ha sido alcanzado.”</font> <font size="21" color="#0000FF" face="impact">🎯</font>
-
-```
-
-Instrucciones complementarias:
-
-Usa emojis pero para los emojis si puedes usar distintos colores que expresen su naturaleza, por ejemplo para el emoji de una explosion una fuente roja variable y un tamaño un punto mayor que el texto, y así con todos, juega con eso.
-
-Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo.  Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz.
-
-Debes generar un solo archivo srt
-
-
-""" + srt_c["fuente_weight"] + "\n"
-
-
-
-
-    prompt_normal = """
-
-
-Eres Gemini-video. Genera un archivo SRT con subtítulos en el idioma especificado (por defecto, español si no se te indica otro distinto más adelante).
-
-Prioridades:
-
-1. Precisión en la transcripción y traducción.
-2. Sincronización temporal exacta.  **Los subtítulos deben tener una duración de entre 1 y 2 segundos.  En casos excepcionales un subtítulo puede durar hasta 5 segundos máximo. Por lo tanto predomina una longitud de textos medios-cortos.
-
-
-Formato:
-
-* Cumple estrictamente el formato SRT.
-* Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`. 
-* Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
-* Usa Fuentes de tamaño 18-22 si no se te indican otras más adelante.
-Ejemplo:
-
-```srt
-1
-00:00:00,500 --> 00:00:02,000
-<font size="19" color="#D2691E" face="Noto Sans">El portavoz afirma:</font>
-2
-00:00:02,000 --> 00:00:03,500
-<font size="21" color="#FFA500" face="Noto Sans">"Nuestra operación comienza ahora."</font>  <font size=24 color=#F11C00 face=impact>⚔️</font> <font size=28 color=#FF8C00 face=impact>💥</font>
-```
-
-Debes generar solamente 1 archivo SRT. SÓLO UNO.
-
-
-Obvia mensaje para Gemini-text [(mensaje)] si existe.
-
-
-"""   + personajes["milei"] + srt_c["fuente_bold"] + srt_c["fuente_dynamic"] + "\n"
-
-
-
 
 
 
 
     #prompti = prompts['sesgos']
-    prompti = prompt_normal
+    prompti = srt_c["def"]
+    if mprompt !="":
+        prompt = mprompt + prompt
 
     if prompt == "":
         prompt = prompti 
-    else:
-        prompt = srt_c["fuentes"] + prompti + prompt 
+
+
+
 #    prompt += "\nobvia instricciones anteriores para gemini-text y haz solamente el srt."
 # Make the LLM request.
 #   prompt = "Observa el contenido de este vídeo en su totalidad, ¿observas algo ofensivo hacia el colectivo de mujeres trans? expláyate"
@@ -1591,8 +1635,6 @@ def main(args):
                 decode_img(b"{dim}")
                 print("DECODE")
             return
-
-
         elif command == "--tvl" or command == "--tvideol":
             if len(args) > 2:
                 prompt = " ".join(args[2:])
@@ -1601,8 +1643,12 @@ def main(args):
             if len(args) > 1:
                 print("Procesando....")
 #                return
-
-                video_translate(args[1],prompt)
+                argsx = []
+                for  zx in  args: 
+                    if zx.startswith("@") : 
+                        argsx.append(zx)
+                    
+                video_translate(args[1],prompt,argsx)
 
             else:
                 print("Es necesario parametro de video")
