@@ -234,6 +234,24 @@ desing_mode = {}
 prompts = {}
 srt_c = {}
 
+
+
+srt_c["frang"] = """
+
+Rango de tamaño de fuente.
+Pequeña: 10 - 16
+Pequeña-Media: 16-20
+Media: 20 - 28
+Grande: 28 - 32
+Grande-Gigante: 32 - 40
+Gigante: 40 - 50 
+Super-Gigante:  50 - 60
+Extra-Super-Gigante: 60 - 80
+Extrema: 80 - 100
+
+"""
+
+
 srt_c["critica"] = """
 
 !Modo critica
@@ -246,10 +264,14 @@ srt_c["sanchez"] = """
 
 !Modo sanchez
 
-Personaje a usar: Pedro Sánchez.
+
+Para este vídeo emula al personaje.
+Video Personaje: a usar: Javier Milei.
 Características del personaje:
 Presidente del gobierno de España.
-Motes: Sanchinflas, Su Sanchidad, Pinocho.
+Motes: Sanchinflas, Su Sanchidad, Pinocho, Psicópata.
+Críticas: Que te vote Txapote
+
 """
 
 
@@ -344,34 +366,19 @@ Eres Gemini-video. Actúa como un guionista creativo y genera subtítulos para u
 **Tonos y Sesgos:**
     * Optimista:  La IA como herramienta para el progreso y la solución de problemas globales.
     * Preocupado: El potencial de la IA para el desempleo y el control social.
-
-```srt
-1
-00:00:00,000 --> 00:00:02,500
-<font size="20" color="#00FF00" face="Noto Sans">La IA puede resolver los problemas del mundo.</font><font color="#FFFFFF"> </font> <font size=24 color=#00BFFF face=impact>🌍</font>  <font size=24 color=#32CD32 face=impact>✅</font>
-
-
-2
-00:00:03,000 --> 00:00:05,500
-<font size="18" color="#FF0000" face="Impact">¿O nos controlará a todos?</font><font color="#FFFFFF"> </font> <font size=24 color=#FF8C00 face=impact>🤖</font> <font size=24 color=#DC143C face="NotoColorEmoji">⚠️</font>
-```
-
-**Instrucciones adicionales:**
-*  Concéntrate en la  creatividad y la  exploración de diferentes perspectivas.
-*  El .srt se usará como guía para añadir texto y emojis en la  edición del vídeo.
-
-
+    * Noticia: Es un asunto de interes.
+    * Personajes: Emula o refiere a un personaje.
 """
 
 
 
 
 
-srt_c["fbold"] = """
+srt_c["fbold"] = srt_c["frang"] + """
 
 Fuente Seleccionada Bold.
 Usa fuente tamaño rango: Grande
-Emojis tamaño rango: Grande-Gigante
+Emojis tamaño rango: Grande
 Usar negritas para todos los emojis siempre y colores fuertes brillantes.
 User negrita para los textos.
 
@@ -379,21 +386,24 @@ User negrita para los textos.
 """
 
 
-srt_c["fweight"] = """
+srt_c["fweight"] = srt_c["frang"] + """
 
 Fuente Seleccionada weight.
 Usa fuente tamaño rango: Media
-Emojis tamaño rango: Media-Grande
+Emojis tamaño rango: Media
 
 
 """
-srt_c["fnormal"] = """
+
+
+
+srt_c["fnormal"] = srt_c["frang"] + """
 
 !Modo fnormal
 
 Fuente Seleccionada normal.
-Usa fuente tamaño rango: Pequeña
-Emojis tamaño rango: Pequeña-Media
+Usa fuente tamaño rango: Pequeña-media
+Emojis tamaño rango: Pequeña
 
 """
 
@@ -820,16 +830,6 @@ Tribal:style=Regular
 
 
 
-Características de diseño para las fuentes - rango de valores predeterminados:
-
-Rango de tamaño de fuente.
-Pequeña: 10 - 16
-Pequeña-Media: 14-20
-Media: 19 - 28
-Grande: 26 - 42
-Grande-Gigante: 40 - 56
-Gigante: 60 - 86
-
 """
 
 
@@ -848,7 +848,7 @@ Eres Gemini-video. Genera un archivo SRT con subtítulos en el idioma especifica
 Prioridades:
 
 1. Precisión en la transcripción y traducción.
-2. Sincronización temporal exacta.  **Los subtítulos deben tener una duración de entre 1 y 2 segundos.  En casos excepcionales un subtítulo puede durar hasta 5 segundos máximo. Por lo tanto predomina una longitud de textos medios-cortos.
+2. Sincronización temporal exacta.  **Los subtítulos deben tener una duración de entre 1 y 5 segundos.  En casos excepcionales un subtítulo puede durar hasta 5 segundos máximo. Por lo tanto predomina una longitud de textos medios-cortos.
 
 
 Formato:
@@ -856,7 +856,9 @@ Formato:
 * Cumple estrictamente el formato SRT.
 * Usa etiquetas HTML: `<font size="18-22" color="#hexadecimal" face="Noto Sans/DejaVu Sans/">texto</font>` y `<b>texto importante</b>`. 
 * Incluye emojis relevantes con **tamaño y color variable para mayor impacto visual y utiliza colores que reflejen la emoción o el significado del emoji.  Por ejemplo, un emoji de fuego (🔥) podría ser rojo o naranja, mientras que un emoji de hielo (🧊) podría ser azul claro.
-* Usa Fuentes de tamaño 18-22 si no se te indican otras más adelante.
+* Usa Fuentes de tamaño medio si no se te indican otro tamaño más adelante.
+
+
 Ejemplo:
 
 ```srt
@@ -868,10 +870,9 @@ Ejemplo:
 <font size="21" color="#FFA500" face="Noto Sans">"Nuestra operación comienza ahora."</font>  <font size=24 color=#F11C00 face=impact>⚔️</font> <font size=28 color=#FF8C00 face=impact>💥</font>
 ```
 
-Debes generar solamente 1 archivo SRT. SÓLO UNO.
+Asegúrate de que la duración de cada subtítulo coincida exactamente con la duración de la frase hablada en el vídeo.  Prioriza la precisión temporal sobre la duración máxima de 5 segundos por subtítulo; si una frase es más larga de 5 segundos, divídela en varios subtítulos que mantengan la sincronización precisa con la voz.
 
-
-Obvia mensaje para Gemini-text [(mensaje)] si existe.
+Debes generar un solo archivo srt
 
 
 """   
@@ -1001,7 +1002,7 @@ def video_translate(video_file_name="",prompt="",args=None):
         with open(vtranslate,"w",encoding='utf-8') as f:
             f.write(matches[0])
 
-        force_style_sub = "BackColour=&HB0000000,BorderStyle=4,FontName=NotoColorEmoji,Alignament=6"
+        force_style_sub = "BackColour=&H90000000,BorderStyle=4,FontName=NotoColorEmoji,Alignament=6"
         mode = "fixed" # bg / fixed
         if mode == "bg":
             print("""

@@ -109,7 +109,8 @@ frameborder="0" src="`+urlc+`"  style="width: 100%;height:100%;overflow:auto;"><
 `
 makeResizable("webirc");
 IntroApp.innerHTML += `
-<iframe id='iftvx2' class="rumble" layout="responsive" style="width:95vw;height:90vh;display:flex" src="tv/player2.php?chn=../channels/main/live-ts/master_ultrafast.m3u8" frameborder="0" allowfullscreen></iframe>
+
+<iframe id='iftvx2' class="rumble" layout="responsive" style="width:85vw;height:90vh;display:block" src="https://osiris000.duckdns.org/app/widgets/hlstv.html" frameborder="0" allowfullscreen></iframe>
 `
 
 /*

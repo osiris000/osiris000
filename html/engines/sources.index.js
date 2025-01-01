@@ -152,6 +152,17 @@ dmenu('DOC','dispApp')
 }
 
 
+a10.innerHTML = "Web IRC"
+a10.className = "lmenu"
+a10.onclick = function(){
+if(WEBIRC.src=="about:blank"){
+	WEBIRC.src="https://"+window.location.hostname+"/app/widgets/webirc.html"
+}
+dmenu('WEBIRC','dispApp')
+}
+
+
+
 /* Estilos*/
 
 
@@ -163,7 +174,7 @@ addStyle(`
     background:#181324;display:block;
     padding:5px;margin-right:8px;margin-bottom:7px;
 	color:#e4dece;
-	font-size:2vw;
+	font-size:1.3vw;
 	width:90%;border:solid 1px #ce373c;cursor:pointer;
 
 }
