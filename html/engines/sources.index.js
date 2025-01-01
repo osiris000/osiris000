@@ -174,8 +174,8 @@ addStyle(`
     background:#181324;display:block;
     padding:5px;margin-right:8px;margin-bottom:7px;
 	color:#e4dece;
-	font-size:1.3vw;
-	width:90%;border:solid 1px #ce373c;cursor:pointer;
+	font-size:1.9vh;
+	width:100%;border:solid 0px #ceaddc;cursor:pointer;
 
 }
 
@@ -187,7 +187,7 @@ top:5vh;
 z-index:77;left:10vw;
 position:fixed;
 height:95vh;width:90vw;
-font-size:1.6vw;overflow-y:auto;
+font-size:1.9vh;overflow-y:auto;
 	
 	background:white;
 }

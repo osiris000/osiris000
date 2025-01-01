@@ -109,8 +109,7 @@ frameborder="0" src="`+urlc+`"  style="width: 100%;height:100%;overflow:auto;"><
 `
 makeResizable("webirc");
 IntroApp.innerHTML += `
-
-<iframe id='iftvx2' class="rumble" layout="responsive" style="width:85vw;height:90vh;display:block" src="https://osiris000.duckdns.org/app/widgets/hlstv.html" frameborder="0" allowfullscreen></iframe>
+<iframe id='iftvx2' class="rumble" layout="responsive" style="width:100vw;height:100vh;display:block" src="https://osiris000.duckdns.org/app/widgets/hlstv.html" frameborder="0" allowfullscreen></iframe>
 `
 
 /*
