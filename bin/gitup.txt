@@ -34,42 +34,100 @@ bin/fhelp.py
 bin/get_config.py
 bin/com.conf
 bin/com.ini
-bin/gitup
-bin/gitup.txt
 bin/osiris
 bin/venv.sh
+# Piloto automático para TV
+bin/pilottv
+bin/mkpilot
+#lista archivos a subir a github (este mismo archivo)
+bin/gitup.txt
+# y comando para subirlos ./gitup
+bin/gitup
 
 
 #Directorio Completos en bin
 #Mientras no se definan y expliciten archivos
 #Actualizará los directorios completos a su contenido
-bin/help
-bin/lib
-bin/scripts
-bin/install
-bin/dsk
-bin/tool
 
+
+#... cliente - servidor (chat_server) rust 
+#una vez instalado rust 
+# compilarlo con bin/scripts/server.build o server.rls
+#  después correr con bin/scripts/server.run
+bin/server/chat_server/src
+bin/server/chat_server/Cargo.toml
+
+
+#archivos asistentes de instalacion en bin/install
+#descarga, compila e instala ffmpeg
+bin/install/ffmpeg_install.sh
+#instala dependencias pip necesarias
+bin/install/installpip.sh
+#actualiza dependencia pip
+bin/install/upgradepip.sh
+#instala rust en el sistema
+bin/install/rust.sh
+#instala - desinstala node
+bin/install/node_install.sh
+bin/install/node_uninstall.sh
+#instala - desinstala terminator
+bin/install/terminator_install.sh
+bin/install/terminator_uninstall.sh
+#instala - desinstala tmux (composición de terminales)
+bin/install/tmux_install.sh
+bin/install/tmux_uninstall.sh
+
+#Directorio con archivos de ayuda de comandos
+bin/help
+
+#Archivos lib python bin/lib
+bin/lib/core.py
+bin/lib/ffmpeg.py
+bin/lib/multiprocess.py
+bin/lib/processstart.py
+bin/lib/osiris/common.py
+bin/lib/gemini/utils.py
+bin/lib/gemini/widgets.py
+
+
+#utilidades diversas en bin/scripts
+bin/scripts
+
+#Armadura para tmux (agrupamiento de terminales)
+#tmux1 es la composición por defecto
+bin/scripts/tmux1
+#Lectura continua de progreso tv y hls
+bin/scripts/progress_hls
+bin/scripts/progress_tv
+
+#Comprobador - asistente de problemas de memoria
+bin/scripts/freemem2
+
+#compila proyecto server/chat_server (cliente - servidor) rust
+bin/scripts/server.build
+#corre el servidor rust
+bin/scripts/server.run
+#corre el cliente rust
+bin/scripts/client
+
+
+#Herramientas del directorio bin/tool
+#genera reporte para diagnostico servers
+bin/tool/mrls
+#genera reporte para diagnostico del sistema
+bin/tool/diagnosis1
+#genera reporte de picos y comprobaciones de memoria
+bin/tool/memory
+
+#herraientas desktop (ventanas)
+bin/dsk
 
 #modulos pip inicial - requerimientos globales
 bin/com/osiris_env/pip.requeriments.txt
 
-
 #Virtual env
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/multiprocess.py
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/__init__.py
-
-
-#TV
-# cambia a /home/*user*/otvs   bin/osiristv
-bin/pilottv
-bin/mkpilot
-
-#... servidores rust - esto es provisional
-# una vez instalado rust 
-#compilarlo con bin/scripts/server.build o server.rls
-bin/server/chat_server/src
-bin/server/chat_server/Cargo.toml
 
 #default password
 #bin/data/auth_pwd
