@@ -17,70 +17,57 @@ LICENSE.md
 #Archivos instalación
 osiris
 osiris.sh
-install.com
-install.sh
 share.sh
-datax
+install.sh
+install.com
+index.html
+index.php
 
 
 #Archivos Osiris
 #directorio bin
+bin/osiris.py
 bin/auth.py
-bin/Cargo.lock
-bin/Cargo.toml
 bin/cnf.py
-bin/com.conf
-bin/com.ini
 bin/com.py
 bin/fhelp.py
 bin/get_config.py
+bin/com.conf
+bin/com.ini
 bin/gitup
 bin/gitup.txt
-#Directorio HELP
+bin/osiris
+bin/venv.sh
+
+
+#Directorio Completos en bin
+#Mientras no se definan y expliciten archivos
+#Actualizará los directorios completos a su contenido
 bin/help
 bin/lib
-bin/osiris
-bin/osiris.py
-bin/venv.sh
+bin/scripts
+bin/install
+bin/dsk
+bin/tool
+
+
+#modulos pip inicial - requerimientos globales
+bin/com/osiris_env/pip.requeriments.txt
+
 
 #Virtual env
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/multiprocess.py
 bin/com/osiris_env/lib/python3.9/site-packages/osiris2/__init__.py
-
-#modulos pip inicial
-bin/com/osiris_env/pip.requeriments.txt
-
-
-#scripts obin
-#bin/scripts/mpvc.sh
-#bin/scripts/plaympv.sh
-#bin/script/cleardep.sh
-#bin/scripts/tmux1
-#bin/scripts/freemem
-#bin/scripts/performance.sh
-bin/scripts
-
-#inst folder
-bin/install
-
-
-
-#desktop
-bin/dsk
-bin/com/dsk
-
-
-#bin/com/dsk/dsk1.py
-#bin/com/dsk/dsk2.py
-#bin/com/dsk/dsk3.py
-#bin/com/dsk/dsk4.py
 
 
 #TV
 # cambia a /home/*user*/otvs   bin/osiristv
 bin/pilottv
 bin/mkpilot
+
 #... servidores rust - esto es provisional
+# una vez instalado rust 
+#compilarlo con bin/scripts/server.build o server.rls
 bin/server/chat_server/src
 bin/server/chat_server/Cargo.toml
 
@@ -91,19 +78,10 @@ bin/data
 
 
 #Archivos Comandos
+#para la consola osiris.py
 
 bin/com/shell.py
 bin/com/create.py
-
-bin/com/ffmpeg2.py
-#para ffmpeg2
-bin/com/datas/ffmpeg/start.mkv
-bin/com/datas/ffmpeg/carta.mkv
-bin/com/datas/ffmpeg/intro.mp4
-bin/com/datas/ffmpeg/logo.png
-bin/com/datas/ffmpeg/random/info.txt
-bin/com/datas/ffmpeg/random/transition/info.txt
-
 bin/com/cert.py
 bin/com/fdev.py
 bin/com/hls.py
@@ -111,10 +89,7 @@ bin/com/sniff.py
 bin/com/scanip.py
 bin/com/blockchain.py
 bin/com/selecttv.py
-
-
 bin/com/gemini.py
-bin/com/gemini3.py
 bin/com/desktop.py
 
 
@@ -123,6 +98,15 @@ bin/com/otvkill
 
 
 bin/com/play3/play4.py
+
+
+#para ffmpeg2
+bin/com/datas/ffmpeg/start.mkv
+bin/com/datas/ffmpeg/carta.mkv
+bin/com/datas/ffmpeg/intro.mp4
+bin/com/datas/ffmpeg/logo.png
+bin/com/datas/ffmpeg/random/info.txt
+bin/com/datas/ffmpeg/random/transition/info.txt
 
 
 bin/OPS/ops.c

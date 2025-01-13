@@ -1,0 +1,334 @@
+#################################
+# Información del Sistema
+#################################
+Linux osiris 6.1.0-0.deb11.21-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.90-1~bpo11+1 (2024-05-06) x86_64 GNU/Linux
+osiris
+Distributor ID:	Debian
+Description:	Debian GNU/Linux trixie/sid
+Release:	n/a
+Codename:	trixie
+S.ficheros     Tamaño Usados  Disp Uso% Montado en
+udev             2,9G      0  2,9G   0% /dev
+tmpfs            593M   4,1M  589M   1% /run
+/dev/sda1        915G   527G  342G  61% /
+tmpfs            2,9G   369M  2,6G  13% /dev/shm
+tmpfs            5,0M   4,0K  5,0M   1% /run/lock
+tmpfs            2,9G    30M  2,9G   2% /tmp
+tmpfs            593M   156K  593M   1% /run/user/1000
+tmpfs            593M    88K  593M   1% /run/user/0
+               total       usado       libre  compartido   búf/caché  disponible
+Mem:           5,8Gi       4,3Gi       151Mi       547Mi       2,1Gi       1,5Gi
+Inter:          10Gi       675Mi        10Gi
+osiris 2149340 1.2 10.0 /opt/google/chrom
+root 1900117 10.8 7.0 /var/www/osiris00
+osiris 3946537 17.8 6.4 /opt/google/chrom
+osiris 259727 3.9 5.2 /opt/google/chrom
+osiris 1416 8.1 4.3 /usr/bin/gnome-sh
+root 1900019 2.9 4.2 python3.9
+osiris 628611 2.4 4.2 /opt/google/chrom
+osiris 938002 37.9 4.1 ffmpeg
+root 1103 6.2 3.5 /usr/lib/xorg/Xor
+osiris 2150256 1.2 3.3 /opt/google/chrom
+osiris 4076261 0.2 3.0 /opt/google/chrom
+osiris 2149421 8.7 3.0 /opt/google/chrom
+osiris 940388 24.2 2.9 python3.9
+osiris 863244 13.3 2.4 /opt/google/chrom
+osiris 516384 0.5 2.4 python3.9
+osiris 2150544 0.1 2.4 /opt/google/chrom
+osiris 863096 0.0 2.3 /opt/google/chrom
+osiris 862739 0.7 2.3 /opt/google/chrom
+osiris 1896374 0.0 2.3 python3.9
+osiris 863017 0.0 2.2 /opt/google/chrom
+osiris 1141202 0.8 2.2 python3.9
+osiris 863198 0.0 2.0 /opt/google/chrom
+osiris 863161 0.3 2.0 /opt/google/chrom
+osiris 2149432 0.4 2.0 /opt/google/chrom
+osiris 862903 0.0 1.8 /opt/google/chrom
+osiris 2021683 0.2 1.8 python3.9
+osiris 862913 0.0 1.7 /opt/google/chrom
+osiris 2150438 0.0 1.7 /opt/google/chrom
+osiris 863297 0.0 1.6 /opt/google/chrom
+osiris 863258 0.0 1.6 /opt/google/chrom
+osiris 862852 0.0 1.6 /opt/google/chrom
+osiris 862833 0.0 1.6 /opt/google/chrom
+#################################
+# Información de Red
+#################################
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp4s2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 64:29:43:0a:d2:07 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.130/24 brd 192.168.1.255 scope global noprefixroute enp4s2
+       valid_lft forever preferred_lft forever
+    inet6 fe80::1b85:f537:429b:a5eb/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    link/ether 02:42:e9:77:b4:9c brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether 02:42:e9:77:b4:9c  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enp4s2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.130  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::1b85:f537:429b:a5eb  prefixlen 64  scopeid 0x20<link>
+        ether 64:29:43:0a:d2:07  txqueuelen 1000  (Ethernet)
+        RX packets 29205601  bytes 25152092110 (23.4 GiB)
+        RX errors 0  dropped 1450  overruns 0  frame 0
+        TX packets 24123329  bytes 31561161133 (29.3 GiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 81  bytes 7710 (7.5 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 81  bytes 7710 (7.5 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      4006582/cupsd       
+tcp        0      0 127.0.0.1:34429         0.0.0.0:*               LISTEN      656/containerd      
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      733/sshd: /usr/sbin 
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      730/mariadbd        
+tcp6       0      0 :::8081                 :::*                    LISTEN      764/apache2         
+tcp6       0      0 ::1:631                 :::*                    LISTEN      4006582/cupsd       
+#################################
+# Logs del Sistema (Fragmentos)
+#################################
+[81022.184682] usb 5-2: new low-speed USB device number 90 using uhci_hcd
+[81022.383795] usb 5-2: New USB device found, idVendor=046d, idProduct=c050, bcdDevice=27.20
+[81022.383805] usb 5-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[81022.383808] usb 5-2: Product: USB-PS/2 Optical Mouse
+[81022.383810] usb 5-2: Manufacturer: Logitech
+[81022.401386] input: Logitech USB-PS/2 Optical Mouse as /devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B1/input/input456
+[81022.401567] hid-generic 0003:046D:C050.01B1: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+[81096.517103] usb 5-2: USB disconnect, device number 90
+[81097.289007] usb 5-2: new low-speed USB device number 91 using uhci_hcd
+[81097.492801] usb 5-2: New USB device found, idVendor=046d, idProduct=c050, bcdDevice=27.20
+[81097.492811] usb 5-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[81097.492814] usb 5-2: Product: USB-PS/2 Optical Mouse
+[81097.492816] usb 5-2: Manufacturer: Logitech
+[81097.509766] input: Logitech USB-PS/2 Optical Mouse as /devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B2/input/input457
+[81097.509963] hid-generic 0003:046D:C050.01B2: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+[81167.941398] usb 5-2: USB disconnect, device number 91
+[81168.273364] usb 5-2: new low-speed USB device number 92 using uhci_hcd
+[81168.468809] usb 5-2: New USB device found, idVendor=046d, idProduct=c050, bcdDevice=27.20
+[81168.468819] usb 5-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[81168.468822] usb 5-2: Product: USB-PS/2 Optical Mouse
+[81168.468824] usb 5-2: Manufacturer: Logitech
+[81168.486436] input: Logitech USB-PS/2 Optical Mouse as /devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B3/input/input458
+[81168.486703] hid-generic 0003:046D:C050.01B3: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+[81243.581683] usb 5-2: USB disconnect, device number 92
+[81244.353632] usb 5-2: new low-speed USB device number 93 using uhci_hcd
+[81244.525833] usb 5-2: unable to read config index 0 descriptor/start: -71
+[81244.525846] usb 5-2: can't read configurations, error -71
+[81244.937633] usb 5-2: new low-speed USB device number 94 using uhci_hcd
+[81245.140834] usb 5-2: New USB device found, idVendor=046d, idProduct=c050, bcdDevice=27.20
+[81245.140844] usb 5-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[81245.140848] usb 5-2: Product: USB-PS/2 Optical Mouse
+[81245.140850] usb 5-2: Manufacturer: Logitech
+[81245.158458] input: Logitech USB-PS/2 Optical Mouse as /devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B4/input/input459
+[81245.158645] hid-generic 0003:046D:C050.01B4: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+[81257.965752] usb 5-2: USB disconnect, device number 94
+[81258.385742] usb 5-2: new low-speed USB device number 95 using uhci_hcd
+[81258.576847] usb 5-2: New USB device found, idVendor=046d, idProduct=c050, bcdDevice=27.20
+[81258.576857] usb 5-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[81258.576875] usb 5-2: Product: USB-PS/2 Optical Mouse
+[81258.576878] usb 5-2: Manufacturer: Logitech
+[81258.594551] input: Logitech USB-PS/2 Optical Mouse as /devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B5/input/input460
+[81258.595023] hid-generic 0003:046D:C050.01B5: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+[81287.477875] usb 5-2: USB disconnect, device number 95
+[81287.797844] usb 5-2: new low-speed USB device number 96 using uhci_hcd
+[81287.997869] usb 5-2: New USB device found, idVendor=046d, idProduct=c050, bcdDevice=27.20
+[81287.997880] usb 5-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[81287.997883] usb 5-2: Product: USB-PS/2 Optical Mouse
+[81287.997886] usb 5-2: Manufacturer: Logitech
+[81288.015553] input: Logitech USB-PS/2 Optical Mouse as /devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B6/input/input461
+[81288.015783] hid-generic 0003:046D:C050.01B6: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+#################################
+# Logs del Sistema (Fragmentos - journalctl)
+#################################
+nov 26 07:56:18 osiris kernel: hid-generic 0003:046D:C050.01B6: input,hidraw4: USB HID v1.10 Mouse [Logitech USB-PS/2 Optical Mouse] on usb-0000:00:1d.1-2/input0
+nov 26 07:56:18 osiris mtp-probe[1167059]: checking bus 5, device 96: "/sys/devices/pci0000:00/0000:00:1d.1/usb5/5-2"
+nov 26 07:56:18 osiris mtp-probe[1167059]: bus: 5, device: 96 was not an MTP device
+nov 26 07:56:18 osiris upowerd[1297]: treating change event as add on /sys/devices/pci0000:00/0000:00:1d.1/usb5/5-2
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) config/udev: Adding input device Logitech USB-PS/2 Optical Mouse (/dev/input/mouse0)
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) No input driver specified, ignoring this device.
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) This device may have been added with another device file.
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) config/udev: Adding input device Logitech USB-PS/2 Optical Mouse (/dev/input/event4)
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Logitech USB-PS/2 Optical Mouse: Applying InputClass "libinput pointer catchall"
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) Using input driver 'libinput' for 'Logitech USB-PS/2 Optical Mouse'
+nov 26 07:56:18 osiris mtp-probe[1167071]: checking bus 5, device 96: "/sys/devices/pci0000:00/0000:00:1d.1/usb5/5-2"
+nov 26 07:56:18 osiris mtp-probe[1167071]: bus: 5, device: 96 was not an MTP device
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) systemd-logind: got fd for /dev/input/event4 13:68 fd 89 paused 0
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Logitech USB-PS/2 Optical Mouse: always reports core events
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Option "Device" "/dev/input/event4"
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Option "_source" "server/udev"
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: is tagged by udev as: Mouse
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: device set to 1000 DPI
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: device is a pointer
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: device removed
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Option "config_info" "udev:/sys/devices/pci0000:00/0000:00:1d.1/usb5/5-2/5-2:1.0/0003:046D:C050.01B6/input/input461/event4"
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) XINPUT: Adding extended input device "Logitech USB-PS/2 Optical Mouse" (type: MOUSE, id 10)
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Option "AccelerationScheme" "none"
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Logitech USB-PS/2 Optical Mouse: (accel) selected scheme none/0
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Logitech USB-PS/2 Optical Mouse: (accel) acceleration factor: 2.000
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (**) Logitech USB-PS/2 Optical Mouse: (accel) acceleration threshold: 4
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: is tagged by udev as: Mouse
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: device set to 1000 DPI
+nov 26 07:56:18 osiris /usr/libexec/gdm-x-session[1103]: (II) event4  - Logitech USB-PS/2 Optical Mouse: device is a pointer
+nov 26 07:56:38 osiris tracker-store[1166386]: OK
+nov 26 07:56:59 osiris dbus-daemon[1108]: [session uid=1000 pid=1108] Activating via systemd: service name='org.freedesktop.Tracker1' unit='tracker-store.service' requested by ':1.3' (uid=1000 pid=1097 comm="/usr/libexec/tracker-miner-fs")
+nov 26 07:56:59 osiris systemd[759]: Starting tracker-store.service - Tracker metadata database store and lookup manager...
+░░ Subject: A start job for unit UNIT has begun execution
+░░ Defined-By: systemd
+░░ Support: https://www.debian.org/support
+░░ 
+░░ A start job for unit UNIT has begun execution.
+░░ 
+░░ The job identifier is 3298.
+nov 26 07:56:59 osiris dbus-daemon[1108]: [session uid=1000 pid=1108] Successfully activated service 'org.freedesktop.Tracker1'
+nov 26 07:56:59 osiris systemd[759]: Started tracker-store.service - Tracker metadata database store and lookup manager.
+░░ Subject: A start job for unit UNIT has finished successfully
+░░ Defined-By: systemd
+░░ Support: https://www.debian.org/support
+░░ 
+░░ A start job for unit UNIT has finished successfully.
+░░ 
+░░ The job identifier is 3298.
+nov 26 07:57:30 osiris tracker-store[1169027]: OK
+nov 26 08:00:46 osiris gnome-shell[1416]: ../../../gobject/gsignal.c:2732: instance '0x5622ceefdc60' has no handler with id '1067986'
+#################################
+# Información de Procesos (sudo)
+#################################
+osiris 2149340 1.2 10.0 /opt/google/chrome/chrome
+root 1900117 10.8 6.8 /var/www/osiris000/bin/com/osiris_env/lib/python3.9/site-packages/PyQt5/Qt5/libexec/QtWebEngineProcess
+osiris 3946537 17.8 6.4 /opt/google/chrome/chrome
+osiris 259727 3.9 5.2 /opt/google/chrome/chrome
+osiris 1416 8.1 4.3 /usr/bin/gnome-shell
+root 1900019 2.9 4.2 python3.9
+osiris 628611 2.4 4.2 /opt/google/chrome/chrome
+osiris 938002 37.9 4.1 ffmpeg
+root 1103 6.2 3.5 /usr/lib/xorg/Xorg
+osiris 2150256 1.2 3.3 /opt/google/chrome/chrome
+osiris 4076261 0.2 3.0 /opt/google/chrome/chrome
+osiris 2149421 8.7 3.0 /opt/google/chrome/chrome
+osiris 940388 24.2 2.9 python3.9
+osiris 863244 13.3 2.4 /opt/google/chrome/chrome
+osiris 516384 0.5 2.4 python3.9
+osiris 2150544 0.1 2.4 /opt/google/chrome/chrome
+osiris 863096 0.0 2.3 /opt/google/chrome/chrome
+osiris 862739 0.7 2.3 /opt/google/chrome/chrome
+osiris 1896374 0.0 2.3 python3.9
+osiris 863017 0.0 2.2 /opt/google/chrome/chrome
+osiris 1141202 0.8 2.2 python3.9
+osiris 863198 0.0 2.0 /opt/google/chrome/chrome
+osiris 863161 0.3 2.0 /opt/google/chrome/chrome
+osiris 2149432 0.4 2.0 /opt/google/chrome/chrome
+osiris 862903 0.0 1.8 /opt/google/chrome/chrome
+osiris 2021683 0.2 1.8 python3.9
+osiris 862913 0.0 1.7 /opt/google/chrome/chrome
+osiris 2150438 0.0 1.7 /opt/google/chrome/chrome
+osiris 863297 0.0 1.6 /opt/google/chrome/chrome
+osiris 863258 0.0 1.6 /opt/google/chrome/chrome
+osiris 862852 0.0 1.6 /opt/google/chrome/chrome
+osiris 862833 0.0 1.6 /opt/google/chrome/chrome
+osiris 862511 0.0 1.6 /opt/google/chrome/chrome
+osiris 862706 0.0 1.5 /opt/google/chrome/chrome
+osiris 1523 0.1 1.5 /usr/bin/gnome-software
+osiris 1896313 2.9 1.3 /usr/bin/python3
+osiris 940090 0.0 1.0 python3.9
+osiris 863414 0.0 1.0 /opt/google/chrome/chrome
+osiris 2897769 0.2 0.9 /opt/google/chrome/chrome
+osiris 2017210 0.0 0.9 /usr/libexec/gnome-terminal-server
+osiris 1371 0.0 0.9 /usr/libexec/xdg-desktop-portal-gtk
+osiris 1109475 0.0 0.9 ksnip
+osiris 1094 1.3 0.9 /usr/bin/pulseaudio
+root 1489 0.1 0.8 /usr/libexec/packagekitd
+osiris 518507 6.8 0.8 lazpaint
+osiris 2149500 0.0 0.8 /opt/google/chrome/chrome
+osiris 1526 0.0 0.7 /usr/libexec/evolution-data-server/evolution-alarm-notify
+osiris 862973 0.0 0.6 /opt/google/chrome/chrome
+osiris 2149364 0.0 0.6 /opt/google/chrome/chrome
+osiris 2149363 0.0 0.6 /opt/google/chrome/chrome
+#################################
+# Información USB (sudo)
+#################################
+Bus 001 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 004 Device 003: ID 0d8c:016c C-Media Electronics, Inc. USB Advanced Audio Device
+Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 005 Device 004: ID 046d:c517 Logitech, Inc. LX710 Cordless Desktop Laser
+Bus 005 Device 096: ID 046d:c050 Logitech, Inc. RX 250 Optical Mouse
+Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 007 Device 002: ID 05e3:0716 Genesys Logic, Inc. Multislot Card Reader/Writer
+Bus 008 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 008 Device 005: ID 046d:0802 Logitech, Inc. Webcam C200
+#################################
+# Información de Fontconfig
+#################################
+Font directories:
+	/root/.local/share/fonts
+	/usr/share/gnome/fonts
+	/usr/local/share/fonts
+	/usr/share/fonts
+	/root/.fonts
+	/usr/share/fonts/X11
+	/usr/share/fonts/cMap
+	/usr/share/fonts/cmap
+	/usr/share/fonts/opentype
+	/usr/share/fonts/osirisf
+	/usr/share/fonts/truetype
+	/usr/share/fonts/type1
+	/usr/share/fonts/X11/100dpi
+	/usr/share/fonts/X11/75dpi
+	/usr/share/fonts/X11/Type1
+	/usr/share/fonts/X11/encodings
+	/usr/share/fonts/X11/misc
+	/usr/share/fonts/X11/util
+	/usr/share/fonts/cmap/adobe-cns1
+	/usr/share/fonts/cmap/adobe-gb1
+	/usr/share/fonts/cmap/adobe-japan1
+	/usr/share/fonts/cmap/adobe-japan2
+	/usr/share/fonts/cmap/adobe-korea1
+	/usr/share/fonts/opentype/cantarell
+	/usr/share/fonts/opentype/urw-base35
+	/usr/share/fonts/truetype/ancient-scripts
+	/usr/share/fonts/truetype/dejavu
+	/usr/share/fonts/truetype/droid
+	/usr/share/fonts/truetype/freefont
+	/usr/share/fonts/truetype/liberation
+	/usr/share/fonts/truetype/liberation2
+	/usr/share/fonts/truetype/libreoffice
+	/usr/share/fonts/truetype/noto
+	/usr/share/fonts/truetype/quicksand
+	/usr/share/fonts/type1/gsfonts
+	/usr/share/fonts/type1/urw-base35
+	/usr/share/fonts/X11/encodings/large
+/root/.local/share/fonts: skipping, no such directory
+/usr/share/gnome/fonts: skipping, no such directory
+/usr/local/share/fonts: caching, new cache contents: 0 fonts, 0 dirs
+/usr/share/fonts: caching, new cache contents: 0 fonts, 7 dirs
+/usr/share/fonts/X11: caching, new cache contents: 0 fonts, 6 dirs
+/usr/share/fonts/X11/100dpi: caching, new cache contents: 358 fonts, 0 dirs
+/usr/share/fonts/X11/75dpi: caching, new cache contents: 358 fonts, 0 dirs
+/usr/share/fonts/X11/Type1: caching, new cache contents: 43 fonts, 0 dirs
+/usr/share/fonts/X11/encodings: caching, new cache contents: 0 fonts, 1 dirs
+/usr/share/fonts/X11/encodings/large: caching, new cache contents: 0 fonts, 0 dirs
+/usr/share/fonts/X11/misc: caching, new cache contents: 89 fonts, 0 dirs
+/usr/share/fonts/X11/util: caching, new cache contents: 0 fonts, 0 dirs

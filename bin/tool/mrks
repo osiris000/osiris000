@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Nombre del script: auditoria_logs.sh
+
+# Descripción: Crea un resumen de las últimas 5 líneas de los logs del sistema
+#             más importantes para una auditoria de rendimiento y solución de errores.
+#             El resultado se imprime en la consola para su uso en un prompt de IA.
+
+echo "## Resumen de Logs del Sistema para Auditoría de Rendimiento y Solución de Errores"
+echo
+
+# Logs del sistema
+echo "### Logs del Sistema:"
+echo "```"
+tail -n 5 /var/log/syslog
+echo "```"
+
+# Logs del kernel
+echo "### Logs del Kernel:"
+echo "```"
+tail -n 5 /var/log/kern.log
+echo "```"
+
+# Logs de mensajes del sistema
+echo "### Logs de Mensajes del Sistema:"
+echo "```"
+tail -n 5 /var/log/messages
+echo "```"
+
+# Logs de actualizaciones del sistema
+echo "### Logs de Actualizaciones del Sistema:"
+echo "```"
+tail -n 5 /var/log/apt/history.log
+echo "```"
+
+# Logs del demonio de red
+echo "### Logs del Demonio de Red:"
+echo "```"
+tail -n 5 /var/log/syslog
+echo "```"
+
+# Logs de servicios específicos (opcional)
+# Ejemplo: Logs del servidor web Apache
+# echo "### Logs del Servidor Web Apache:"
+# echo "```"
+# tail -n 5 /var/log/apache2/error.log
+# echo "```"
+
+# Instrucciones para la IA
+echo
+echo "## Instrucciones para la IA:"
+echo "- Este resumen de logs proporciona información sobre el funcionamiento del sistema."
+echo "- La IA puede analizar estos logs para identificar posibles problemas de rendimiento, errores"
+echo "- o cualquier otra condición que requiera atención."
+echo "- La IA puede sugerir soluciones o acciones basadas en su análisis de los logs."
+echo "- Es importante proporcionar contexto a la IA sobre el sistema y sus aplicaciones"
+echo "- para que pueda realizar un análisis preciso."
